@@ -76,7 +76,7 @@ public class UserDaoTest {
         userDao.deleteUser(testUser2);
         userDao.deleteUser(testUser3);
         userDao.deleteUser(testUser4);
-    }
+        }
     
     @Test
     public void testGetNonExistentUser() {

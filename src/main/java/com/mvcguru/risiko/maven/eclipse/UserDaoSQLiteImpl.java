@@ -44,7 +44,9 @@ public class UserDaoSQLiteImpl implements UserDao {
             pstmt.setString(1, user.getUsername());
             pstmt.setString(2, user.getPassword());
             pstmt.executeUpdate();
+            System.out.println("bloco try");
         } catch (SQLException e) {
+            System.out.println("bloco catch");
             throw new RuntimeException("Errore durante la registrazione dell'utente.", e);
         }
     }

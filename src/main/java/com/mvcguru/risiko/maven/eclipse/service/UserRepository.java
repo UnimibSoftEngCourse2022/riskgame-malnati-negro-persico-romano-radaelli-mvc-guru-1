@@ -11,9 +11,9 @@ public class UserRepository {
 	
 	public UserRepository() {
 		super();
-		this.db = new UserDaoSQLiteImpl("jdbc:sqlite:testdatabase.db");
+		this.db = new UserDaoSQLiteImpl("jdbc:sqlite:testdatabse.db");
 		this.db.createUsersTable();
-		this.db.registerUser(new User("Bobby", "bobby00"));
+		this.db.registerUser(new User("Bobbys", "bobby000"));
 	}
 	
 	public static synchronized UserRepository getInstance() {
