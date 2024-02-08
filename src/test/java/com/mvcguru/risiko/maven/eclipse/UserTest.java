@@ -1,19 +1,19 @@
 package com.mvcguru.risiko.maven.eclipse;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class UserTest {
 
     @Test
     public void testUser() {
-        String username = "Bobby";
-        String password = "bobbybobby";
+        String username = "bobby";
+        String password = "bobbybobby00";
 
         User user = new User(username, password);
 
-        Assert.assertEquals("Username should be equal to the one set", username, user.getUsername());
-        Assert.assertEquals("Password should be equal to the one set", password, user.getPassword());
+        assertEquals(username, user.getUsername(), "Username should be equal to the one set");
+        assertEquals(password, user.getPassword(), "Password should be equal to the one set");
 
         String newUsername = "newTestUser";
         String newPassword = "newTestPassword";
@@ -21,7 +21,7 @@ public class UserTest {
         user.setUsername(newUsername);
         user.setPassword(newPassword);
 
-        Assert.assertEquals("Username should be updated to the new one", newUsername, user.getUsername());
-        Assert.assertEquals("Password should be updated to the new one", newPassword, user.getPassword());
+        assertEquals(newUsername, user.getUsername(), "Username should be updated to the new one");
+        assertEquals(newPassword, user.getPassword(), "Password should be updated to the new one");
     }
 }
