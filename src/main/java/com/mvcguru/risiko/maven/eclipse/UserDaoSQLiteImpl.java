@@ -15,7 +15,7 @@ public class UserDaoSQLiteImpl implements UserDao {
     public UserDaoSQLiteImpl(String dbUrl) throws DatabaseConnectionException {
         try {
             connection = DriverManager.getConnection(dbUrl);
-            if (connection == null || connection.isClosed()) {
+            if (connection.isClosed()) {
                 throw new DatabaseConnectionException("Connessione al database non riuscita");
             }
         } catch (SQLException e) {
@@ -36,9 +36,7 @@ public class UserDaoSQLiteImpl implements UserDao {
         if (pstmt != null) {
             try {
                 pstmt.close();
-            } catch (SQLException e) {
-                LOGGER.error("Error closing PreparedStatement", e);
-            }
+            } catch (SQLException e) {LOGGER.error("Error closing PreparedStatement", e);}
         }
     }
 
@@ -55,13 +53,11 @@ public class UserDaoSQLiteImpl implements UserDao {
             } else {
                 return null;
             }
-        } catch (SQLException e) {
-            throw new UserException("Errore durante il recupero dell'utente.", e);
+        } catch (SQLException e) {throw new UserException("Errore durante il recupero dell'utente.", e);
         } finally {
             try {
                 if (rs != null) rs.close();
-            } catch (SQLException e) {
-            	LOGGER.error("Error closing PreparedStatement", e);
+            } catch (SQLException e) {LOGGER.error("Error closing PreparedStatement", e);
             }
             closePreparedStatement(pstmt);
         }
@@ -77,8 +73,7 @@ public class UserDaoSQLiteImpl implements UserDao {
         try {
             pstmt = prepareStatement(sql, user.getUsername(), user.getPassword());
             pstmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new UserException("Errore durante la registrazione dell'utente.", e);
+        } catch (SQLException e) {throw new UserException("Errore durante la registrazione dell'utente.", e);
         } finally {
             closePreparedStatement(pstmt);
         }
@@ -91,8 +86,7 @@ public class UserDaoSQLiteImpl implements UserDao {
         try {
             pstmt = prepareStatement(sql, user.getUsername());
             pstmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new UserException("Errore durante l'eliminazione dell'utente.", e);
+        } catch (SQLException e) {throw new UserException("Errore durante l'eliminazione dell'utente.", e);
         } finally {
             closePreparedStatement(pstmt);
         }
@@ -107,8 +101,7 @@ public class UserDaoSQLiteImpl implements UserDao {
         try {
             pstmt = prepareStatement(sql);
             pstmt.execute();
-        } catch (SQLException e) {
-            throw new UserException("Errore durante la creazione della tabella users.", e);
+        } catch (SQLException e) {throw new UserException("Errore durante la creazione della tabella users.", e);
         } finally {
             closePreparedStatement(pstmt);
         }
@@ -122,8 +115,7 @@ public class UserDaoSQLiteImpl implements UserDao {
         if (connection != null) {
             try {
                 connection.close();
-            } catch (SQLException e) {
-                LOGGER.error("Error closing Connection", e);
+            } catch (SQLException e) {LOGGER.error("Error closing Connection", e);
             }
         }
     }

@@ -15,6 +15,11 @@ class MainTest {
 
     @Autowired
     private ApplicationContext applicationContext;
+    
+    @Test
+    void main() {
+        Main.main(new String[] {});
+    }
 
     @Test
     void contextLoads() {

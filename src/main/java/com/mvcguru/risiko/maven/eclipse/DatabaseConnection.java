@@ -19,10 +19,8 @@ public class DatabaseConnection {
         try {
             Class.forName(SQLITE_JDBC_DRIVER);
             connection = DriverManager.getConnection(SQLITE_DB_URL);
-        } catch (ClassNotFoundException e) {
-            LOGGER.error("Driver JDBC non trovato", e);
-        } catch (SQLException e) {
-            LOGGER.error("Connessione al database non riuscita", e);
+        } catch (ClassNotFoundException e) {LOGGER.error("Driver JDBC non trovato", e);
+        } catch (SQLException e) {LOGGER.error("Connessione al database non riuscita", e);
         }
         return connection;
     }
