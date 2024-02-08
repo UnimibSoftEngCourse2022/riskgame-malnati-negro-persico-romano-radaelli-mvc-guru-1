@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConnection {
-    private static final String SQLITE_JDBC_DRIVER = "org.sqlite.JDBC";
+    public static final String SQLITE_JDBC_DRIVER = "org.sqlite.JDBC";
     private static final String SQLITE_DB_URL = "jdbc:sqlite:mydatabase.db";
 
     public static Connection getConnection() {
