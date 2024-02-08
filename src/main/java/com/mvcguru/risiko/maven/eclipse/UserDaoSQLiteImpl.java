@@ -38,7 +38,12 @@ public class UserDaoSQLiteImpl implements UserDao {
 
     @Override
     public void registerUser(User user) {
-        String sql = "INSERT INTO users(username, password) VALUES(?, ?)";
+    	
+    	if(user != null)
+    		System.out.println("User regestring: " + user.getUsername() + " " + user.getPassword());
+		else
+			System.out.println("User is null");
+    	String sql = "INSERT INTO users(username, password) VALUES(?, ?)";
         try {
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, user.getUsername());

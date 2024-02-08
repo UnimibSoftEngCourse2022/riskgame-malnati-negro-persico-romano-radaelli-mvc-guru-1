@@ -13,7 +13,7 @@ public class UserRepository {
 		super();
 		this.db = new UserDaoSQLiteImpl("jdbc:sqlite:testdatabse.db");
 		this.db.createUsersTable();
-		this.db.registerUser(new User("Bobbys", "bobby000"));
+		//this.db.registerUser(new User("Bobbys", "bobby000"));
 	}
 	
 	public static synchronized UserRepository getInstance() {
@@ -24,7 +24,10 @@ public class UserRepository {
 	}
 	
 	public synchronized void registerUser(User user) {
-		db.registerUser(user);
+		if(user != null)
+			db.registerUser(user);
+		else
+			System.out.println("User is null");
 	}
 	
 	public synchronized User getUser(User user) {
