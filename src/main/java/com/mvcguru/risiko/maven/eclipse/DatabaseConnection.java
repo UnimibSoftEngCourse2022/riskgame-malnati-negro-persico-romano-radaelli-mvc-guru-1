@@ -10,6 +10,9 @@ public class DatabaseConnection {
     private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseConnection.class);
     private static final String SQLITE_JDBC_DRIVER = "org.sqlite.JDBC";
     private static final String SQLITE_DB_URL = "jdbc:sqlite:mydatabase.db";
+    
+    private DatabaseConnection() {
+    }
 
     public static Connection getConnection() {
         Connection connection = null;

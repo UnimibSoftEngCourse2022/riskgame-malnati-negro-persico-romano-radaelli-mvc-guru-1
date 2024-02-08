@@ -15,10 +15,14 @@ public class UserDaoSQLiteImpl implements UserDao {
     public UserDaoSQLiteImpl(String dbUrl) throws DatabaseConnectionException {
         try {
             connection = DriverManager.getConnection(dbUrl);
+            if (connection == null || connection.isClosed()) {
+                throw new DatabaseConnectionException("Connessione al database non riuscita");
+            }
         } catch (SQLException e) {
             throw new DatabaseConnectionException("Connessione al database non riuscita");
         }
     }
+
 
     private PreparedStatement prepareStatement(String sql, String... parameters) throws SQLException {
         PreparedStatement pstmt = connection.prepareStatement(sql);
@@ -65,6 +69,9 @@ public class UserDaoSQLiteImpl implements UserDao {
 
     @Override
     public void registerUser(User user) throws UserException {
+    	if (user == null) {
+            throw new UserException("L'utente non può essere null", new SQLException());
+        }
         String sql = "INSERT INTO users(username, password) VALUES(?, ?)";
         PreparedStatement pstmt = null;
         try {
@@ -93,8 +100,8 @@ public class UserDaoSQLiteImpl implements UserDao {
     
     public void createUsersTable() throws UserException {
         String sql = "CREATE TABLE IF NOT EXISTS users (\n"
-                + "	username text PRIMARY KEY,\n"
-                + "	password text NOT NULL\n"
+                + "username text PRIMARY KEY,\n"
+                + "password text NOT NULL\n"
                 + ");";
         PreparedStatement pstmt = null;
         try {
@@ -105,6 +112,10 @@ public class UserDaoSQLiteImpl implements UserDao {
         } finally {
             closePreparedStatement(pstmt);
         }
+    }
+    
+    public Connection getConnection() {
+        return this.connection;
     }
 
     public void closeConnection() {
