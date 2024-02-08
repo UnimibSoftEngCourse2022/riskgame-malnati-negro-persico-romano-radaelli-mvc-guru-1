@@ -6,18 +6,18 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Unit test for simple App.
  */
-public class MainTest 
+class MainTest 
 {
     /**
      * Rigorous Test :-)
      */
     @Test
-    public void shouldAnswerWithTrue()
+    void shouldAnswerWithTrue()
     {
         assertTrue( true );
     }
     
     @Test
-    public void contextLoads() {
+    void contextLoads() {
     }
 }

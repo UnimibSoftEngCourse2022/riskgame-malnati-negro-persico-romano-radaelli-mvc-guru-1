@@ -4,17 +4,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class UserDaoSQLiteImplTest {
+class UserDaoSQLiteImplTest {
     private UserDaoSQLiteImpl userDao;
 
     @BeforeEach
-    public void setUp() throws DatabaseConnectionException, UserException {
+    void setUp() throws DatabaseConnectionException, UserException {
         userDao = new UserDaoSQLiteImpl("jdbc:sqlite:testdatabase.db");
         userDao.createUsersTable();
     }
 
     @Test
-    public void testRegisterUser() throws UserException {
+    void testRegisterUser() throws UserException {
         User user = new User("testUser1", "testPassword");
         userDao.registerUser(user);
         User retrievedUser = userDao.getUserByUsernameAndPassword("testUser1", "testPassword");
@@ -24,7 +24,7 @@ public class UserDaoSQLiteImplTest {
     }
 
     @Test
-    public void testDeleteUser() throws UserException {
+    void testDeleteUser() throws UserException {
         User user = new User("testUser2", "testPassword");
         userDao.registerUser(user);
         userDao.deleteUser(user);

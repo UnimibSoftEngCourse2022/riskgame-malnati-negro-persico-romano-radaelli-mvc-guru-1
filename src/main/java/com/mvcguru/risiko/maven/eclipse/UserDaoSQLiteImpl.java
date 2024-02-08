@@ -5,8 +5,11 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class UserDaoSQLiteImpl implements UserDao {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserDaoSQLiteImpl.class);
     private Connection connection;
 
     public UserDaoSQLiteImpl(String dbUrl) throws DatabaseConnectionException {
@@ -30,7 +33,7 @@ public class UserDaoSQLiteImpl implements UserDao {
             try {
                 pstmt.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                LOGGER.error("Error closing PreparedStatement", e);
             }
         }
     }
@@ -109,7 +112,7 @@ public class UserDaoSQLiteImpl implements UserDao {
             try {
                 connection.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                LOGGER.error("Error closing Connection", e);
             }
         }
     }

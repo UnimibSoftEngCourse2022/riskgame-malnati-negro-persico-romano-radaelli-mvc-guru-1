@@ -3,18 +3,18 @@ package com.mvcguru.risiko.maven.eclipse;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class UserTest {
+class UserTest {
 	private User user;
 	
 	@BeforeEach
-    public void setUp(){
+    void setUp(){
 		String username = "bobby";
 	    String password = "bobbybobby00";
         user = new User(username, password);
     }
     
 	@Test
-	public void testGet() {
+	void testGet() {
 	   String username = "bobby";
        String password = "bobbybobby00";
        
@@ -23,7 +23,7 @@ public class UserTest {
    }
 	
 	@Test
-	public void testSet() {
+	void testSet() {
        String newUsername = "newTestUser";
        String newPassword = "newTestPassword";
 

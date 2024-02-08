@@ -1,15 +1,17 @@
 package com.mvcguru.risiko.maven.eclipse;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-
-import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class DatabaseConnectionTest {
+import java.sql.SQLException;
+
+import org.junit.jupiter.api.Test;
+
+import java.sql.Connection;
+
+class DatabaseConnectionTest {
 
     @Test
-    public void testGetConnection() {
+    void testGetConnection() {
         Connection connection = DatabaseConnection.getConnection();
         assertNotNull(connection, "Connection should not be null");
         
