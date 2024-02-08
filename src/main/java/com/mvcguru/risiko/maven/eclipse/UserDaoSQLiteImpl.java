@@ -25,12 +25,21 @@ public class UserDaoSQLiteImpl implements UserDao {
 
 
     private PreparedStatement prepareStatement(String sql, String... parameters) throws SQLException {
-        PreparedStatement pstmt = connection.prepareStatement(sql);
-        for (int i = 0; i < parameters.length; i++) {
-            pstmt.setString(i + 1, parameters[i]);
+        PreparedStatement pstmt = null;
+        try {
+            pstmt = connection.prepareStatement(sql);
+            for (int i = 0; i < parameters.length; i++) {
+                pstmt.setString(i + 1, parameters[i]);
+            }
+        } catch (SQLException e) {
+            if (pstmt != null) {
+                pstmt.close();
+            }
+            throw e;
         }
         return pstmt;
     }
+
 
     private void closePreparedStatement(PreparedStatement pstmt) {
         if (pstmt != null) {

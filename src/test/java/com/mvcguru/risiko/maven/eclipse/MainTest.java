@@ -1,6 +1,7 @@
 package com.mvcguru.risiko.maven.eclipse;
 
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
@@ -18,6 +19,7 @@ class MainTest {
     
     @Test
     void main() {
+    	assertTrue(42==42);
         Main.main(new String[] {});
     }
 

@@ -3,7 +3,6 @@ package com.mvcguru.risiko.maven.eclipse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-
 import java.sql.SQLException;
 
 class UserDaoSQLiteImplTest {
