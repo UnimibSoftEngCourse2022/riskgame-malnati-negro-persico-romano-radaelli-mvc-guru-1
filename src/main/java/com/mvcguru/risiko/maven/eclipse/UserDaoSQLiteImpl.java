@@ -57,7 +57,7 @@ public class UserDaoSQLiteImpl implements UserDao {
             try {
                 if (rs != null) rs.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+            	LOGGER.error("Error closing PreparedStatement", e);
             }
             closePreparedStatement(pstmt);
         }
