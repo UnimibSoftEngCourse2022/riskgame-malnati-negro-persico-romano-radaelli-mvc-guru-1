@@ -18,14 +18,9 @@ public class UserDaoSQLiteImpl implements UserDao {
     }
 
     private PreparedStatement prepareStatement(String sql, String... parameters) throws SQLException {
-        PreparedStatement pstmt = null;
-        try {
-            pstmt = connection.prepareStatement(sql);
-            for (int i = 0; i < parameters.length; i++) {
-                pstmt.setString(i + 1, parameters[i]);
-            }
-        } finally {
-            closePreparedStatement(pstmt);
+        PreparedStatement pstmt = connection.prepareStatement(sql);
+        for (int i = 0; i < parameters.length; i++) {
+            pstmt.setString(i + 1, parameters[i]);
         }
         return pstmt;
     }
@@ -40,14 +35,14 @@ public class UserDaoSQLiteImpl implements UserDao {
         }
     }
 
-
     @Override
     public User getUserByUsernameAndPassword(String username, String password) throws UserException {
         String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
         PreparedStatement pstmt = null;
+        ResultSet rs = null;
         try {
             pstmt = prepareStatement(sql, username, password);
-            ResultSet rs = pstmt.executeQuery();
+            rs = pstmt.executeQuery();
             if (rs.next()) {
                 return new User(rs.getString("username"), rs.getString("password"));
             } else {
@@ -56,6 +51,11 @@ public class UserDaoSQLiteImpl implements UserDao {
         } catch (SQLException e) {
             throw new UserException("Errore durante il recupero dell'utente.", e);
         } finally {
+            try {
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             closePreparedStatement(pstmt);
         }
     }
@@ -69,20 +69,6 @@ public class UserDaoSQLiteImpl implements UserDao {
             pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new UserException("Errore durante la registrazione dell'utente.", e);
-        } finally {
-            closePreparedStatement(pstmt);
-        }
-    }
-
-    @Override
-    public void updateUser(User user) throws UserException {
-        String sql = "UPDATE users SET password = ? WHERE username = ?";
-        PreparedStatement pstmt = null;
-        try {
-            pstmt = prepareStatement(sql, user.getPassword(), user.getUsername());
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new UserException("Errore durante l'aggiornamento dell'utente.", e);
         } finally {
             closePreparedStatement(pstmt);
         }
@@ -118,7 +104,13 @@ public class UserDaoSQLiteImpl implements UserDao {
         }
     }
 
-
-
-
+    public void closeConnection() {
+        if (connection != null) {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
