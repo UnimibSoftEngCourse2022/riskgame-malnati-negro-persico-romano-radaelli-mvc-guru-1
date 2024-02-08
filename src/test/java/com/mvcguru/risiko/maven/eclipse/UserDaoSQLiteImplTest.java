@@ -6,19 +6,19 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class UserDaoTest {
+public class UserDaoSQLiteImplTest {
     private UserDao userDao;
     private Connection connection;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws DatabaseConnectionException, UserException {
         userDao = new UserDaoSQLiteImpl("jdbc:sqlite:testdatabase.db");
         userDao.createUsersTable();
         connection = DatabaseConnection.getConnection();
     }
 
     @Test
-    public void testGetUserByUsernameAndPassword() {
+    public void testGetUserByUsernameAndPassword() throws UserException {
         String testUsername = "Bobby";
         String testPassword = "bobby00";
         User testUser = new User(testUsername, testPassword);
@@ -79,7 +79,7 @@ public class UserDaoTest {
     }
     
     @Test
-    public void testGetNonExistentUser() {
+    public void testGetNonExistentUser() throws UserException {
         String nonExistentUsername = "nonExistentUser";
         String nonExistentPassword = "nonExistentPassword";
 

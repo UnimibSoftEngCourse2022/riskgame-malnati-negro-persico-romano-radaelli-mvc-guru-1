@@ -10,16 +10,16 @@ import java.sql.SQLException;
 public class UserDaoSQLiteImpl implements UserDao {
     private Connection connection;
 
-    public UserDaoSQLiteImpl(String dbUrl) {
+    public UserDaoSQLiteImpl(String dbUrl) throws DatabaseConnectionException {
         try {
             connection = DriverManager.getConnection(dbUrl);
         } catch (SQLException e) {
-            throw new RuntimeException("Errore durante la connessione al database.", e);
+        	throw new DatabaseConnectionException("Connessione al database non riuscita");
         }
     }
 
     @Override
-    public User getUserByUsernameAndPassword(String username, String password) {
+    public User getUserByUsernameAndPassword(String username, String password) throws UserException {
         String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
         PreparedStatement pstmt = null;
         try {
@@ -33,7 +33,7 @@ public class UserDaoSQLiteImpl implements UserDao {
                 return null;
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Errore durante il recupero dell'utente.", e);
+            throw new UserException("Errore durante il recupero dell'utente.", e);
         } finally {
             if (pstmt != null) {
                 try {
@@ -47,7 +47,7 @@ public class UserDaoSQLiteImpl implements UserDao {
 
 
     @Override
-    public void registerUser(User user) {
+    public void registerUser(User user) throws UserException {
         String sql = "INSERT INTO users(username, password) VALUES(?, ?)";
         PreparedStatement pstmt = null;
         try {
@@ -56,7 +56,7 @@ public class UserDaoSQLiteImpl implements UserDao {
             pstmt.setString(2, user.getPassword());
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Errore durante la registrazione dell'utente.", e);
+            throw new UserException("Errore durante la registrazione dell'utente.", e);
         } finally {
             if (pstmt != null) {
                 try {
@@ -70,7 +70,7 @@ public class UserDaoSQLiteImpl implements UserDao {
 
     
     @Override
-    public void updateUser(User user) {
+    public void updateUser(User user) throws UserException {
         String sql = "UPDATE users SET password = ? WHERE username = ?";
         PreparedStatement pstmt = null;
         try {
@@ -79,7 +79,7 @@ public class UserDaoSQLiteImpl implements UserDao {
             pstmt.setString(2, user.getUsername());
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Errore durante l'aggiornamento dell'utente.", e);
+            throw new UserException("Errore durante l'aggiornamento dell'utente.", e);
         } finally {
             if (pstmt != null) {
                 try {
@@ -92,7 +92,7 @@ public class UserDaoSQLiteImpl implements UserDao {
     }
 
     @Override
-    public void deleteUser(User user) {
+    public void deleteUser(User user) throws UserException {
         String sql = "DELETE FROM users WHERE username = ?";
         PreparedStatement pstmt = null;
         try {
@@ -100,7 +100,7 @@ public class UserDaoSQLiteImpl implements UserDao {
             pstmt.setString(1, user.getUsername());
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Errore durante l'eliminazione dell'utente.", e);
+            throw new UserException("Errore durante l'eliminazione dell'utente.", e);
         } finally {
             if (pstmt != null) {
                 try {
@@ -113,7 +113,7 @@ public class UserDaoSQLiteImpl implements UserDao {
     }
 
     
-    public void createUsersTable() {
+    public void createUsersTable() throws UserException {
         String sql = "CREATE TABLE IF NOT EXISTS users (\n"
                 + "	username text PRIMARY KEY,\n"
                 + "	password text NOT NULL\n"
@@ -123,7 +123,7 @@ public class UserDaoSQLiteImpl implements UserDao {
             pstmt = connection.prepareStatement(sql);
             pstmt.execute();
         } catch (SQLException e) {
-            throw new RuntimeException("Errore durante la creazione della tabella users.", e);
+            throw new UserException("Errore durante la creazione della tabella users.", e);
         } finally {
             if (pstmt != null) {
                 try {
