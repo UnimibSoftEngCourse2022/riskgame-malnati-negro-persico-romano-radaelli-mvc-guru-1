@@ -18,9 +18,14 @@ public class UserDaoSQLiteImpl implements UserDao {
     }
 
     private PreparedStatement prepareStatement(String sql, String... parameters) throws SQLException {
-        PreparedStatement pstmt = connection.prepareStatement(sql);
-        for (int i = 0; i < parameters.length; i++) {
-            pstmt.setString(i + 1, parameters[i]);
+        PreparedStatement pstmt = null;
+        try {
+            pstmt = connection.prepareStatement(sql);
+            for (int i = 0; i < parameters.length; i++) {
+                pstmt.setString(i + 1, parameters[i]);
+            }
+        } finally {
+            closePreparedStatement(pstmt);
         }
         return pstmt;
     }
@@ -34,6 +39,7 @@ public class UserDaoSQLiteImpl implements UserDao {
             }
         }
     }
+
 
     @Override
     public User getUserByUsernameAndPassword(String username, String password) throws UserException {
