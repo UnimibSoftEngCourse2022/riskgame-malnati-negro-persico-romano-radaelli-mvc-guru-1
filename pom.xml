@@ -28,6 +28,13 @@
  	<frontend-src-dir>${project.basedir}/src/main/app</frontend-src-dir>
         <node.version>v16.13.2</node.version>
     <frontend-maven-plugin.version>1.9.1</frontend-maven-plugin.version>
+    <!-- Sonar -->
+  <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+  <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+  <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
+  <sonar.language>java</sonar.language>
+  <sonar.coverage.jacoco.xmlReportPaths>../app-it/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+  <sonar.host.url>http://localhost:9000/</sonar.host.url>
   </properties>
 
   <dependencies>
@@ -44,11 +51,17 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-        <groupId>org.junit.jupiter</groupId>
-        <artifactId>junit-jupiter-engine</artifactId>
-        <version>5.8.2</version>
-        <scope>test</scope>
-    </dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.7.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.7.2</version>
+            <scope>test</scope>
+        </dependency>
     <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
@@ -64,15 +77,27 @@
     		<groupId>org.springframework.boot</groupId>
     		<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		
+		<dependency>
+   			<groupId>org.springframework.boot</groupId>
+    		<artifactId>spring-boot-devtools</artifactId>
+   		 <optional>true</optional>
+		</dependency>
+
+		<dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
     
   </dependencies>
 
-  <build>
+<build>
       <plugins>
 		  <plugin>
     		<groupId>org.springframework.boot</groupId>
     		<artifactId>spring-boot-maven-plugin</artifactId>
 		</plugin>
+		
         <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
         <plugin>
           <artifactId>maven-clean-plugin</artifactId>
@@ -142,7 +167,7 @@
                     <goals>
                         <goal>npm</goal>
                     </goals>
-                    <phase>install</phase> <!-- Modifica qui per eseguire durante mvn install -->
+                   
                     <configuration>
                         <arguments>run build</arguments>
                     </configuration>
@@ -172,7 +197,59 @@
                     </execution>
                 </executions>
             </plugin>
+            
+            <plugin>
+  <groupId>org.jacoco</groupId>
+          <artifactId>jacoco-maven-plugin</artifactId>
+          <version>0.8.11</version>
+  <executions>
+    <execution>
+      <id>prepare-agent</id>
+      <goals>
+        <goal>prepare-agent</goal>
+      </goals>
+    </execution>
+    <execution>
+      <id>report</id>
+      <goals>
+        <goal>report</goal>
+      </goals>
+    </execution>
+  </executions>
+</plugin>
+            
       </plugins>
+</build>
 
-  </build>
+ <profiles>
+    <profile>
+      <id>coverage</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>prepare-agent</id>
+                <goals>
+                  <goal>prepare-agent</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>report</id>
+                <goals>
+                  <goal>report</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
 </project>
