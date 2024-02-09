@@ -1,8 +1,11 @@
 package com.mvcguru.risiko.maven.eclipse.states;
 
+import java.util.List;
+
 import com.mvcguru.risiko.maven.eclipse.model.Game;
 
-public class LobbyState implements GameState{
+public class LobbyState extends GameState{
+	
 
 	@Override
 	public void startGame(Game game) {
@@ -21,5 +24,6 @@ public class LobbyState implements GameState{
 		// TODO Auto-generated method stub
 		
 	}
+	
 
 }

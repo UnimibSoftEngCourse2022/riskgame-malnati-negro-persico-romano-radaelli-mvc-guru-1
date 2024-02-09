@@ -2,7 +2,8 @@ package com.mvcguru.risiko.maven.eclipse.states;
 
 import com.mvcguru.risiko.maven.eclipse.model.Game;
 
-public interface GameState {
+public abstract class GameState {
+
 	
 	void startGame(Game game);
 	
