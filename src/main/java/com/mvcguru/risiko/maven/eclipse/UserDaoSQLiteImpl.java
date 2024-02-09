@@ -5,95 +5,130 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import com.mvcguru.risiko.maven.eclipse.model.User;
 
 public class UserDaoSQLiteImpl implements UserDao {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserDaoSQLiteImpl.class);
     private Connection connection;
 
-    public UserDaoSQLiteImpl(String dbUrl) {
+    public UserDaoSQLiteImpl(String dbUrl) throws DatabaseConnectionException {
         try {
             connection = DriverManager.getConnection(dbUrl);
+            if (connection.isClosed()) {
+                throw new DatabaseConnectionException("Connessione al database non riuscita");
+            }
         } catch (SQLException e) {
-            throw new RuntimeException("Errore durante la connessione al database.", e);
+            throw new DatabaseConnectionException("Connessione al database non riuscita");
+        }
+    }
+
+
+    private PreparedStatement prepareStatement(String sql, String... parameters) throws SQLException {
+        PreparedStatement pstmt = null;
+        try {
+            pstmt = connection.prepareStatement(sql);
+            for (int i = 0; i < parameters.length; i++) {
+                pstmt.setString(i + 1, parameters[i]);
+            }
+        } catch (SQLException e) {
+            if (pstmt != null) {
+                pstmt.close();
+            }
+            throw e;
+        }
+        return pstmt;
+    }
+
+
+    private void closePreparedStatement(PreparedStatement pstmt) {
+        if (pstmt != null) {
+            try {
+                pstmt.close();
+            } catch (SQLException e) {LOGGER.error("Error closing PreparedStatement", e);}
         }
     }
 
     @Override
-    public User getUserByUsernameAndPassword(String username, String password) {
+    public User getUserByUsernameAndPassword(String username, String password) throws UserException {
         String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
         try {
-            PreparedStatement pstmt = connection.prepareStatement(sql);
-            pstmt.setString(1, username);
-            pstmt.setString(2, password);
-            ResultSet rs = pstmt.executeQuery();
+            pstmt = prepareStatement(sql, username, password);
+            rs = pstmt.executeQuery();
             if (rs.next()) {
                 return new User(rs.getString("username"), rs.getString("password"));
             } else {
                 return null;
             }
-        } catch (SQLException e) {
-            throw new RuntimeException("Errore durante il recupero dell'utente.", e);
+        } catch (SQLException e) {throw new UserException("Errore durante il recupero dell'utente.", e);
+        } finally {
+            try {
+                if (rs != null) rs.close();
+            } catch (SQLException e) {LOGGER.error("Error closing PreparedStatement", e);
+            }
+            closePreparedStatement(pstmt);
         }
     }
 
     @Override
-    public void registerUser(User user) {
-    	
-    	if(user != null)
-    		System.out.println("User regestring: " + user.getUsername() + " " + user.getPassword());
-		else
-			System.out.println("User is null");
-    	String sql = "INSERT INTO users(username, password) VALUES(?, ?)";
+
+    public void registerUser(User user) throws UserException {
+    	if (user == null) {
+            throw new UserException("L'utente non può essere null", new SQLException());
+        }
+        String sql = "INSERT INTO users(username, password) VALUES(?, ?)";
+        PreparedStatement pstmt = null;
         try {
-            PreparedStatement pstmt = connection.prepareStatement(sql);
-            pstmt.setString(1, user.getUsername());
-            pstmt.setString(2, user.getPassword());
+            pstmt = prepareStatement(sql, user.getUsername(), user.getPassword());
             pstmt.executeUpdate();
-            System.out.println("bloco try");
-        } catch (SQLException e) {
-            System.out.println("bloco catch");
-            throw new RuntimeException("Errore durante la registrazione dell'utente.", e);
+        } catch (SQLException e) {throw new UserException("Errore durante la registrazione dell'utente.", e);
+        } finally {
+            closePreparedStatement(pstmt);
         }
     }
 
     @Override
-    public void updateUser(User user) {
-        String sql = "UPDATE users SET password = ? WHERE username = ?";
-        try {
-            PreparedStatement pstmt = connection.prepareStatement(sql);
-            pstmt.setString(1, user.getPassword());
-            pstmt.setString(2, user.getUsername());
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("Errore durante l'aggiornamento dell'utente.", e);
-        }
-    }
-
-    @Override
-    public void deleteUser(User user) {
+    public void deleteUser(User user) throws UserException {
         String sql = "DELETE FROM users WHERE username = ?";
+        PreparedStatement pstmt = null;
         try {
-            PreparedStatement pstmt = connection.prepareStatement(sql);
-            pstmt.setString(1, user.getUsername());
+            pstmt = prepareStatement(sql, user.getUsername());
             pstmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("Errore durante l'eliminazione dell'utente.", e);
+        } catch (SQLException e) {throw new UserException("Errore durante l'eliminazione dell'utente.", e);
+        } finally {
+            closePreparedStatement(pstmt);
         }
     }
     
-    public void createUsersTable() {
+    public void createUsersTable() throws UserException {
         String sql = "CREATE TABLE IF NOT EXISTS users (\n"
-                + "	username text PRIMARY KEY,\n"
-                + "	password text NOT NULL\n"
+                + "username text PRIMARY KEY,\n"
+                + "password text NOT NULL\n"
                 + ");";
-
+        PreparedStatement pstmt = null;
         try {
-            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt = prepareStatement(sql);
             pstmt.execute();
-        } catch (SQLException e) {
-            throw new RuntimeException("Errore durante la creazione della tabella users.", e);
+        } catch (SQLException e) {throw new UserException("Errore durante la creazione della tabella users.", e);
+        } finally {
+            closePreparedStatement(pstmt);
         }
     }
+    
+    public Connection getConnection() {
+        return this.connection;
+    }
 
-
+    public void closeConnection() {
+        if (connection != null) {
+            try {
+                connection.close();
+            } catch (SQLException e) {LOGGER.error("Error closing Connection", e);
+            }
+        }
+    }
 }
