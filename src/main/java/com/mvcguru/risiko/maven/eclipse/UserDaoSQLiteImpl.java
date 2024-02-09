@@ -14,9 +14,10 @@ public class UserDaoSQLiteImpl implements UserDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDaoSQLiteImpl.class);
     private Connection connection;
 
-    public UserDaoSQLiteImpl(String dbUrl) throws DatabaseConnectionException {
+    public UserDaoSQLiteImpl(String dbUrl) throws DatabaseConnectionException, UserException {
         try {
             connection = DriverManager.getConnection(dbUrl);
+            createUsersTable();
             if (connection.isClosed()) {
                 throw new DatabaseConnectionException("Connessione al database non riuscita");
             }
