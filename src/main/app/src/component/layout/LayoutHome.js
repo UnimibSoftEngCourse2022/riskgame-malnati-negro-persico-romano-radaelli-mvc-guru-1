@@ -6,7 +6,6 @@ import Main from "../layout/Main";
 const LayoutHome = () => {
   return (
 	  <Row>
-
 	    <Aside />
 	    <Main />
     </Row>
