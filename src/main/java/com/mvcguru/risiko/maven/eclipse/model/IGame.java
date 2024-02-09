@@ -23,6 +23,8 @@ public abstract class IGame {
 
     protected GameState stato;
     
+    public abstract int getId();
+    
     public abstract void aggiungiGiocatore(Player g) throws PartitaPienaException, GiocatoreEsistenteException;
     
     public abstract void setStato(GameState stato);

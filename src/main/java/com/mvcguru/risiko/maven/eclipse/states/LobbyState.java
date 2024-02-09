@@ -9,8 +9,6 @@ public class LobbyState extends GameState{
 
 	@Override
 	public void startGame(Game game) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

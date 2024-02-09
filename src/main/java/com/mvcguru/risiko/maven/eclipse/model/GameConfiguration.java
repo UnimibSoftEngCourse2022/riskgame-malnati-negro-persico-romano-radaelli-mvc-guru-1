@@ -17,9 +17,17 @@ public class GameConfiguration {
 	
 	@Getter private int numberOfPlayers;
 	
-	@Getter private GameMap map;
+	@Getter private String idMap;
 	
 	public int getNumberOfPlayers() {
 		return numberOfPlayers;
+	}
+
+	public String getMap() {
+		return idMap;
+	}
+
+	public GameMode getMode() {
+		return mode;
 	}
 }
