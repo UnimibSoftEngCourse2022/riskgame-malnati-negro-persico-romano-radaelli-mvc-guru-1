@@ -1,6 +1,29 @@
 package com.mvcguru.risiko.maven.eclipse.states;
 
-public class LobbyState implements GameState{
+import java.util.List;
+
+import com.mvcguru.risiko.maven.eclipse.model.Game;
+
+public class LobbyState extends GameState{
+	
+
+	@Override
+	public void startGame(Game game) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void playTurn(Game game) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void endGame(Game game) {
+		// TODO Auto-generated method stub
+		
+	}
 
 
 }

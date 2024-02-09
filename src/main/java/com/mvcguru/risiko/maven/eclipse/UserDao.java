@@ -2,6 +2,7 @@ package com.mvcguru.risiko.maven.eclipse;
 
 import java.sql.Connection;
 
+import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.User;
 
 public interface UserDao {
