@@ -8,7 +8,7 @@ function Root() {
     <Router>
       <Routes>
           <Route path="/" element={<Home />} />
-
+          <Route path={"/partita"} element={<Partita />} />
       </Routes>
     </Router>
   );
