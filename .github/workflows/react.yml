@@ -1,0 +1,24 @@
+name: Build React App
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build_client:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Use Node.js 16
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+      - name: Install dependencies
+        working-directory: ./src/main/app
+        run: |
+          npm install
+      - name: Build
+        working-directory: ./src/main/app
+        run: |
+          npm run build
