@@ -1,31 +1,36 @@
 import React from "react";
-import { Container, Row, Col, Button } from "react-bootstrap";
-import { Navbar, Nav } from "react-bootstrap";
-import LayoutHome from "../component/layout/LayoutHome"
+import { Button } from "react-bootstrap";
+import CreaLobby from "../component/partita/CreaLobby"
 
-export default class PartitaRouter extends React.Component {
+export default class Partita extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      mostraLobby: false, 
+    };
+  }
 
-    
 
-    constructor(props) {
-        super(props);
-        const paths = window.location.href.split("/");
-        this.idPartita = paths[paths.findIndex(el => el === "partita") + 1];
+  handleCreaLobby = () => {
+    this.setState({ mostraLobby: true });
+  };
 
-        this.state = {
-            nickname: undefined,
-            isLogged: false
-        }
-    }
+  handleUniscitiLobby = () => {
+    this.setState({ mostraLobby: true });
+  };
 
-    handle_set_giocatore = (nick, isImprenditore) => {
-        this.setState({nickname: nick, isLogged})
-    }
-
-    render() {
-		<div>
-		<Button>Crea</Button>
-		<Button>Unisciti</Button>
-		</div>
-    }
+  render() {
+    return (
+      <div>
+        <Button variant="primary" onClick={this.handleCreaLobby}>Crea Lobby</Button>
+        <Button variant="secondary" onClick={this.handleUniscitiLobby}>Unisciti a Lobby</Button>
+        
+        {this.state.mostraLobby && (
+          <div>
+            <CreaLobby/>
+          </div>
+        )}
+      </div>
+    );
+  }
 }

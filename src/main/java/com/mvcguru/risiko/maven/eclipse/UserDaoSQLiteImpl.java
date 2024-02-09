@@ -81,6 +81,7 @@ public class UserDaoSQLiteImpl implements UserDao {
             throw new UserException("L'utente non può essere null", new SQLException());
         }
 		if (getUserByUsernameAndPassword(user.getUsername(), user.getPassword()) != null) {
+			System.out.println("SOno qua");
 			throw new UserException("L'utente esiste già", new SQLException());
 		}
         String sql = "INSERT INTO users(username, password) VALUES(?, ?)";

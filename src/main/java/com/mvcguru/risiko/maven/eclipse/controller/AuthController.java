@@ -11,28 +11,30 @@ import com.mvcguru.risiko.maven.eclipse.service.UserRepository;
 @RestController
 public class AuthController {
     
-    @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody User user){
-        User loggedUser;
-		try {
-			loggedUser = UserRepository.getInstance().getUser(user);
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Errore interno"); 
-		}
-        if (loggedUser == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Utente non esistente");
-        } else {
-            return ResponseEntity.ok("Login riuscito"); // 200 OK
-        }
-    }
-    
+	@PostMapping("/login")
+	public ResponseEntity<Void> loginUser(@RequestBody User user){
+	    User loggedUser;
+	    try {
+	        loggedUser = UserRepository.getInstance().getUser(user);
+	    } catch (Exception e) {
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // Corretto per non includere un messaggio
+	    }
+	    if (loggedUser == null) {
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+	    } else {
+	        return ResponseEntity.ok().build(); // 200 OK senza corpo
+	    }
+	}
+
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody User user){
+    public ResponseEntity<Void> registerUser(@RequestBody User user){
+    	System.out.println("dentro register");
     	try {
     		UserRepository.getInstance().registerUser(user);
     	}catch(Exception e) {
-    		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Errore durante la registrazione");
+    		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     	}
-        return ResponseEntity.ok("Registrazione riuscita");
+    	System.out.println("tutto bene"); 
+    	return ResponseEntity.ok().build();
     }
 }
