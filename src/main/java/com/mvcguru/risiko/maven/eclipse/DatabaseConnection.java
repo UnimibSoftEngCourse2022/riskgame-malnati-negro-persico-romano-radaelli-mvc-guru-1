@@ -15,18 +15,35 @@ public class DatabaseConnection {
     private DatabaseConnection() {
     }
 
-    public static Connection getConnection() {
+    public static Connection getConnection(String jdbcDriver, String dbUrl) throws ClassNotFoundException, SQLException {
         Connection connection = null;
         try {
-            Class.forName(SQLITE_JDBC_DRIVER);
-            connection = DriverManager.getConnection(SQLITE_DB_URL);
-        } catch (ClassNotFoundException e) {LOGGER.error("Driver JDBC non trovato", e);
-        } catch (SQLException e) {LOGGER.error("Connessione al database non riuscita", e);
+            Class.forName(jdbcDriver);
+            connection = DriverManager.getConnection(dbUrl);
+        } catch (ClassNotFoundException e) {LOGGER.error("Driver JDBC non trovato", e);throw e;
+        } catch (SQLException e) {LOGGER.error("Connessione al database non riuscita", e);throw e;
         }
         return connection;
     }
+    
+    public static Connection getDefaultConnection() throws ClassNotFoundException, SQLException {
+        return getConnection(SQLITE_JDBC_DRIVER, SQLITE_DB_URL);
+    }
 
-	public static String getSqliteDbUrl() {
-		return SQLITE_DB_URL;
-	}
+    public static String getSqliteDbUrl() {
+        return SQLITE_DB_URL;
+    }
+
+    public static String getSqliteJdbcDriver() {
+        return SQLITE_JDBC_DRIVER;
+    }
+
+    public static void closeConnection(Connection connection) {
+        if (connection != null) {
+            try {
+                connection.close();
+            } catch (SQLException e) {LOGGER.error("Errore durante la chiusura della connessione al database", e);
+            }
+        }
+    }
 }

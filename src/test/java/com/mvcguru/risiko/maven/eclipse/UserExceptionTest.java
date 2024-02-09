@@ -7,12 +7,11 @@ import org.junit.jupiter.api.Test;
 class UserExceptionTest {
 
 	@Test
-	void testUserException() {
-	    assertThrows(UserException.class, () -> {
-	        UserDaoSQLiteImpl userDao = new UserDaoSQLiteImpl("jdbc:sqlite:testdatabase.db");
-	        userDao.registerUser(null);
-	    });
+	void testUserException() throws DatabaseConnectionException, UserException {
+	    UserDaoSQLiteImpl userDao = new UserDaoSQLiteImpl("jdbc:sqlite:testdatabase.db");
+	    assertThrows(UserException.class, () -> userDao.registerUser(null));
 	}
+
 
 
 }
