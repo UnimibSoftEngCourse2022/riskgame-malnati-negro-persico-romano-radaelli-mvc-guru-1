@@ -28,7 +28,7 @@ public class GameController {
 	
 	private boolean checkConfiguration(GameConfiguration configuration) {
 		if (configuration.getMode() == null || configuration.getNumberOfPlayers() == 0
-				|| configuration.getMap() == null)
+				|| configuration.getIdMap() == null)
 			return false;
 		return true;
 	}

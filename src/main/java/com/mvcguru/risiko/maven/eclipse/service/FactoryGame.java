@@ -7,6 +7,8 @@ import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.states.LobbyState;
 
+import lombok.Data;
+
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.FileCopyUtils;
 
@@ -14,7 +16,7 @@ import java.io.IOException;
 import java.lang.module.Configuration;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-
+@Data
 public class FactoryGame {
 
     private static FactoryGame instance;

@@ -2,9 +2,13 @@ package com.mvcguru.risiko.maven.eclipse.model;
 
 import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 
 
 @Data
+@Getter
+@Setter
+
 public class GameConfiguration {
 	
 	private enum GameMode {
@@ -13,21 +17,10 @@ public class GameConfiguration {
 	    Hard
 	}
 	
-	@Getter private GameMode mode;
+	private GameMode mode;
 	
-	@Getter private int numberOfPlayers;
+	private int numberOfPlayers;
 	
-	@Getter private String idMap;
+	private String idMap;
 	
-	public int getNumberOfPlayers() {
-		return numberOfPlayers;
-	}
-
-	public String getMap() {
-		return idMap;
-	}
-
-	public GameMode getMode() {
-		return mode;
-	}
 }
