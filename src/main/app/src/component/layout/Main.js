@@ -4,6 +4,7 @@ import Login from "../Login";
 import SignUp from "../SignUp";
 import { Navigate } from "react-router-dom";
 import Istruzioni from './Istruzioni';
+import TopBar from './TopBar';
 
 function Main() {
   const [renderLogin, setRenderLogin] = useState(false);
@@ -35,8 +36,10 @@ function Main() {
   
   return (
     <Col xs={9} sm={9} md={9} lg={10} xl={10}>
+	 <TopBar/>
+		
       {renderMain && (
-
+	
             <Container>
               <Row>
                   <Container className="m-4">
@@ -81,13 +84,11 @@ function Main() {
               </button>
               </Container>
        
-       <row>
-     
+       <Row>
 	  <Container>
 		  <Istruzioni/>
 	  </Container>
-	  
-       </row>
+       </Row>
     </Col>
     
   );
