@@ -5,10 +5,11 @@ import Main from "../layout/Main";
 
 const LayoutHome = () => {
   return (
-    <div>
-	    <Col><Aside /></Col>
-	    <Col><Main /></Col>
-    </div>
+	  <Row>
+
+	    <Aside />
+	    <Main />
+    </Row>
   );
 };
 

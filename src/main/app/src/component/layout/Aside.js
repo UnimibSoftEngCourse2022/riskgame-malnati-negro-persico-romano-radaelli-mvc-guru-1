@@ -3,7 +3,7 @@ import { Navbar, Nav, Row, Col, Container } from "react-bootstrap";
 
 function Aside() {
   return (
-    <Row>
+    
       <Col xs={3} sm={3} md={3} lg={2} xl={2} style={{ background: "gray", height: "100vh" }}>
         <Container fluid>
           <Navbar variant="dark" className="flex-column" style={{ width: "100%", height: "100%" }}>
@@ -20,7 +20,7 @@ function Aside() {
           </Navbar>
         </Container>
       </Col>
-    </Row>
+    
   );
 }
 

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import Login from "../Login";
 import SignUp from "../SignUp";
 
@@ -27,10 +27,9 @@ function Main() {
   };
 
   return (
-    <div>
+    <Col>
       {renderMain && (
-        <Row className="m-0">
-          <Col>
+
             <Container>
               <Row>
                 <Col xs={3} sm={3} md={6} lg={6} xl={6}>
@@ -41,12 +40,12 @@ function Main() {
                 <Col xs={3} sm={3} md={6} lg={6} xl={6}>
                   <h3 className="display-3 mt-4">Login Page</h3>
                   <p className="display-4">Click to Log In</p>
-                  <button
-                    className="btn btn-success w-25 m-2"
+                  <Button
+                    className="btn-success w-25 m-2"
                     onClick={handleLogin}
                   >
                     Log In
-                  </button>
+                  </Button>
                   <button
                     className="btn btn-dark w-25 m-2"
                     onClick={handleSignup}
@@ -56,8 +55,6 @@ function Main() {
                 </Col>
               </Row>
             </Container>
-          </Col>
-        </Row>
       )}
       {renderLogin && (
         <Container>
@@ -69,7 +66,7 @@ function Main() {
           <SignUp />
         </Container>
       )}
-    </div>
+    </Col>
   );
 }
 
