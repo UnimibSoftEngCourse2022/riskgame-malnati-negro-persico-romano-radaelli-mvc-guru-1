@@ -7,16 +7,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
+import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.User;
 
 public class UserDaoSQLiteImpl implements UserDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDaoSQLiteImpl.class);
     private Connection connection;
 
-    public UserDaoSQLiteImpl(String dbUrl) throws DatabaseConnectionException {
+    public UserDaoSQLiteImpl(String dbUrl) throws DatabaseConnectionException, UserException {
         try {
             connection = DriverManager.getConnection(dbUrl);
+            createUsersTable();
             if (connection.isClosed()) {
                 throw new DatabaseConnectionException("Connessione al database non riuscita");
             }

@@ -34,6 +34,7 @@
   <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
   <sonar.language>java</sonar.language>
   <sonar.coverage.jacoco.xmlReportPaths>../app-it/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+  <sonar.host.url>http://localhost:9000/</sonar.host.url>
   </properties>
 
   <dependencies>
@@ -83,10 +84,16 @@
    		 <optional>true</optional>
 		</dependency>
 
+		<dependency>
+		<groupId>org.projectlombok</groupId>
+		<artifactId>lombok</artifactId>
+		<version>1.18.30</version>
+		<scope>provided</scope>
+	</dependency>
     
   </dependencies>
 
-  <build>
+<build>
       <plugins>
 		  <plugin>
     		<groupId>org.springframework.boot</groupId>
@@ -195,8 +202,8 @@
             
             <plugin>
   <groupId>org.jacoco</groupId>
-  <artifactId>jacoco-maven-plugin</artifactId>
-  <version>0.8.5</version>
+          <artifactId>jacoco-maven-plugin</artifactId>
+          <version>0.8.11</version>
   <executions>
     <execution>
       <id>prepare-agent</id>
@@ -212,9 +219,39 @@
     </execution>
   </executions>
 </plugin>
-
             
       </plugins>
+</build>
 
-  </build>
+ <profiles>
+    <profile>
+      <id>coverage</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>prepare-agent</id>
+                <goals>
+                  <goal>prepare-agent</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>report</id>
+                <goals>
+                  <goal>report</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
 </project>

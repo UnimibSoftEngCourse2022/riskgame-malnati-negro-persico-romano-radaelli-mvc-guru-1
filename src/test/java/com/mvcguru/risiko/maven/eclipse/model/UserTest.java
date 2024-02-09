@@ -1,4 +1,4 @@
-package com.mvcguru.risiko.maven.eclipse;
+package com.mvcguru.risiko.maven.eclipse.model;
 
 import org.junit.jupiter.api.*;
 
