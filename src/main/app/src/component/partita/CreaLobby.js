@@ -4,20 +4,21 @@ import { Button, Form, Container } from "react-bootstrap";
 function CreaLobby() {
   const [difficolta, setDifficolta] = useState("");
   const [players, setPlayers] = useState("");
+  const [nomeMappa, setNomeMappa] = useState("");
+  const [isLobbyCreated, setIsLobbyCreated] = useState("");
 
   const handleDifficolta = (e) => {
     setDifficolta(e.target.value);
   };
 
-  // Funzione per generare le opzioni dei giocatori in base alla difficoltà
   const handlePlayersNumber = () => {
     switch (difficolta) {
       case "Easy":
-        return [<option key="1" value="1">1</option>, <option key="2" value="2">2</option>, <option key="3" value="3">3</option>, <option key="3" value="3">4</option>];
+        return [<option key="2" value="2">2</option>, <option key="3" value="3">3</option>, <option key="4" value="4">4</option>];
       case "Medium":
-        return [<option key="1" value="1">1</option>, <option key="2" value="2">2</option>, <option key="3" value="3">3</option>, <option key="4" value="4">4</option>, <option key="5" value="5">5</option>, <option key="6" value="6">6</option>];
+        return [<option key="2" value="2">2</option>, <option key="3" value="3">3</option>, <option key="4" value="4">4</option>, <option key="5" value="5">5</option>, <option key="6" value="6">6</option>];
       case "Hard":
-        return [<option key="1" value="1">1</option>, <option key="2" value="2">2</option>, <option key="3" value="3">3</option>, <option key="4" value="4">4</option>, <option key="5" value="5">5</option>, <option key="6" value="6">6</option>, <option key="7" value="7">7</option>, <option key="8" value="8">8</option>];
+        return [<option key="2" value="2">2</option>, <option key="3" value="3">3</option>, <option key="4" value="4">4</option>, <option key="5" value="5">5</option>, <option key="6" value="6">6</option>, <option key="7" value="7">7</option>, <option key="8" value="8">8</option>];
       default:
         return [];
     }
@@ -27,7 +28,35 @@ function CreaLobby() {
     e.preventDefault();
     console.log("Difficoltà: ", difficolta);
     console.log("Giocatori: ", players);
+    console.log("nomeMappa: ", nomeMappa);
+  
+    fetch("/partita", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        difficolta: difficolta,
+        players: players,
+        nomeMappa: nomeMappa,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Creazione lobby fallita con stato: ${response.status}`);
+        }
+        console.log("response status:", response);
+      })
+      .then((data) => {
+        console.log("Success:", data);
+        setIsLobbyCreated("Lobby creata con successo!");
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        setIsLobbyCreated("Creazione lobby fallita. Per favore, riprova.");
+      });
   };
+
 
   return (
     <div>
@@ -52,6 +81,17 @@ function CreaLobby() {
             </Form.Control>
           </Form.Group>
         )}
+        
+        <Form.Group className="mb-3">
+          <Form.Label>Inserisci nome mappa</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="mappa"
+            value={nomeMappa}
+            onChange={(e) => setNomeMappa(e.target.value)}
+          />
+        </Form.Group>
+
 
         <Container className="d-flex justify-content-center">
           <Button className="text-center" type="submit">
@@ -59,6 +99,7 @@ function CreaLobby() {
           </Button>
         </Container>
       </Form>
+      {isLobbyCreated && <p>{isLobbyCreated}</p>}
     </div>
   );
 }
