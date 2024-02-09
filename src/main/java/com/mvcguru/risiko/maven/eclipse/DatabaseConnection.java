@@ -25,4 +25,8 @@ public class DatabaseConnection {
         }
         return connection;
     }
+
+	public static String getSqliteDbUrl() {
+		return SQLITE_DB_URL;
+	}
 }
