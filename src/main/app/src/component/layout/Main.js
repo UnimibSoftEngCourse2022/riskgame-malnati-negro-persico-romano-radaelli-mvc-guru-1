@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import Login from "../Login";
 import SignUp from "../SignUp";
+import { Navigate } from "react-router-dom";
+import Istruzioni from './Istruzioni';
 
 function Main() {
   const [renderLogin, setRenderLogin] = useState(false);
@@ -25,21 +27,25 @@ function Main() {
     setMain(true);
     setSignup(true);
   };
+  
+  const handlePlayMatch = () => {
+    console.log("handlePlayMatch");
 
+  };
+  
   return (
-    <Col>
+    <Col xs={9} sm={9} md={9} lg={10} xl={10}>
       {renderMain && (
 
             <Container>
               <Row>
-                <Col xs={3} sm={3} md={6} lg={6} xl={6}>
                   <Container className="m-4">
-                    <h1>Home</h1>
+                    <h1>Logo</h1>
                   </Container>
-                </Col>
-                <Col xs={3} sm={3} md={6} lg={6} xl={6}>
-                  <h3 className="display-3 mt-4">Login Page</h3>
-                  <p className="display-4">Click to Log In</p>
+                
+                  
+                  <p className="display-4">Click to Log In or Sign Up</p>
+                  <div className="d-flex justify-content-center">
                   <Button
                     className="btn-success w-25 m-2"
                     onClick={handleLogin}
@@ -52,7 +58,7 @@ function Main() {
                   >
                     Sign Up
                   </button>
-                </Col>
+                  </div>
               </Row>
             </Container>
       )}
@@ -66,7 +72,24 @@ function Main() {
           <SignUp />
         </Container>
       )}
+      <Container>
+        <button
+        className="btn btn-success w-25 m-2"
+                onClick={handlePlayMatch}
+              >
+                Gioca Partita
+              </button>
+              </Container>
+       
+       <row>
+     
+	  <Container>
+		  <Istruzioni/>
+	  </Container>
+	  
+       </row>
     </Col>
+    
   );
 }
 
