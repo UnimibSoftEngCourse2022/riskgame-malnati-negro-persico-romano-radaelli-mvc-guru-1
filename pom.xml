@@ -34,6 +34,7 @@
   <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
   <sonar.language>java</sonar.language>
   <sonar.coverage.jacoco.xmlReportPaths>../app-it/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+  <sonar.host.url>http://localhost:9000/</sonar.host.url>
   </properties>
 
   <dependencies>
@@ -86,7 +87,7 @@
     
   </dependencies>
 
-  <build>
+<build>
       <plugins>
 		  <plugin>
     		<groupId>org.springframework.boot</groupId>
@@ -215,6 +216,5 @@
 
             
       </plugins>
-
-  </build>
+</build>
 </project>
