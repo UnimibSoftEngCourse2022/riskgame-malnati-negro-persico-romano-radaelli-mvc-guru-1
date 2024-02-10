@@ -4,7 +4,9 @@ import com.mvcguru.risiko.maven.eclipse.model.Game;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.states.LobbyState;
+import lombok.Data;
 
+@Data
 public class FactoryGame {
 
     private static FactoryGame instance;
@@ -24,6 +26,7 @@ public class FactoryGame {
         idPartita++;
         return idPartita;
     }
+
 
     public IGame creaPartita(GameConfiguration configuration) {
         IGame partita = new Game(creaId(), configuration);

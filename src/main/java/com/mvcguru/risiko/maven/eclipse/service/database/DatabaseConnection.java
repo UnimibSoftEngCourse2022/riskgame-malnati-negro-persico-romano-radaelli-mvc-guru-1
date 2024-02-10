@@ -1,12 +1,10 @@
-package com.mvcguru.risiko.maven.eclipse;
+package com.mvcguru.risiko.maven.eclipse.service.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
 
 public class DatabaseConnection {
 
@@ -16,24 +14,19 @@ public class DatabaseConnection {
     
     private DatabaseConnection() {
     }
-    
-    public static Connection getConnection(String jdbcDriver, String dbUrl) throws ClassNotFoundException, SQLException, DatabaseConnectionException {
+
+    public static Connection getConnection(String jdbcDriver, String dbUrl) throws ClassNotFoundException, SQLException {
         Connection connection = null;
         try {
             Class.forName(jdbcDriver);
             connection = DriverManager.getConnection(dbUrl);
-        }catch (ClassNotFoundException e) {
-            LOGGER.error("Driver JDBC non trovato", e);
-            throw new DatabaseConnectionException("Impossibile trovare il driver JDBC");
-        } catch (SQLException e) {
-            LOGGER.error("Connessione al database non riuscita", e);
-            throw new DatabaseConnectionException("Impossibile connettersi al database");
+        } catch (ClassNotFoundException e) {LOGGER.error("Driver JDBC non trovato", e);throw e;
+        } catch (SQLException e) {LOGGER.error("Connessione al database non riuscita", e);throw e;
         }
-
         return connection;
     }
     
-    public static Connection getDefaultConnection() throws ClassNotFoundException, SQLException, DatabaseConnectionException {
+    public static Connection getDefaultConnection() throws ClassNotFoundException, SQLException {
         return getConnection(SQLITE_JDBC_DRIVER, SQLITE_DB_URL);
     }
 

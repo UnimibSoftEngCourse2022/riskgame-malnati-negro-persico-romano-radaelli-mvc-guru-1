@@ -1,12 +1,10 @@
 package com.mvcguru.risiko.maven.eclipse.service;
 
-import com.mvcguru.risiko.maven.eclipse.DatabaseConnection;
-import com.mvcguru.risiko.maven.eclipse.UserDao;
-import com.mvcguru.risiko.maven.eclipse.UserDaoSQLiteImpl;
+
 import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
 import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.User;
-
+import com.mvcguru.risiko.maven.eclipse.service.database.*;
 public class UserRepository {
 	private UserDao db;
 	private static UserRepository instance;
@@ -14,7 +12,7 @@ public class UserRepository {
 	
 	public UserRepository() throws DatabaseConnectionException, UserException {
 		super();
-		this.db = new UserDaoSQLiteImpl(DatabaseConnection.getSqliteDbUrl());
+		this.db = new DaoSQLiteImpl(DatabaseConnection.getSqliteDbUrl());
 	}
 	
 	public static synchronized UserRepository getInstance() throws DatabaseConnectionException, UserException {

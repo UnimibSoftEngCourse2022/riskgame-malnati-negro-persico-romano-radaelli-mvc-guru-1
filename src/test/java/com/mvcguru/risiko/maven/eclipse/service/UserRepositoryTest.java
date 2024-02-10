@@ -1,12 +1,11 @@
 package com.mvcguru.risiko.maven.eclipse.service;
 
+import com.mvcguru.risiko.maven.eclipse.service.database.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import com.mvcguru.risiko.maven.eclipse.UserDao;
 import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.User;
 

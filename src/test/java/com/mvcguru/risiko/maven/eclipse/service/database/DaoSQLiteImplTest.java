@@ -1,4 +1,5 @@
-package com.mvcguru.risiko.maven.eclipse;
+package com.mvcguru.risiko.maven.eclipse.service.database;
+
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -6,16 +7,17 @@ import org.junit.jupiter.api.Test;
 import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
 import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.User;
+import com.mvcguru.risiko.maven.eclipse.service.database.DaoSQLiteImpl;
 
 import static org.junit.jupiter.api.Assertions.*;
 import java.sql.SQLException;
 
-class UserDaoSQLiteImplTest {
-    private UserDaoSQLiteImpl userDao;
+class DaoSQLiteImplTest {
+    private DaoSQLiteImpl userDao;
 
     @BeforeEach
     void setUp() throws DatabaseConnectionException, UserException {
-        userDao = new UserDaoSQLiteImpl("jdbc:sqlite:testdatabase.db");
+        userDao = new DaoSQLiteImpl("jdbc:sqlite:testdatabase.db");
         userDao.createUsersTable();
     }
 
@@ -36,15 +38,5 @@ class UserDaoSQLiteImplTest {
         userDao.deleteUser(user);
         User retrievedUser = userDao.getUserByUsernameAndPassword("testUser2", "testPassword");
         assertNull(retrievedUser);
-    }
-    
-    @Test
-    void testCloseConnection() throws UserException {
-        userDao.closeConnection();
-        try {
-            assertTrue(userDao.getConnection().isClosed());
-        } catch (SQLException e) {
-            fail("Errore durante la verifica della chiusura della connessione.", e);
-        }
     }
 }

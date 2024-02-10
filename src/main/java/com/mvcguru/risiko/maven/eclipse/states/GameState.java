@@ -11,4 +11,8 @@ public abstract class GameState {
 	
 	public void onAzioneGiocatore(GameEntry gameEntry) throws PartitaPienaException {   }
 
+
+	public void playTurn(Game game) {	
+	}
+
 }

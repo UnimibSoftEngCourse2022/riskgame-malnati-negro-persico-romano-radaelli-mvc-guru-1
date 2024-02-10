@@ -11,19 +11,10 @@ public class LobbyState extends GameState{
 	
 	@Override
     public void onAzioneGiocatore(GameEntry gameEntry) throws PartitaPienaException {
-		
-        try {
-            game.aggiungiGiocatore(gameEntry.getPlayer());
-        } catch (GiocatoreEsistenteException e) {
-            // Lancia un messaggio di errore
-        }
-        
-        
-     // if (game.getPlayers().size() == game.getConfiguration().getNumberOfPlayers()) {
-//      //game.inizioPartita();
- // }
-
-    }
-
-
+		 try {
+	            game.aggiungiGiocatore(gameEntry.getPlayer());
+	        } catch (GiocatoreEsistenteException e) {
+	            // Lancia un messaggio di errore
+	        }
+	}
 }
