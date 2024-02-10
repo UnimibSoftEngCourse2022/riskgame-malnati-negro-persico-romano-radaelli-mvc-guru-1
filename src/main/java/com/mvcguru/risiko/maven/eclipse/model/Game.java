@@ -31,13 +31,13 @@ public class Game extends IGame {
 	public int getId() {return id;}
 
     public synchronized void aggiungiGiocatore(Player g) throws PartitaPienaException, GiocatoreEsistenteException {
-        if (giocatori.size() == configuration.getNumberOfPlayers()) {
+        if (players.size() == configuration.getNumberOfPlayers()) {
             throw new PartitaPienaException();
         }
-        if (giocatori.contains(g)) {
+        if (players.contains(g)) {
             throw new GiocatoreEsistenteException();
         }
-        giocatori.add(g);
+        players.add(g);
         g.setGame(this);
     }
     

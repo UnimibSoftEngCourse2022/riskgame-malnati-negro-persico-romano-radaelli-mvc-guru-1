@@ -9,5 +9,7 @@ public class Player {
 	public void setGame(IGame game) {
 		partita = game;
 	}
+	
+	
 
 }
