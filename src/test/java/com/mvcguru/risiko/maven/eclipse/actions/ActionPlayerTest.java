@@ -1,14 +1,14 @@
-package com.mvcguru.risiko.maven.eclipse.model;
+package com.mvcguru.risiko.maven.eclipse.actions;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-class GameConfingurationTest {
+class ActionPlayerTest {
 
 	@Test
 	void test() {
-		assertTrue(true);
+		fail("Not yet implemented");
 	}
 
 }
