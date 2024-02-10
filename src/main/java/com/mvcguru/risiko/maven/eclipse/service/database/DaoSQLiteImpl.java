@@ -23,11 +23,21 @@ import com.mvcguru.risiko.maven.eclipse.service.FactoryGame;
 public class DaoSQLiteImpl implements UserDao,GameDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(DaoSQLiteImpl.class);
     private Connection connection;
+    private static DaoSQLiteImpl instance;
+    
+	public static synchronized DaoSQLiteImpl getInstance()
+			throws DatabaseConnectionException, GameException, UserException {
+		if (instance == null) {
+			instance = new DaoSQLiteImpl(DatabaseConnection.getSqliteDbUrl());
+		}
+		return instance;
+	}
 
-    public DaoSQLiteImpl(String dbUrl) throws DatabaseConnectionException, UserException {
+    public DaoSQLiteImpl(String dbUrl) throws DatabaseConnectionException, UserException, GameException {
         try {
             connection = DriverManager.getConnection(dbUrl);
             createUsersTable();
+            createGamesTable();
             if (connection.isClosed()) {
                 throw new DatabaseConnectionException("Connessione al database non riuscita");
             }
@@ -192,7 +202,7 @@ public class DaoSQLiteImpl implements UserDao,GameDao {
 
 
 	@Override
-	public void createGamesTable() {
+	public void createGamesTable() throws GameException {
         String sql = "CREATE TABLE IF NOT EXISTS games (\n"
                 + "game_id INTEGER PRIMARY KEY,\n"
         		+ "mode TEXT NOT NULL,\n"
@@ -204,7 +214,7 @@ public class DaoSQLiteImpl implements UserDao,GameDao {
             pstmt = connection.prepareStatement(sql);
             pstmt.execute();
         } catch (SQLException e) {
-            LOGGER.error("Errore durante la creazione della tabella games", e);
+        	throw new GameException("Errore durante la creazione della tabella partite.", e);
         } finally {
             closePreparedStatement(pstmt);
         }

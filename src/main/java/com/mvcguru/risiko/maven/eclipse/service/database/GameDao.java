@@ -10,7 +10,7 @@ import com.mvcguru.risiko.maven.eclipse.model.IGame;
 	    IGame getGameById(int gameId) throws GameException;
 	    void registerGame(IGame game) throws GameException;
 	    void deleteGame(IGame game) throws GameException;
-	    void createGamesTable();
+	    void createGamesTable() throws GameException;
 	    List<IGame> getAllGames() throws GameException;
 	}
 

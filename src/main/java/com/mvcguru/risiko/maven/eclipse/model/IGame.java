@@ -18,12 +18,8 @@ public abstract class IGame {
 	protected GameConfiguration configuration;
 	
     protected ArrayList<Player> players = new ArrayList<>();
-    
-    protected ArrayList<Player> giocatori = new ArrayList<>();
 
     protected GameState state;
-
-    protected GameState stato;
 
     public abstract void aggiungiGiocatore(Player g) throws PartitaPienaException, GiocatoreEsistenteException;
     

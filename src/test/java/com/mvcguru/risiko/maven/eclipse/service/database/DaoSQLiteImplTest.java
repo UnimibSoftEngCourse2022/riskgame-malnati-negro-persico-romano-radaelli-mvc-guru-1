@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
+import com.mvcguru.risiko.maven.eclipse.exception.GameException;
 import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.User;
 import com.mvcguru.risiko.maven.eclipse.service.database.DaoSQLiteImpl;
@@ -17,7 +18,11 @@ class DaoSQLiteImplTest {
 
     @BeforeEach
     void setUp() throws DatabaseConnectionException, UserException {
-        userDao = new DaoSQLiteImpl("jdbc:sqlite:testdatabase.db");
+        try {
+			userDao = new DaoSQLiteImpl("jdbc:sqlite:testdatabase.db");
+		} catch (DatabaseConnectionException | UserException | GameException e) {
+			e.printStackTrace();
+		}
         userDao.createUsersTable();
     }
 
