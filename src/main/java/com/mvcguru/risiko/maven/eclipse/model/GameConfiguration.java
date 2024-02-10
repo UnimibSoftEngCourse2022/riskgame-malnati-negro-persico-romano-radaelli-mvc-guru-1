@@ -24,6 +24,8 @@ public class GameConfiguration implements Serializable {
         HARD
 	}
 	
+	public GameConfiguration() {	}
+	
 	public void setModeFromString(String modeString) {
         try {
             this.mode = GameMode.valueOf(modeString);
