@@ -20,14 +20,14 @@ public class FactoryGame {
         return instance;
     }
 
-    public int creaId() {
+    public static int creaId() {
         idPartita++;
         return idPartita;
     }
 
     public IGame creaPartita(GameConfiguration configuration) {
         IGame partita = new Game(creaId(), configuration);
-        partita.setStato(new LobbyState());
+        partita.setState(new LobbyState());
         return partita;
     }
 }
