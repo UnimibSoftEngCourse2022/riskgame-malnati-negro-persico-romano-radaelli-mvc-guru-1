@@ -16,8 +16,6 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 @Data
-@Getter
-@Setter
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,8 +29,6 @@ public class Game extends IGame {
 		this.id = id;
 		this.configuration = configuration;
 	}
-	
-	public int getId() {return id;}
 
     public synchronized void aggiungiGiocatore(Player g) throws PartitaPienaException, GiocatoreEsistenteException {
         if (giocatori.size() == configuration.getNumberOfPlayers()) {

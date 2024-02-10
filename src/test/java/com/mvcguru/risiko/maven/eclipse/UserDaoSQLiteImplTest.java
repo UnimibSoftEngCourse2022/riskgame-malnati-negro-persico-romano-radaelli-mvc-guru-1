@@ -11,11 +11,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.sql.SQLException;
 
 class UserDaoSQLiteImplTest {
-    private UserDaoSQLiteImpl userDao;
+    private DaoSQLiteImpl userDao;
 
     @BeforeEach
     void setUp() throws DatabaseConnectionException, UserException {
-        userDao = new UserDaoSQLiteImpl("jdbc:sqlite:testdatabase.db");
+        userDao = new DaoSQLiteImpl("jdbc:sqlite:testdatabase.db");
         userDao.createUsersTable();
     }
 

@@ -9,6 +9,7 @@ public class LobbyState extends GameState{
 
 	@Override
 	public void startGame(Game game) {
+		
 	}
 
 	@Override

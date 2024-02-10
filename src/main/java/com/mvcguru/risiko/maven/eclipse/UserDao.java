@@ -10,6 +10,4 @@ public interface UserDao {
     void registerUser(User user) throws UserException;
     void deleteUser(User user) throws UserException;
     void createUsersTable() throws UserException;
-    Connection getConnection();
-    void closeConnection();
 }

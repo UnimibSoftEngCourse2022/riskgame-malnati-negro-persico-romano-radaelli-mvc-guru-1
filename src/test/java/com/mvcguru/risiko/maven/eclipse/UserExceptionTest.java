@@ -11,7 +11,7 @@ class UserExceptionTest {
 
 	@Test
 	void testUserException() throws DatabaseConnectionException, UserException {
-	    UserDaoSQLiteImpl userDao = new UserDaoSQLiteImpl("jdbc:sqlite:testdatabase.db");
+	    DaoSQLiteImpl userDao = new DaoSQLiteImpl("jdbc:sqlite:testdatabase.db");
 	    assertThrows(UserException.class, () -> userDao.registerUser(null));
 	}
 

@@ -9,8 +9,9 @@ import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 import com.mvcguru.risiko.maven.eclipse.states.GameState;
 
 import lombok.Builder;
+import lombok.Data;
 
-
+@Data
 public abstract class IGame {
 	
 
@@ -18,12 +19,10 @@ public abstract class IGame {
 	
 	protected GameConfiguration configuration;
 	
-	@Builder.Default
+	
     protected ArrayList<Player> giocatori = new ArrayList<>();
 
     protected GameState stato;
-    
-    public abstract int getId();
     
     public abstract void aggiungiGiocatore(Player g) throws PartitaPienaException, GiocatoreEsistenteException;
     

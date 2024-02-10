@@ -5,17 +5,24 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
+import com.mvcguru.risiko.maven.eclipse.exception.GameException;
 import com.mvcguru.risiko.maven.eclipse.exception.UserException;
+import com.mvcguru.risiko.maven.eclipse.model.Game;
+import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.model.User;
+import com.mvcguru.risiko.maven.eclipse.service.FactoryGame;
 
-public class UserDaoSQLiteImpl implements UserDao {
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserDaoSQLiteImpl.class);
+public class DaoSQLiteImpl implements UserDao,GameDao {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DaoSQLiteImpl.class);
     private Connection connection;
 
-    public UserDaoSQLiteImpl(String dbUrl) throws DatabaseConnectionException, UserException {
+    public DaoSQLiteImpl(String dbUrl) throws DatabaseConnectionException, UserException {
         try {
             connection = DriverManager.getConnection(dbUrl);
             createUsersTable();
@@ -124,17 +131,105 @@ public class UserDaoSQLiteImpl implements UserDao {
             closePreparedStatement(pstmt);
         }
     }
-    
-    public Connection getConnection() {
-        return this.connection;
-    }
 
-    public void closeConnection() {
-        if (connection != null) {
-            try {
-                connection.close();
-            } catch (SQLException e) {LOGGER.error("Error closing Connection", e);
-            }
+
+	@Override
+	public Game getGameById(int gameId) throws GameException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public void registerGame(Game game) throws GameException {
+        String sql = "INSERT INTO games (game_id, mode, number_of_players, idMap) VALUES (?, ?, ?, ?)";
+        PreparedStatement pstmt = null;
+        try {
+            pstmt = connection.prepareStatement(sql);
+            pstmt.setInt(1, game.getId());
+            pstmt.setString(2, game.getConfiguration().getModeString());
+            pstmt.setInt(3, game.getConfiguration().getNumberOfPlayers());
+            pstmt.setString(4, game.getConfiguration().getIdMap());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new GameException("Errore durante la registrazione del gioco", e);
+        } finally {
+            closePreparedStatement(pstmt);
         }
     }
+
+	@Override
+    public void deleteGame(Game game) throws GameException {
+        String sql = "DELETE FROM games WHERE game_id = ?";
+        PreparedStatement pstmt = null;
+        try {
+            pstmt = connection.prepareStatement(sql);
+            pstmt.setInt(1, game.getId());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new GameException("Errore durante l'eliminazione del gioco", e);
+        } finally {
+            closePreparedStatement(pstmt);
+        }
+    }
+
+
+	@Override
+	public void createGamesTable() {
+        String sql = "CREATE TABLE IF NOT EXISTS games (\n"
+                + "game_id INTEGER PRIMARY KEY,\n"
+        		+ "mode TEXT NOT NULL,\n"
+                + "number_of_players INTEGER NOT NULL,\n"
+                + "idMap TEXT NOT NULL,\n" 
+                + ");";
+        PreparedStatement pstmt = null;
+        try {
+            pstmt = connection.prepareStatement(sql);
+            pstmt.execute();
+        } catch (SQLException e) {
+            LOGGER.error("Errore durante la creazione della tabella games", e);
+        } finally {
+            closePreparedStatement(pstmt);
+        }
+    }
+
+	
+	@Override
+    public List<Game> getAllGames() throws GameException {
+        String sql = "SELECT * FROM games";
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        List<Game> games = new ArrayList<>();
+        try {
+            pstmt = connection.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Game game = extractGameFromResultSet(rs);
+                games.add(game);
+            }
+            return games;
+        } catch (SQLException e) {
+            throw new GameException("Errore durante il recupero di tutti i giochi", e);
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pstmt);
+        }
+    }
+
+
+	private Game extractGameFromResultSet(ResultSet rs) throws GameException{
+		IGame nuovaPartita = FactoryGame.getInstance().creaPartita(configuration);
+		    game.setId(rs.getInt("game_id"));
+		    
+		    GameConfiguration config = new GameConfiguration();
+		    config.setMode(GameConfiguration.GameMode.valueOf(rs.getString("mode")));
+		    config.setNumberOfPlayers(rs.getInt("number_of_players"));
+		    config.setIdMap(rs.getString("idMap"));
+		    
+		    game.setConfiguration(config);
+		    
+		    return game;
+		return null;
+	}
+    
 }

@@ -6,16 +6,17 @@ import lombok.Setter;
 
 
 @Data
-@Getter
-@Setter
-
 public class GameConfiguration {
 	
 	private enum GameMode {
-	    EASY,
-	    MEDIUM,
+	    Easy,
+	    Medium,
 	    Hard
 	}
+	
+	public String getModeString() {
+		return mode.name();
+    }
 	
 	private GameMode mode;
 	

@@ -11,7 +11,7 @@ class DatabaseConnectionExceptionTest {
 	@Test
 	void testDatabaseConnectionException(){
 	    assertThrows(DatabaseConnectionException.class, () -> {
-	        new UserDaoSQLiteImpl(null);
+	        new DaoSQLiteImpl(null);
 	    });
 	}
 
