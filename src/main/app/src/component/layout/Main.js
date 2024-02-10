@@ -14,8 +14,9 @@ function Main() {
   const [username, setUsername] = useState(null);
 
   const navigate = useNavigate();
+  const { user } = useAuth();
 
-  console.log("stato user in main", user);
+  console.log("stato user in main", username);
 
   const handlerId = (id) => {
     setUsername(id);
@@ -47,7 +48,7 @@ function Main() {
     <Col xs={9} sm={9} md={9} lg={10} xl={10}>
       <TopBar />
 
-      {!user && (
+      {!username && (
         <Container>
           <Row>
             <Container className="m-4">
