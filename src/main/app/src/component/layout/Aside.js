@@ -13,7 +13,7 @@ function Aside() {
               <Nav.Link href="#play-host">Play as Host</Nav.Link>
               <Nav.Link href="#play-guest">Play as Guest</Nav.Link>
               <span className="nav-category">Learn</span>
-              <Nav.Link href="#rules">Rules</Nav.Link>
+              <Nav.Link href="#novita">Novità del gioco</Nav.Link>
               <span className="nav-category">Community</span>
               <Nav.Link href="#news">News</Nav.Link>
             </Nav>
