@@ -14,6 +14,15 @@ public class GameConfiguration {
 	    Hard
 	}
 	
+	public void setModeFromString(String modeString) {
+        try {
+            this.mode = GameMode.valueOf(modeString);
+        } catch (IllegalArgumentException e) {
+            // Gestione dell'eccezione nel caso in cui la stringa non corrisponda a nessuna costante dell'enumerazione
+            System.out.println("Modalità di gioco non valida: " + modeString);
+        }
+    }
+	
 	public String getModeString() {
 		return mode.name();
     }

@@ -37,7 +37,7 @@ public class FactoryGame {
         return idPartita;
     }
     
-    public IGame creaPartita(GameConfiguration configuration) throws IOException {
+    public IGame creaPartita(GameConfiguration configuration){
 
         IGame partita = new Game(creaId(), configuration);
         

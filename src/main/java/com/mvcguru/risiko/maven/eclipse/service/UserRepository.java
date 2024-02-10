@@ -1,12 +1,10 @@
 package com.mvcguru.risiko.maven.eclipse.service;
 
-import com.mvcguru.risiko.maven.eclipse.DatabaseConnection;
-import com.mvcguru.risiko.maven.eclipse.UserDao;
-import com.mvcguru.risiko.maven.eclipse.DaoSQLiteImpl;
+
 import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
 import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.User;
-
+import com.mvcguru.risiko.maven.eclipse.service.database.*;
 public class UserRepository {
 	private UserDao db;
 	private static UserRepository instance;

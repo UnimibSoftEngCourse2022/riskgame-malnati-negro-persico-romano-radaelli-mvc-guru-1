@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
 import com.mvcguru.risiko.maven.eclipse.exception.UserException;
+import com.mvcguru.risiko.maven.eclipse.service.database.DaoSQLiteImpl;
 
 class UserExceptionTest {
 

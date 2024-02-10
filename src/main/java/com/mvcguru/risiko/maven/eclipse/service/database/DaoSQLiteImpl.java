@@ -1,5 +1,6 @@
-package com.mvcguru.risiko.maven.eclipse;
+package com.mvcguru.risiko.maven.eclipse.service.database;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -14,6 +15,7 @@ import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
 import com.mvcguru.risiko.maven.eclipse.exception.GameException;
 import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.Game;
+import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.model.User;
 import com.mvcguru.risiko.maven.eclipse.service.FactoryGame;
@@ -134,14 +136,29 @@ public class DaoSQLiteImpl implements UserDao,GameDao {
 
 
 	@Override
-	public Game getGameById(int gameId) throws GameException {
-		// TODO Auto-generated method stub
-		return null;
+	public IGame getGameById(int gameId) throws GameException {
+		
+		   String sql = "SELECT * FROM games WHERE game_id = ?";
+		    PreparedStatement pstmt = null;
+		    ResultSet rs = null;
+		    IGame game = null;
+
+		    try {
+		    	pstmt = prepareStatement(sql, String.valueOf(gameId));
+		        rs = pstmt.executeQuery();
+
+		        if (rs.next()) {
+		            game = extractGameFromResultSet(rs);
+		        }
+		    } catch (SQLException e) {
+		        throw new GameException("Errore durante il recupero del gioco con ID " + gameId, e);
+		    }
+		    return game;
 	}
 
 
 	@Override
-	public void registerGame(Game game) throws GameException {
+	public void registerGame(IGame game) throws GameException {
         String sql = "INSERT INTO games (game_id, mode, number_of_players, idMap) VALUES (?, ?, ?, ?)";
         PreparedStatement pstmt = null;
         try {
@@ -159,7 +176,7 @@ public class DaoSQLiteImpl implements UserDao,GameDao {
     }
 
 	@Override
-    public void deleteGame(Game game) throws GameException {
+    public void deleteGame(IGame game) throws GameException {
         String sql = "DELETE FROM games WHERE game_id = ?";
         PreparedStatement pstmt = null;
         try {
@@ -195,41 +212,39 @@ public class DaoSQLiteImpl implements UserDao,GameDao {
 
 	
 	@Override
-    public List<Game> getAllGames() throws GameException {
+    public List<IGame> getAllGames() throws GameException {
         String sql = "SELECT * FROM games";
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        List<Game> games = new ArrayList<>();
+        List<IGame> games = new ArrayList<>();
         try {
             pstmt = connection.prepareStatement(sql);
             rs = pstmt.executeQuery();
             while (rs.next()) {
-                Game game = extractGameFromResultSet(rs);
+                IGame game = extractGameFromResultSet(rs);
                 games.add(game);
             }
+            rs.close();
             return games;
         } catch (SQLException e) {
-            throw new GameException("Errore durante il recupero di tutti i giochi", e);
+            throw new GameException("Errore durante il recupero di tutte le partite", e);
         } finally {
-            closeResultSet(rs);
             closePreparedStatement(pstmt);
         }
     }
 
 
-	private Game extractGameFromResultSet(ResultSet rs) throws GameException{
-		IGame nuovaPartita = FactoryGame.getInstance().creaPartita(configuration);
-		    game.setId(rs.getInt("game_id"));
-		    
-		    GameConfiguration config = new GameConfiguration();
-		    config.setMode(GameConfiguration.GameMode.valueOf(rs.getString("mode")));
-		    config.setNumberOfPlayers(rs.getInt("number_of_players"));
-		    config.setIdMap(rs.getString("idMap"));
-		    
-		    game.setConfiguration(config);
-		    
-		    return game;
-		return null;
+	private IGame extractGameFromResultSet(ResultSet rs) throws GameException{
+		IGame newGame = null;
+		GameConfiguration config = new GameConfiguration();
+        try {
+        	config.setModeFromString(rs.getString("mode"));
+        	config.setNumberOfPlayers(rs.getInt("number_of_players"));
+	        config.setIdMap(rs.getString("idMap"));
+	        newGame = FactoryGame.getInstance().creaPartita(config);
+			} catch (SQLException e) {throw new GameException("Errore durante il recupero di una partita", e);
+			}
+        return newGame;
 	}
     
 }
