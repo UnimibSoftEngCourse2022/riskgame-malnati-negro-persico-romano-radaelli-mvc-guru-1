@@ -1,15 +1,15 @@
 package com.mvcguru.risiko.maven.eclipse.states;
 
 
+import com.mvcguru.risiko.maven.eclipse.actions.GameEntry;
+import com.mvcguru.risiko.maven.eclipse.exception.PartitaPienaException;
 import com.mvcguru.risiko.maven.eclipse.model.Game;
 
 public abstract class GameState {
+	
+	protected Game game;
 
 	
-	abstract void startGame(Game game);
-	
-	abstract void playTurn(Game game);
-	
-	abstract void endGame(Game game);
+	public void onAzioneGiocatore(GameEntry gameEntry) throws PartitaPienaException {   }
 
 }

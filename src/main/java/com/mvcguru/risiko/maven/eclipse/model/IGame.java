@@ -9,25 +9,27 @@ import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 import com.mvcguru.risiko.maven.eclipse.states.GameState;
 
 import lombok.Builder;
+import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
-
+@Data
+@SuperBuilder
 public abstract class IGame {
 	
-
 	protected int id;
 	
 	protected GameConfiguration configuration;
 	
 	@Builder.Default
-    protected ArrayList<Player> giocatori = new ArrayList<>();
+    protected ArrayList<Player> players = new ArrayList<>();
 
-    protected GameState stato;
+    protected GameState state;
     
     public abstract int getId();
     
     public abstract void aggiungiGiocatore(Player g) throws PartitaPienaException, GiocatoreEsistenteException;
     
-    public abstract void setStato(GameState stato);
+    public abstract void setStato(GameState state);
 
 
 }
