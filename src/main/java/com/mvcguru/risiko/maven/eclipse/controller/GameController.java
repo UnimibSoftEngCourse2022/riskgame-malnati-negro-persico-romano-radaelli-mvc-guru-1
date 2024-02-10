@@ -23,7 +23,6 @@ public class GameController {
 		}
 		
 		IGame nuovaPartita = FactoryGame.getInstance().creaPartita(configuration);
-		System.out.println("Partita creata con successo" + nuovaPartita.getId());
         return ResponseEntity.ok().build();
     }
 	

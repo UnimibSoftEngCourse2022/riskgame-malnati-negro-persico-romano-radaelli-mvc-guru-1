@@ -28,13 +28,11 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<Void> registerUser(@RequestBody User user){
-    	System.out.println("dentro register");
     	try {
     		UserRepository.getInstance().registerUser(user);
     	}catch(Exception e) {
     		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     	}
-    	System.out.println("tutto bene"); 
     	return ResponseEntity.ok().build();
     }
 }

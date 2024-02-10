@@ -19,10 +19,10 @@ public class LobbyState extends GameState{
         }
         
         
-        if (game.getPlayers().size() == game.getConfiguration().getNumberOfPlayers()) {
-        	//game.inizioPartita();
-        }
-        
+     // if (game.getPlayers().size() == game.getConfiguration().getNumberOfPlayers()) {
+//      //game.inizioPartita();
+ // }
+
     }
 
 

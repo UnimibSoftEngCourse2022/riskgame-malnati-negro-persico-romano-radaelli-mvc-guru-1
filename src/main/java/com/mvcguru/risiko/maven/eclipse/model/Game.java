@@ -11,7 +11,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -21,27 +20,23 @@ import lombok.experimental.SuperBuilder;
 public class Game extends IGame {
     
     private transient LinkedList<GameState> stackStati = new LinkedList<>();
+	private GameState stateGame;
+	private Game game;
     
 	public Game(int id, GameConfiguration configuration) {
 		super();
 		this.id = id;
 		this.configuration = configuration;
 	}
-	
-	public int getId() {return id;}
 
     public synchronized void aggiungiGiocatore(Player g) throws PartitaPienaException, GiocatoreEsistenteException {
         if (players.size() == configuration.getNumberOfPlayers()) {
-            throw new PartitaPienaException();
+            throw new PartitaPienaException("Partita piena");
         }
         if (players.contains(g)) {
             throw new GiocatoreEsistenteException();
         }
         players.add(g);
-        g.setGame(this);
+        game.setGame(this);
     }
-    
-	public void setStato(GameState stato) {
-		this.stato = stato;
-	}
 }

@@ -11,6 +11,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
+
 class DatabaseConnectionTest {
 
     private static Connection connection;
@@ -69,14 +71,14 @@ class DatabaseConnectionTest {
     
     @Test
     void testGetConnectionWithInvalidDriver() {
-        assertThrows(ClassNotFoundException.class, () -> {
+        assertThrows(DatabaseConnectionException.class, () -> {
             DatabaseConnection.getConnection("invalid.driver.class", SQLITE_DB_URL);
         });
     }
     
     @Test
     void testGetConnectionWithInvalidUrl() {
-        assertThrows(SQLException.class, () -> {
+        assertThrows(DatabaseConnectionException.class, () -> {
             DatabaseConnection.getConnection(SQLITE_JDBC_DRIVER, "invalid:url");
         });
     }
