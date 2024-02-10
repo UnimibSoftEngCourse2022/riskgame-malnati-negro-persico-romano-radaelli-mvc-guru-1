@@ -1,9 +1,11 @@
 package com.mvcguru.risiko.maven.eclipse.states;
 
 
+import java.io.Serializable;
+
 import com.mvcguru.risiko.maven.eclipse.model.Game;
 
-public abstract class GameState {
+public abstract class GameState implements Serializable{
 
 	
 	abstract void startGame(Game game);

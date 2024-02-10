@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import Login from "../Login";
 import SignUp from "../SignUp";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; 
 import Istruzioni from './Istruzioni';
 import TopBar from './TopBar';
 
@@ -10,6 +10,13 @@ function Main() {
   const [renderLogin, setRenderLogin] = useState(false);
   const [renderSignup, setSignup] = useState(false);
   const [renderMain, setMain] = useState(true);
+  const [username, setUsername] = useState(null);
+
+  const navigate = useNavigate(); 
+
+  const handlerId = (id) => {
+    setUsername(id);
+  };
 
   const handleLogin = () => {
     setRenderLogin(true);
@@ -26,12 +33,11 @@ function Main() {
   const handleMain = () => {
     setRenderLogin(false);
     setMain(true);
-    setSignup(true);
+    setSignup(false); 
   };
   
-  const handlePlayMatch = () => {
-    console.log("handlePlayMatch");
-
+  const handlePlay = () => {
+    navigate(`/partita/${username}`);
   };
   
   return (
@@ -39,50 +45,48 @@ function Main() {
 	 <TopBar/>
 		
       {renderMain && (
-	
             <Container>
               <Row>
                   <Container className="m-4">
                     <h1>Logo</h1>
                   </Container>
-                
                   
                   <p className="display-4">Click to Log In or Sign Up</p>
                   <div className="d-flex justify-content-center">
-                  <Button
-                    className="btn-success w-25 m-2"
-                    onClick={handleLogin}
-                  >
-                    Log In
-                  </Button>
-                  <button
-                    className="btn btn-dark w-25 m-2"
-                    onClick={handleSignup}
-                  >
-                    Sign Up
-                  </button>
+                    <Button
+                      className="btn-success w-25 m-2"
+                      onClick={handleLogin}
+                    >
+                      Log In
+                    </Button>
+                    <Button
+                      className="btn btn-dark w-25 m-2"
+                      onClick={handleSignup}
+                    >
+                      Sign Up
+                    </Button>
                   </div>
               </Row>
             </Container>
       )}
       {renderLogin && (
         <Container>
-          <Login />
+          <Login onUsernameSubmit={handlerId} /> 
         </Container>
       )}
       {renderSignup && (
         <Container>
-          <SignUp />
+          <SignUp onSignupSuccess={handleLogin} />
         </Container>
       )}
       <Container>
-        <button
-        className="btn btn-success w-25 m-2"
-                onClick={handlePlayMatch}
-              >
-                Gioca Partita
-              </button>
-              </Container>
+        <Button
+          className="btn-success w-25 m-2"
+          onClick={handlePlay}
+        >
+          Gioca Partita
+        </Button>
+      </Container>
        
        <Row>
 	  <Container>
@@ -90,7 +94,6 @@ function Main() {
 	  </Container>
        </Row>
     </Col>
-    
   );
 }
 

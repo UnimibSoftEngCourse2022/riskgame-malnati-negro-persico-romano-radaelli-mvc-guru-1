@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap"; 
 
-function SignUp(){
+function SignUp({onSignupSuccess}){
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confermaPassword, setConfermaPassword] = useState("");
+  const [signupStatus, setSignupStatus] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault(); 
 
-    fetch("/register", {
+	
+    fetch("/register",{
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -19,14 +21,28 @@ function SignUp(){
         password: password,
       }),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Registrazione fallita con stato: ' + response.status); 
+          console.log("Registrazione Fallita!");
+        }
+        console.log("code status", response);
+        
+      })
       .then((data) => {
         console.log("Success:", data);
+        setSignupStatus("Registrazione riuscita!"); 
+        console.log("Registrazione riuscita!");
+                if (onSignupSuccess) {
+          onSignupSuccess(); 
+        }
       })
       .catch((error) => {
         console.error("Error:", error);
+        setSignupStatus(error.toString()); 
       });
   };
+
 
   return (
     <div>
@@ -56,8 +72,8 @@ function SignUp(){
           <Form.Label>Conferma password</Form.Label>
           <Form.Control
             type="password"
-            placeholder="password"
-            value={password}
+            placeholder="Conferma password"
+            value={confermaPassword}
             onChange={(e) => setConfermaPassword(e.target.value)}
           />
         </Form.Group>
@@ -66,6 +82,7 @@ function SignUp(){
           Sign Up
         </Button>
       </Form>
+      <p>{setSignupStatus}</p>
     </div>
   );
 }
