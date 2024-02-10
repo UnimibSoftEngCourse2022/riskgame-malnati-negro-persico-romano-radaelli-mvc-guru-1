@@ -17,4 +17,5 @@ public abstract class ActionPlayer implements Serializable {
     protected ActionPlayer() {    }
 
     public abstract void accept(GameState gameState) throws PartitaPienaException;
+    
 }

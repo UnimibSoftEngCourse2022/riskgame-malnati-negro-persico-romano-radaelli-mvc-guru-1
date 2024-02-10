@@ -16,6 +16,7 @@ public class LobbyState extends GameState{
 	
 	@Override
     public void onAzioneGiocatore(GameEntry gameEntry) throws PartitaPienaException {
+
 		LOGGER.info("LobbyState: aggiunta giocatore - azione rilevata");
         try {
             LOGGER.info("LobbyState: aggiunta giocatore - giocatore aggiunto" + gameEntry.getPlayer().getName());
@@ -35,4 +36,5 @@ public class LobbyState extends GameState{
      // if (game.getPlayers().size() == game.getConfiguration().getNumberOfPlayers()) {
 //      //game.inizioPartita();
  // }
+
 }

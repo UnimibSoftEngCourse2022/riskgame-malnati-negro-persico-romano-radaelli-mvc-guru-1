@@ -7,7 +7,9 @@ import com.mvcguru.risiko.maven.eclipse.model.Game;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.states.LobbyState;
+import lombok.Data;
 
+@Data
 public class FactoryGame {
 	private static final Logger LOGGER = LoggerFactory.getLogger(FactoryGame.class);
 
@@ -29,6 +31,7 @@ public class FactoryGame {
         idPartita++;
         return idPartita;
     }
+
 
     public IGame creaPartita(GameConfiguration configuration) {
     	LOGGER.info("LobbyState: creazione partita - CONFIGURATION: " + configuration);

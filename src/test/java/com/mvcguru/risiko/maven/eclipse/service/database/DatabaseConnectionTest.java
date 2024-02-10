@@ -1,4 +1,4 @@
-package com.mvcguru.risiko.maven.eclipse;
+package com.mvcguru.risiko.maven.eclipse.service.database;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -10,8 +10,6 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
-import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
 
 class DatabaseConnectionTest {
 
@@ -71,14 +69,14 @@ class DatabaseConnectionTest {
     
     @Test
     void testGetConnectionWithInvalidDriver() {
-        assertThrows(DatabaseConnectionException.class, () -> {
+        assertThrows(ClassNotFoundException.class, () -> {
             DatabaseConnection.getConnection("invalid.driver.class", SQLITE_DB_URL);
         });
     }
     
     @Test
     void testGetConnectionWithInvalidUrl() {
-        assertThrows(DatabaseConnectionException.class, () -> {
+        assertThrows(SQLException.class, () -> {
             DatabaseConnection.getConnection(SQLITE_JDBC_DRIVER, "invalid:url");
         });
     }

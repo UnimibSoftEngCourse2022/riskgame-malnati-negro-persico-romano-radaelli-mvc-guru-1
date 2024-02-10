@@ -2,7 +2,7 @@ package com.mvcguru.risiko.maven.eclipse.model;
 
 import lombok.Data;
 
-@Data 
+@Data
 public class User {
     private String username;
     private String password;
