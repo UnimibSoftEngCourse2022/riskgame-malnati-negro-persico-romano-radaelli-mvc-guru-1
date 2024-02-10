@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
-
 import java.io.Serializable;
+import java.util.Objects;
 
 @Data
 @SuperBuilder
@@ -24,5 +24,5 @@ public class GameConfiguration implements Serializable {
         EASY,
         MEDIUM,
         HARD
-    }
+	}
 }
