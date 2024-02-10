@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import Login from "../Login";
 import SignUp from "../SignUp";
-import { useNavigate } from "react-router-dom"; 
-import Istruzioni from './Istruzioni';
-import TopBar from './TopBar';
+import { useNavigate } from "react-router-dom";
+import Istruzioni from "./Istruzioni";
+import TopBar from "./TopBar";
+import { useAuth } from "../../auth/AuthContext";
 
 function Main() {
   const [renderLogin, setRenderLogin] = useState(false);
@@ -12,7 +13,9 @@ function Main() {
   const [renderMain, setMain] = useState(true);
   const [username, setUsername] = useState(null);
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+
+  console.log("stato user in main", user);
 
   const handlerId = (id) => {
     setUsername(id);
@@ -33,45 +36,39 @@ function Main() {
   const handleMain = () => {
     setRenderLogin(false);
     setMain(true);
-    setSignup(false); 
+    setSignup(false);
   };
-  
+
   const handlePlay = () => {
     navigate(`/partita/${username}`);
   };
-  
+
   return (
     <Col xs={9} sm={9} md={9} lg={10} xl={10}>
-	 <TopBar/>
-		
-      {renderMain && (
-            <Container>
-              <Row>
-                  <Container className="m-4">
-                    <h1>Logo</h1>
-                  </Container>
-                  
-                  <p className="display-4">Click to Log In or Sign Up</p>
-                  <div className="d-flex justify-content-center">
-                    <Button
-                      className="btn-success w-25 m-2"
-                      onClick={handleLogin}
-                    >
-                      Log In
-                    </Button>
-                    <Button
-                      className="btn btn-dark w-25 m-2"
-                      onClick={handleSignup}
-                    >
-                      Sign Up
-                    </Button>
-                  </div>
-              </Row>
+      <TopBar />
+
+      {!user && (
+        <Container>
+          <Row>
+            <Container className="m-4">
+              <h1>Logo</h1>
             </Container>
+
+            <p className="display-4">Click to Log In or Sign Up</p>
+            <div className="d-flex justify-content-center">
+              <Button className="btn-success w-25 m-2" onClick={handleLogin}>
+                Log In
+              </Button>
+              <Button className="btn btn-dark w-25 m-2" onClick={handleSignup}>
+                Sign Up
+              </Button>
+            </div>
+          </Row>
+        </Container>
       )}
       {renderLogin && (
         <Container>
-          <Login onUsernameSubmit={handlerId} /> 
+          <Login onUsernameSubmit={handlerId} />
         </Container>
       )}
       {renderSignup && (
@@ -80,19 +77,16 @@ function Main() {
         </Container>
       )}
       <Container>
-        <Button
-          className="btn-success w-25 m-2"
-          onClick={handlePlay}
-        >
+        <Button className="btn-success w-25 m-2" onClick={handlePlay}>
           Gioca Partita
         </Button>
       </Container>
-       
-       <Row>
-	  <Container>
-		  <Istruzioni/>
-	  </Container>
-       </Row>
+
+      <Row>
+        <Container>
+          <Istruzioni />
+        </Container>
+      </Row>
     </Col>
   );
 }

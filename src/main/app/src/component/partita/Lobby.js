@@ -16,12 +16,14 @@ function Lobby() {
         });
 
         if (!response.ok) {
-          throw new Error(`Creazione lobby fallita con stato: ${response.status}`);
+          throw new Error(
+            `Creazione lobby fallita con stato: ${response.status}`
+          );
         }
-        
+
         const data = await response.json();
         console.log("Success:", data);
-        setData(data); 
+        setData(data);
         setIsLobbyCreated("Lobby creata con successo!");
       } catch (error) {
         console.error("Error:", error);
@@ -36,6 +38,7 @@ function Lobby() {
     <div>
       <h1 className="display-3 text-center">Benvenuto in Lobby</h1>
       <span>{data}</span>
+      <span>{isLobbyCreated}</span>
     </div>
   );
 }

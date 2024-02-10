@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,6 +26,13 @@ public class GameController {
 		IGame nuovaPartita = FactoryGame.getInstance().creaPartita(configuration);
         return ResponseEntity.ok().build();
     }
+	
+	@GetMapping("/partita")
+	public ResponseEntity<Void> gameCreation() throws IOException {
+		 
+        return ResponseEntity.ok().build();
+    }
+
 	
 	private boolean checkConfiguration(GameConfiguration configuration) {
 		if (configuration.getMode() == null || configuration.getNumberOfPlayers() == 0
