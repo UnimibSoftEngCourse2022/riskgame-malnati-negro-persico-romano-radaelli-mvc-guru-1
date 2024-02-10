@@ -36,7 +36,9 @@ public class Game extends IGame {
         if (players.contains(g)) {
             throw new GiocatoreEsistenteException();
         }
+        System.out.println("Aggiunta giocatore " + g.getName());
         players.add(g);
+        System.out.println("Aggiunto giocatore " + players.size());
         game.setGame(this);
     }
 }
