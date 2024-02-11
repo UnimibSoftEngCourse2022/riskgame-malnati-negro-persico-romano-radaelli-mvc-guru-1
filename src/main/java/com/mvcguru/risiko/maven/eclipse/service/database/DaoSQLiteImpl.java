@@ -1,6 +1,5 @@
 package com.mvcguru.risiko.maven.eclipse.service.database;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -14,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
 import com.mvcguru.risiko.maven.eclipse.exception.GameException;
 import com.mvcguru.risiko.maven.eclipse.exception.UserException;
-import com.mvcguru.risiko.maven.eclipse.model.Game;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.model.User;
@@ -71,7 +69,55 @@ public class DaoSQLiteImpl implements UserDao,GameDao {
             } catch (SQLException e) {LOGGER.error("Error closing PreparedStatement", e);}
         }
     }
+    
+    //mi serve per i test
+    public void closeConnection() {
+        if (connection != null) {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                LOGGER.error("Errore durante la chiusura della connessione al database", e);
+            }
+        }
+    }    
 
+    public void createUsersTable() throws UserException {
+        String sql = "CREATE TABLE IF NOT EXISTS users (\n"
+                + "username text PRIMARY KEY,\n"
+                + "password text NOT NULL\n"
+                + ");";
+        PreparedStatement pstmt = null;
+        try {
+            pstmt = prepareStatement(sql);
+            pstmt.execute();
+        } catch (SQLException e) {throw new UserException("Errore durante la creazione della tabella users.", e);
+        } finally {
+            closePreparedStatement(pstmt);
+        }
+    }
+    
+	@Override
+	public void createGamesTable() throws GameException {
+        String sql = "CREATE TABLE IF NOT EXISTS games (\n"
+                + "game_id INTEGER PRIMARY KEY,\n"
+        		+ "mode TEXT NOT NULL,\n"
+                + "number_of_players INTEGER NOT NULL,\n"
+                + "idMap TEXT NOT NULL\n" 
+                + ");";
+        PreparedStatement pstmt = null;
+        try {
+            pstmt = prepareStatement(sql);
+            pstmt.execute();
+        } catch (SQLException e) {
+        	throw new GameException("Errore durante la creazione della tabella partite.", e);
+        } finally {
+            closePreparedStatement(pstmt);
+        }
+    }
+
+	
+	
+	//UserDao methods
     @Override
     public User getUserByUsernameAndPassword(String username, String password) throws UserException {
         String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
@@ -129,22 +175,7 @@ public class DaoSQLiteImpl implements UserDao,GameDao {
         }
     }
     
-    public void createUsersTable() throws UserException {
-        String sql = "CREATE TABLE IF NOT EXISTS users (\n"
-                + "username text PRIMARY KEY,\n"
-                + "password text NOT NULL\n"
-                + ");";
-        PreparedStatement pstmt = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.execute();
-        } catch (SQLException e) {throw new UserException("Errore durante la creazione della tabella users.", e);
-        } finally {
-            closePreparedStatement(pstmt);
-        }
-    }
-
-
+    //GameDao methods
 	@Override
 	public IGame getGameById(int gameId) throws GameException {
 		
@@ -200,27 +231,6 @@ public class DaoSQLiteImpl implements UserDao,GameDao {
         }
     }
 
-
-	@Override
-	public void createGamesTable() throws GameException {
-        String sql = "CREATE TABLE IF NOT EXISTS games (\n"
-                + "game_id INTEGER PRIMARY KEY,\n"
-        		+ "mode TEXT NOT NULL,\n"
-                + "number_of_players INTEGER NOT NULL,\n"
-                + "idMap TEXT NOT NULL,\n" 
-                + ");";
-        PreparedStatement pstmt = null;
-        try {
-            pstmt = connection.prepareStatement(sql);
-            pstmt.execute();
-        } catch (SQLException e) {
-        	throw new GameException("Errore durante la creazione della tabella partite.", e);
-        } finally {
-            closePreparedStatement(pstmt);
-        }
-    }
-
-	
 	@Override
     public List<IGame> getAllGames() throws GameException {
         String sql = "SELECT * FROM games";
@@ -243,7 +253,6 @@ public class DaoSQLiteImpl implements UserDao,GameDao {
         }
     }
 
-
 	private IGame extractGameFromResultSet(ResultSet rs) throws GameException{
 		IGame newGame = null;
 		GameConfiguration config = GameConfiguration.builder().build();
@@ -256,5 +265,4 @@ public class DaoSQLiteImpl implements UserDao,GameDao {
 			}
         return newGame;
 	}
-    
 }
