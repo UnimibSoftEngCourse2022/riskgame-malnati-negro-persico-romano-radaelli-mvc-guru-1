@@ -1,5 +1,7 @@
 package com.mvcguru.risiko.maven.eclipse.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,14 +12,15 @@ import com.mvcguru.risiko.maven.eclipse.service.UserRepository;
 
 @RestController
 public class AuthController {
-    
+	private static final Logger LOGGER = LoggerFactory.getLogger(AuthController.class);
+	
 	@PostMapping("/login")
 	public ResponseEntity<Void> loginUser(@RequestBody User user){
 	    User loggedUser;
 	    try {
 	        loggedUser = UserRepository.getInstance().getUser(user);
 	    } catch (Exception e) {
-	    	System.out.println("Errore nel login");
+	    	LOGGER.error("Errore nel login", e);
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // Corretto per non includere un messaggio
 	    }
 	    if (loggedUser == null) {
@@ -32,7 +35,7 @@ public class AuthController {
     	try {
     		UserRepository.getInstance().registerUser(user);
     	}catch(Exception e) {
-    		System.out.println("Errore nella registrazione");
+    		LOGGER.error("Errore nella registrazione", e);
     		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     	}
     	return ResponseEntity.ok().build();

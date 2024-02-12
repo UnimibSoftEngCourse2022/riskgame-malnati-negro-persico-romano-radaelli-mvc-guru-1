@@ -20,8 +20,8 @@ public class DatabaseConnection {
         try {
             Class.forName(jdbcDriver);
             connection = DriverManager.getConnection(dbUrl);
-        } catch (ClassNotFoundException e) {LOGGER.error("Driver JDBC non trovato", e);throw e;
-        } catch (SQLException e) {LOGGER.error("Connessione al database non riuscita", e);throw e;
+        } catch (ClassNotFoundException e) {throw e;
+        } catch (SQLException e) {throw e;
         }
         return connection;
     }
