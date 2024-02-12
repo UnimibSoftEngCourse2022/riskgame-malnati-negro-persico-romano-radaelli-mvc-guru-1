@@ -14,11 +14,59 @@ function CreaLobby() {
   const handlePlayersNumber = () => {
     switch (difficolta) {
       case "EASY":
-        return [<option key="2" value="2">2</option>, <option key="3" value="3">3</option>, <option key="4" value="4">4</option>];
+        return [
+          <option key="2" value="2">
+            2
+          </option>,
+          <option key="3" value="3">
+            3
+          </option>,
+          <option key="4" value="4">
+            4
+          </option>,
+        ];
       case "MEDIUM":
-        return [<option key="2" value="2">2</option>, <option key="3" value="3">3</option>, <option key="4" value="4">4</option>, <option key="5" value="5">5</option>, <option key="6" value="6">6</option>];
+        return [
+          <option key="2" value="2">
+            2
+          </option>,
+          <option key="3" value="3">
+            3
+          </option>,
+          <option key="4" value="4">
+            4
+          </option>,
+          <option key="5" value="5">
+            5
+          </option>,
+          <option key="6" value="6">
+            6
+          </option>,
+        ];
       case "HARD":
-        return [<option key="2" value="2">2</option>, <option key="3" value="3">3</option>, <option key="4" value="4">4</option>, <option key="5" value="5">5</option>, <option key="6" value="6">6</option>, <option key="7" value="7">7</option>, <option key="8" value="8">8</option>];
+        return [
+          <option key="2" value="2">
+            2
+          </option>,
+          <option key="3" value="3">
+            3
+          </option>,
+          <option key="4" value="4">
+            4
+          </option>,
+          <option key="5" value="5">
+            5
+          </option>,
+          <option key="6" value="6">
+            6
+          </option>,
+          <option key="7" value="7">
+            7
+          </option>,
+          <option key="8" value="8">
+            8
+          </option>,
+        ];
       default:
         return [];
     }
@@ -29,7 +77,7 @@ function CreaLobby() {
     console.log("Difficoltà: ", difficolta);
     console.log("Giocatori: ", players);
     console.log("nomeMappa: ", nomeMappa);
-  
+
     fetch("/partita", {
       method: "POST",
       headers: {
@@ -43,7 +91,9 @@ function CreaLobby() {
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error(`Creazione lobby fallita con stato: ${response.status}`);
+          throw new Error(
+            `Creazione lobby fallita con stato: ${response.status}`
+          );
         }
         console.log("response status:", response);
       })
@@ -57,14 +107,20 @@ function CreaLobby() {
       });
   };
 
-
   return (
     <div>
-      <h1 className="display-3 text-center">Benvenuto in Crea Lobby</h1>
-      <Form className="d-flex flex-column align-items-center justify-content-center" onSubmit={handleSubmit}>
+      <h1 className="h3 text-center">Crea la tua lobby</h1>
+      <Form
+        className="d-flex flex-column align-items-center justify-content-center"
+        onSubmit={handleSubmit}
+      >
         <Form.Group className="mb-3" controlId="formOptionDifficolta">
           <Form.Label>A quale quiz vuoi rispondere?</Form.Label>
-          <Form.Control as="select" value={difficolta} onChange={handleDifficolta}>
+          <Form.Control
+            as="select"
+            value={difficolta}
+            onChange={handleDifficolta}
+          >
             <option value="">Seleziona un livello di difficoltà</option>
             <option value="EASY">Facile</option>
             <option value="MEDIUM">Medio</option>
@@ -75,13 +131,17 @@ function CreaLobby() {
         {difficolta && (
           <Form.Group className="mb-3" controlId="formOptionPlayers">
             <Form.Label>Numero Giocatori</Form.Label>
-            <Form.Control as="select" value={players} onChange={(e) => setPlayers(e.target.value)}>
+            <Form.Control
+              as="select"
+              value={players}
+              onChange={(e) => setPlayers(e.target.value)}
+            >
               <option value="">Seleziona il numero di giocatori</option>
               {handlePlayersNumber()}
             </Form.Control>
           </Form.Group>
         )}
-        
+
         <Form.Group className="mb-3">
           <Form.Label>Inserisci nome mappa</Form.Label>
           <Form.Control
@@ -92,6 +152,9 @@ function CreaLobby() {
           />
         </Form.Group>
 
+        <Form.Group className="mb-3" controlId="formOptionDifficolta">
+          <Form.Label>A quale quiz vuoi rispondere?</Form.Label>
+        </Form.Group>
 
         <Container className="d-flex justify-content-center">
           <Button className="text-center" type="submit">

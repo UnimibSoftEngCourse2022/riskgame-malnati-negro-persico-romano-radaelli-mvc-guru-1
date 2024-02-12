@@ -1,14 +1,13 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
 import Aside from "../layout/Aside";
-import Main from "../layout/Main";
+import MainContent from "./MainContent";
 
-const LayoutHome = () => {
+const LayoutHome = ({ children }) => {
   return (
-	  <Row>
-	    <Aside />
-	    <Main />
-    </Row>
+    <main className="d-flex">
+      <Aside />
+      <MainContent>{children}</MainContent>
+    </main>
   );
 };
 

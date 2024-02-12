@@ -21,8 +21,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <sonar.organization>unimibsoftengcourse2022</sonar.organization>
-        <frontend-src-dir>${project.basedir}/src/main/app</frontend-src-dir>
         <node.version>v16.13.2</node.version>
         <frontend-maven-plugin.version>1.9.1</frontend-maven-plugin.version>
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
@@ -30,24 +28,27 @@
         <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
         <sonar.language>java</sonar.language>
         <sonar.coverage.jacoco.xmlReportPaths>../app-it/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+        <frontend-src-dir>${project.basedir}/src/main/app</frontend-src-dir>
     </properties>
-    
+
     <profiles>
         <!-- Profilo per SonarCloud -->
         <profile>
             <id>sonarcloud</id>
             <activation>
-                <activeByDefault>false</activeByDefault>
+                <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+       			<sonar.organization>unimibsoftengcourse2022</sonar.organization>
+        		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
             </properties>
         </profile>
-        
+
         <!-- Profilo per SonarQube Locale -->
         <profile>
             <id>sonarqube</id>
             <properties>
+				<sonar.projectKey>com.mvcguru:com.mvcguru.risiko.maven.eclipse</sonar.projectKey>
                 <sonar.host.url>http://localhost:9000</sonar.host.url>
             </properties>
         </profile>
