@@ -17,6 +17,7 @@ public class AuthController {
 	    try {
 	        loggedUser = UserRepository.getInstance().getUser(user);
 	    } catch (Exception e) {
+	    	System.out.println("Errore nel login");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // Corretto per non includere un messaggio
 	    }
 	    if (loggedUser == null) {
@@ -28,13 +29,12 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<Void> registerUser(@RequestBody User user){
-    	System.out.println("dentro register");
     	try {
     		UserRepository.getInstance().registerUser(user);
     	}catch(Exception e) {
+    		System.out.println("Errore nella registrazione");
     		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     	}
-    	System.out.println("tutto bene"); 
     	return ResponseEntity.ok().build();
     }
 }

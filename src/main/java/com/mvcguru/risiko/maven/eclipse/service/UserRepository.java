@@ -2,6 +2,7 @@ package com.mvcguru.risiko.maven.eclipse.service;
 
 
 import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
+import com.mvcguru.risiko.maven.eclipse.exception.GameException;
 import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.User;
 import com.mvcguru.risiko.maven.eclipse.service.database.*;
@@ -10,12 +11,12 @@ public class UserRepository {
 	private static UserRepository instance;
 	
 	
-	public UserRepository() throws DatabaseConnectionException, UserException {
+	public UserRepository() throws DatabaseConnectionException, UserException, GameException {
 		super();
-		this.db = new DaoSQLiteImpl(DatabaseConnection.getSqliteDbUrl());
+		this.db = DaoSQLiteImpl.getInstance();
 	}
 	
-	public static synchronized UserRepository getInstance() throws DatabaseConnectionException, UserException {
+	public static synchronized UserRepository getInstance() throws DatabaseConnectionException, UserException, GameException {
 		 if (instance == null) {
 	            instance = new UserRepository();
 	        }

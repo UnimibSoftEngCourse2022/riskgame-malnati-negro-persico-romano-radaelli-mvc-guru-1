@@ -13,11 +13,11 @@ function CreaLobby() {
 
   const handlePlayersNumber = () => {
     switch (difficolta) {
-      case "Easy":
+      case "EASY":
         return [<option key="2" value="2">2</option>, <option key="3" value="3">3</option>, <option key="4" value="4">4</option>];
-      case "Medium":
+      case "MEDIUM":
         return [<option key="2" value="2">2</option>, <option key="3" value="3">3</option>, <option key="4" value="4">4</option>, <option key="5" value="5">5</option>, <option key="6" value="6">6</option>];
-      case "Hard":
+      case "HARD":
         return [<option key="2" value="2">2</option>, <option key="3" value="3">3</option>, <option key="4" value="4">4</option>, <option key="5" value="5">5</option>, <option key="6" value="6">6</option>, <option key="7" value="7">7</option>, <option key="8" value="8">8</option>];
       default:
         return [];
@@ -66,9 +66,9 @@ function CreaLobby() {
           <Form.Label>A quale quiz vuoi rispondere?</Form.Label>
           <Form.Control as="select" value={difficolta} onChange={handleDifficolta}>
             <option value="">Seleziona un livello di difficoltà</option>
-            <option value="Easy">Facile</option>
-            <option value="Medium">Medio</option>
-            <option value="Hard">Difficile</option>
+            <option value="EASY">Facile</option>
+            <option value="MEDIUM">Medio</option>
+            <option value="HARD">Difficile</option>
           </Form.Control>
         </Form.Group>
 

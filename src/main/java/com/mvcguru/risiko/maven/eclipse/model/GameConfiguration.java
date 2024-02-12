@@ -1,18 +1,30 @@
 package com.mvcguru.risiko.maven.eclipse.model;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-
+import lombok.experimental.SuperBuilder;
+import java.io.Serializable;
+import java.util.Objects;
 
 @Data
-public class GameConfiguration {
-	
-	private enum GameMode {
-	    Easy,
-	    Medium,
-	    Hard
+@SuperBuilder
+public class GameConfiguration implements Serializable {
+
+    @JsonProperty("difficolta")
+    private GameMode mode;
+
+    @JsonProperty("players")
+    private int numberOfPlayers;
+
+    @JsonProperty("nomeMappa")
+    private String idMap;
+
+	public enum GameMode {
+        EASY,
+        MEDIUM,
+        HARD
 	}
+	
+	public GameConfiguration() {	}
 	
 	public void setModeFromString(String modeString) {
         try {
@@ -26,11 +38,4 @@ public class GameConfiguration {
 	public String getModeString() {
 		return mode.name();
     }
-	
-	private GameMode mode;
-	
-	private int numberOfPlayers;
-	
-	private String idMap;
-	
 }

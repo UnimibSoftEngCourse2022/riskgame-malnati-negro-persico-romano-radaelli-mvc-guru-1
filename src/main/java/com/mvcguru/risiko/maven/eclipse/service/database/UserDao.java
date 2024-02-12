@@ -1,7 +1,5 @@
 package com.mvcguru.risiko.maven.eclipse.service.database;
 
-import java.sql.Connection;
-
 import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.User;
 
@@ -10,4 +8,5 @@ public interface UserDao {
     void registerUser(User user) throws UserException;
     void deleteUser(User user) throws UserException;
     void createUsersTable() throws UserException;
+    void closeConnection();
 }
