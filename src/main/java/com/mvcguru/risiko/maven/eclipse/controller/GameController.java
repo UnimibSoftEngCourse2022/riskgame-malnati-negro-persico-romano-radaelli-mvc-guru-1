@@ -25,15 +25,11 @@ public class GameController {
 	public ResponseEntity<Void> gameCreation(@RequestBody String body) throws IOException {
 		
 		 GameConfiguration configuration = objectMapper.readValue(body, GameConfiguration.class);		
-		if(!checkConfiguration(configuration)) {
+		if(checkConfiguration(configuration)) {
 			return ResponseEntity.badRequest().build();
 		}
 		
-		LOGGER.info("Creazione partita: {}", configuration);
-		
 		IGame nuovaPartita = FactoryGame.getInstance().creaPartita(configuration);
-		
-		LOGGER.info("Partita creata: %s", nuovaPartita.getId());
 		
 		try {
 			GameRepository.getInstance().registerGame(nuovaPartita);
