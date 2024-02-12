@@ -187,12 +187,6 @@
                 </executions>
             </plugin>
         </plugins>
-<<<<<<< HEAD
-      </build>
-    </profile>
-  </profiles>
-  </project>
-=======
     </build>
 </project>
->>>>>>> refs/heads/develop
+
