@@ -35,12 +35,10 @@ public class GameController {
 		}
 		
 		LOGGER.info("Creazione partita: " + configuration);
-		System.out.println("Creazione partita: " + configuration);
 		
 		IGame nuovaPartita = FactoryGame.getInstance().creaPartita(configuration);
 		
 		LOGGER.info("Partita creata: " + nuovaPartita.getId());
-		System.out.println("Partita creata: " + nuovaPartita.getId());
 		
 		try {
 			GameRepository.getInstance().registerGame(nuovaPartita);
@@ -60,7 +58,7 @@ public class GameController {
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().build();
         }
-		System.out.println("Partite: " + lobbies);
+		LOGGER.info("Partite presenti: " + lobbies);
         return ResponseEntity.ok(lobbies);
     }
 

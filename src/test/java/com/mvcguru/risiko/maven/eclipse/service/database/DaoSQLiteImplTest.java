@@ -80,8 +80,8 @@ class DaoSQLiteImplTest {
             
             IGame retrievedGame = gamesDao.getGameById(gameToRegister.getId());
             assertNotNull(retrievedGame, "Il gioco registrato non è stato trovato");
-            assertEquals(gameToRegister.getId(), 1, "ID del gioco non corrispondente");
-            assertEquals(gameToRegister.getConfiguration().getModeString(), retrievedGame.getConfiguration().getModeString(), "Modalità del gioco non corrispondente");
+            assertEquals(gameToRegister.getId(), retrievedGame.getId(), "ID del gioco non corrispondente");
+            assertEquals(gameToRegister.getConfiguration().getMode().name(), retrievedGame.getConfiguration().getMode().name(), "Modalità del gioco non corrispondente");
             assertEquals(gameToRegister.getConfiguration().getNumberOfPlayers(), retrievedGame.getConfiguration().getNumberOfPlayers(), "Numero di giocatori non corrispondente");
             assertEquals(gameToRegister.getConfiguration().getIdMap(), retrievedGame.getConfiguration().getIdMap(), "ID della mappa non corrispondente");
             gamesDao.deleteGame(gameToRegister);

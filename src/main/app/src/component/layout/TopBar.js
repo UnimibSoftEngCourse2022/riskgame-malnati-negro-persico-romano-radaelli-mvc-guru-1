@@ -1,16 +1,21 @@
-
-		import React from 'react';
-import { Navbar, Nav } from 'react-bootstrap';
+import React from "react";
+import { Navbar } from "react-bootstrap";
+import { useAuth } from "../../auth/AuthContext";
 
 function TopBar() {
+  const { user } = useAuth();
   return (
-    <Navbar bg="dark" variant="dark">
-     <Navbar.Collapse className="justify-content-end">
-        <Navbar.Text style = {{marginRight: '20px'}}>
-          Utente
-        </Navbar.Text>
-      </Navbar.Collapse>
-    </Navbar>
+    <header className="" style={{ background: "gray", height: "60px" }}>
+      <Navbar bg="" variant="dark" className="p-2">
+        <Navbar.Collapse className="justify-content-end">
+          {user ? (
+            <span className="text-white">{user}</span>
+          ) : (
+            <span className="text-white">GenericUser</span>
+          )}
+        </Navbar.Collapse>
+      </Navbar>
+    </header>
   );
 }
 

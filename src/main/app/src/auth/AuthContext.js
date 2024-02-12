@@ -6,9 +6,17 @@ export function useAuth() {
   return useContext(AuthContext);
 }
 
+export function withAuth(Component) {
+  return function AuthComponent(props) {
+    const user = useAuth();
+    return <Component {...props} user={user} />;
+  };
+}
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loginStatus, setLoginStatus] = useState("");
+  const [signUpStatus, setSignUpStatus] = useState("");
 
   const login = (username, password) => {
     fetch("/login", {
@@ -28,7 +36,6 @@ export const AuthProvider = ({ children }) => {
           console.log(loginStatus, username);
           return res.text();
         }
-        console.log("Login Fallito");
         throw new Error("Impossibile creare una partita");
       })
       .catch((error) => {
@@ -37,8 +44,36 @@ export const AuthProvider = ({ children }) => {
       });
   };
 
+  const signUp = (username, password) => {
+    fetch("/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password,
+      }),
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          setSignUpStatus("Registrazione riuscita con successo!");
+          return res.text();
+        }
+        throw new Error("Impossibile registrare l'utente");
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        setSignUpStatus(
+          "Tentativo registrazione fallito. Per favore, riprova."
+        );
+      });
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, loginStatus }}>
+    <AuthContext.Provider
+      value={{ user, login, loginStatus, signUp, signUpStatus }}
+    >
       {children}
     </AuthContext.Provider>
   );
