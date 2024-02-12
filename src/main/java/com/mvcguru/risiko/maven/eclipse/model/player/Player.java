@@ -1,7 +1,6 @@
 package com.mvcguru.risiko.maven.eclipse.model.player;
 
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
-import com.mvcguru.risiko.maven.eclipse.states.GameState;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
