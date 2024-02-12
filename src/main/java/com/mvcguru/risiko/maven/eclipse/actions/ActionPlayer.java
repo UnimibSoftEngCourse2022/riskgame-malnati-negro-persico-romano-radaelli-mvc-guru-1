@@ -12,9 +12,9 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 public abstract class ActionPlayer implements Serializable {
-	transient protected Player player;
+	protected Player player;
 
-    protected ActionPlayer() {    }
+    protected ActionPlayer() {}
 
     public abstract void accept(GameState gameState) throws FullGameException;
     
