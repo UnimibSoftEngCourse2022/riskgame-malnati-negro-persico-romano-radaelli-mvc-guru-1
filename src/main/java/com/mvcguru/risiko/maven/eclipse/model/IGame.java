@@ -2,6 +2,10 @@ package com.mvcguru.risiko.maven.eclipse.model;
 
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.mvcguru.risiko.maven.eclipse.actions.ActionPlayer;
 import com.mvcguru.risiko.maven.eclipse.exception.AlreadyExistingPlayerException;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
@@ -17,6 +21,8 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 public abstract class IGame {
+	protected static final Logger LOGGER = LoggerFactory.getLogger(IGame.class);
+
 	
 	protected String id;
 	
@@ -27,6 +33,10 @@ public abstract class IGame {
 
     protected GameState state;
 
-    public abstract void addPlayer(Player g) throws FullGameException, AlreadyExistingPlayerException;
+    public abstract void addPlayer(Player g) throws FullGameException;
+    
+    public abstract void onActionPlayer(ActionPlayer action) throws FullGameException;
+    
+    public abstract void broadcast();
    
 }

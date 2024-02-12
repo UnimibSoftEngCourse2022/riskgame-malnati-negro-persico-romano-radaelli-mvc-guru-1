@@ -3,16 +3,16 @@ package com.mvcguru.risiko.maven.eclipse.model.player;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.states.GameState;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Data
+@SuperBuilder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Player {	
-	private String name;
-	private int playerId;
+	private String userName;
 	private IGame game;
-	
-    public Player(String name, int playerId) {
-        this.name = name;
-        this.playerId = playerId;
-    }
 }

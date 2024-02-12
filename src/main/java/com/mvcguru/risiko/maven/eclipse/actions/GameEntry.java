@@ -11,8 +11,8 @@ import lombok.experimental.SuperBuilder;
 public class GameEntry extends ActionPlayer {
 
 	@Override
-    public void accept(GameState gameState) throws FullGameException {
-		gameState.onAzioneGiocatore(this);
+    public void accept(GameState gameState) throws FullGameException{
+		gameState.onActionPlayer(this);
     }
 
 	

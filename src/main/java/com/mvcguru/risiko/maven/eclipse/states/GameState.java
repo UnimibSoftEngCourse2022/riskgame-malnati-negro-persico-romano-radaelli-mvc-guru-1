@@ -20,7 +20,7 @@ public abstract class GameState implements Serializable {
 		
 	}
 	
-	public void onAzioneGiocatore(GameEntry gameEntry) throws FullGameException {   }
+	public void onActionPlayer(GameEntry gameEntry) throws FullGameException{}
 
 
 	public void playTurn(Game game) {	
