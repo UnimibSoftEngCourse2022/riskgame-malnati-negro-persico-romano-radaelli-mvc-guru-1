@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Form, Container } from "react-bootstrap";
 
-function CreaLobby() {
+function CreaLobby({onLobbyCreated}) {
   const [difficolta, setDifficolta] = useState("");
   const [players, setPlayers] = useState("");
   const [nomeMappa, setNomeMappa] = useState("");
@@ -59,12 +59,6 @@ function CreaLobby() {
           </option>,
           <option key="6" value="6">
             6
-          </option>,
-          <option key="7" value="7">
-            7
-          </option>,
-          <option key="8" value="8">
-            8
           </option>,
         ];
       default:
