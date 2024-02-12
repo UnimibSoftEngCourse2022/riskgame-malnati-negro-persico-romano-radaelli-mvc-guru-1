@@ -30,7 +30,7 @@ public class GameRepository {
 	
 	public synchronized void registerGame(IGame game) throws GameException {
 		if (game != null) {
-			System.out.println("Game is not null");
+			
 			db.registerGame(game);
 			}
 		else
@@ -44,7 +44,7 @@ public class GameRepository {
 			System.out.println("Game is null");
 	}
 	
-	public synchronized IGame getGameById(int gameId) throws GameException {
+	public synchronized IGame getGameById(String gameId) throws GameException {
 		return db.getGameById(gameId);
 	}
 	

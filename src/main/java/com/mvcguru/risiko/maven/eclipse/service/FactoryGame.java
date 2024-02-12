@@ -1,8 +1,13 @@
 package com.mvcguru.risiko.maven.eclipse.service;
 
+import java.util.UUID;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
+import com.mvcguru.risiko.maven.eclipse.exception.GameException;
+import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.Game;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
@@ -15,7 +20,8 @@ public class FactoryGame {
 
     private static FactoryGame instance;
     
-    private static int idPartita = 0;
+    String idGame;
+
 
     private FactoryGame() {
         // Costruttore privato per impedire l'istanziazione esterna
@@ -27,23 +33,16 @@ public class FactoryGame {
         return instance;
     }
 
-    public static int creaId() {
-        idPartita++;
-        return idPartita;
+    public static String creaId() {
+        String idGame = UUID.randomUUID().toString();
+        return idGame;
     }
 
 
     public IGame creaPartita(GameConfiguration configuration) {
-    	LOGGER.info("LobbyState: creazione partita - CONFIGURATION: " + configuration);
-    	System.out.println("LobbyState: creazione partita - CONFIGURATION: " + configuration);
-    	
-        IGame partita = new Game(creaId(), configuration);
-        LOGGER.info("LobbyState: creazione partita - partita creata " + partita.getId());
-        System.out.println("LobbyState: creazione partita - partita creata " + partita.getId());
-        
+    
+        IGame partita = new Game(creaId(), configuration);     
         partita.setState(new LobbyState());
-        LOGGER.info("LobbyState: creazione partita - stato iniziale " + partita.getState().getClass().getSimpleName());
-        System.out.println("LobbyState: creazione partita - stato iniziale " + partita.getState().getClass().getSimpleName());
         return partita;
     }
 }

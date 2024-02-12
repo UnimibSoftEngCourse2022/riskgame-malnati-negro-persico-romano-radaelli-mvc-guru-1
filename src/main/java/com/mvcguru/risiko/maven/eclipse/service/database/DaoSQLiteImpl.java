@@ -99,7 +99,7 @@ public class DaoSQLiteImpl implements UserDao,GameDao {
 	@Override
 	public void createGamesTable() throws GameException {
         String sql = "CREATE TABLE IF NOT EXISTS games (\n"
-                + "game_id INTEGER PRIMARY KEY,\n"
+                + "game_id TEXT PRIMARY KEY,\n"
         		+ "mode TEXT NOT NULL,\n"
                 + "number_of_players INTEGER NOT NULL,\n"
                 + "idMap TEXT NOT NULL\n" 
@@ -177,7 +177,7 @@ public class DaoSQLiteImpl implements UserDao,GameDao {
     
     //GameDao methods
 	@Override
-	public IGame getGameById(int gameId) throws GameException {
+	public IGame getGameById(String gameId) throws GameException {
 		
 		   String sql = "SELECT * FROM games WHERE game_id = ?";
 		    PreparedStatement pstmt = null;
@@ -185,7 +185,7 @@ public class DaoSQLiteImpl implements UserDao,GameDao {
 		    IGame game = null;
 
 		    try {
-		    	pstmt = prepareStatement(sql, String.valueOf(gameId));
+		    	pstmt = prepareStatement(sql,gameId);
 		        rs = pstmt.executeQuery();
 
 		        if (rs.next()) {
@@ -204,8 +204,8 @@ public class DaoSQLiteImpl implements UserDao,GameDao {
         PreparedStatement pstmt = null;
         try {
             pstmt = connection.prepareStatement(sql);
-            pstmt.setInt(1, game.getId());
-            pstmt.setString(2, game.getConfiguration().getModeString());
+            pstmt.setString(1, game.getId());
+            pstmt.setString(2, game.getConfiguration().getMode().name());
             pstmt.setInt(3, game.getConfiguration().getNumberOfPlayers());
             pstmt.setString(4, game.getConfiguration().getIdMap());
             pstmt.executeUpdate();
@@ -222,7 +222,7 @@ public class DaoSQLiteImpl implements UserDao,GameDao {
         PreparedStatement pstmt = null;
         try {
             pstmt = connection.prepareStatement(sql);
-            pstmt.setInt(1, game.getId());
+            pstmt.setString(1, game.getId());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new GameException("Errore durante l'eliminazione del gioco", e);
@@ -257,10 +257,11 @@ public class DaoSQLiteImpl implements UserDao,GameDao {
 		IGame newGame = null;
 		GameConfiguration config = GameConfiguration.builder().build();
         try {
-        	config.setModeFromString(rs.getString("mode"));
+        	config.setMode(GameConfiguration.GameMode.valueOf(rs.getString("mode")));
         	config.setNumberOfPlayers(rs.getInt("number_of_players"));
 	        config.setIdMap(rs.getString("idMap"));
 	        newGame = FactoryGame.getInstance().creaPartita(config);
+	        newGame.setId(rs.getString("game_id"));
 			} catch (SQLException e) {throw new GameException("Errore durante il recupero di una partita", e);
 			}
         return newGame;
