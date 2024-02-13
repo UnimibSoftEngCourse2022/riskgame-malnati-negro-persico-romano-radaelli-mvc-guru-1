@@ -294,8 +294,8 @@ public class DaoSQLiteImpl implements DataDao {
 	public void insertPlayer(Player player) throws GameException {
 		String username = player.getUserName();
 		String game_id = player.getGameId();
-		String color = player.getColor();
-        String sql = "INSERT INTO players (username, game_id, color) VALUES (?, ?, ?)";
+		String color = player.getColor().name();
+		String sql = "INSERT INTO players (username, game_id, color) VALUES (?, ?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, username);
             pstmt.setString(2, game_id);
@@ -325,7 +325,7 @@ public class DaoSQLiteImpl implements DataDao {
                 while (rs.next()) {
                 	String username = rs.getString("username");
                 	String color = rs.getString("color");
-                	players.add(Player.builder().userName(username).gameId(gameId).color(color).build());
+                	players.add(Player.builder().userName(username).gameId(gameId).color(Player.PlayerColor.valueOf(color)).build());
                 }
             }
         } catch (SQLException e) {

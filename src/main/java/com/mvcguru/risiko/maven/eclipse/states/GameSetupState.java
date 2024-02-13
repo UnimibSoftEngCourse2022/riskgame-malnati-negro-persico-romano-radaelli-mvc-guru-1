@@ -6,10 +6,6 @@ import java.util.Collections;
 import java.util.List;
 
 import com.mvcguru.risiko.maven.eclipse.actions.TerritorySetup;
-import com.mvcguru.risiko.maven.eclipse.model.Card.ICard;
-import com.mvcguru.risiko.maven.eclipse.model.Card.TerritoryCard;
-import com.mvcguru.risiko.maven.eclipse.model.deck.DeckObjectives;
-import com.mvcguru.risiko.maven.eclipse.model.deck.DeckTerritories;
 import com.mvcguru.risiko.maven.eclipse.model.deck.IDeck;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player.PlayerColor;
@@ -29,7 +25,7 @@ public class GameSetupState extends GameState {
 	
 	private void setUpGame() {
 		assignColor(game.getPlayers());
-		assignTerritories(game.getDeckTerritory());
+		//assignTerritories(game.getDeckTerritory());
 		assignObjective(game.getDeckObjective());
 	}
 

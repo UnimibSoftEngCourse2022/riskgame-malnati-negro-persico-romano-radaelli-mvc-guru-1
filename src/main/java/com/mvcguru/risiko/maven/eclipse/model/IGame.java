@@ -7,8 +7,6 @@ import org.slf4j.LoggerFactory;
 
 import com.mvcguru.risiko.maven.eclipse.actions.ActionPlayer;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
-import com.mvcguru.risiko.maven.eclipse.model.deck.DeckObjectives;
-import com.mvcguru.risiko.maven.eclipse.model.deck.DeckTerritories;
 import com.mvcguru.risiko.maven.eclipse.model.deck.IDeck;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 import com.mvcguru.risiko.maven.eclipse.states.GameState;

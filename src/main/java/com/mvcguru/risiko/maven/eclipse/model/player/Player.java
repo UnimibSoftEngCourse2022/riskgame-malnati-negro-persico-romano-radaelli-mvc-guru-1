@@ -21,12 +21,11 @@ public class Player {
 	
 	private String userName;
 	private String gameId;
-	private String color;
+	private PlayerColor color;
 	
 	@JsonIgnore
 	private IGame game;
 	
-	private PlayerColor color;
 	
 	private List<Territory> territories;
 	
@@ -35,7 +34,7 @@ public class Player {
 	private ICard objective;
 	
 	public enum PlayerColor {
-		RED, YELLOW, GREEN, BLUE, BLACK, PURPLE
+		RED, YELLOW, GREEN, BLUE, BLACK, PURPLE, GREY
 	}
 }
 

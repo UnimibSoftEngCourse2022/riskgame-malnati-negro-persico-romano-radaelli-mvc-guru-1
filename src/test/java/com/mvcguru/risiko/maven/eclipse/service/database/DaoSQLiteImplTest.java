@@ -142,7 +142,7 @@ class DaoSQLiteImplTest {
     
     @Test
     void testInsertAndDeletePlayer() throws GameException {
-    	Player testPlayer = Player.builder().userName("testuser").gameId("game1").color("red").build();
+    	Player testPlayer = Player.builder().userName("testuser").gameId("game1").color(Player.PlayerColor.valueOf("RED")).build();
     	data.insertPlayer(testPlayer);
         
         List<Player> usersInGame = data.getPlayerInGame("game1");
@@ -157,8 +157,8 @@ class DaoSQLiteImplTest {
 
     @Test
     void testGetUsersInGame() throws GameException {
-    	Player player1 = Player.builder().userName("user1").gameId("game2").color("blue").build();
-    	Player player2 = Player.builder().userName("user2").gameId("game2").color("red").build();
+    	Player player1 = Player.builder().userName("user1").gameId("game2").color(Player.PlayerColor.valueOf("BLUE")).build();
+    	Player player2 = Player.builder().userName("user2").gameId("game2").color(Player.PlayerColor.valueOf("RED")).build();
     	data.insertPlayer(player1);
     	data.insertPlayer(player2);
 

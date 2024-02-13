@@ -37,7 +37,7 @@ public class EventController {
 		IGame game = null;
 		try {
 			game = GameRepository.getInstance().getGameById(id);
-			Player player = Player.builder().userName(body.getUsername()).gameId(id).build();
+			Player player = Player.builder().userName(body.getUsername()).gameId(id).color(Player.PlayerColor.GREY).build();
 			GameEntry action = GameEntry.builder().player(player).build();
 			game.onActionPlayer(action);
 			GameRepository.getInstance().add(player);
