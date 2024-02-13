@@ -1,34 +1,44 @@
-export default class AppController {
-  constructor(setIsLobbyCreated, setData, difficolta, players) {
-    this.setIsLobbyCreated = setIsLobbyCreated;
-    this.setData = setData;
-    this.difficolta = difficolta;
-    this.players = players;
+import { Client } from '@stomp/stompjs';
+
+class AppController {
+  constructor() {
+    this.client = new Client({
+      brokerURL: 'ws://localhost:8080/stomp',
+      onConnect: () => {
+        console.log('Connected to STOMP');
+        // Aggiungi le sottoscrizioni ai topic qui, se necessario
+      },
+      onDisconnect: () => {
+        console.log('Disconnected from STOMP');
+      },
+      // Altri eventi e configurazioni...
+    });
+
+    this.client.activate();
   }
-  async creaPartita(difficolta, players, nomeMappa) {
+
+  async creaPartita(configuration) {
     try {
       const response = await fetch("/partita", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          difficolta,
-          players,
-          nomeMappa,
-        }),
+        body: JSON.stringify(configuration),
       });
+
       if (!response.ok) {
-        throw new Error(
-          `Creazione lobby fallita con stato: ${response.status}`
-        );
+        throw new Error(`Errore nella creazione della partita: ${response.statusText}`);
       }
+
+      return await response.text(); // Potrebbe essere necessario adattare in base al formato della risposta
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Errore:", error);
+      throw error;
     }
   }
 
-  getPartite = async () => {
+  async getPartite() {
     try {
       const response = await fetch("/partita", {
         method: "GET",
@@ -38,15 +48,47 @@ export default class AppController {
       });
 
       if (!response.ok) {
-        throw new Error(
-          `Creazione lobby fallita con stato: ${response.status}`
-        );
+        throw new Error(`Errore nell'ottenimento delle partite: ${response.statusText}`);
       }
 
-      const data = await response.json();
-      console.log("Success:", data);
+      return await response.json();
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Errore:", error);
+      throw error;
     }
-  };
+  }
+
+  entraInPartita(idPartita, nickname) {
+  // Assicurati che il nickname sia definito, altrimenti usa 'guest'
+  nickname = nickname || 'guest';
+
+  // Controlla se il client STOMP è connesso prima di procedere
+  if (this.client && this.client.connected) {
+    // Iscriviti al topic della partita per ricevere gli aggiornamenti
+    this.client.subscribe(`/topic/partite/${idPartita}`, message => {
+      const partita = JSON.parse(message.body);
+      console.log('Aggiornamento partita ricevuto:', partita);
+      // Aggiorna lo stato della partita nell'UI o gestisci l'aggiornamento come necessario
+    });
+
+    // Invia un messaggio al server per unirsi alla partita
+    // Assicurati che il payload corrisponda a quello atteso dal server
+    const payload = { username: nickname };
+    this.client.publish({
+      destination: `/app/partite/${idPartita}/entra`,
+      body: JSON.stringify(payload),
+    });
+  } else {
+    console.error('Client STOMP non connesso.');
+    // Gestisci il caso in cui il client STOMP non sia connesso
+    // Potresti voler mostrare un messaggio di errore all'utente o tentare di riconnetterti
+  }
 }
+
+
+  // Aggiungi qui altri metodi per le azioni che possono essere eseguite nel gioco...
+}
+
+// Esporta l'istanza per utilizzarla nell'app
+const appController = new AppController();
+export default appController;

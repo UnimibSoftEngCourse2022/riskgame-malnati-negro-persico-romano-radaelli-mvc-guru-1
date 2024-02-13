@@ -3,6 +3,8 @@ package com.mvcguru.risiko.maven.eclipse.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -21,7 +23,8 @@ import com.mvcguru.risiko.maven.eclipse.service.GameRepository;
 
 @Controller
 public class EventController {
-	
+	private static final Logger LOGGER = LoggerFactory.getLogger(GameController.class);
+
 	@Autowired
     public EventController(SimpMessagingTemplate template) {
         MessageBrokerSingleton.setInstance(MessageBrokerSingleton.builder()

@@ -42,7 +42,7 @@ public class FactoryGame {
     public IGame creaPartita(GameConfiguration configuration) {
     
         IGame partita = new Game(creaId(), configuration);     
-        partita.setState(new LobbyState());
+        partita.setState(LobbyState.builder().game(partita).build());
         return partita;
     }
 }

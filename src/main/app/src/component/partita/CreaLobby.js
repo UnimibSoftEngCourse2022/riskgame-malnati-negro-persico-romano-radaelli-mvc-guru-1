@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Button, Form, Container } from "react-bootstrap";
+import AppController from '../../application/AppController';
 
-function CreaLobby({onLobbyCreated}) {
+function CreaLobby() {
   const [difficolta, setDifficolta] = useState("");
   const [players, setPlayers] = useState("");
   const [nomeMappa, setNomeMappa] = useState("");
@@ -66,40 +67,25 @@ function CreaLobby({onLobbyCreated}) {
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Difficoltà: ", difficolta);
-    console.log("Giocatori: ", players);
-    console.log("nomeMappa: ", nomeMappa);
-
-    fetch("/partita", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        difficolta: difficolta,
-        players: players,
-        nomeMappa: nomeMappa,
-      }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(
-            `Creazione lobby fallita con stato: ${response.status}`
-          );
-        }
-        console.log("response status:", response);
-      })
-      .then((data) => {
-        console.log("Success:", data);
-        setIsLobbyCreated("Lobby creata con successo!");
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-        setIsLobbyCreated("Creazione lobby fallita. Per favore, riprova.");
-      });
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  // Costruisci la configurazione della partita
+  const configuration = {
+    difficolta: difficolta,
+    players: parseInt(players),
+    nomeMappa: nomeMappa,
   };
+  
+  try {
+    // Utilizza AppController per creare la partita
+    await AppController.creaPartita(configuration);
+    setIsLobbyCreated("Lobby creata con successo!");
+    // Qui puoi gestire ulteriori azioni post-creazione, come reindirizzare l'utente
+  } catch (error) {
+    console.error("Errore:", error);
+    setIsLobbyCreated(`Creazione lobby fallita: ${error.message}. Per favore, riprova.`);
+  }
+};
 
   return (
     <div>

@@ -1,5 +1,6 @@
 package com.mvcguru.risiko.maven.eclipse.model.player;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
 
 import lombok.AllArgsConstructor;
@@ -13,5 +14,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public class Player {	
 	private String userName;
+	
+	@JsonIgnore
 	private IGame game;
 }
