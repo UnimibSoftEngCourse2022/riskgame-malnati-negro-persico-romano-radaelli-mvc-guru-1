@@ -26,9 +26,12 @@ public class LobbyState extends GameState{
         game.addPlayer(gameEntry.getPlayer());
             
         LOGGER.info("LobbyState: aggiunta giocatore - giocatore aggiunto {}", game.getPlayers().size());
+        
         if (game.getPlayers().size() == game.getConfiguration().getNumberOfPlayers()) {
-        	//game.inizioPartita();
         	LOGGER.info("LobbyState: inizio partita");
+
+        	game.setState(GameSetupState.builder().game(game).build());
+        	game.getState().setupGame();
         }
         
     }    

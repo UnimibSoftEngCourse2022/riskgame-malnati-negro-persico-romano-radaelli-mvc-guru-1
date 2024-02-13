@@ -20,7 +20,7 @@ public class FactoryGame {
 
     private static FactoryGame instance;
     
-    String idGame;
+    private String idGame;
 
 
     private FactoryGame() {
@@ -45,4 +45,5 @@ public class FactoryGame {
         partita.setState(LobbyState.builder().game(partita).build());
         return partita;
     }
+    
 }
