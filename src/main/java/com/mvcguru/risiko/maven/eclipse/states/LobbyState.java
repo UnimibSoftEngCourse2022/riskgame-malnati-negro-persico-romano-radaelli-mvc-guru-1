@@ -1,11 +1,9 @@
 package com.mvcguru.risiko.maven.eclipse.states;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mvcguru.risiko.maven.eclipse.actions.GameEntry;
-import com.mvcguru.risiko.maven.eclipse.exception.AlreadyExistingPlayerException;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
 
 import lombok.NoArgsConstructor;

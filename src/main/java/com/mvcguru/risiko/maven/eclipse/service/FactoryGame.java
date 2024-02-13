@@ -39,7 +39,7 @@ public class FactoryGame {
     }
 
 
-    public IGame creaPartita(GameConfiguration configuration) {
+    public IGame createGame(GameConfiguration configuration) {
     
         IGame partita = new Game(creaId(), configuration);     
         partita.setState(LobbyState.builder().game(partita).build());
