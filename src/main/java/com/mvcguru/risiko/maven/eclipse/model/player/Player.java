@@ -13,6 +13,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+
 @Data
 @SuperBuilder
 @AllArgsConstructor
@@ -26,7 +27,6 @@ public class Player {
 	@JsonIgnore
 	private IGame game;
 	
-	
 	private List<Territory> territories;
 	
 	private List<ICard> comboCards;
@@ -36,6 +36,5 @@ public class Player {
 	public enum PlayerColor {
 		RED, YELLOW, GREEN, BLUE, BLACK, PURPLE, GREY
 	}
+
 }
-
-

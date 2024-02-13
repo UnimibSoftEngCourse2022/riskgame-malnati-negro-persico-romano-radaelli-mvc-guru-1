@@ -13,4 +13,5 @@ public class ObjectiveCard extends ICard{
 	
 	private String objective;
 
+
 }
