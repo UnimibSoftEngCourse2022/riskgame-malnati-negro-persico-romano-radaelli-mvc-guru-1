@@ -12,5 +12,8 @@ import lombok.experimental.SuperBuilder;
 public class ObjectiveCard extends ICard{
 	
 	private String objective;
+	//42 pensare agli obiettivi per ogni difficoltà
+	//28 
+	//14
 
 }

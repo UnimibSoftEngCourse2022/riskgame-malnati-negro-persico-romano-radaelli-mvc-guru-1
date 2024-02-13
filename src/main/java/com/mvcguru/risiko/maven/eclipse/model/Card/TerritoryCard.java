@@ -9,6 +9,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TerritoryCard extends ICard{
 	
-	Territory territory;
+	private Territory territory;
+	private CardSymbol symbol;		//attributo per il simbolo della carta
+	
+	public enum CardSymbol {
+		INFANTRY,
+		CAVALRY,
+		ARTILLERY;
+	}
 	
 }

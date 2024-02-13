@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.mvcguru.risiko.maven.eclipse.actions.TerritorySetup;
+import com.mvcguru.risiko.maven.eclipse.model.deck.Deck;
 import com.mvcguru.risiko.maven.eclipse.model.deck.IDeck;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player.PlayerColor;
@@ -45,6 +46,22 @@ public class GameSetupState extends GameState {
 			i++;
 		}
 	}*/
+/*	Bozza metodo con draw
+	private void assignTerritories(IDeck deckTerritory) {
+	    // Continua fino a quando ci sono carte territorio nel mazzo
+	    while (!deckTerritory.getTerritoryCards().isEmpty()) {
+	        for (Player player : game.getPlayers()) {
+	            // Assicurati che ogni giocatore riceva una carta, se disponibile
+	            if (!deckTerritory.getTerritoryCards().isEmpty()) {
+	                ICard card = deckTerritory.drawTerritoryCard();
+	                // Il cast è sicuro se siamo certi che drawTerritoryCard restituisce sempre una TerritoryCard
+	                player.getTerritories().add(((TerritoryCard)card).getTerritory());
+	            }
+	        }
+	    }
+	}*/
+
+
 
 	private void assignColor(List<Player> players) {
 		List<PlayerColor> colors = new ArrayList<>(Arrays.asList(PlayerColor.values()));
