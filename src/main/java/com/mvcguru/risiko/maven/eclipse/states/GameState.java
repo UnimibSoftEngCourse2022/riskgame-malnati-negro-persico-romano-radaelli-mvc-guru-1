@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.actions.GameEntry;
+import com.mvcguru.risiko.maven.eclipse.actions.TerritorySetup;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
 
 import lombok.Data;
@@ -23,13 +24,15 @@ public abstract class GameState implements Serializable {
     @JsonIgnore
     protected IGame game;
 
-    protected GameState() {
-    }
+    protected GameState() {  }
+    
+    public void setupGame() {  }
 
 
-    public abstract void onActionPlayer(GameEntry gameEntry) throws FullGameException;
+    public void playTurn() {  }
+    
+    public void onActionPlayer(GameEntry gameEntry) throws FullGameException{ }
 
-    public void playTurn() {
-        // Implementazione di default
-    }
+
+	public void onActionPlayer(TerritorySetup territorySetup) { }
 }
