@@ -18,7 +18,10 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Player {	
+	
 	private String userName;
+	private String gameId;
+	private String color;
 	
 	@JsonIgnore
 	private IGame game;
@@ -35,3 +38,5 @@ public class Player {
 		RED, YELLOW, GREEN, BLUE, BLACK, PURPLE
 	}
 }
+
+

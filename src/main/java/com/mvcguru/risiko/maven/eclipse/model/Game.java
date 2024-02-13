@@ -1,23 +1,12 @@
 package com.mvcguru.risiko.maven.eclipse.model;
 
-import java.util.LinkedList;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.mvcguru.risiko.maven.eclipse.actions.ActionPlayer;
-import com.mvcguru.risiko.maven.eclipse.controller.GameController;
 import com.mvcguru.risiko.maven.eclipse.controller.MessageBrokerSingleton;
-import com.mvcguru.risiko.maven.eclipse.exception.AlreadyExistingPlayerException;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
-import com.mvcguru.risiko.maven.eclipse.states.GameState;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
 
 @Data
 @Builder
@@ -40,7 +29,7 @@ public class Game extends IGame {
         players.add(g);
         LOGGER.info("Aggiunta giocatore - giocatore aggiunto {}", g.getUserName());
         g.setGame(this);
-        //To DO scelta colore armate
+        //TODO scelta colore armate
     }
 
 	@Override

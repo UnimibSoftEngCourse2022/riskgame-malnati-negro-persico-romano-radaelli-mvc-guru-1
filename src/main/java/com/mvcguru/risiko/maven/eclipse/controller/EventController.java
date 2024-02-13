@@ -33,13 +33,14 @@ public class EventController {
     }
 	
 	@MessageMapping("/partite/{id}/entra")
-    public void entraInPartita(@Payload PlayerBody body, @DestinationVariable String id) {
+    public void enterInTheGame(@Payload PlayerBody body, @DestinationVariable String id) {
 		IGame game = null;
 		try {
 			game = GameRepository.getInstance().getGameById(id);
-			Player player = Player.builder().userName(body.getUsername()).game(game).build();
+			Player player = Player.builder().userName(body.getUsername()).gameId(id).build();
 			GameEntry action = GameEntry.builder().player(player).build();
 			game.onActionPlayer(action);
+			GameRepository.getInstance().add(player);
 		} catch (GameException | DatabaseConnectionException | UserException e) {
 			//segnala errore
 		} catch (FullGameException e) {
@@ -52,12 +53,13 @@ public class EventController {
 	@MessageMapping("/partite/{id}/esci")
     public void esci(
             @DestinationVariable String id,
-            @Payload PlayerBody body) {
+            @Payload PlayerBody body) throws FullGameException {
 		IGame game = null;
 		try {
             game = GameRepository.getInstance().getGameById(id);
             Player player = Player.builder().userName(body.getUsername()).game(game).build();
             game.getPlayers().remove(player);
+            GameRepository.getInstance().remove(body.getUsername());
         } catch (GameException | DatabaseConnectionException | UserException e) {
             //segnala errore
         }

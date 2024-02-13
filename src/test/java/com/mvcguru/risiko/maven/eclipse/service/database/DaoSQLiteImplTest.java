@@ -11,45 +11,44 @@ import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.model.User;
+import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration.GameMode;
 import com.mvcguru.risiko.maven.eclipse.service.FactoryGame;
 
 class DaoSQLiteImplTest {
-    private DaoSQLiteImpl userDao;
-    private DaoSQLiteImpl gamesDao;
+    private DataDao data;
+    private final String DB_URL = "jdbc:sqlite::memory:";
+    
 
     @BeforeEach
     void setUp() {
         try {
-            userDao = new DaoSQLiteImpl("jdbc:sqlite:testdatabase_user.db");
-            gamesDao = new DaoSQLiteImpl("jdbc:sqlite:testdatabase_games.db");
+            data = new DaoSQLiteImpl(DB_URL);
         } catch (Exception e) {
-            fail("Errore durante la configurazione dei test", e);
+            fail("Error during test setup: " + e.getMessage(), e);
         }
     }
 
     @AfterEach
     void tearDown() {
         try {
-            userDao.closeConnection();
-            gamesDao.closeConnection();
+            data.closeConnection(); 
         } catch (Exception e) {
-            fail("Errore durante la chiusura della connessione al database", e);
+            fail("Error during database connection closure: " + e.getMessage(), e);
         }
     }
 
-    // Test per userDao
     @Test
     void testRegisterUser() {
         try {
             User user = new User("testUser1", "testPassword");
-            userDao.registerUser(user);
-            User retrievedUser = userDao.getUserByUsernameAndPassword("testUser1", "testPassword");
+            data.registerUser(user);
+            User retrievedUser = data.getUserByUsernameAndPassword("testUser1", "testPassword");
             assertEquals(user.getUsername(), retrievedUser.getUsername());
             assertEquals(user.getPassword(), retrievedUser.getPassword());
-            userDao.deleteUser(user);
+            data.deleteUser(user);
         } catch (UserException e) {
-            fail("Errore durante il test di registrazione utente", e);
+            fail("Error during user registration test: " + e.getMessage(), e);
         }
     }
 
@@ -57,16 +56,15 @@ class DaoSQLiteImplTest {
     void testDeleteUser() {
         try {
             User user = new User("testUser2", "testPassword");
-            userDao.registerUser(user);
-            userDao.deleteUser(user);
-            User retrievedUser = userDao.getUserByUsernameAndPassword("testUser2", "testPassword");
+            data.registerUser(user);
+            data.deleteUser(user);
+            User retrievedUser = data.getUserByUsernameAndPassword("testUser2", "testPassword");
             assertNull(retrievedUser);
         } catch (UserException e) {
-            fail("Errore durante il test di eliminazione utente", e);
+            fail("Error during user deletion test: " + e.getMessage(), e);
         }
     }
 
-    // Test per gamesDao
     @Test
     void testRegisterAndGetGameById() {
         try {
@@ -75,18 +73,18 @@ class DaoSQLiteImplTest {
                                         .numberOfPlayers(4)
                                         .idMap("TestMap")
                                         .build();
-            IGame gameToRegister = FactoryGame.getInstance().creaPartita(config);
-            gamesDao.registerGame(gameToRegister);
+            IGame gameToRegister = FactoryGame.getInstance().createGame(config);
+            data.registerGame(gameToRegister);
             
-            IGame retrievedGame = gamesDao.getGameById(gameToRegister.getId());
-            assertNotNull(retrievedGame, "Il gioco registrato non è stato trovato");
-            assertEquals(gameToRegister.getId(), retrievedGame.getId(), "ID del gioco non corrispondente");
-            assertEquals(gameToRegister.getConfiguration().getMode().name(), retrievedGame.getConfiguration().getMode().name(), "Modalità del gioco non corrispondente");
-            assertEquals(gameToRegister.getConfiguration().getNumberOfPlayers(), retrievedGame.getConfiguration().getNumberOfPlayers(), "Numero di giocatori non corrispondente");
-            assertEquals(gameToRegister.getConfiguration().getIdMap(), retrievedGame.getConfiguration().getIdMap(), "ID della mappa non corrispondente");
-            gamesDao.deleteGame(gameToRegister);
+            IGame retrievedGame = data.getGameById(gameToRegister.getId());
+            assertNotNull(retrievedGame, "Registered game not found");
+            assertEquals(gameToRegister.getId(), retrievedGame.getId(), "Game ID does not match");
+            assertEquals(gameToRegister.getConfiguration().getMode().name(), retrievedGame.getConfiguration().getMode().name(), "Game mode does not match");
+            assertEquals(gameToRegister.getConfiguration().getNumberOfPlayers(), retrievedGame.getConfiguration().getNumberOfPlayers(), "Number of players does not match");
+            assertEquals(gameToRegister.getConfiguration().getIdMap(), retrievedGame.getConfiguration().getIdMap(), "Map ID does not match");
+            data.deleteGame(gameToRegister);
         } catch (GameException e) {
-            fail("Errore durante il test di registrazione e recupero del gioco", e);
+            fail("Error during game registration and retrieval test: " + e.getMessage(), e);
         }
     }
 
@@ -98,15 +96,15 @@ class DaoSQLiteImplTest {
                                         .numberOfPlayers(4)
                                         .idMap("TestMap")
                                         .build();
-            IGame gameToRegister = FactoryGame.getInstance().creaPartita(config);
-            gamesDao.registerGame(gameToRegister);
+            IGame gameToRegister = FactoryGame.getInstance().createGame(config);
+            data.registerGame(gameToRegister);
 
-            gamesDao.deleteGame(gameToRegister);
+            data.deleteGame(gameToRegister);
 
-            IGame retrievedGame = gamesDao.getGameById(gameToRegister.getId());
-            assertNull(retrievedGame, "Il gioco non è stato eliminato correttamente");
+            IGame retrievedGame = data.getGameById(gameToRegister.getId());
+            assertNull(retrievedGame, "Game was not deleted correctly");
         } catch (GameException e) {
-            fail("Errore durante il test di eliminazione gioco", e);
+            fail("Error during game deletion test: " + e.getMessage(), e);
         }
     }
 
@@ -118,28 +116,56 @@ class DaoSQLiteImplTest {
                                         .numberOfPlayers(3)
                                         .idMap("TestMap1")
                                         .build();
-            IGame game1 = FactoryGame.getInstance().creaPartita(config1);
-            gamesDao.registerGame(game1);
+            IGame game1 = FactoryGame.getInstance().createGame(config1);
+            data.registerGame(game1);
 
             GameConfiguration config2 = GameConfiguration.builder()
                                         .mode(GameMode.HARD)
                                         .numberOfPlayers(2)
                                         .idMap("TestMap2")
                                         .build();
-            IGame game2 = FactoryGame.getInstance().creaPartita(config2);
-            gamesDao.registerGame(game2);
+            IGame game2 = FactoryGame.getInstance().createGame(config2);
+            data.registerGame(game2);
 
-            List<IGame> games = gamesDao.getAllGames();
-            assertNotNull(games, "La lista dei giochi è nulla");
-            assertEquals(2, games.size(), "Il numero di giochi nella lista non è corretto");
-            assertNotNull(gamesDao.getGameById(game1.getId()), "Il gioco 1 non è presente nella lista");
-            assertNotNull(gamesDao.getGameById(game2.getId()), "Il gioco 2 non è presente nella lista");
+            List<IGame> games = data.getAllGames();
+            assertNotNull(games, "Game list is null");
+            assertEquals(2, games.size(), "Incorrect number of games in the list");
+            assertNotNull(data.getGameById(game1.getId()), "Game 1 is not present in the list");
+            assertNotNull(data.getGameById(game2.getId()), "Game 2 is not present in the list");
 
-            gamesDao.deleteGame(game1);
-            gamesDao.deleteGame(game2);
+            data.deleteGame(game1);
+            data.deleteGame(game2);
         } catch (GameException e) {
-            fail("Errore durante il test di recupero di tutti i giochi", e);
+            fail("Error during retrieval of all games test: " + e.getMessage(), e);
         }
     }
+    
+    @Test
+    void testInsertAndDeletePlayer() throws GameException {
+    	Player testPlayer = Player.builder().userName("testuser").gameId("game1").color("red").build();
+    	data.insertPlayer(testPlayer);
+        
+        List<Player> usersInGame = data.getPlayerInGame("game1");
+        assertEquals(1, usersInGame.size());
+        assertTrue(usersInGame.contains(testPlayer));
+        
+        data.deletePlayer(testPlayer.getUserName());
 
+        usersInGame = data.getPlayerInGame("game1");
+        assertEquals(0, usersInGame.size());
+    }
+
+    @Test
+    void testGetUsersInGame() throws GameException {
+    	Player player1 = Player.builder().userName("user1").gameId("game2").color("blue").build();
+    	Player player2 = Player.builder().userName("user2").gameId("game2").color("red").build();
+    	data.insertPlayer(player1);
+    	data.insertPlayer(player2);
+
+        List<Player> usersInGame = data.getPlayerInGame("game2");
+        
+        assertEquals(2, usersInGame.size());
+        assertTrue(usersInGame.get(0).equals(player1));
+        assertTrue(usersInGame.get(1).equals(player2));
+    }
 }
