@@ -3,6 +3,8 @@ package com.mvcguru.risiko.maven.eclipse.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -21,7 +23,8 @@ import com.mvcguru.risiko.maven.eclipse.service.GameRepository;
 
 @Controller
 public class EventController {
-	
+	private static final Logger LOGGER = LoggerFactory.getLogger(GameController.class);
+
 	@Autowired
     public EventController(SimpMessagingTemplate template) {
         MessageBrokerSingleton.setInstance(MessageBrokerSingleton.builder()
@@ -30,7 +33,7 @@ public class EventController {
     }
 	
 	@MessageMapping("/partite/{id}/entra")
-    public void entraInPartita(@Payload EnteringPlayerBody body, @DestinationVariable String id) {
+    public void entraInPartita(@Payload PlayerBody body, @DestinationVariable String id) {
 		IGame game = null;
 		try {
 			game = GameRepository.getInstance().getGameById(id);
@@ -45,4 +48,19 @@ public class EventController {
             MessageBrokerSingleton.getInstance().getTemplate().convertAndSend("/topic/partite/" + id, "Partita piena", headers);
         }
     }
+	
+	@MessageMapping("/partite/{id}/esci")
+    public void esci(
+            @DestinationVariable String id,
+            @Payload PlayerBody body) {
+		IGame game = null;
+		try {
+            game = GameRepository.getInstance().getGameById(id);
+            Player player = Player.builder().userName(body.getUsername()).game(game).build();
+            game.getPlayers().remove(player);
+        } catch (GameException | DatabaseConnectionException | UserException e) {
+            //segnala errore
+        }
+    }
+
 }
