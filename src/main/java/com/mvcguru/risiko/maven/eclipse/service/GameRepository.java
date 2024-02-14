@@ -57,11 +57,11 @@ public class GameRepository {
 		return db.getAllGames();
 	}
 	
-	public synchronized void add(Player player) throws GameException {
+	public synchronized void addPlayer(Player player) throws GameException {
 		db.insertPlayer(player);
 	}
 	
-	public synchronized void remove(String username) throws GameException {
+	public synchronized void removePlayer(String username) throws GameException {
 		db.deletePlayer(username);
 	}
 	

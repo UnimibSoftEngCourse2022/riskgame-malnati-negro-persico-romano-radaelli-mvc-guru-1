@@ -31,7 +31,7 @@ public class FactoryGame {
         return instance;
     }
 
-    public static String creaId() {
+    public static String createId() {
          idGame = UUID.randomUUID().toString();
         return idGame;
     }
@@ -39,7 +39,7 @@ public class FactoryGame {
 
     public IGame createGame(GameConfiguration configuration) {
     
-        IGame game = new Game(creaId(), configuration);     
+        IGame game = new Game(createId(), configuration);     
         game.setState(LobbyState.builder().game(game).build());
         return game;
     }
