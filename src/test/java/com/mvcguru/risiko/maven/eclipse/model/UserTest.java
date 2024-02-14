@@ -1,9 +1,6 @@
 package com.mvcguru.risiko.maven.eclipse.model;
 
 import org.junit.jupiter.api.*;
-
-import com.mvcguru.risiko.maven.eclipse.model.User;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserTest {

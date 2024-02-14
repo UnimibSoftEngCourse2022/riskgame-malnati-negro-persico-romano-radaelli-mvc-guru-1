@@ -1,13 +1,6 @@
 package com.mvcguru.risiko.maven.eclipse.service;
 
 import java.util.UUID;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
-import com.mvcguru.risiko.maven.eclipse.exception.GameException;
-import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.Game;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
@@ -16,8 +9,6 @@ import lombok.Data;
 
 @Data
 public class FactoryGame {
-	private static final Logger LOGGER = LoggerFactory.getLogger(FactoryGame.class);
-
     private static FactoryGame instance;
     
     private String idGame;

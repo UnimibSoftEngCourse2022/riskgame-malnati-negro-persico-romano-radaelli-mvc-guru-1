@@ -1,8 +1,6 @@
 package com.mvcguru.risiko.maven.eclipse.service.database;
 
 import java.util.List;
-
-import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
 import com.mvcguru.risiko.maven.eclipse.exception.GameException;
 import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
