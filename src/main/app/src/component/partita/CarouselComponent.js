@@ -9,13 +9,13 @@ function CarouselComponent() {
   const [lobbies, setLobbies] = useState([]);
   const [isLobbyCreated, setIsLobbyCreated] = useState("");
   const navigate = useNavigate();
-  const { nickname } = useParams();
+  const { id } = useParams();
 
   const uniscitiAllaLobby = (idPartita) => {
-    console.log("nickname carousel", nickname);
+    console.log("nickname carousel", id);
     console.log("idPartita carousel", idPartita);
 
-    let effectiveNickname = nickname;
+    let effectiveNickname = id;
     if (!effectiveNickname || effectiveNickname === "null") {
       effectiveNickname = `Ospite_${Date.now()}`;
     }
