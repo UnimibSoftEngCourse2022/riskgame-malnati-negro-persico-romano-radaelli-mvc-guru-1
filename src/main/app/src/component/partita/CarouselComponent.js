@@ -7,7 +7,6 @@ import { useNavigate, useParams } from "react-router-dom";
 function CarouselComponent() {
   const [index, setIndex] = useState(0);
   const [lobbies, setLobbies] = useState([]);
-  const [isLobbyCreated, setIsLobbyCreated] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
 

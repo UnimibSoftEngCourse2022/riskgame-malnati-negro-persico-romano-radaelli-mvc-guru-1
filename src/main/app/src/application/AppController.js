@@ -42,11 +42,8 @@ class AppController {
   // }
 
   async creaPartita(configuration) {
-	  //qui arriva la configurazione della partita
-    console.log(
-      "fetch crea partita ",
-      JSON.stringify(configuration)
-    );
+    //qui arriva la configurazione della partita
+    console.log("fetch crea partita ", JSON.stringify(configuration));
     try {
       const response = await fetch("/partita", {
         method: "POST",
@@ -150,36 +147,84 @@ class AppController {
   //   });
   // }
 
+  // entraInPartita(idPartita, nickname) {
+  //   return new Promise((resolve, reject) => {
+  //     console.log(
+  //       `Tentativo di entrare in partita con id: ${idPartita} e nickname: ${nickname}`
+  //     );
+
+  //     if (!this.client) {
+  //       console.error("Client non inizializzato.");
+  //       reject("Client non inizializzato.");
+  //       return;
+  //     }
+
+  //     if (!this.client.connected) {
+  //       console.error("Client non connesso.");
+  //       reject("Client non connesso.");
+  //       return;
+  //     }
+
+  //     console.log("Inizio sottoscrizione alla partita");
+  //     this.client.subscribe(`/topic/partite/${idPartita}`, (message) => {
+  //       console.log("Messaggio ricevuto:", message.body);
+  //       try {
+  //         const partita = JSON.parse(message.body);
+  //         console.log("Aggiornamento partita ricevuto:", partita);
+  //         resolve(partita);
+  //       } catch (error) {
+  //         console.error("Errore nella deserializzazione del messaggio:", error);
+  //         reject(error);
+  //       }
+  //     });
+  //   });
+  // }
+
   entraInPartita(idPartita, nickname) {
-    // Restituisci una Promise
     return new Promise((resolve, reject) => {
-      if (this.client && this.client.connected) {
-        // Supponendo che vuoi risolvere la Promise dopo aver inviato il messaggio con successo
-        this.client.subscribe(`/topic/partite/${idPartita}`, (message) => {
+      console.log(
+        `Tentativo di entrare in partita con id: ${idPartita} e nickname: ${nickname}`
+      );
+
+      if (!this.client) {
+        console.error("Client non inizializzato.");
+        reject("Client non inizializzato.");
+        return;
+      }
+
+      if (!this.client.connected) {
+        console.error("Client non connesso.");
+        reject("Client non connesso.");
+        return;
+      }
+
+      console.log("Inizio sottoscrizione alla partita");
+      this.client.subscribe(`/topic/partite/${idPartita}`, (message) => {
+        console.log("Messaggio ricevuto:", message.body);
+        try {
           const partita = JSON.parse(message.body);
           console.log("Aggiornamento partita ricevuto:", partita);
-          // Potresti voler chiamare resolve qui se l'obiettivo è risolvere dopo aver ricevuto un aggiornamento
           resolve(partita);
-        });
+        } catch (error) {
+          console.error("Errore nella deserializzazione del messaggio:", error);
+          reject(error);
+        }
+      });
 
-        const payload = { username: nickname };
-        this.client.publish({
-          destination: `/app/partite/${idPartita}/entra`,
-          body: JSON.stringify(payload),
-          // Potresti voler risolvere la Promise qui se l'obiettivo è confermare che il messaggio è stato inviato
-          onComplete: (receipt) => {
-            console.log("Messaggio inviato con successo");
-            resolve("Partecipazione confermata");
-          },
-          onError: (error) => {
-            console.error("Errore nell'invio del messaggio", error);
-            reject("Errore nell'invio del messaggio");
-          },
-        });
-      } else {
-        console.error("Client STOMP non connesso.");
-        reject("Client STOMP non connesso.");
-      }
+      const payload = { username: nickname };
+      console.log("Payload inviato:", payload);
+      this.client.publish({
+        destination: `/app/partite/${idPartita}/entra`,
+        body: JSON.stringify(payload),
+        onComplete: (receipt) => {
+          console.log("Messaggio inviato con successo", receipt);
+          resolve("Partecipazione confermata");
+        },
+        onError: (error) => {
+          console.error("Errore nell'invio del messaggio", error);
+          reject("Errore nell'invio del messaggio");
+        },
+      });
     });
   }
 }
