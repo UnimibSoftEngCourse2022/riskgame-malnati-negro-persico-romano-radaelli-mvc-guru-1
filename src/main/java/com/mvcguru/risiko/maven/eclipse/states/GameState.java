@@ -28,11 +28,9 @@ public abstract class GameState implements Serializable {
     
     public void setupGame() {  }
 
-
     public void playTurn() {  }
     
     public void onActionPlayer(GameEntry gameEntry) throws FullGameException{ }
-
 
 	public void onActionPlayer(TerritorySetup territorySetup) { }
 }

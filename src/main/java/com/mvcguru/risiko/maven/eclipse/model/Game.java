@@ -42,4 +42,13 @@ public class Game extends IGame {
     public void broadcast() {
         MessageBrokerSingleton.getInstance().broadcast(this);
 	}
+	
+	public Player findPlayerByUsername(String username) {
+        for (Player player : players) {
+            if (player.getUserName().equals(username)) {
+                return player;
+            }
+        }
+        return null;
+    }
 }

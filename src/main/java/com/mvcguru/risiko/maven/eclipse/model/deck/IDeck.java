@@ -5,17 +5,11 @@ import com.mvcguru.risiko.maven.eclipse.model.Card.ObjectiveCard;
 import com.mvcguru.risiko.maven.eclipse.model.Card.TerritoryCard;
 
 
-public interface IDeck {
+public interface IDeck{
 	
-	public ICard drawObjectiveCard();
+	public ICard drawCard();
 	
-	public ICard drawTerritoryCard();
+	public void insertCard(ICard card);
 	
-	public void insertTerritoryCard(TerritoryCard card);
-	
-	public void insertObjectiveCard(ObjectiveCard card);
-
-	
-	//private void shuffleDecks();
-
+	public void shuffle();
 }
