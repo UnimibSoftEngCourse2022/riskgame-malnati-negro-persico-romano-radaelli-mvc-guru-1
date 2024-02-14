@@ -13,6 +13,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 import com.mvcguru.risiko.maven.eclipse.actions.GameEntry;
+import com.mvcguru.risiko.maven.eclipse.actions.TerritorySetup;
 import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
 import com.mvcguru.risiko.maven.eclipse.exception.GameException;
@@ -64,5 +65,20 @@ public class EventController {
             //segnala errore
         }
     }
+	
+	@MessageMapping("/partite/{id}/confermaSetup")
+	public void confermaSetup(@DestinationVariable String id, @Payload SetUpBody body) {
+	    try {
+	        IGame game = GameRepository.getInstance().getGameById(id);
+	        Player player = game.findPlayerByUsername(body.getUsername());
+	        if (player != null) {
+	            TerritorySetup action = TerritorySetup.builder().player(player).setUpBody(body).build();
+	            game.onActionPlayer(action);
+	        }
+	    } catch (Exception e) {
+	        //segnala errore
+	    }
+	}
+
 
 }

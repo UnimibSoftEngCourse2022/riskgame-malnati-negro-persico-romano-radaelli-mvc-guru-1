@@ -7,9 +7,9 @@ import java.util.List;
 
 import com.mvcguru.risiko.maven.eclipse.actions.TerritorySetup;
 
-import com.mvcguru.risiko.maven.eclipse.model.deck.Deck;
 import com.mvcguru.risiko.maven.eclipse.model.deck.IDeck;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
+import com.mvcguru.risiko.maven.eclipse.model.Card.TerritoryCard;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player.PlayerColor;
 
 import lombok.NoArgsConstructor;
@@ -21,46 +21,34 @@ public class GameSetupState extends GameState {
 
 	@Override
 	public void onActionPlayer(TerritorySetup action) {
-		
-		
+		//action.getPlayer().setSetupCompleted(true);
 	}
 	
 	private void setUpGame() {
 		assignColor(game.getPlayers());
-		//assignTerritories(game.getDeckTerritory());
+		assignTerritories(game.getDeckTerritory());
 		assignObjective(game.getDeckObjective());
 	}
 
 	private void assignObjective(IDeck deckObjective) {
+		deckObjective.shuffle();
 		for (Player player : game.getPlayers()) {
-			player.setObjective(deckObjective.drawObjectiveCard());
+			player.setObjective(deckObjective.drawCard());
 		}
-		
 	}
     
-	//TO DO da fare con il draw
-	/*
 	private void assignTerritories(IDeck deckTerritory) {
-		int i = 0;
-		for (ICard card : deckTerritory.getTerritoryCards() {
-			game.getPlayers().get(i % game.getPlayers().size()).getTerritories().add(card.getTerritory());
-			i++;
-		}
-	}*/
-/*	Bozza metodo con draw
-	private void assignTerritories(IDeck deckTerritory) {
-	    // Continua fino a quando ci sono carte territorio nel mazzo
-	    while (!deckTerritory.getTerritoryCards().isEmpty()) {
-	        for (Player player : game.getPlayers()) {
-	            // Assicurati che ogni giocatore riceva una carta, se disponibile
-	            if (!deckTerritory.getTerritoryCards().isEmpty()) {
-	                ICard card = deckTerritory.drawTerritoryCard();
-	                // Il cast è sicuro se siamo certi che drawTerritoryCard restituisce sempre una TerritoryCard
-	                player.getTerritories().add(((TerritoryCard)card).getTerritory());
-	            }
-	        }
+	    deckTerritory.shuffle();
+	    int playerIndex = 0;
+	    TerritoryCard card = (TerritoryCard)deckTerritory.drawCard(); 
+	    
+	    while (card != null) {
+	    	game.getPlayers().get(playerIndex % game.getPlayers().size()).getTerritories().add(card.getTerritory());
+	        playerIndex++;
+	        card = (TerritoryCard) deckTerritory.drawCard(); 
 	    }
-	}*/
+	}
+
 
 	private void assignColor(List<Player> players) {
 		List<PlayerColor> colors = new ArrayList<>(Arrays.asList(PlayerColor.values()));
