@@ -22,7 +22,7 @@ public class GameController {
 	private final ObjectMapper objectMapper = new ObjectMapper();
 	
 	@PostMapping("/partita")
-	public ResponseEntity<Void> gameCreation(@RequestBody String body) throws IOException {
+	public ResponseEntity<String> gameCreation(@RequestBody String body) throws IOException {
 		
 		 GameConfiguration configuration = objectMapper.readValue(body, GameConfiguration.class);		
 		if(checkConfiguration(configuration)) {
@@ -38,7 +38,7 @@ public class GameController {
 			return ResponseEntity.badRequest().build();
 		}
 		
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body("{\"id\": \"" + nuovaPartita.getId() + "\"}");
     }
 	
 	@GetMapping("/partita")

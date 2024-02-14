@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Button, Form, Container } from "react-bootstrap";
-import AppController from '../../application/AppController';
+import AppController from "../../application/AppController";
 
-function CreaLobby() {
+function CreaPartita() {
   const [difficolta, setDifficolta] = useState("");
   const [players, setPlayers] = useState("");
   const [nomeMappa, setNomeMappa] = useState("");
@@ -68,24 +68,23 @@ function CreaLobby() {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  // Costruisci la configurazione della partita
-  const configuration = {
+    e.preventDefault();
+    //qui creo configurazione
+    const configuration = {
     difficolta: difficolta,
     players: parseInt(players),
     nomeMappa: nomeMappa,
   };
-  
-  try {
-    // Utilizza AppController per creare la partita
-    await AppController.creaPartita(configuration);
-    setIsLobbyCreated("Lobby creata con successo!");
-    // Qui puoi gestire ulteriori azioni post-creazione, come reindirizzare l'utente
-  } catch (error) {
-    console.error("Errore:", error);
-    setIsLobbyCreated(`Creazione lobby fallita: ${error.message}. Per favore, riprova.`);
-  }
-};
+    try {
+      const result = await AppController.creaPartita(configuration);
+      setIsLobbyCreated(
+		  //qui non ti arrivava nessun id, ora ti arriva 
+        `Lobby creata con successo! ID Lobby: ${result.id}`
+      );
+    } catch (error) {
+      setIsLobbyCreated(`Errore nella creazione della lobby: ${error.message}`);
+    }
+  };
 
   return (
     <div>
@@ -137,8 +136,8 @@ function CreaLobby() {
         </Form.Group>
 
         <Container className="d-flex justify-content-center">
-          <Button className="text-center" type="submit">
-            CREA
+          <Button className="text-center text-uppercase" type="submit">
+            Vai
           </Button>
         </Container>
       </Form>
@@ -147,4 +146,4 @@ function CreaLobby() {
   );
 }
 
-export default CreaLobby;
+export default CreaPartita;

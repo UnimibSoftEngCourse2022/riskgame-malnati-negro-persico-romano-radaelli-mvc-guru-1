@@ -1,9 +1,11 @@
 import React from "react";
 import { Button, Container } from "react-bootstrap";
-import CreaLobby from "../component/partita/CreaLobby";
-import Lobby from "../component/partita/Lobby";
+import CreaPartita from "../component/partita/CreaPartita";
 
-export default class Partita extends React.Component {
+import { withAuth } from "../auth/AuthContext";
+import CarouselComponent from "../component/partita/CarouselComponent";
+
+class Partita extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -16,23 +18,22 @@ export default class Partita extends React.Component {
     this.setState({ mostraCreaLobby: true });
   };
 
-  handleUniscitiLobby = () => {
-    this.setState({ mostraLobby: true });
-  };
-
   render() {
     const { user } = this.props;
+    console.log("user in partita", user);
+
     return (
       <div>
         <Container>
-          <span className="h3">Benvenuto </span>
-          {user ? (
-            <span className="h3">{user}</span>
+          <span className="h3">Benvenuto nella pagina partita </span>
+          {user.user ? (
+            <span className="h3">{user.user}</span>
           ) : (
             <span className="h3">Utente Generico</span>
           )}
           <p>Crea una lobby oppure unisciti a una gia esistente</p>
         </Container>
+        <CarouselComponent />
 
         <Button
           variant="primary"
@@ -41,22 +42,15 @@ export default class Partita extends React.Component {
         >
           Crea Lobby
         </Button>
-        <Button variant="secondary" onClick={this.handleUniscitiLobby}>
-          Unisciti a Lobby
-        </Button>
 
         {this.state.mostraCreaLobby && (
           <div>
-            <CreaLobby />
-          </div>
-        )}
-
-        {this.state.mostraLobby && (
-          <div>
-            <Lobby />
+            <CreaPartita />
           </div>
         )}
       </div>
     );
   }
 }
+
+export default withAuth(Partita);
