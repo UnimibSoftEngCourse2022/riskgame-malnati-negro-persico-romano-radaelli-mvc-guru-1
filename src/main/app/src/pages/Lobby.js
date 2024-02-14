@@ -23,12 +23,10 @@ class LobbyClass extends React.Component {
   componentDidMount() {
     const { params, location } = this.props;
     const query = new URLSearchParams(location.search);
-    const idPartita = params.idPartita;
-    const nickname = params.nickname;
-    console.log("utente in lobby", nickname);
+    const idPartita = params.id; // Assicurati che la chiave qui corrisponda a quella definita nelle tue rotte
+    const nickname = query.get("nickname");
 
     this.setState({ idPartita, nickname });
-
     this.connettiALobby(idPartita);
   }
 

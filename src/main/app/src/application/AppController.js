@@ -41,14 +41,11 @@ class AppController {
   //   }
   // }
 
-  async creaPartita(difficolta, players, nomeMappa) {
+  async creaPartita(configuration) {
+	  //qui arriva la configurazione della partita
     console.log(
       "fetch crea partita ",
-      JSON.stringify({
-        difficolta,
-        players,
-        nomeMappa,
-      })
+      JSON.stringify(configuration)
     );
     try {
       const response = await fetch("/partita", {
@@ -56,11 +53,7 @@ class AppController {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          difficolta,
-          players,
-          nomeMappa,
-        }),
+        body: JSON.stringify(configuration),
       });
 
       if (!response.ok) {
