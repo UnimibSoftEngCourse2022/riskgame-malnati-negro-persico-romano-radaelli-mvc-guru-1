@@ -1,0 +1,15 @@
+.carousel-control-next-icon {
+  color: #000;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.carousel-control-prev-icon {
+  color: #000;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.carousel-indicators {
+  && button {
+    margin-top: 15px;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}
