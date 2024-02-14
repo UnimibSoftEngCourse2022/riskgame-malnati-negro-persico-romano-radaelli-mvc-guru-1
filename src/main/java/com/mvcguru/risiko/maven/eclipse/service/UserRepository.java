@@ -7,7 +7,7 @@ import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.User;
 import com.mvcguru.risiko.maven.eclipse.service.database.*;
 public class UserRepository {
-	private UserDao db;
+	private DataDao db;
 	private static UserRepository instance;
 	
 	
@@ -43,5 +43,12 @@ public class UserRepository {
 	public synchronized String getUserPassword(User user) throws UserException {
 		String result = db.getUserByUsernameAndPassword(user.getUsername(), user.getPassword()).getPassword();
 		return result;
+	}
+	
+	public synchronized void deleteUser(User user) throws UserException {
+		if (user != null)
+			db.deleteUser(user);
+		else
+			System.out.println("User is null");
 	}
 }

@@ -1,11 +1,9 @@
 package com.mvcguru.risiko.maven.eclipse.states;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mvcguru.risiko.maven.eclipse.actions.GameEntry;
-import com.mvcguru.risiko.maven.eclipse.exception.AlreadyExistingPlayerException;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
 
 import lombok.NoArgsConstructor;
@@ -26,9 +24,12 @@ public class LobbyState extends GameState{
         game.addPlayer(gameEntry.getPlayer());
             
         LOGGER.info("LobbyState: aggiunta giocatore - giocatore aggiunto {}", game.getPlayers().size());
+        
         if (game.getPlayers().size() == game.getConfiguration().getNumberOfPlayers()) {
-        	//game.inizioPartita();
         	LOGGER.info("LobbyState: inizio partita");
+
+        	game.setState(GameSetupState.builder().game(game).build());
+        	game.getState().setupGame();
         }
         
     }    

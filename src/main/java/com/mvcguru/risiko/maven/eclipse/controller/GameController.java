@@ -29,7 +29,7 @@ public class GameController {
 			return ResponseEntity.badRequest().build();
 		}
 		
-		IGame nuovaPartita = FactoryGame.getInstance().creaPartita(configuration);
+		IGame nuovaPartita = FactoryGame.getInstance().createGame(configuration);
 		
 		try {
 			GameRepository.getInstance().registerGame(nuovaPartita);
