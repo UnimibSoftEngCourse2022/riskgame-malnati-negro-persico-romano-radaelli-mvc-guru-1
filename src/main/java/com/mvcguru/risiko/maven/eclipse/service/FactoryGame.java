@@ -5,9 +5,7 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
-import com.mvcguru.risiko.maven.eclipse.exception.GameException;
-import com.mvcguru.risiko.maven.eclipse.exception.UserException;
+
 import com.mvcguru.risiko.maven.eclipse.model.Game;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
@@ -20,7 +18,7 @@ public class FactoryGame {
 
     private static FactoryGame instance;
     
-    private String idGame;
+    private static String idGame;
 
 
     private FactoryGame() {
@@ -34,16 +32,16 @@ public class FactoryGame {
     }
 
     public static String creaId() {
-        String idGame = UUID.randomUUID().toString();
+         idGame = UUID.randomUUID().toString();
         return idGame;
     }
 
 
     public IGame createGame(GameConfiguration configuration) {
     
-        IGame partita = new Game(creaId(), configuration);     
-        partita.setState(LobbyState.builder().game(partita).build());
-        return partita;
+        IGame game = new Game(creaId(), configuration);     
+        game.setState(LobbyState.builder().game(game).build());
+        return game;
     }
     
 }

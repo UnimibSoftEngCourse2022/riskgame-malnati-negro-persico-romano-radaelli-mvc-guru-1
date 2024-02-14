@@ -32,7 +32,7 @@ public class Player {
 	private List<ICard> comboCards;
 	
 	private ICard objective;
-	
+
 	public enum PlayerColor {
 		RED, YELLOW, GREEN, BLUE, BLACK, PURPLE, GREY
 	}
