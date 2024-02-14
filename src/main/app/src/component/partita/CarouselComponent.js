@@ -9,16 +9,18 @@ function CarouselComponent() {
   const [lobbies, setLobbies] = useState([]);
   const [isLobbyCreated, setIsLobbyCreated] = useState("");
   const navigate = useNavigate();
-  const { nickname } = useParams();
+  //quesrti servono per parsare il nickname dall'url, prima non riusciva e arrivava sempre null
+  const pathArray = window.location.pathname.split('/')
+  const nickname = pathArray[pathArray.length - 1] === 'null' ? `Ospite_${Date.now()}` : pathArray[pathArray.length - 1];
 
   const uniscitiAllaLobby = (idPartita) => {
     console.log("nickname carousel", nickname);
     console.log("idPartita carousel", idPartita);
 
     let effectiveNickname = nickname;
-    if (!effectiveNickname || effectiveNickname === "null") {
+   /* if (!effectiveNickname || effectiveNickname === "null") {
       effectiveNickname = `Ospite_${Date.now()}`;
-    }
+    }*/
     console.log(effectiveNickname);
 
     navigate(`/lobby/${idPartita}?nickname=${effectiveNickname}`);

@@ -69,6 +69,7 @@ function CreaPartita() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    //qui creo configurazione
     const configuration = {
     difficolta: difficolta,
     players: parseInt(players),
@@ -77,6 +78,7 @@ function CreaPartita() {
     try {
       const result = await AppController.creaPartita(configuration);
       setIsLobbyCreated(
+		  //qui non ti arrivava nessun id, ora ti arriva 
         `Lobby creata con successo! ID Lobby: ${result.id}`
       );
     } catch (error) {

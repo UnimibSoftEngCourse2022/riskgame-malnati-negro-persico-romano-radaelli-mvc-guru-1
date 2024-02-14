@@ -42,6 +42,7 @@ class AppController {
   // }
 
   async creaPartita(configuration) {
+	  //qui arriva la configurazione della partita
     console.log(
       "fetch crea partita ",
       JSON.stringify(configuration)
