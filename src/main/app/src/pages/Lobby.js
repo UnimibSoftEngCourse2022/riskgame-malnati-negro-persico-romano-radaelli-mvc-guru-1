@@ -21,15 +21,15 @@ class LobbyClass extends React.Component {
   }
 
   componentDidMount() {
-    const { match, location } = this.props;
-    const query = new URLSearchParams(location.search);
-    const idPartita = match.params.idPartita;
-    const nickname = query.get("nickname");
+  const { params, location } = this.props;
+  const query = new URLSearchParams(location.search);
+  const idPartita = params.id; // Assicurati che la chiave qui corrisponda a quella definita nelle tue rotte
+  const nickname = query.get("nickname");
 
-    this.setState({ idPartita, nickname });
+  this.setState({ idPartita, nickname });
+  this.connettiALobby(idPartita);
+}
 
-    this.connettiALobby(idPartita);
-  }
 
   connettiALobby(idPartita) {
     AppController.entraInPartita(idPartita, this.state.nickname)

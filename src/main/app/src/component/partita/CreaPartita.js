@@ -69,14 +69,15 @@ function CreaPartita() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const configuration = {
+    difficolta: difficolta,
+    players: parseInt(players),
+    nomeMappa: nomeMappa,
+  };
     try {
-      const result = await AppController.creaPartita(
-        difficolta,
-        players,
-        nomeMappa
-      );
+      const result = await AppController.creaPartita(configuration);
       setIsLobbyCreated(
-        `Lobby creata con successo! ID Lobby: ${result.idLobby}`
+        `Lobby creata con successo! ID Lobby: ${result.id}`
       );
     } catch (error) {
       setIsLobbyCreated(`Errore nella creazione della lobby: ${error.message}`);
