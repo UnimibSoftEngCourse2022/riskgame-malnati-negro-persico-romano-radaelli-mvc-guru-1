@@ -20,7 +20,7 @@ public class FactoryGame {
 
     private static FactoryGame instance;
     
-    String idGame;
+    private String idGame;
 
 
     private FactoryGame() {
@@ -39,10 +39,11 @@ public class FactoryGame {
     }
 
 
-    public IGame creaPartita(GameConfiguration configuration) {
+    public IGame createGame(GameConfiguration configuration) {
     
         IGame partita = new Game(creaId(), configuration);     
         partita.setState(LobbyState.builder().game(partita).build());
         return partita;
     }
+    
 }

@@ -6,8 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mvcguru.risiko.maven.eclipse.actions.ActionPlayer;
-import com.mvcguru.risiko.maven.eclipse.exception.AlreadyExistingPlayerException;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
+import com.mvcguru.risiko.maven.eclipse.model.deck.IDeck;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 import com.mvcguru.risiko.maven.eclipse.states.GameState;
 
@@ -28,6 +28,10 @@ public abstract class IGame {
 	
 	protected GameConfiguration configuration;
 	
+	protected IDeck deckObjective;
+	
+	protected IDeck deckTerritory;
+	
 	@Builder.Default
     protected ArrayList<Player> players = new ArrayList<>();
 
@@ -38,5 +42,7 @@ public abstract class IGame {
     public abstract void onActionPlayer(ActionPlayer action) throws FullGameException;
     
     public abstract void broadcast();
+
+	public abstract Player findPlayerByUsername(String username);
    
 }
