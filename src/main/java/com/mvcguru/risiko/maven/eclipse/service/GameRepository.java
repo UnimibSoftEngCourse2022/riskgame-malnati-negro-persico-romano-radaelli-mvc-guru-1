@@ -21,35 +21,23 @@ public class GameRepository {
 	}
 	
 	public static synchronized GameRepository getInstance() throws DatabaseConnectionException, GameException, UserException {
-		 if (instance == null) {
-			 System.out.println("Getinstance");
-	            instance = new GameRepository();
-	        }
-	        return instance;
+		 if (instance == null) { instance = new GameRepository();} return instance;
 	}
 	
 	public synchronized void registerGame(IGame game) throws GameException {
-		if (game != null) {
-			
+		if (game != null) 
 			db.registerGame(game);
-			}
-		else
-			System.out.println("Game is null");
 	}
 	
 	public synchronized void deleteGame(IGame game) throws GameException {
 		if (game != null)
 			db.deleteGame(game);
-		else
-			System.out.println("Game is null");
 	}
 	
 	public synchronized IGame getGameById(String gameId) throws GameException, FullGameException {
 		IGame game = db.getGameById(gameId);
 		List<Player> lista = db.getPlayerInGame(gameId);
-		for (Player p : lista) {
-			game.addPlayer(p);
-			}
+		for (Player p : lista) { game.addPlayer(p); }
 		return game;
 	}
 	
