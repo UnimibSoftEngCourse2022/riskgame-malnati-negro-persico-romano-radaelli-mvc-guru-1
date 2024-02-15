@@ -45,9 +45,9 @@ public class EventController {
 		} catch (GameException | DatabaseConnectionException | UserException e) {
 			//segnala errore
 		} catch (FullGameException e) {
-			Map<String, Object> headers = new HashMap<>();
-            headers.put("nickname", body.getUsername());
-            MessageBrokerSingleton.getInstance().getTemplate().convertAndSend("/topic/partite/" + id, "Partita piena", headers);
+			//Map<String, Object> headers = new HashMap<>();
+            // headers.put("nickname", body.getUsername());
+            MessageBrokerSingleton.getInstance().getTemplate().convertAndSend("/topic/partite/" + id, "Partita piena");
         }
     }
 	

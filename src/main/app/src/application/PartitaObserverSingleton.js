@@ -1,41 +1,28 @@
-// Controllo del Tipo: Nel metodo notifyListeners, ho aggiunto un controllo per assicurarmi che listener.updatePartita
-//sia effettivamente una funzione prima di chiamarla.
-//Questo passo è importante in JavaScript per evitare errori a runtime
-//dato che non abbiamo il controllo dei tipi a compile-time come in TypeScript.
-
-// Esportazione dell'Istanza: Infine,
-// ho esportato direttamente l'istanza singleton con export default instance;
-// e ho utilizzato Object.freeze(instance) per prevenire ulteriori modifiche all'istanza,
-// rendendo il pattern singleton più robusto in JavaScript.
-
 class PartitaObserverSingleton {
   constructor() {
+    // Assicurati che l'array dei listeners sia inizializzato nel costruttore
+    this.listeners = [];
+  }
+
+  // Metodo per aggiungere un listener
+  addListener(listener) {
+    this.listeners.push(listener);
+  }
+
+  // Metodo per notificare tutti i listener
+  notifyListeners(partita) {
+    console.log("partita in observer", partita);
+    this.listeners.forEach((listener) => listener.updatePartita(partita));
+  }
+
+  // Implementazione del pattern Singleton
+  static getInstance() {
     if (!PartitaObserverSingleton.instance) {
-      this.listListeners = [];
-      PartitaObserverSingleton.instance = this;
+      PartitaObserverSingleton.instance = new PartitaObserverSingleton();
     }
     return PartitaObserverSingleton.instance;
   }
-
-  addListener(listener) {
-    this.listListeners.push(listener);
-  }
-
-  removeListener(listener) {
-    this.listListeners = this.listListeners.filter((el) => el !== listener);
-  }
-
-  notifyListeners(partita) {
-    this.listListeners.forEach((listener) => {
-      if (typeof listener.updatePartita === "function") {
-        listener.updatePartita(partita);
-      }
-    });
-  }
 }
 
-// Assicurati che l'istanza sia unica
-const instance = new PartitaObserverSingleton();
-Object.freeze(instance);
-
-export default instance;
+// Esporta un'istanza del singleton per l'uso nell'applicazione
+export default PartitaObserverSingleton.getInstance();

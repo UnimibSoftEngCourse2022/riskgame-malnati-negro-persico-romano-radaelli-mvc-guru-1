@@ -1,4 +1,5 @@
 import { Client } from "@stomp/stompjs";
+import PartitaObserverSingleton from "./PartitaObserverSingleton";
 
 class AppController {
   constructor() {
@@ -77,7 +78,7 @@ class AppController {
           `Errore nell'ottenimento delle partite: ${response.statusText}`
         );
       }
-
+      
       return await response.json();
     } catch (error) {
       console.error("Errore:", error);
@@ -200,7 +201,15 @@ class AppController {
 
       console.log("Inizio sottoscrizione alla partita");
       this.client.subscribe(`/topic/partite/${idPartita}`, (message) => {
+        if (message.body === "Partita piena") {
+          console.error("La partita è piena.");
+          reject("La partita è piena");
+          return;
+        }
+
+        PartitaObserverSingleton.notifyListeners(JSON.parse(message.body));
         console.log("Messaggio ricevuto:", message.body);
+
         try {
           const partita = JSON.parse(message.body);
           console.log("Aggiornamento partita ricevuto:", partita);

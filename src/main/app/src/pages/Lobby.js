@@ -1,6 +1,7 @@
 import React from "react";
 import AppController from "../application/AppController";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
+import PartitaObserverSingleton from "../application/PartitaObserverSingleton";
 
 function LobbyPage() {
   const params = useParams();
@@ -17,6 +18,8 @@ class LobbyClass extends React.Component {
       nickname: null,
       utentiConnessi: [],
     };
+
+    this.updatePartita = this.updatePartita.bind(this);
   }
 
   componentDidMount() {
@@ -30,32 +33,32 @@ class LobbyClass extends React.Component {
     );
 
     this.setState({ idPartita, nickname });
-    this.connettiALobby(idPartita, nickname);
+    // questa classe lobby diventa un listener
+    PartitaObserverSingleton.addListener(this);
+    // this.connettiALobby(idPartita, nickname);
   }
 
-  connettiALobby(idPartita, nickname) {
-    console.log(
-      `Tentativo di connessione alla lobby con ID Partita: ${idPartita}`
-    );
+  // connettiALobby(idPartita, nickname) {
+  //   console.log(
+  //     `Tentativo di connessione alla lobby con ID Partita: ${idPartita}`
+  //   );
 
-    AppController.entraInPartita(idPartita, nickname)
-      .then((partita) => {
-        console.log("Connesso alla partita:", partita);
-        const utentiConnessi = partita.players
-          .filter((player) => player.userName !== null)
-          .map((player) => player.userName);
+  //   try {
+  //     AppController.entraInPartita(idPartita, nickname);
+  //   } catch (error) {
+  //     console.error("Errore durante la connessione alla lobby:", error);
+  //   }
+  // }
 
-        // Aggiornare lo stato con l'elenco degli utenti connessi
-        this.setState({ utentiConnessi });
-        console.log("utentiConnessi:", partita.players.username);
-      })
-      .catch((error) => {
-        console.error("Errore durante la connessione alla lobby:", error);
-      });
+  updatePartita(partita) {
+    const utentiConnessi = partita.players
+      .filter((player) => player.userName !== null)
+      .map((player) => player.userName);
+    this.setState({ utentiConnessi });
   }
 
   render() {
-    const { idPartita, utentiConnessi, giocatoriTotali } = this.state;
+    const { idPartita, utentiConnessi } = this.state;
     console.log("utentiConnessi", utentiConnessi);
     return (
       <div>

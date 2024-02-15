@@ -2,6 +2,9 @@ package com.mvcguru.risiko.maven.eclipse.service;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
 import com.mvcguru.risiko.maven.eclipse.exception.GameException;
@@ -14,6 +17,9 @@ import com.mvcguru.risiko.maven.eclipse.service.database.DataDao;
 public class GameRepository {
 	private static GameRepository instance;
 	private DataDao db;
+	private static final Logger LOGGER = LoggerFactory.getLogger(FactoryGame.class);
+
+	
 	
 	public GameRepository() throws DatabaseConnectionException, GameException, UserException {
 		super();
@@ -53,7 +59,15 @@ public class GameRepository {
 		return game;
 	}
 	
-	public synchronized List<IGame> getAllGames() throws GameException {
+	public synchronized List<IGame> getAllGames() throws GameException, FullGameException {
+		for (IGame g : db.getAllGames()) {
+			LOGGER.info("Game: {}", g);
+			List<Player> lista = db.getPlayerInGame(g.getId());
+			for (Player p : lista) {
+				LOGGER.info("Player: {}", p);
+				g.addPlayer(p);
+			}
+		}
 		return db.getAllGames();
 	}
 	
