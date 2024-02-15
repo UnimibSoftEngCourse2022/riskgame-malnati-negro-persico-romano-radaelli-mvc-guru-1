@@ -1,5 +1,6 @@
 package com.mvcguru.risiko.maven.eclipse.service.database;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -189,7 +190,7 @@ public class DaoSQLiteImpl implements DataDao {
     
     //GameDao methods
 	@Override
-	public IGame getGameById(String gameId) throws GameException {
+	public IGame getGameById(String gameId) throws GameException, IOException {
 		   String sql = "SELECT * FROM games WHERE game_id = ?";
 		    PreparedStatement pstmt = null;
 		    ResultSet rs = null;
@@ -241,7 +242,7 @@ public class DaoSQLiteImpl implements DataDao {
     }
 
 	@Override
-    public List<IGame> getAllGames() throws GameException {
+    public List<IGame> getAllGames() throws GameException, IOException {
         String sql = "SELECT * FROM games";
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -261,7 +262,7 @@ public class DaoSQLiteImpl implements DataDao {
         }
     }
 
-	private IGame extractGameFromResultSet(ResultSet rs) throws GameException{
+	private IGame extractGameFromResultSet(ResultSet rs) throws GameException, IOException{
 		IGame newGame = null;
 		GameConfiguration config = GameConfiguration.builder().build();
         try {

@@ -18,4 +18,11 @@ public class TerritoryCard extends ICard{
 		ARTILLERY;
 	}
 	
+	public TerritoryCard(Territory territory) {
+		this.territory = territory;
+		this.symbol = CardSymbol.values()[(int) (Math.random() * CardSymbol.values().length)];
+		
+		
+	}
+	
 }

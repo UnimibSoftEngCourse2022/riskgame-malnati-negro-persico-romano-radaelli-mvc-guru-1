@@ -1,5 +1,6 @@
 package com.mvcguru.risiko.maven.eclipse.controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,7 +32,7 @@ public class EventController {
     }
 	
 	@MessageMapping("/partite/{id}/entra")
-    public void enterInTheGame(@Payload PlayerBody body, @DestinationVariable String id) {
+    public void enterInTheGame(@Payload PlayerBody body, @DestinationVariable String id) throws IOException {
 		IGame game = null;
 		try {
 			game = GameRepository.getInstance().getGameById(id);
@@ -51,7 +52,7 @@ public class EventController {
 	@MessageMapping("/partite/{id}/esci") 
     public void exit(
             @DestinationVariable String id,
-            @Payload PlayerBody body) throws FullGameException {
+            @Payload PlayerBody body) throws FullGameException, IOException {
 		IGame game = null;
 		try {
             game = GameRepository.getInstance().getGameById(id);

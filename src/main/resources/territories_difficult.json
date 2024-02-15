@@ -1,0 +1,170 @@
+[
+  {
+    "nome": "Afganistan",
+    "continente": 4
+  },
+  {
+    "nome": "Africa del Nord",
+    "continente": 3
+  },
+  {
+    "nome": "Africa del Sud",
+    "continente": 3
+  },
+  {
+    "nome": "Africa Orientale",
+    "continente": 3
+  },
+  {
+    "nome": "Alaska",
+    "continente": 3
+  },
+  {
+    "nome": "Alberta",
+    "continente": 5
+  },
+  {
+    "nome": "America Centrale",
+    "continente": 5
+  },
+  {
+    "nome": "Argentina",
+    "continente": 1
+  },
+  {
+    "nome": "Australia Occidentale",
+    "continente": 6
+  },
+  {
+    "nome": "Australia Orientale",
+    "continente": 6
+  },
+  {
+    "nome": "Brasile",
+    "continente": 1
+  },
+  {
+    "nome": "Cina",
+    "continente": 4
+  },
+  {
+    "nome": "Cità",
+    "continente": 4
+  },
+  {
+    "nome": "Congo",
+    "continente": 3
+  },
+  {
+    "nome": "Egitto",
+    "continente": 3
+  },
+  {
+    "nome": "Europa Meridionale",
+    "continente": 2
+  },
+  {
+    "nome": "Europa Occidentale",
+    "continente": 2
+  },
+  {
+    "nome": "Europa Settentrionale",
+    "continente": 2
+  },
+  {
+    "nome": "Giappone",
+    "continente": 4
+  },
+  {
+    "nome": "Gran Bretagna",
+    "continente": 2
+  },
+  {
+    "nome": "Groenlandia",
+    "continente": 5
+  },
+  {
+    "nome": "India",
+    "continente": 4
+  },
+  {
+    "nome": "Indonesia",
+    "continente": 4
+  },
+  {
+    "nome": "Islanda",
+    "continente": 2
+  },
+  {
+    "nome": "Jacuzia",
+    "continente": 4
+  },
+  {
+    "nome": "Kamchatka",
+    "continente": 4
+  },
+  {
+    "nome": "Madagascar",
+    "continente": 3
+  },
+  {
+    "nome": "Medio Oriente",
+    "continente": 4
+  },
+  {
+    "nome": "Mongolia",
+    "continente": 4
+  },
+  {
+    "nome": "Nuova Guinea",
+    "continente": 6
+  },
+  {
+    "nome": "Ontario",
+    "continente": 5
+  },
+  {
+    "nome": "Perù",
+    "continente": 1
+  },
+  {
+    "nome": "Quebec",
+    "continente": 5
+  },
+  {
+    "nome": "Scandinavia",
+    "continente": 2
+  },
+  {
+    "nome": "Siam",
+    "continente": 4
+  },
+  {
+    "nome": "Siberia",
+    "continente": 4
+  },
+  {
+    "nome": "Stati Uniti Occ.",
+    "continente": 5
+  },
+  {
+    "nome": "Stati Uniti Orient.",
+    "continente": 5
+  },
+  {
+    "nome": "Territori del Nord O.",
+    "continente": 5
+  },
+  {
+    "nome": "Ucraina",
+    "continente": 2
+  },
+  {
+    "nome": "Urali",
+    "continente": 4
+  },
+  {
+    "nome": "Venezuela",
+    "continente": 1
+  }
+]

@@ -2,6 +2,8 @@ package com.mvcguru.risiko.maven.eclipse.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.IOException;
+
 import org.junit.jupiter.api.Test;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
@@ -11,7 +13,7 @@ import com.mvcguru.risiko.maven.eclipse.states.LobbyState;
 class FactoryGameTest {
 
     @Test
-    void testCreateGame() {
+    void testCreateGame() throws IOException {
         GameConfiguration config = GameConfiguration.builder()
                 .mode(GameMode.EASY)
                 .numberOfPlayers(4)

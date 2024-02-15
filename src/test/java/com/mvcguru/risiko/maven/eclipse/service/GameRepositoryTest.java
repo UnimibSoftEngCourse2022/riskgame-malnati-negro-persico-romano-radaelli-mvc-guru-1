@@ -15,6 +15,7 @@ import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 import com.mvcguru.risiko.maven.eclipse.service.database.DataDao;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +49,7 @@ class GameRepositoryTest {
     }
 
     @Test
-    void testGetGameById() throws GameException, FullGameException {
+    void testGetGameById() throws GameException, FullGameException, IOException {
         String gameId = "testGameId";
         IGame expectedGame = mock(IGame.class);
         when(dataDao.getGameById(gameId)).thenReturn(expectedGame);
@@ -59,7 +60,7 @@ class GameRepositoryTest {
     }
 
     @Test
-    void testGetAllGames() throws GameException {
+    void testGetAllGames() throws GameException, IOException {
         List<IGame> expectedGames = new ArrayList<>();
         when(dataDao.getAllGames()).thenReturn(expectedGames);
         List<IGame> actualGames = gameRepository.getAllGames();

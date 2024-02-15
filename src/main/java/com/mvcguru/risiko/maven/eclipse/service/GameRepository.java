@@ -1,5 +1,6 @@
 package com.mvcguru.risiko.maven.eclipse.service;
 
+import java.io.IOException;
 import java.util.List;
 
 import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
@@ -34,14 +35,14 @@ public class GameRepository {
 			db.deleteGame(game);
 	}
 	
-	public synchronized IGame getGameById(String gameId) throws GameException, FullGameException {
+	public synchronized IGame getGameById(String gameId) throws GameException, FullGameException, IOException {
 		IGame game = db.getGameById(gameId);
 		List<Player> lista = db.getPlayerInGame(gameId);
 		for (Player p : lista) { game.addPlayer(p); }
 		return game;
 	}
 	
-	public synchronized List<IGame> getAllGames() throws GameException {
+	public synchronized List<IGame> getAllGames() throws GameException, IOException {
 		return db.getAllGames();
 	}
 	
