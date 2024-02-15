@@ -1,5 +1,6 @@
 package com.mvcguru.risiko.maven.eclipse.model;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.slf4j.Logger;
@@ -8,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import com.mvcguru.risiko.maven.eclipse.actions.ActionPlayer;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
 import com.mvcguru.risiko.maven.eclipse.model.deck.IDeck;
+import com.mvcguru.risiko.maven.eclipse.model.deck.ObjectivesDeck;
+import com.mvcguru.risiko.maven.eclipse.model.deck.TerritoriesDeck;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 import com.mvcguru.risiko.maven.eclipse.states.GameState;
 
@@ -44,5 +47,9 @@ public abstract class IGame {
     public abstract void broadcast();
 
 	public abstract Player findPlayerByUsername(String username);
+	
+	public abstract TerritoriesDeck createTerritoryDeck(GameConfiguration configuration) throws IOException;
+	
+	public abstract ObjectivesDeck createObjectiveDeck(GameConfiguration configuration) throws IOException;
    
 }

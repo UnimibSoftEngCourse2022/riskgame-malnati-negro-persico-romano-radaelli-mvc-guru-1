@@ -29,5 +29,7 @@ class FactoryGameTest {
         assertEquals(4, game.getConfiguration().getNumberOfPlayers());
         assertEquals("TestMap", game.getConfiguration().getIdMap());
         assertTrue(game.getState() instanceof LobbyState);
+        
+        
     }
 }
