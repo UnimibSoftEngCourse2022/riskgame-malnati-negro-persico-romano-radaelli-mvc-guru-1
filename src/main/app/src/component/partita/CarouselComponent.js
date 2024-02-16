@@ -8,19 +8,13 @@ function CarouselComponent() {
   const [index, setIndex] = useState(0);
   const [lobbies, setLobbies] = useState([]);
   const navigate = useNavigate();
-  //quesrti servono per parsare il nickname dall'url, prima non riusciva e arrivava sempre null
-  const pathArray = window.location.pathname.split('/')
-  const nickname = pathArray[pathArray.length - 1] === 'null' ? `Ospite_${Date.now()}` : pathArray[pathArray.length - 1];
+  const { id } = useParams();
 
   const uniscitiAllaLobby = (idPartita) => {
-    console.log("nickname carousel", nickname);
-    console.log("idPartita carousel", idPartita);
-
-    let effectiveNickname = nickname;
-   /* if (!effectiveNickname || effectiveNickname === "null") {
+    let effectiveNickname = id;
+    if (!effectiveNickname || effectiveNickname === "null") {
       effectiveNickname = `Ospite_${Date.now()}`;
-    }*/
-    console.log(effectiveNickname);
+    }
 
     navigate(`/lobby/${idPartita}?nickname=${effectiveNickname}`);
   };
@@ -66,7 +60,10 @@ function CarouselComponent() {
                       Giocatori: {lobby.players.length}/
                       {lobby.configuration.players}
                     </p>
-                    <Button onClick={() => uniscitiAllaLobby(lobby.id)}>
+                    <Button 
+                    disabled={lobby.players.length >= lobby.configuration.players}
+                    onClick={() => uniscitiAllaLobby(lobby.id)}
+                    >
                       Unisciti alla Lobby
                     </Button>
                   </Card.Body>

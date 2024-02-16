@@ -1,8 +1,8 @@
 import React from "react";
 import AppController from "../application/AppController";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
+import PartitaObserverSingleton from "../application/PartitaObserverSingleton";
 
-// Componente funzione wrapper per passare i hook come props
 function LobbyPage() {
   const params = useParams();
   const navigate = useNavigate();
@@ -18,40 +18,65 @@ class LobbyClass extends React.Component {
       nickname: null,
       utentiConnessi: [],
     };
+
+    this.updatePartita = this.updatePartita.bind(this);
   }
 
   componentDidMount() {
-  const { params, location } = this.props;
-  const query = new URLSearchParams(location.search);
-  const idPartita = params.id; // Assicurati che la chiave qui corrisponda a quella definita nelle tue rotte
-  const nickname = query.get("nickname");
+    const { params, location } = this.props;
+    const query = new URLSearchParams(location.search);
+    const idPartita = params.idPartita;
+    const nickname = query.get("nickname");
 
-  this.setState({ idPartita, nickname });
-  this.connettiALobby(idPartita);
+    console.log(
+      `Componente montato. Nickname: ${nickname}, ID Partita: ${idPartita}`
+    );
+
+    this.setState({ idPartita, nickname });
+    // questa classe lobby diventa un listener
+    PartitaObserverSingleton.addListener(this);
+    // this.connettiALobby(idPartita, nickname);
+  }
+
+
+  updatePartita(partita) {
+    const utentiConnessi = partita.players
+      .filter((player) => player.userName !== null)
+      .map((player) => player.userName);
+    this.setState({ utentiConnessi });
+  }
+  
+   esciDallaLobby = () => {
+    const { idPartita, nickname } = this.state;
+    AppController.esciDallaPartita(idPartita, nickname)
+        // Controlla se il nickname inizia con "Ospite_"
+        if (nickname.startsWith("Ospite_")) {
+            this.props.navigate(`/partita/null`);
+        } else {
+            this.props.navigate(`/partita/${nickname}`);
+        }
 }
 
-
-  connettiALobby(idPartita) {
-    AppController.entraInPartita(idPartita, this.state.nickname)
-      .then((partita) => {
-        // Supponiamo che `partita` includa l'elenco aggiornato degli utenti connessi
-        this.setState({ utentiConnessi: partita.utentiConnessi });
-      })
-      .catch((error) =>
-        console.error("Errore durante la connessione alla lobby:", error)
-      );
-  }
   render() {
     const { idPartita, utentiConnessi } = this.state;
+    console.log("utentiConnessi", utentiConnessi);
     return (
       <div>
         <h2>Lobby: {idPartita}</h2>
         <h3>Utenti Connessi:</h3>
-        <ul>
-          {utentiConnessi.map((utente, index) => (
-            <li key={index}>{utente.username}</li>
-          ))}
-        </ul>
+        <div>
+          {Array.isArray(utentiConnessi) && utentiConnessi.length > 0 ? (
+            utentiConnessi.map((utente, index) => (
+              <p className="text-dark" key={index}>
+                {utente}
+              </p>
+            ))
+          ) : (
+            <p>Nessun utente connesso</p>
+          )}
+           <button onClick={this.esciDallaLobby}>Esci dalla Lobby</button>
+
+        </div>
       </div>
     );
   }
