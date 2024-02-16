@@ -40,6 +40,7 @@ public class Game extends IGame {
 
 	@Override
     public void broadcast() {
+		LOGGER.info("Broadcasting", this);
         MessageBrokerSingleton.getInstance().broadcast(this);
 	}
 	

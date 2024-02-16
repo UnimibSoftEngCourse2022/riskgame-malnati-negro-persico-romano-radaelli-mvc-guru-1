@@ -60,15 +60,14 @@ public class GameRepository {
 	}
 	
 	public synchronized List<IGame> getAllGames() throws GameException, FullGameException {
-		for (IGame g : db.getAllGames()) {
-			LOGGER.info("Game: {}", g);
+		List<IGame> games = db.getAllGames();
+		for (IGame g : games ) {
 			List<Player> lista = db.getPlayerInGame(g.getId());
 			for (Player p : lista) {
-				LOGGER.info("Player: {}", p);
 				g.addPlayer(p);
 			}
 		}
-		return db.getAllGames();
+		return games;
 	}
 	
 	public synchronized void add(Player player) throws GameException {

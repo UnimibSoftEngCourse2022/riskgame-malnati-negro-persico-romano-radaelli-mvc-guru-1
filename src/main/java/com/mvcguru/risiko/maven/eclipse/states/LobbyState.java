@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mvcguru.risiko.maven.eclipse.actions.GameEntry;
+import com.mvcguru.risiko.maven.eclipse.actions.GameExit;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
 
 import lombok.NoArgsConstructor;
@@ -32,7 +33,12 @@ public class LobbyState extends GameState{
         	game.getState().setupGame();
         }
         
-    }    
+    }
+	
+	public void onActionPlayer (GameExit gameExit) {
+		LOGGER.info("LobbyState: uscita giocatore - azione rilevata");
+		game.getPlayers().remove(gameExit.getPlayer());
+	}
     
 
 }

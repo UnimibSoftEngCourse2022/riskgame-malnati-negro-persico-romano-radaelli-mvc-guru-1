@@ -1,8 +1,8 @@
 import React from "react";
-import { Button, Container, Form, Card, Carousel } from "react-bootstrap";
+import { Button, Form, Card, Carousel } from "react-bootstrap";
 import AppController from "../application/AppController";
 import { withAuth } from "../auth/AuthContext";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useNavigate, useParams} from "react-router-dom";
 import "../styles/carouselStyle.css";
 
 function NewPartitaPage() {
@@ -62,13 +62,13 @@ class NewPartita extends React.Component {
     try {
       const result = await AppController.creaPartita(configuration);
       this.setState({
-        isLobbyCreated: "Lobby creata con successo! ID Lobby: `${result.id}`",
+        isLobbyCreated: `Lobby creata con successo! ID Lobby: ${result.id}`,
       });
       // Aggiorna il numero totale delle lobby dopo averne creata una nuova
       this.fetchLobbies();
     } catch (error) {
       this.setState({
-        isLobbyCreated: "Errore nella creazione della lobby: ${error.message}",
+        isLobbyCreated: `Errore nella creazione della lobby: ${error.message}`,
       });
     }
   };
@@ -82,9 +82,13 @@ class NewPartita extends React.Component {
     if (!effectiveNickname || effectiveNickname === "null") {
       effectiveNickname = `Ospite_${Date.now()}`;
     }
-    console.log("effectiveNickname", effectiveNickname);
+   try {
     AppController.entraInPartita(idPartita, effectiveNickname);
     this.props.navigate(`/lobby/${idPartita}?nickname=${effectiveNickname}`);
+  } catch (error) {
+    alert("Errore: " + error.message); // Mostra un popup con l'errore
+    console.error("Errore durante l'entrata nella partita:", error);
+  }
   };
 
   renderLobbyOptions = () => {
@@ -131,7 +135,15 @@ class NewPartita extends React.Component {
                   {lobby.configuration.players}
                 </p>
                 {/* Implementa qui la funzione per unirsi alla lobby se necessario */}
-                <Button onClick={() => this.uniscitiAllaLobby(lobby.id)}>
+                <Button 
+                onClick={() => {
+    			if (lobby.players.length >= lobby.configuration.players) {
+      				alert('La lobby è piena!');
+    			} else {
+      				this.uniscitiAllaLobby(lobby.id);
+    			}
+  				}}
+                >
                   Unisci a lobby
                 </Button>
               </Card.Body>

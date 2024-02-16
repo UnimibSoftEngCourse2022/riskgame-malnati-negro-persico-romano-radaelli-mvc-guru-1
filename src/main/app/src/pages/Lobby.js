@@ -38,17 +38,6 @@ class LobbyClass extends React.Component {
     // this.connettiALobby(idPartita, nickname);
   }
 
-  // connettiALobby(idPartita, nickname) {
-  //   console.log(
-  //     `Tentativo di connessione alla lobby con ID Partita: ${idPartita}`
-  //   );
-
-  //   try {
-  //     AppController.entraInPartita(idPartita, nickname);
-  //   } catch (error) {
-  //     console.error("Errore durante la connessione alla lobby:", error);
-  //   }
-  // }
 
   updatePartita(partita) {
     const utentiConnessi = partita.players
@@ -56,6 +45,17 @@ class LobbyClass extends React.Component {
       .map((player) => player.userName);
     this.setState({ utentiConnessi });
   }
+  
+   esciDallaLobby = () => {
+    const { idPartita, nickname } = this.state;
+    AppController.esciDallaPartita(idPartita, nickname)
+        // Controlla se il nickname inizia con "Ospite_"
+        if (nickname.startsWith("Ospite_")) {
+            this.props.navigate(`/partita/null`);
+        } else {
+            this.props.navigate(`/partita/${nickname}`);
+        }
+}
 
   render() {
     const { idPartita, utentiConnessi } = this.state;
@@ -74,6 +74,8 @@ class LobbyClass extends React.Component {
           ) : (
             <p>Nessun utente connesso</p>
           )}
+           <button onClick={this.esciDallaLobby}>Esci dalla Lobby</button>
+
         </div>
       </div>
     );
