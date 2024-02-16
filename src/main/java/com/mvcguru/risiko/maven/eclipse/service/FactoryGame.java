@@ -15,10 +15,8 @@ import lombok.Data;
 public class FactoryGame {
     private static FactoryGame instance;
     private GameState gameState;
-    private static String idGame;
 
-
-    private FactoryGame() {
+    public FactoryGame() {
         // Costruttore privato per impedire l'istanziazione esterna
     }
 
@@ -29,14 +27,8 @@ public class FactoryGame {
     }
 
     public static String createId() {
-         idGame = UUID.randomUUID().toString();
-        return idGame;
+        return UUID.randomUUID().toString();
     }
-    
-	public static String getIdGame() {
-		return idGame;
-	}		
-
 
     public IGame createGame(GameConfiguration configuration) throws IOException {
     

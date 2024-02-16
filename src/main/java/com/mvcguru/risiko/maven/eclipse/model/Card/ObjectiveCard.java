@@ -1,8 +1,7 @@
 package com.mvcguru.risiko.maven.eclipse.model.Card;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mvcguru.risiko.maven.eclipse.model.IGame;
-import com.mvcguru.risiko.maven.eclipse.model.objective.Objective;
+import com.mvcguru.risiko.maven.eclipse.model.Card.ICard;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,11 +11,8 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 public class ObjectiveCard extends ICard{
-	
 	@JsonProperty("objective")
-	private Objective objective;
+	private String objective;
 	
-	public boolean isComplete(IGame game) {
-		return objective.isComplete(game);
-	}
+
 }

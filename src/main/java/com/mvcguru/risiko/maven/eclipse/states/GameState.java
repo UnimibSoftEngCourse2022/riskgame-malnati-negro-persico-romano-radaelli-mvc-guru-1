@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.actions.GameEntry;
+import com.mvcguru.risiko.maven.eclipse.actions.GameExit;
 import com.mvcguru.risiko.maven.eclipse.actions.TerritorySetup;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
 
@@ -16,22 +17,23 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({
-    @JsonSubTypes.Type(value = LobbyState.class, name = "LobbyState")
-    // Aggiungi qui altre annotazioni @JsonSubTypes per i futuri stati
+    @JsonSubTypes.Type(value = LobbyState.class, name = "LobbyState"),
+    @JsonSubTypes.Type(value = GameSetupState.class, name = "SetupState")
 })
 public abstract class GameState implements Serializable {
 
     @JsonIgnore
-    protected IGame game;
+    protected transient IGame game;
 
     protected GameState() {  }
     
     public void playTurn() {  }
     
     public void onActionPlayer(GameEntry gameEntry) throws FullGameException{ }
+    
+    public void onActionPlayer(GameExit gameExit) { }
 
 	public void onActionPlayer(TerritorySetup territorySetup) { }
-
 
 	public void setUpGame() {}
 }

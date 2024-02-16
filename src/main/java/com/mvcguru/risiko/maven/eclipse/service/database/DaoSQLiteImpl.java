@@ -97,7 +97,7 @@ public class DaoSQLiteImpl implements DataDao {
 		@Override
 		public void createGamesTable() throws GameException {
 	        String sql = "CREATE TABLE IF NOT EXISTS games (\n"
-	                + "game_id TEXT PRIMARY KEY,\n"
+	                + "gameId TEXT PRIMARY KEY,\n"
 	        		+ "mode TEXT NOT NULL,\n"
 	                + "number_of_players INTEGER NOT NULL,\n"
 	                + "idMap TEXT NOT NULL\n" 
@@ -116,9 +116,9 @@ public class DaoSQLiteImpl implements DataDao {
     public void createPlayerTable() throws GameException {
         String sql = "CREATE TABLE IF NOT EXISTS players (" +
                      "username TEXT," +
-                     "game_id TEXT," +
+                     "gameId TEXT," +
                      "color TEXT," +
-                     "FOREIGN KEY(game_id) REFERENCES games(game_id)," +
+                     "FOREIGN KEY(gameId) REFERENCES games(gameId)," +
                      "PRIMARY KEY (username)" +
                      ");";
         PreparedStatement pstmt = null;
@@ -166,7 +166,6 @@ public class DaoSQLiteImpl implements DataDao {
 		}
         String sql = "INSERT INTO users(username, password) VALUES(?, ?)";
         PreparedStatement pstmt = null;
-        System.out.println("Sono qua");
         try {
             pstmt = prepareStatement(sql, user.getUsername(), user.getPassword());
             pstmt.executeUpdate();
@@ -192,7 +191,7 @@ public class DaoSQLiteImpl implements DataDao {
     //GameDao methods
 	@Override
 	public IGame getGameById(String gameId) throws GameException, IOException {
-		   String sql = "SELECT * FROM games WHERE game_id = ?";
+		   String sql = "SELECT * FROM games WHERE gameId = ?";
 		    PreparedStatement pstmt = null;
 		    ResultSet rs = null;
 		    IGame game = null;
@@ -213,7 +212,7 @@ public class DaoSQLiteImpl implements DataDao {
 
 	@Override
 	public void registerGame(IGame game) throws GameException {
-        String sql = "INSERT INTO games (game_id, mode, number_of_players, idMap) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO games (gameId, mode, number_of_players, idMap) VALUES (?, ?, ?, ?)";
         PreparedStatement pstmt = null;
         try {
             pstmt = connection.prepareStatement(sql);
@@ -230,7 +229,7 @@ public class DaoSQLiteImpl implements DataDao {
 
 	@Override
     public void deleteGame(IGame game) throws GameException {
-        String sql = "DELETE FROM games WHERE game_id = ?";
+        String sql = "DELETE FROM games WHERE gameId = ?";
         PreparedStatement pstmt = null;
         try {
             pstmt = connection.prepareStatement(sql);
@@ -271,7 +270,7 @@ public class DaoSQLiteImpl implements DataDao {
         	config.setNumberOfPlayers(rs.getInt("number_of_players"));
 	        config.setIdMap(rs.getString("idMap"));
 	        newGame = FactoryGame.getInstance().createGame(config);
-	        newGame.setId(rs.getString("game_id"));
+	        newGame.setId(rs.getString("gameId"));
 			} catch (SQLException e) {throw new GameException("Errore durante il recupero di una partita", e);
 			}
         return newGame;
@@ -280,12 +279,12 @@ public class DaoSQLiteImpl implements DataDao {
 	//PlayerDao methods
 	public void insertPlayer(Player player) throws GameException {
 		String username = player.getUserName();
-		String game_id = player.getGameId();
+		String gameId = player.getGameId();
 		String color = player.getColor().name();
-		String sql = "INSERT INTO players (username, game_id, color) VALUES (?, ?, ?)";
+		String sql = "INSERT INTO players (username, gameId, color) VALUES (?, ?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, username);
-            pstmt.setString(2, game_id);
+            pstmt.setString(2, gameId);
             pstmt.setString(3, color);
             pstmt.executeUpdate();
         } catch (SQLException e) {throw new GameException("Errore durante l'inserimento del giocatore.", e);
@@ -303,7 +302,7 @@ public class DaoSQLiteImpl implements DataDao {
 
     public List<Player> getPlayerInGame(String gameId) throws GameException {
         List<Player> players = new ArrayList<>();
-        String sql = "SELECT username, game_id, color FROM players WHERE game_id = ?";
+        String sql = "SELECT username, gameId, color FROM players WHERE gameId = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, gameId);
             try (ResultSet rs = pstmt.executeQuery()) {

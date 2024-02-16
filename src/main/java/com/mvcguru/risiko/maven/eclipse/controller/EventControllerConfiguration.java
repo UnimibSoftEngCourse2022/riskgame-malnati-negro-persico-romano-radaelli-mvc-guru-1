@@ -13,8 +13,12 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @EnableWebSocketMessageBroker
 public class EventControllerConfiguration implements WebSocketMessageBrokerConfigurer {
 
+    private final Environment env;
+
     @Autowired
-    private Environment env;
+    public EventControllerConfiguration(Environment env) {
+        this.env = env;	
+    }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {

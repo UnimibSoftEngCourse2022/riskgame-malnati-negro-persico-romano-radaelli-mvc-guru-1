@@ -8,6 +8,13 @@ import java.util.Queue;
 import com.mvcguru.risiko.maven.eclipse.model.Card.ICard;
 import com.mvcguru.risiko.maven.eclipse.model.Card.ObjectiveCard;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+
+@Data
+@SuperBuilder
+@NoArgsConstructor
 public class ObjectivesDeck implements IDeck{
 	
     private Queue<ObjectiveCard> cards = new LinkedList<>();

@@ -39,7 +39,8 @@ public class GameController {
 		}
 		
         return ResponseEntity.ok().body("{\"id\": \"" + nuovaPartita.getId() + "\"}");
-    }
+
+	}
 	
 	@GetMapping("/partita")
 	public ResponseEntity<List<IGame>> gameCreation() {
@@ -49,7 +50,6 @@ public class GameController {
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().build();
         }
-		LOGGER.info("Partite presenti: {}", lobbies);
         return ResponseEntity.ok(lobbies);
     }
 

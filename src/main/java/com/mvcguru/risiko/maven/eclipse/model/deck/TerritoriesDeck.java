@@ -8,10 +8,16 @@ import java.util.Queue;
 import com.mvcguru.risiko.maven.eclipse.model.Card.ICard;
 import com.mvcguru.risiko.maven.eclipse.model.Card.TerritoryCard;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+
+@Data
+@SuperBuilder
+@NoArgsConstructor
 public class TerritoriesDeck implements IDeck{
 	
     private Queue<TerritoryCard> cards = new LinkedList<>();
-
 
 	@Override
 	public ICard drawCard() {

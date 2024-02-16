@@ -7,6 +7,7 @@ function CreaPartita() {
   const [players, setPlayers] = useState("");
   const [nomeMappa, setNomeMappa] = useState("");
   const [isLobbyCreated, setIsLobbyCreated] = useState("");
+  const { id } = useParams();
 
   const handleDifficolta = (e) => {
     setDifficolta(e.target.value);
@@ -71,14 +72,14 @@ function CreaPartita() {
     e.preventDefault();
     //qui creo configurazione
     const configuration = {
-    difficolta: difficolta,
-    players: parseInt(players),
-    nomeMappa: nomeMappa,
-  };
+      difficolta: difficolta,
+      players: parseInt(players),
+      nomeMappa: nomeMappa,
+    };
     try {
       const result = await AppController.creaPartita(configuration);
       setIsLobbyCreated(
-		  //qui non ti arrivava nessun id, ora ti arriva 
+        //qui non ti arrivava nessun id, ora ti arriva
         `Lobby creata con successo! ID Lobby: ${result.id}`
       );
     } catch (error) {

@@ -10,15 +10,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mvcguru.risiko.maven.eclipse.actions.ActionPlayer;
 import com.mvcguru.risiko.maven.eclipse.controller.MessageBrokerSingleton;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
-import com.mvcguru.risiko.maven.eclipse.model.Card.ICard;
+import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration.GameMode;
 import com.mvcguru.risiko.maven.eclipse.model.Card.ObjectiveCard;
 import com.mvcguru.risiko.maven.eclipse.model.Card.TerritoryCard;
-import com.mvcguru.risiko.maven.eclipse.model.Card.TerritoryCard.CardSymbol;
-import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration.GameMode;
 import com.mvcguru.risiko.maven.eclipse.model.deck.IDeck;
 import com.mvcguru.risiko.maven.eclipse.model.deck.ObjectivesDeck;
 import com.mvcguru.risiko.maven.eclipse.model.deck.TerritoriesDeck;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
+import com.mvcguru.risiko.maven.eclipse.states.PlayTurnState;
+
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,8 +27,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 public class Game extends IGame {
-    
-    //private transient LinkedList<GameState> stackStati = new LinkedList<>();
 	
 	public Game(String id, GameConfiguration configuration) {
 		super();
@@ -43,7 +41,6 @@ public class Game extends IGame {
         players.add(g);
         LOGGER.info("Aggiunta giocatore - giocatore aggiunto {}", g.getUserName());
         g.setGame(this);
-        //TODO scelta colore armate
     }
 
 	@Override
@@ -102,11 +99,31 @@ public class Game extends IGame {
         String json = new String(data, StandardCharsets.UTF_8);
         LOGGER.info("json: {}", json);
         ObjectiveCard[] objectives = mapper.readValue(json, ObjectiveCard[].class);
-        LOGGER.info("objectives: {}", objectives.toString());
         IDeck deck = new ObjectivesDeck();
 		for (ObjectiveCard o : objectives) {
             deck.insertCard(o);
         }
 		return deck;
 	}
+	
+	public void startGame() {
+		currentTurn = Turn.builder()
+                .player(players.get(0))
+                .build();
+	}
+	
+	public void changeTurn() {
+		
+		Player curr = currentTurn.getPlayer();
+		LOGGER.info("Cambio turno - giocatore corrente {}", curr.getUserName());
+		
+		setState(PlayTurnState.builder().build());
+        setCurrentTurn(Turn.builder()
+                .player(players.get((players.indexOf(curr) + 1) % players.size()))
+                .build());
+		
+        broadcast();
+	}
+	
+	
 }

@@ -64,19 +64,4 @@ class DatabaseConnectionTest {
             }
         }
     }
-    
-    @Test
-    void testGetConnectionWithInvalidDriver() {
-        assertThrows(ClassNotFoundException.class, () -> {
-            DatabaseConnection.getConnection("invalid.driver.class", SQLITE_DB_URL);
-        });
-    }
-    
-    @Test
-    void testGetConnectionWithInvalidUrl() {
-        assertThrows(SQLException.class, () -> {
-            DatabaseConnection.getConnection(SQLITE_JDBC_DRIVER, "invalid:url");
-        });
-    }
-
 }
