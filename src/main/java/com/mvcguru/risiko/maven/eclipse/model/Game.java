@@ -19,6 +19,8 @@ import com.mvcguru.risiko.maven.eclipse.model.deck.IDeck;
 import com.mvcguru.risiko.maven.eclipse.model.deck.ObjectivesDeck;
 import com.mvcguru.risiko.maven.eclipse.model.deck.TerritoriesDeck;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
+import com.mvcguru.risiko.maven.eclipse.states.PlayTurnState;
+
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -105,4 +107,26 @@ public class Game extends IGame {
         }
 		return deck;
 	}
+	
+	public void startGame() {
+		currentTurn = Turn.builder()
+                .player(players.get(0))
+                .build();
+        changeTurn();
+        
+        broadcast();
+	}
+	
+	public void changeTurn() {
+		Player curr = currentTurn.getPlayer();
+		LOGGER.info("Cambio turno - giocatore corrente {}", curr.getUserName());
+		
+		setState(PlayTurnState.builder().build());
+        setCurrentTurn(Turn.builder()
+                .player(players.get((players.indexOf(curr) + 1) % players.size()))
+                .build());
+		
+	}
+	
+	
 }

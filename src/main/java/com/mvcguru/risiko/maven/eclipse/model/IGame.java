@@ -37,6 +37,8 @@ public abstract class IGame {
     protected ArrayList<Player> players = new ArrayList<>();
 
     protected GameState state;
+    
+    protected Turn currentTurn;
 
     public abstract void addPlayer(Player g) throws FullGameException;
     
