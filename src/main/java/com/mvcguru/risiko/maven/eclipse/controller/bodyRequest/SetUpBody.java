@@ -1,4 +1,4 @@
-package com.mvcguru.risiko.maven.eclipse.controller;
+package com.mvcguru.risiko.maven.eclipse.controller.bodyRequest;
 
 import java.util.List;
 
@@ -8,6 +8,7 @@ import lombok.Data;
 
 @Data
 public class SetUpBody {
+	
 	private String username;
 	
 	private List<Territory> territories;
