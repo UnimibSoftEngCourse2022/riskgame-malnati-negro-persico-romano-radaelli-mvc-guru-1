@@ -31,17 +31,16 @@ public class LobbyState extends GameState{
 
         	game.setState(GameSetupState.builder().game(game).build());
 
-        	
-        	
         	LOGGER.info(game.getState().getClass().toString());
         	
         	game.getState().setUpGame();
-        }        
+
+        }
     }
 	
 	@Override
 	public void onActionPlayer (GameExit gameExit) {
 		LOGGER.info("LobbyState: uscita giocatore - azione rilevata");
 		game.getPlayers().remove(gameExit.getPlayer());
-	} 
+	}
 }

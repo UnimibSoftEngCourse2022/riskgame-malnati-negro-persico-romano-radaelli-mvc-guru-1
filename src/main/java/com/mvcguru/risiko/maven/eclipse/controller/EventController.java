@@ -1,6 +1,7 @@
 package com.mvcguru.risiko.maven.eclipse.controller;
-
+import java.io.IOException;
 import java.util.ArrayList;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,8 +61,7 @@ public class EventController {
             GameExit action = GameExit.builder().player(player).build();
             game.onActionPlayer(action);
             GameRepository.getInstance().removePlayer(body.getUsername());
-			} catch (GameException | DatabaseConnectionException | UserException e) {LOGGER.error("Errore durante l'uscita dalla partita", e);}
-    }
+        } catch (GameException | DatabaseConnectionException | UserException e) {LOGGER.error("Errore durante l'uscita dalla partita", e);}    }
 	
 	@MessageMapping("/partite/{id}/confermaSetup")
 	public void confirmSetup(@DestinationVariable String id, @Payload SetUpBody body) throws Exception {
