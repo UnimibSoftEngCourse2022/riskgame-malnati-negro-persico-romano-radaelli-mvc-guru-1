@@ -51,7 +51,7 @@ class LobbyClass extends React.Component {
     this.setState({ utentiTotali });
 
     if (utentiConnessi.length === utentiTotali) {
-      this.props.navigate(`/mappa/${this.state.idPartita}`, {
+      this.props.navigate(`/mappa/${this.state.nickname}`, {
         state: { partita },
       });
     }
