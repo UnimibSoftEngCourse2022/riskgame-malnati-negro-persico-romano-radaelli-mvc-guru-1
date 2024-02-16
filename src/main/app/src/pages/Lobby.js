@@ -50,6 +50,17 @@ class LobbyClass extends React.Component {
     this.setState({ utentiTotali });
   }
 
+  esciDallaLobby = () => {
+    const { idPartita, nickname } = this.state;
+    AppController.esciDallaPartita(idPartita, nickname);
+    // Controlla se il nickname inizia con "Ospite_"
+    if (nickname.startsWith("Ospite_")) {
+      this.props.navigate(`/partita/null`);
+    } else {
+      this.props.navigate(`/partita/${nickname}`);
+    }
+  };
+
   render() {
     const { idPartita, utentiConnessi, utentiTotali } = this.state;
     console.log("utentiConnessi in Lobby", utentiConnessi);
@@ -68,6 +79,7 @@ class LobbyClass extends React.Component {
           ) : (
             <p>Nessun utente connesso</p>
           )}
+          <button onClick={this.esciDallaLobby}>Esci dalla Lobby</button>
         </div>
       </div>
     );

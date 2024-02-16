@@ -8,6 +8,11 @@ class PartitaObserverSingleton {
   addListener(listener) {
     this.listeners.push(listener);
   }
+  
+  // Metodo per rimuovere un listener
+	removeListener(listener) {
+		 this.listListener = this.listListener.filter(el => el !== listener);
+	}
 
   // Metodo per notificare tutti i listener
   notifyListeners(partita) {

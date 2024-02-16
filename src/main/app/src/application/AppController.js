@@ -18,6 +18,10 @@ class AppController {
     this.client.activate();
   }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> refs/heads/andrea
   async creaPartita(configuration) {
     //qui arriva la configurazione della partita
     console.log("fetch crea partita ", JSON.stringify(configuration));
@@ -93,62 +97,39 @@ class AppController {
       throw error;
     }
   }
-
+  
   entraInPartita(idPartita, nickname) {
-    return new Promise((resolve, reject) => {
-      console.log(
-        `Tentativo di entrare in partita con id: ${idPartita} e nickname: ${nickname}`
-      );
-
-      if (!this.client) {
-        console.error("Client non inizializzato.");
-        reject("Client non inizializzato.");
-        return;
-      }
-
-      if (!this.client.connected) {
-        console.error("Client non connesso.");
-        reject("Client non connesso.");
-        return;
-      }
-
-      console.log("Inizio sottoscrizione alla partita");
-      this.client.subscribe(`/topic/partite/${idPartita}`, (message) => {
-        if (message.body === "Partita piena") {
-          console.error("La partita è piena.");
-          reject("La partita è piena");
-          return;
-        }
-
-        PartitaObserverSingleton.notifyListeners(JSON.parse(message.body));
-        console.log("Messaggio ricevuto:", message.body);
-
-        try {
-          const partita = JSON.parse(message.body);
-          console.log("Aggiornamento partita ricevuto:", partita);
-          resolve(partita);
-        } catch (error) {
-          console.error("Errore nella deserializzazione del messaggio:", error);
-          reject(error);
-        }
-      });
-
-      const payload = { username: nickname };
-      console.log("Payload inviato:", payload);
-      this.client.publish({
-        destination: `/app/partite/${idPartita}/entra`,
-        body: JSON.stringify(payload),
-        onComplete: (receipt) => {
-          console.log("Messaggio inviato con successo", receipt);
-          resolve("Partecipazione confermata");
-        },
-        onError: (error) => {
-          console.error("Errore nell'invio del messaggio", error);
-          reject("Errore nell'invio del messaggio");
-        },
-      });
-    });
+  if (!this.client || !this.client.connected) {
+	  console.error("Client STOMP non connesso");
   }
+
+  this.client.subscribe(`/topic/partite/${idPartita}`, (message) => {
+    PartitaObserverSingleton.notifyListeners(JSON.parse(message.body));
+    console.log("Messaggio ricevuto:", message.body);
+  });
+
+  const payload = { username: nickname };
+  this.client.publish({
+    destination: `/app/partite/${idPartita}/entra`,
+    body: JSON.stringify(payload),
+  });
+}
+
+	esciDallaPartita(idPartita, nickname) {
+  if (this.client && this.client.connected) {
+    this.client.unsubscribe(`/topic/partite/${idPartita}`);
+    // Notifica al server l'uscita dalla partita
+    const payload = { username: nickname };
+    this.client.publish({
+      destination: `/app/partite/${idPartita}/esci`,
+      body: JSON.stringify(payload),
+    });
+    console.log(`Notifica di uscita dalla partita ${idPartita} inviata, ${nickname} si è disconnesso`);
+  } else {
+    console.error("Client STOMP non connesso");
+  }
+}
+
 }
 
 // Esporta l'istanza per utilizzarla nell'app

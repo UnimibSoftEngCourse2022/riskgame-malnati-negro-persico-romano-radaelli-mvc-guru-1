@@ -13,6 +13,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 import com.mvcguru.risiko.maven.eclipse.actions.GameEntry;
+import com.mvcguru.risiko.maven.eclipse.actions.GameExit;
 import com.mvcguru.risiko.maven.eclipse.actions.TerritorySetup;
 import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
@@ -56,10 +57,12 @@ public class EventController {
             @DestinationVariable String id,
             @Payload PlayerBody body) throws FullGameException {
 		IGame game = null;
+		LOGGER.info("Uscita giocatore", body.getUsername());
 		try {
             game = GameRepository.getInstance().getGameById(id);
-            Player player = Player.builder().userName(body.getUsername()).game(game).build();
-            game.getPlayers().remove(player);
+            Player player = game.findPlayerByUsername(body.getUsername());
+            GameExit action = GameExit.builder().player(player).build();
+            game.onActionPlayer(action);
             GameRepository.getInstance().remove(body.getUsername());
         } catch (GameException | DatabaseConnectionException | UserException e) {
             //segnala errore

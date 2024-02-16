@@ -49,7 +49,6 @@ public class GameController {
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().build();
         }
-		LOGGER.info("Partite presenti: {}", lobbies);
         return ResponseEntity.ok(lobbies);
     }
 

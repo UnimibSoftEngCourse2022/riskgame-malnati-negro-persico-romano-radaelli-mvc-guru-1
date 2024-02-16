@@ -12,15 +12,10 @@ function CarouselComponent() {
   const { id } = useParams();
 
   const uniscitiAllaLobby = (idPartita) => {
-    console.log("nickname carousel", id);
-    console.log("idPartita carousel", idPartita);
-
     let effectiveNickname = id;
     if (!effectiveNickname || effectiveNickname === "null") {
       effectiveNickname = `Ospite_${Date.now()}`;
     }
-    console.log(effectiveNickname);
-    AppController.entraInPartita(idPartita, effectiveNickname);
     navigate(`/lobby/${idPartita}?nickname=${effectiveNickname}`);
   };
 
@@ -80,7 +75,12 @@ function CarouselComponent() {
                       Giocatori: {lobby.players.length}/
                       {lobby.configuration.players}
                     </p>
-                    <Button onClick={() => uniscitiAllaLobby(lobby.id)}>
+                    <Button
+                      disabled={
+                        lobby.players.length >= lobby.configuration.players
+                      }
+                      onClick={() => uniscitiAllaLobby(lobby.id)}
+                    >
                       Unisciti alla Lobby
                     </Button>
                   </Card.Body>
