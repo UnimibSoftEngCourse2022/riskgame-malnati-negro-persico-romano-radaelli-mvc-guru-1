@@ -168,7 +168,7 @@ class DaoSQLiteImplTest {
         List<Player> usersInGame = data.getPlayerInGame("game2");
         
         assertEquals(2, usersInGame.size());
-        assertTrue(usersInGame.get(0).equals(player1));
-        assertTrue(usersInGame.get(1).equals(player2));
+        assertEquals(player1, usersInGame.get(0));
+        assertEquals(player2, usersInGame.get(1));
     }
 }

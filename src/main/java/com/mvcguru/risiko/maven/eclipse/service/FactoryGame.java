@@ -17,8 +17,7 @@ public class FactoryGame {
     private GameState gameState;
     private static String idGame;
 
-
-    private FactoryGame() {
+    public FactoryGame() {
         // Costruttore privato per impedire l'istanziazione esterna
     }
 

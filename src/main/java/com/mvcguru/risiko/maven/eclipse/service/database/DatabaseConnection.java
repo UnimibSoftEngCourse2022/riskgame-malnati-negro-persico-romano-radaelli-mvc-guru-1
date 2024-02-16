@@ -20,9 +20,7 @@ public class DatabaseConnection {
         try {
             Class.forName(jdbcDriver);
             connection = DriverManager.getConnection(dbUrl);
-        } catch (ClassNotFoundException e) {throw e;
-        } catch (SQLException e) {throw e;
-        }
+        } catch (ClassNotFoundException | SQLException e) {LOGGER.error("Errore durante la connessione al database", e);}
         return connection;
     }
     

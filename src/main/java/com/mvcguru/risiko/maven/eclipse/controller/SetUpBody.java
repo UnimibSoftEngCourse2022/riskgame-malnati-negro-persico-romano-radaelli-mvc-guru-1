@@ -5,5 +5,4 @@ import lombok.Data;
 @Data
 public class SetUpBody {
 	private String username;
-	//private List<Territory> territories;
 }

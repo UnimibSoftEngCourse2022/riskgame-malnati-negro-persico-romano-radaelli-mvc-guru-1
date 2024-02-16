@@ -3,8 +3,8 @@ package com.mvcguru.risiko.maven.eclipse.model.deck;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.mvcguru.risiko.maven.eclipse.model.Territory;
-import com.mvcguru.risiko.maven.eclipse.model.Card.ICard;
-import com.mvcguru.risiko.maven.eclipse.model.Card.TerritoryCard;
+import com.mvcguru.risiko.maven.eclipse.model.card.ICard;
+import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

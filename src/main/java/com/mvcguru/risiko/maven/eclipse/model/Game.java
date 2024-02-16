@@ -10,11 +10,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mvcguru.risiko.maven.eclipse.actions.ActionPlayer;
 import com.mvcguru.risiko.maven.eclipse.controller.MessageBrokerSingleton;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
-import com.mvcguru.risiko.maven.eclipse.model.Card.ICard;
-import com.mvcguru.risiko.maven.eclipse.model.Card.ObjectiveCard;
-import com.mvcguru.risiko.maven.eclipse.model.Card.TerritoryCard;
-import com.mvcguru.risiko.maven.eclipse.model.Card.TerritoryCard.CardSymbol;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration.GameMode;
+import com.mvcguru.risiko.maven.eclipse.model.card.ICard;
+import com.mvcguru.risiko.maven.eclipse.model.card.ObjectiveCard;
+import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
+import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard.CardSymbol;
 import com.mvcguru.risiko.maven.eclipse.model.deck.IDeck;
 import com.mvcguru.risiko.maven.eclipse.model.deck.ObjectivesDeck;
 import com.mvcguru.risiko.maven.eclipse.model.deck.TerritoriesDeck;
@@ -27,8 +27,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 public class Game extends IGame {
-    
-    //private transient LinkedList<GameState> stackStati = new LinkedList<>();
 	
 	public Game(String id, GameConfiguration configuration) {
 		super();
@@ -43,7 +41,6 @@ public class Game extends IGame {
         players.add(g);
         LOGGER.info("Aggiunta giocatore - giocatore aggiunto {}", g.getUserName());
         g.setGame(this);
-        //TODO scelta colore armate
     }
 
 	@Override
@@ -102,7 +99,6 @@ public class Game extends IGame {
         String json = new String(data, StandardCharsets.UTF_8);
         LOGGER.info("json: {}", json);
         ObjectiveCard[] objectives = mapper.readValue(json, ObjectiveCard[].class);
-        LOGGER.info("objectives: {}", objectives.toString());
         IDeck deck = new ObjectivesDeck();
 		for (ObjectiveCard o : objectives) {
             deck.insertCard(o);

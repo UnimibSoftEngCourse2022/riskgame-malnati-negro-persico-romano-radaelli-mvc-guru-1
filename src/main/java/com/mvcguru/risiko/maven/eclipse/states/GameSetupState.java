@@ -9,11 +9,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mvcguru.risiko.maven.eclipse.actions.TerritorySetup;
-import com.mvcguru.risiko.maven.eclipse.controller.GameController;
+import com.mvcguru.risiko.maven.eclipse.model.card.ICard;
+import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
+import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard.CardSymbol;
 import com.mvcguru.risiko.maven.eclipse.model.deck.IDeck;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
-import com.mvcguru.risiko.maven.eclipse.model.Card.ICard;
-import com.mvcguru.risiko.maven.eclipse.model.Card.TerritoryCard;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player.PlayerColor;
 
 import lombok.NoArgsConstructor;
@@ -22,12 +22,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 public class GameSetupState extends GameState {
-	private static final Logger LOGGER = LoggerFactory.getLogger(GameController.class);
-    
-	@Override
-	public void onActionPlayer(TerritorySetup action) {
-		//action.getPlayer().setSetupCompleted(true);
-	}
+	private static final Logger LOGGER = LoggerFactory.getLogger(GameSetupState.class);
 	
 	@Override
 	public void setUpGame() {
@@ -38,6 +33,10 @@ public class GameSetupState extends GameState {
 		LOGGER.info("GameSetupState: assegnamento territori completato");
 		assignObjective(game.getDeckObjective());
 		LOGGER.info("GameSetupState: assegnamento obiettivi completato");
+		ICard cardJolly1 = TerritoryCard.builder().territory(null).symbol(CardSymbol.JOLLY).build();
+		ICard cardJolly2 = TerritoryCard.builder().territory(null).symbol(CardSymbol.JOLLY).build();
+		game.getDeckTerritory().insertCard(cardJolly1);
+		game.getDeckTerritory().insertCard(cardJolly2);
 	}
 
 	private void assignObjective(IDeck deckObjective) {
