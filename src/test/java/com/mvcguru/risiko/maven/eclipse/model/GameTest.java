@@ -10,6 +10,7 @@ import com.mvcguru.risiko.maven.eclipse.model.Card.ICard;
 import com.mvcguru.risiko.maven.eclipse.model.Card.ObjectiveCard;
 import com.mvcguru.risiko.maven.eclipse.model.Card.TerritoryCard;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration.GameMode;
+import com.mvcguru.risiko.maven.eclipse.model.deck.IDeck;
 import com.mvcguru.risiko.maven.eclipse.model.deck.ObjectivesDeck;
 import com.mvcguru.risiko.maven.eclipse.model.deck.TerritoriesDeck;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
@@ -93,7 +94,7 @@ class GameTest {
                 .build();
     	IGame game = FactoryGame.getInstance().createGame(config);
     	
-    	TerritoriesDeck testDeck = game.createTerritoryDeck(config);
+    	IDeck testDeck = game.createTerritoryDeck(config);
     	
     	ICard c = testDeck.drawCard();
     	TerritoryCard card = TerritoryCard.builder().territory(Territory.builder().name("Afganistan").continent(4).build()).symbol(TerritoryCard.CardSymbol.CAVALRY).build();
@@ -115,7 +116,7 @@ class GameTest {
     	
     	IGame game = FactoryGame.getInstance().createGame(config);
     	
-    	ObjectivesDeck testObjectivesDeck = game.createObjectiveDeck(config);
+    	IDeck testObjectivesDeck = game.createObjectiveDeck(config);
     	
     	ICard c = testObjectivesDeck.drawCard();
     	
@@ -132,7 +133,7 @@ class GameTest {
     	
     	IGame game2 = FactoryGame.getInstance().createGame(config2);
     	
-    	ObjectivesDeck testObjectivesDeck2 = game2.createObjectiveDeck(config2);
+    	IDeck testObjectivesDeck2 = game2.createObjectiveDeck(config2);
     	
     	ICard c2 = testObjectivesDeck2.drawCard();
     	
@@ -149,7 +150,7 @@ class GameTest {
     	
     	IGame game3 = FactoryGame.getInstance().createGame(config3);
     	
-    	ObjectivesDeck testObjectivesDeck3 = game3.createObjectiveDeck(config3);
+    	IDeck testObjectivesDeck3 = game3.createObjectiveDeck(config3);
     	
     	ICard c3 = testObjectivesDeck3.drawCard();
     	

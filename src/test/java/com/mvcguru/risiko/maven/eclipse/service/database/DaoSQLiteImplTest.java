@@ -3,6 +3,7 @@ package com.mvcguru.risiko.maven.eclipse.service.database;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +12,7 @@ import com.mvcguru.risiko.maven.eclipse.exception.GameException;
 import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
+import com.mvcguru.risiko.maven.eclipse.model.Territory;
 import com.mvcguru.risiko.maven.eclipse.model.User;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration.GameMode;
@@ -143,7 +145,7 @@ class DaoSQLiteImplTest {
     
     @Test
     void testInsertAndDeletePlayer() throws GameException {
-    	Player testPlayer = Player.builder().userName("testuser").gameId("game1").color(Player.PlayerColor.valueOf("RED")).build();
+    	Player testPlayer = Player.builder().userName("testuser").gameId("game1").territories(new ArrayList<Territory>()).color(Player.PlayerColor.valueOf("RED")).build();
     	data.insertPlayer(testPlayer);
         
         List<Player> usersInGame = data.getPlayerInGame("game1");
@@ -158,8 +160,8 @@ class DaoSQLiteImplTest {
 
     @Test
     void testGetUsersInGame() throws GameException {
-    	Player player1 = Player.builder().userName("user1").gameId("game2").color(Player.PlayerColor.valueOf("BLUE")).build();
-    	Player player2 = Player.builder().userName("user2").gameId("game2").color(Player.PlayerColor.valueOf("RED")).build();
+    	Player player1 = Player.builder().userName("user1").gameId("game2").territories(new ArrayList<Territory>()).color(Player.PlayerColor.valueOf("BLUE")).build();
+    	Player player2 = Player.builder().userName("user2").gameId("game2").territories(new ArrayList<Territory>()).color(Player.PlayerColor.valueOf("RED")).build();
     	data.insertPlayer(player1);
     	data.insertPlayer(player2);
 
