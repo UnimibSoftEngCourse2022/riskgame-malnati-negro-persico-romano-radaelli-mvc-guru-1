@@ -6,10 +6,9 @@ import java.util.Collections;
 import java.util.List;
 
 import com.mvcguru.risiko.maven.eclipse.actions.TerritorySetup;
-
+import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
 import com.mvcguru.risiko.maven.eclipse.model.deck.IDeck;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
-import com.mvcguru.risiko.maven.eclipse.model.Card.TerritoryCard;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player.PlayerColor;
 
 import lombok.NoArgsConstructor;

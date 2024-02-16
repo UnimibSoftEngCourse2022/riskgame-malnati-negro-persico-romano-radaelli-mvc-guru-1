@@ -60,7 +60,7 @@ class GameRepositoryTest {
     }
 
     @Test
-    void testGetAllGames() throws GameException, IOException {
+    void testGetAllGames() throws GameException, IOException, FullGameException {
         List<IGame> expectedGames = new ArrayList<>();
         when(dataDao.getAllGames()).thenReturn(expectedGames);
         List<IGame> actualGames = gameRepository.getAllGames();

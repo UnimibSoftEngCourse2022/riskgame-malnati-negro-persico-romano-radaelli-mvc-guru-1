@@ -1,4 +1,4 @@
-package com.mvcguru.risiko.maven.eclipse.model.Card;
+package com.mvcguru.risiko.maven.eclipse.model.card;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
