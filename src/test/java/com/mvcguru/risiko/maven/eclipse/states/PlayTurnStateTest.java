@@ -1,23 +1,27 @@
 package com.mvcguru.risiko.maven.eclipse.states;
 
-import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import com.mvcguru.risiko.maven.eclipse.actions.GameEntry;
-import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
-import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration;
-import com.mvcguru.risiko.maven.eclipse.model.IGame;
-import com.mvcguru.risiko.maven.eclipse.model.Territory;
-import com.mvcguru.risiko.maven.eclipse.model.player.Player;
-import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration.GameMode;
-import com.mvcguru.risiko.maven.eclipse.service.FactoryGame;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-class GameSetupStateTest {
+import com.mvcguru.risiko.maven.eclipse.actions.GameEntry;
+import com.mvcguru.risiko.maven.eclipse.actions.TerritorySetup;
+import com.mvcguru.risiko.maven.eclipse.controller.SetUpBody;
+import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
+import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration;
+import com.mvcguru.risiko.maven.eclipse.model.IGame;
+import com.mvcguru.risiko.maven.eclipse.model.Territory;
+import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration.GameMode;
+import com.mvcguru.risiko.maven.eclipse.model.player.Player;
+import com.mvcguru.risiko.maven.eclipse.service.FactoryGame;
+
+class PlayTurnStateTest {
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(GameSetupState.class);
 
     @Test
@@ -55,7 +59,13 @@ class GameSetupStateTest {
 			LOGGER.info("Player: {}", player.getObjective());
 		}
 		
+		SetUpBody setUpBody1 = SetUpBody.builder().username(player1.getUserName()).territories(player1.getTerritories()).build();
+		TerritorySetup territorySetup = TerritorySetup.builder().player(player1).setUpBody(setUpBody1).build();
+		game.getState().onActionPlayer(territorySetup);
 		
-		
+		SetUpBody setUpBody2 = SetUpBody.builder().username(player2.getUserName()).territories(player2.getTerritories()).build();
+		TerritorySetup territorySetup2 = TerritorySetup.builder().player(player2).setUpBody(setUpBody2).build();
+		game.getState().onActionPlayer(territorySetup2);
+		assertEquals(game.getState().getClass(), PlayTurnState.class);
     }
 }
