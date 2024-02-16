@@ -1,9 +1,9 @@
 import React from "react";
 import { Button, Container } from "react-bootstrap";
 import CreaPartita from "../component/partita/CreaPartita";
-
 import { withAuth } from "../auth/AuthContext";
 import CarouselComponent from "../component/partita/CarouselComponent";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 
 class Partita extends React.Component {
   constructor(props) {
@@ -48,6 +48,8 @@ class Partita extends React.Component {
             <CreaPartita />
           </div>
         )}
+
+        <Button onClick={handleNavigate}>Mappa</Button>
       </div>
     );
   }

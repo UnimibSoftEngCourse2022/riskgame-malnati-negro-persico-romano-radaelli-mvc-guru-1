@@ -17,6 +17,7 @@ class LobbyClass extends React.Component {
       idPartita: null,
       nickname: null,
       utentiConnessi: [],
+      utentiTotali: null,
     };
 
     this.updatePartita = this.updatePartita.bind(this);
@@ -38,31 +39,24 @@ class LobbyClass extends React.Component {
     // this.connettiALobby(idPartita, nickname);
   }
 
-  // connettiALobby(idPartita, nickname) {
-  //   console.log(
-  //     `Tentativo di connessione alla lobby con ID Partita: ${idPartita}`
-  //   );
-
-  //   try {
-  //     AppController.entraInPartita(idPartita, nickname);
-  //   } catch (error) {
-  //     console.error("Errore durante la connessione alla lobby:", error);
-  //   }
-  // }
-
   updatePartita(partita) {
+    console.log("update partita in lobby", partita);
     const utentiConnessi = partita.players
       .filter((player) => player.userName !== null)
       .map((player) => player.userName);
     this.setState({ utentiConnessi });
+
+    const utentiTotali = partita.configuration.players;
+    this.setState({ utentiTotali });
   }
 
   render() {
-    const { idPartita, utentiConnessi } = this.state;
-    console.log("utentiConnessi", utentiConnessi);
+    const { idPartita, utentiConnessi, utentiTotali } = this.state;
+    console.log("utentiConnessi in Lobby", utentiConnessi);
     return (
       <div>
         <h2>Lobby: {idPartita}</h2>
+        <p>utenti totali: {utentiTotali}</p>
         <h3>Utenti Connessi:</h3>
         <div>
           {Array.isArray(utentiConnessi) && utentiConnessi.length > 0 ? (

@@ -3,6 +3,7 @@ import { Card, Container, Carousel, Button } from "react-bootstrap";
 import AppController from "../../application/AppController";
 import "../../styles/carouselStyle.css";
 import { useNavigate, useParams } from "react-router-dom";
+import PartitaObserverSingleton from "../../application/PartitaObserverSingleton";
 
 function CarouselComponent() {
   const [index, setIndex] = useState(0);
@@ -19,7 +20,7 @@ function CarouselComponent() {
       effectiveNickname = `Ospite_${Date.now()}`;
     }
     console.log(effectiveNickname);
-
+    AppController.entraInPartita(idPartita, effectiveNickname);
     navigate(`/lobby/${idPartita}?nickname=${effectiveNickname}`);
   };
 
@@ -28,7 +29,7 @@ function CarouselComponent() {
       try {
         const data = await AppController.getPartite();
         setLobbies(data);
-        console.log("Lobby creata con successo!");
+        console.log("Lobby creata con successo!", data);
       } catch (error) {
         console.error("Error:", error);
         console.log("Creazione lobby fallita. Per favore, riprova.");
@@ -36,6 +37,20 @@ function CarouselComponent() {
     };
 
     fetchData();
+
+    // Funzione di callback per aggiornare le lobbies quando una nuova partita viene creata
+    const updatePartita = () => {
+      console.log("Rilevata nuova partita, aggiornamento lobbies...");
+      fetchData(); // Richiama fetchData per ottenere l'elenco aggiornato delle lobbies
+    };
+
+    // Registra l'oggetto listener in PartitaObserverSingleton
+    PartitaObserverSingleton.addListener({ updatePartita });
+
+    // Rimozione del listener quando il componente viene smontato
+    // return () => {
+    //   PartitaObserverSingleton.removeListener(updateLobbies);
+    // };
   }, []);
 
   const handleSelect = (selectedIndex) => {
@@ -46,6 +61,7 @@ function CarouselComponent() {
     <Container className="d-flex justify-content-center">
       {lobbies.length > 0 ? (
         <Carousel activeIndex={index} onSelect={handleSelect} className="w-75">
+          {console.log("lobby in carousel", lobbies)}
           {lobbies.map((lobby) => (
             <Carousel.Item key={lobby.id} className="p-2 mb-2">
               <Container className="text-center d-flex justify-content-center mb-4">

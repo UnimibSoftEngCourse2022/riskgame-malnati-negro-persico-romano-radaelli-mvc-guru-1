@@ -204,7 +204,6 @@ class NewPartita extends React.Component {
 
         {isLobbyCreated && <p>{isLobbyCreated}</p>}
 
-        {/* Carousel delle lobby */}
         {this.renderCarousel()}
       </div>
     );

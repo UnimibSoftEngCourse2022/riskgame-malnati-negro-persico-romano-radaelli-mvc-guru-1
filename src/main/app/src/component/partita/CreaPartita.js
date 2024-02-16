@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { Button, Form, Container } from "react-bootstrap";
 import AppController from "../../application/AppController";
+import { useParams } from "react-router-dom";
 
 function CreaPartita() {
   const [difficolta, setDifficolta] = useState("");
   const [players, setPlayers] = useState("");
   const [nomeMappa, setNomeMappa] = useState("");
   const [isLobbyCreated, setIsLobbyCreated] = useState("");
-  const { id } = useParams();
+  const { id } = useParams;
 
   const handleDifficolta = (e) => {
     setDifficolta(e.target.value);
@@ -77,7 +78,7 @@ function CreaPartita() {
       nomeMappa: nomeMappa,
     };
     try {
-      const result = await AppController.creaPartita(configuration);
+      const result = await AppController.creaPartitaComponent(configuration);
       setIsLobbyCreated(
         //qui non ti arrivava nessun id, ora ti arriva
         `Lobby creata con successo! ID Lobby: ${result.id}`
@@ -95,7 +96,6 @@ function CreaPartita() {
         onSubmit={handleSubmit}
       >
         <Form.Group className="mb-3" controlId="formOptionDifficolta">
-          <Form.Label>A quale quiz vuoi rispondere?</Form.Label>
           <Form.Control
             as="select"
             value={difficolta}
@@ -110,7 +110,6 @@ function CreaPartita() {
 
         {difficolta && (
           <Form.Group className="mb-3" controlId="formOptionPlayers">
-            <Form.Label>Numero Giocatori</Form.Label>
             <Form.Control
               as="select"
               value={players}
@@ -123,10 +122,9 @@ function CreaPartita() {
         )}
 
         <Form.Group className="mb-3">
-          <Form.Label>Inserisci nome mappa</Form.Label>
           <Form.Control
             type="text"
-            placeholder="mappa"
+            placeholder="Inserisci nome mappa"
             value={nomeMappa}
             onChange={(e) => setNomeMappa(e.target.value)}
           />
