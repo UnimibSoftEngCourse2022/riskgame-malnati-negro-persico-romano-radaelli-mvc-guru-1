@@ -29,7 +29,11 @@ public class LobbyState extends GameState{
         	LOGGER.info("LobbyState: inizio partita");
 
         	game.setState(GameSetupState.builder().game(game).build());
-        	game.getState().setupGame();
+        	
+        	
+        	LOGGER.info(game.getState().getClass().toString());
+        	
+        	game.getState().setUpGame();
         }
     }    
 }

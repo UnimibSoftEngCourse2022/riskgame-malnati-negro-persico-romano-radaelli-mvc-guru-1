@@ -23,15 +23,15 @@ class GameStateTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         gameState = spy(GameState.class);
-        doNothing().when(gameState).setupGame();
+        doNothing().when(gameState).setUpGame();
         doNothing().when(gameState).playTurn();
         gameState.game = game;
     }
 
     @Test
     void testSetupGame() {
-        gameState.setupGame();
-        verify(gameState, times(1)).setupGame();
+        gameState.setUpGame();
+        verify(gameState, times(1)).setUpGame();
     }
 
     @Test

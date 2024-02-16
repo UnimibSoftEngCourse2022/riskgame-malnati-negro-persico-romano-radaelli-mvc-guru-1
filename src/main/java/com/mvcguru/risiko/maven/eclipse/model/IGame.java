@@ -48,8 +48,8 @@ public abstract class IGame {
 
 	public abstract Player findPlayerByUsername(String username);
 	
-	public abstract TerritoriesDeck createTerritoryDeck(GameConfiguration configuration) throws IOException;
+	public abstract IDeck createTerritoryDeck(GameConfiguration configuration) throws IOException;
 	
-	public abstract ObjectivesDeck createObjectiveDeck(GameConfiguration configuration) throws IOException;
+	public abstract IDeck createObjectiveDeck(GameConfiguration configuration) throws IOException;
    
 }

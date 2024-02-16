@@ -15,6 +15,7 @@ import com.mvcguru.risiko.maven.eclipse.model.Card.ObjectiveCard;
 import com.mvcguru.risiko.maven.eclipse.model.Card.TerritoryCard;
 import com.mvcguru.risiko.maven.eclipse.model.Card.TerritoryCard.CardSymbol;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration.GameMode;
+import com.mvcguru.risiko.maven.eclipse.model.deck.IDeck;
 import com.mvcguru.risiko.maven.eclipse.model.deck.ObjectivesDeck;
 import com.mvcguru.risiko.maven.eclipse.model.deck.TerritoriesDeck;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
@@ -29,7 +30,6 @@ public class Game extends IGame {
     
     //private transient LinkedList<GameState> stackStati = new LinkedList<>();
 	
-    
 	public Game(String id, GameConfiguration configuration) {
 		super();
 		this.id = id; 
@@ -66,21 +66,21 @@ public class Game extends IGame {
         return null;
     }
 
-	public TerritoriesDeck createTerritoryDeck(GameConfiguration configuration) throws IOException {
+	public IDeck createTerritoryDeck(GameConfiguration configuration) throws IOException {
 		
 		ObjectMapper mapper = new ObjectMapper();
         byte[] data = FileCopyUtils.copyToByteArray(new ClassPathResource("territories_difficult.json").getInputStream());
         String json = new String(data, StandardCharsets.UTF_8);
         TerritoryCard[] territoriesCard = mapper.readValue(json, TerritoryCard[].class);
         
-        TerritoriesDeck deck = new TerritoriesDeck();
+        IDeck deck = new TerritoriesDeck();
 		for (TerritoryCard territoryCard : territoriesCard) {
 	            deck.insertCard(territoryCard);
 			}
 		return deck;
         }
 
-	public ObjectivesDeck createObjectiveDeck(GameConfiguration configuration) throws IOException {
+	public IDeck createObjectiveDeck(GameConfiguration configuration) throws IOException {
 		GameMode mode = configuration.getMode();
 		ObjectMapper mapper = new ObjectMapper();
 		byte[] data = null;
@@ -103,7 +103,7 @@ public class Game extends IGame {
         LOGGER.info("json: {}", json);
         ObjectiveCard[] objectives = mapper.readValue(json, ObjectiveCard[].class);
         LOGGER.info("objectives: {}", objectives.toString());
-        ObjectivesDeck deck = new ObjectivesDeck();
+        IDeck deck = new ObjectivesDeck();
 		for (ObjectiveCard o : objectives) {
             deck.insertCard(o);
         }
