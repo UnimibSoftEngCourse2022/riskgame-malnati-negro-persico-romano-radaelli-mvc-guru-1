@@ -97,7 +97,7 @@ class GameTest {
     	IDeck testDeck = game.createTerritoryDeck(config);
     	
     	ICard c = testDeck.drawCard();
-    	TerritoryCard card = TerritoryCard.builder().territory(Territory.builder().name("Afganistan").continent(4).build()).symbol(TerritoryCard.CardSymbol.CAVALRY).build();
+    	TerritoryCard card = TerritoryCard.builder().territory(Territory.builder().name("Afganistan").continent(4).build()).symbol(TerritoryCard.CardSymbol.INFANTRY).build();
     	TerritoryCard card2 = TerritoryCard.builder().territory(Territory.builder().name("Venezuela").continent(1).build()).symbol(TerritoryCard.CardSymbol.ARTILLERY).build();
     	
     	assertEquals(card, c, "The drawn card should be the same as the inserted card");
