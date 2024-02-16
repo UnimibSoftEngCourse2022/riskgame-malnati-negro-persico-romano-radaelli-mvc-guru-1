@@ -1,0 +1,44 @@
+[
+    {
+        "objective": "Conquistare 12 territori presidiandoli con almeno due armate ciascuno."
+    },
+    {
+        "objective": "Conquistare 18 territori."
+    },
+    {
+        "objective": "Eliminare completamente due giocatori."
+    },
+    {
+        "objective": "Occupare interamente tre continenti piccoli o inventati."
+    },
+    {
+        "objective": "Mantenere il controllo di due continenti per 3 turni consecutivi."
+    },
+    {
+        "objective": "Conquistare 5 territori in un solo turno."
+    },
+    {
+        "objective": "Riuscire a scambiare carte obiettivo per rinforzi tre volte in una partita."
+    },
+    {
+        "objective": "Vincere con almeno 10 territori che confinano con il mare."
+    },
+    {
+        "objective": "Conquistare tutti i territori di due continenti specifici."
+    },
+    {
+        "objective": "Accumulare un totale di 30 armate su territori specifici."
+    },
+    {
+        "objective": "Distruggere completamente l'armata di un giocatore in un solo turno."
+    },
+    {
+        "objective": "Vincere senza perdere più di 5 territori durante la partita, se perdi 5 territori il tuo obiettivo diventa conquistare 18 territori."
+    },
+    {
+        "objective": "Raggiungere per primi un numero prefissato di 40 armate totali."
+    },
+    {
+        "objective": "Conquistare un intero continente in un solo turno."
+    }
+]

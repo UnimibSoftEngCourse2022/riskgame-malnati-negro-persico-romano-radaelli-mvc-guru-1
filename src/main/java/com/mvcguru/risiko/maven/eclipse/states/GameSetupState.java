@@ -52,6 +52,7 @@ public class GameSetupState extends GameState {
 
 	private void assignColor(List<Player> players) {
 		List<PlayerColor> colors = new ArrayList<>(Arrays.asList(PlayerColor.values()));
+		colors.remove(PlayerColor.GREY);
 		Collections.shuffle(colors);
 		for (int i = 0; i < players.size(); i++) {
 			players.get(i).setColor(colors.get(i));

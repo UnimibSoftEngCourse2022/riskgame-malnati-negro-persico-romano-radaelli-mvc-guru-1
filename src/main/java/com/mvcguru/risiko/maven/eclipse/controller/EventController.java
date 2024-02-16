@@ -1,10 +1,9 @@
 package com.mvcguru.risiko.maven.eclipse.controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -24,7 +23,6 @@ import com.mvcguru.risiko.maven.eclipse.service.GameRepository;
 
 @Controller
 public class EventController {
-	private static final Logger LOGGER = LoggerFactory.getLogger(GameController.class);
 
 	@Autowired
     public EventController(SimpMessagingTemplate template) {
@@ -34,14 +32,14 @@ public class EventController {
     }
 	
 	@MessageMapping("/partite/{id}/entra")
-    public void enterInTheGame(@Payload PlayerBody body, @DestinationVariable String id) {
+    public void enterInTheGame(@Payload PlayerBody body, @DestinationVariable String id) throws IOException {
 		IGame game = null;
 		try {
 			game = GameRepository.getInstance().getGameById(id);
 			Player player = Player.builder().userName(body.getUsername()).gameId(id).color(Player.PlayerColor.GREY).build();
 			GameEntry action = GameEntry.builder().player(player).build();
 			game.onActionPlayer(action);
-			GameRepository.getInstance().add(player);
+			GameRepository.getInstance().addPlayer(player);
 		} catch (GameException | DatabaseConnectionException | UserException e) {
 			//segnala errore
 		} catch (FullGameException e) {
@@ -51,23 +49,23 @@ public class EventController {
         }
     }
 	
-	@MessageMapping("/partite/{id}/esci")
-    public void esci(
+	@MessageMapping("/partite/{id}/esci") 
+    public void exit(
             @DestinationVariable String id,
-            @Payload PlayerBody body) throws FullGameException {
+            @Payload PlayerBody body) throws FullGameException, IOException {
 		IGame game = null;
 		try {
             game = GameRepository.getInstance().getGameById(id);
             Player player = Player.builder().userName(body.getUsername()).game(game).build();
             game.getPlayers().remove(player);
-            GameRepository.getInstance().remove(body.getUsername());
+            GameRepository.getInstance().removePlayer(body.getUsername());
         } catch (GameException | DatabaseConnectionException | UserException e) {
             //segnala errore
         }
     }
 	
 	@MessageMapping("/partite/{id}/confermaSetup")
-	public void confermaSetup(@DestinationVariable String id, @Payload SetUpBody body) {
+	public void confirmSetup(@DestinationVariable String id, @Payload SetUpBody body) {
 	    try {
 	        IGame game = GameRepository.getInstance().getGameById(id);
 	        Player player = game.findPlayerByUsername(body.getUsername());

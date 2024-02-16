@@ -2,6 +2,7 @@ package com.mvcguru.risiko.maven.eclipse.service.database;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.IOException;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -66,7 +67,7 @@ class DaoSQLiteImplTest {
     }
 
     @Test
-    void testRegisterAndGetGameById() {
+    void testRegisterAndGetGameById() throws IOException {
         try {
             GameConfiguration config = GameConfiguration.builder()
                                         .mode(GameMode.EASY)
@@ -89,7 +90,7 @@ class DaoSQLiteImplTest {
     }
 
     @Test
-    void testDeleteGame() {
+    void testDeleteGame() throws IOException {
         try {
             GameConfiguration config = GameConfiguration.builder()
                                         .mode(GameMode.MEDIUM)
@@ -109,7 +110,7 @@ class DaoSQLiteImplTest {
     }
 
     @Test
-    void testGetAllGames() {
+    void testGetAllGames() throws IOException {
         try {
             GameConfiguration config1 = GameConfiguration.builder()
                                         .mode(GameMode.EASY)
