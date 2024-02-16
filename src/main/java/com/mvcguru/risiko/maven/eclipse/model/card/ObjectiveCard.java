@@ -1,7 +1,7 @@
-package com.mvcguru.risiko.maven.eclipse.model.Card;
+package com.mvcguru.risiko.maven.eclipse.model.card;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mvcguru.risiko.maven.eclipse.model.Card.ICard;
+import com.mvcguru.risiko.maven.eclipse.model.card.ICard;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

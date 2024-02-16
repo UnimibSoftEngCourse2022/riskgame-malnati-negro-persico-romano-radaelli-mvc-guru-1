@@ -3,7 +3,7 @@ package com.mvcguru.risiko.maven.eclipse.model.card;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
-import com.mvcguru.risiko.maven.eclipse.model.Card.ObjectiveCard;
+import com.mvcguru.risiko.maven.eclipse.model.card.ObjectiveCard;
 
 class ObjectiveCardTest {
 

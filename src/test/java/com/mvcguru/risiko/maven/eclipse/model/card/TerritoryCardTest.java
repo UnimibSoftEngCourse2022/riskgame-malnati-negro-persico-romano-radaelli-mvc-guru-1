@@ -3,8 +3,8 @@ package com.mvcguru.risiko.maven.eclipse.model.card;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import com.mvcguru.risiko.maven.eclipse.model.Territory;
-import com.mvcguru.risiko.maven.eclipse.model.Card.TerritoryCard;
-import com.mvcguru.risiko.maven.eclipse.model.Card.TerritoryCard.CardSymbol;
+import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
+import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard.CardSymbol;
 
 class TerritoryCardTest {
 

@@ -9,9 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mvcguru.risiko.maven.eclipse.actions.TerritorySetup;
-import com.mvcguru.risiko.maven.eclipse.model.Card.ICard;
-import com.mvcguru.risiko.maven.eclipse.model.Card.TerritoryCard;
-import com.mvcguru.risiko.maven.eclipse.model.Card.TerritoryCard.CardSymbol;
+import com.mvcguru.risiko.maven.eclipse.model.card.ICard;
+import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
+import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard.CardSymbol;
 import com.mvcguru.risiko.maven.eclipse.model.deck.IDeck;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player.PlayerColor;
