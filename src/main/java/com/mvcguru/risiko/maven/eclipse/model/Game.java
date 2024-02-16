@@ -11,10 +11,8 @@ import com.mvcguru.risiko.maven.eclipse.actions.ActionPlayer;
 import com.mvcguru.risiko.maven.eclipse.controller.MessageBrokerSingleton;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration.GameMode;
-import com.mvcguru.risiko.maven.eclipse.model.card.ICard;
 import com.mvcguru.risiko.maven.eclipse.model.card.ObjectiveCard;
 import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
-import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard.CardSymbol;
 import com.mvcguru.risiko.maven.eclipse.model.deck.IDeck;
 import com.mvcguru.risiko.maven.eclipse.model.deck.ObjectivesDeck;
 import com.mvcguru.risiko.maven.eclipse.model.deck.TerritoriesDeck;
@@ -112,12 +110,10 @@ public class Game extends IGame {
 		currentTurn = Turn.builder()
                 .player(players.get(0))
                 .build();
-        changeTurn();
-        
-        broadcast();
 	}
 	
 	public void changeTurn() {
+		
 		Player curr = currentTurn.getPlayer();
 		LOGGER.info("Cambio turno - giocatore corrente {}", curr.getUserName());
 		
@@ -126,6 +122,7 @@ public class Game extends IGame {
                 .player(players.get((players.indexOf(curr) + 1) % players.size()))
                 .build());
 		
+        broadcast();
 	}
 	
 	

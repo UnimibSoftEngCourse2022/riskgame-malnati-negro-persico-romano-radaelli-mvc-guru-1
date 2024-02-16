@@ -9,6 +9,4 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class PlayTurnState extends GameState{
 	
-	
-
 }

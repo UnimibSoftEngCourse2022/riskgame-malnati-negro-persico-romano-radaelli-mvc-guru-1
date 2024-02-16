@@ -23,6 +23,19 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public class GameSetupState extends GameState {
 	private static final Logger LOGGER = LoggerFactory.getLogger(GameSetupState.class);
+
+	@Override
+	public void onActionPlayer(TerritorySetup action) {
+		action.getPlayer().setTerritories(action.getSetUpBody().getTerritories());
+		action.getPlayer().setSetUpCompleted(true);
+		for (Player player : game.getPlayers()) {
+			if (!player.isSetUpCompleted()) {
+				return;
+			}
+		}
+		game.setState(PlayTurnState.builder().game(game).build());
+		game.startGame();
+	}
 	
 	@Override
 	public void setUpGame() {

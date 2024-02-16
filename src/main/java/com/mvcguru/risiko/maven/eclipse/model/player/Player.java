@@ -30,6 +30,8 @@ public class Player {
 	
 	private List<ICard> comboCards;
 	
+	private boolean setUpCompleted = false;
+	
 	private ICard objective;
 
 	public enum PlayerColor {

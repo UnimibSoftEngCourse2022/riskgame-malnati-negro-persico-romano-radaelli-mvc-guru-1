@@ -1,7 +1,7 @@
 package com.mvcguru.risiko.maven.eclipse.controller;
 
-import java.util.HashMap;
-import java.util.Map;
+
+import java.io.IOException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,11 +22,10 @@ import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 import com.mvcguru.risiko.maven.eclipse.service.GameRepository;
-import com.mvcguru.risiko.maven.eclipse.service.database.DatabaseConnection;
 
 @Controller
 public class EventController {
-
+	
     private static final Logger LOGGER = LoggerFactory.getLogger(EventController.class);
 
 	@Autowired
@@ -63,7 +62,6 @@ public class EventController {
             game.onActionPlayer(action);
             GameRepository.getInstance().removePlayer(body.getUsername());
         } catch (GameException | DatabaseConnectionException | UserException e) {LOGGER.error("Errore durante l'uscita dalla partita", e);}
-        
     }
 	
 	@MessageMapping("/partite/{id}/confermaSetup")

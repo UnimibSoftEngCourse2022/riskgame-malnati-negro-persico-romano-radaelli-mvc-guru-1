@@ -51,5 +51,7 @@ public abstract class IGame {
 	public abstract IDeck createTerritoryDeck(GameConfiguration configuration) throws IOException;
 	
 	public abstract IDeck createObjectiveDeck(GameConfiguration configuration) throws IOException;
+
+	public void startGame() { }
    
 }

@@ -39,7 +39,8 @@ public class GameController {
 		}
 		
         return ResponseEntity.ok().body("{\"id\": \"" + nuovaPartita.getId() + "\"}");
-    }
+
+	}
 	
 	@GetMapping("/partita")
 	public ResponseEntity<List<IGame>> gameCreation() {
