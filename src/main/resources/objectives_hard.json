@@ -1,47 +1,84 @@
 [
     {
-        "objective": "Conquistare 18 territori presidiandoli con almeno due armate ciascuno."
+        "objective": "Devi conquistare 18 territori presidiandoli con almeno due armate ciascuno."
+    	,"type" : "TERRITORI",
+    	"n_territory" : 18,
+    	"n_army" : 2
     },
     {
-        "objective": "Conquistare 24 territori."
+        "objective": "Devi conquistare 24 territori."
+        ,"type" : "TERRITORI",
+        "n_territory" : 24
     },
     {
-        "objective": "Conquistare la totalità del Nord America e dell'Africa."
+        "objective": "Devi conquistare la totalità del Nord America e dell'Africa."
+        ,"type" : "CONTINENTI",
+        "continent_1" : "Nord America",
+        "continent_2" : "Africa"
+        
     },
     {
-        "objective": "Conquistare la totalità del Nord America e dell'Oceania."
+        "objective": "Devi conquistare la totalità del Nord America e dell'Oceania."
+    	,"type" : "CONTINENTI",
+    	"continent_1" : "Nord America",
+    	"continent_2" : "Oceania"
     },
     {
-        "objective": "Conquistare la totalità dell'Asia e del Sud America."
+        "objective": " Devi conquistare la totalità dell'Asia e del Sud America."
+        ,"type" : "CONTINENTI",
+        "continent_1" : "Asia",
+        "continent_2" : "Sud America"
     },
     {
-        "objective": "Conquistare la totalità dell'Asia e dell'Africa."
+        "objective": " Devi conquistare la totalità dell'Asia e dell'Africa."
+        ,"type" : "CONTINENTI",
+        "continent_1" : "Asia",
+        "continent_2" : "Africa"
     },
     {
-        "objective": "Conquistare la totalità dell'Europa, del Sud America e di un terzo continente a scelta."
+        "objective": "Devi conquistare la totalità dell'Europa, del Sud America e di un terzo continente a scelta."
+        ,"type" : "CONTINENTI",
+        "continent_1" : "Europa",
+        "continent_2" : "Sud America",
+        "continent_3" : "c"
     },
     {
-        "objective": "Conquistare la totalità dell'Europa, dell'Oceania e di un terzo continente a scelta."
+        "objective": "Devi conquistare la totalità dell'Europa, dell'Oceania e di un terzo continente a scelta."
+        ,"type" : "CONTINENTI",
+        "continent_1" : "Europa",
+        "continent_2" : "Oceania",
+        "continent_3" : "c"
     },
     {
-        "objective": "Distruggere completamente l'armata rossa, se le armate non sono presenti nel gioco, se le armate sono possedute dal giocatore che ha l'obiettivo di distruggerle o se l'ultima armata viene distrutta da un altro giocatore, l'obiettivo diventa conquistare 24 territori."
+        "objective": "Devi distruggere completamente l'armata rossa, se le armate non sono presenti nel gioco, o le possiedi tu o se l'ultima armata viene distrutta da un altro giocatore, l'obiettivo diventa conquistare 24 territori."
+    	,"type" : "ARMATA",
+    	"n_territory" : 24
+    	
     },
     {
-        "objective": "Distruggere completamente l'armata gialla, se le armate non sono presenti nel gioco, se le armate sono possedute dal giocatore che ha l'obiettivo di distruggerle o se l'ultima armata viene distrutta da un altro giocatore, l'obiettivo diventa conquistare 24 territori."
+        "objective": "Devi distruggere completamente l'armata gialla, se le armate non sono presenti nel gioco, o le possiedi tu o se l'ultima armata viene distrutta da un altro giocatore, l'obiettivo diventa conquistare 24 territori."
+    	,"type" : "ARMATA",
+    	"n_territory" : 24
     },
     {
-        "objective": "Distruggere completamente l'armata verde, se le armate non sono presenti nel gioco, se le armate sono possedute dal giocatore che ha l'obiettivo di distruggerle o se l'ultima armata viene distrutta da un altro giocatore, l'obiettivo diventa conquistare 24 territori."
+        "objective": "Devi distruggere completamente l'armata verde, se le armate non sono presenti nel gioco, o le possiedi tu o se l'ultima armata viene distrutta da un altro giocatore, l'obiettivo diventa conquistare 24 territori."
+    	,"type" : "ARMATA",
+    	"n_territory" : 24
     },
     {
-        "objective": "Distruggere completamente l'armata blu, se le armate non sono presenti nel gioco, se le armate sono possedute dal giocatore che ha l'obiettivo di distruggerle o se l'ultima armata viene distrutta da un altro giocatore, l'obiettivo diventa conquistare 24 territori."
+        "objective": "Devi distruggere completamente l'armata blu, se le armate non sono presenti nel gioco, o le possiedi tu o se l'ultima armata viene distrutta da un altro giocatore, l'obiettivo diventa conquistare 24 territori."
+    	,"type" : "ARMATA",
+    	"n_territory" : 24
     },
     {
-        "objective": "Distruggere completamente l'armata nero, se le armate non sono presenti nel gioco, se le armate sono possedute dal giocatore che ha l'obiettivo di distruggerle o se l'ultima armata viene distrutta da un altro giocatore, l'obiettivo diventa conquistare 24 territori."
+        "objective": "Devi distruggere completamente l'armata nero, se le armate non sono presenti nel gioco, o le possiedi tu o se l'ultima armata viene distrutta da un altro giocatore, l'obiettivo diventa conquistare 24 territori."
+    	,"type" : "ARMATA",
+    	"n_territory" : 24
     },
     {
-        "objective": "Distruggere completamente l'armata viola, se le armate non sono presenti nel gioco, se le armate sono possedute dal giocatore che ha l'obiettivo di distruggerle o se l'ultima armata viene distrutta da un altro giocatore, l'obiettivo diventa conquistare 24 territori."
-    },
-    {
-        "objective": "Raggiungere un numero prefissato di 60 armate totali."
+        "objective": "Devi distruggere completamente l'armata viola, se le armate non sono presenti nel gioco, o le possiedi tu o se l'ultima armata viene distrutta da un altro giocatore, l'obiettivo diventa conquistare 24 territori.",
+        "type" : "ARMATA",
+        "n_territory" : 24
     }
+  
 ]

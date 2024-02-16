@@ -4,7 +4,7 @@
       "name": "Afganistan",
       "continent": 4
     },
-    "symbol": "CAVALRY"
+    "symbol": "INFANTRY"
   },
   {
     "territory": {
@@ -25,35 +25,35 @@
       "name": "Africa Orientale",
       "continent": 3
     },
-    "symbol": "INFANTRY"
+    "symbol": "ARTILLERY"
   },
   {
     "territory": {
       "name": "Alaska",
       "continent": 3
     },
-    "symbol": "CAVALRY"
+    "symbol": "INFANTRY"
   },
   {
     "territory": {
       "name": "Alberta",
       "continent": 5
     },
-    "symbol": "ARTILLERY"
+    "symbol": "INFANTRY"
   },
   {
     "territory": {
       "name": "America Centrale",
       "continent": 5
     },
-    "symbol": "INFANTRY"
+    "symbol": "CAVALRY"
   },
   {
     "territory": {
       "name": "Argentina",
       "continent": 1
     },
-    "symbol": "CAVALRY"
+    "symbol": "INFANTRY"
   },
   {
     "territory": {
@@ -74,14 +74,14 @@
       "name": "Brasile",
       "continent": 1
     },
-    "symbol": "CAVALRY"
+    "symbol": "ARTILLERY"
   },
   {
     "territory": {
       "name": "Cina",
       "continent": 4
     },
-    "symbol": "ARTILLERY"
+    "symbol": "CAVALRY"
   },
   {
     "territory": {
@@ -102,28 +102,28 @@
       "name": "Egitto",
       "continent": 3
     },
-    "symbol": "ARTILLERY"
+    "symbol": "INFANTRY"
   },
   {
     "territory": {
       "name": "Europa Meridionale",
       "continent": 2
     },
-    "symbol": "INFANTRY"
+    "symbol": "CAVALRY"
   },
   {
     "territory": {
       "name": "Europa Occidentale",
       "continent": 2
     },
-    "symbol": "CAVALRY"
+    "symbol": "INFANTRY"
   },
   {
     "territory": {
       "name": "Europa Settentrionale",
       "continent": 2
     },
-    "symbol": "ARTILLERY"
+    "symbol": "CAVALRY"
   },
   {
     "territory": {
@@ -144,7 +144,7 @@
       "name": "Groenlandia",
       "continent": 5
     },
-    "symbol": "ARTILLERY"
+    "symbol": "CAVALRY"
   },
   {
     "territory": {
@@ -165,14 +165,14 @@
       "name": "Islanda",
       "continent": 2
     },
-    "symbol": "ARTILLERY"
+    "symbol": "INFANTRY"
   },
   {
     "territory": {
       "name": "Jacuzia",
       "continent": 4
     },
-    "symbol": "INFANTRY"
+    "symbol": "CAVALRY"
   },
   {
     "territory": {
@@ -186,35 +186,35 @@
       "name": "Madagascar",
       "continent": 3
     },
-    "symbol": "ARTILLERY"
+    "symbol": "INFANTRY"
   },
   {
     "territory": {
       "name": "Medio Oriente",
       "continent": 4
     },
-    "symbol": "INFANTRY"
+    "symbol": "ARTILLERY"
   },
   {
     "territory": {
       "name": "Mongolia",
       "continent": 4
     },
-    "symbol": "CAVALRY"
+    "symbol": "ARTILLERY"
   },
   {
     "territory": {
       "name": "Nuova Guinea",
       "continent": 6
     },
-    "symbol": "ARTILLERY"
+    "symbol": "CAVALRY"
   },
   {
     "territory": {
       "name": "Ontario",
       "continent": 5
     },
-    "symbol": "INFANTRY"
+    "symbol": "CAVALRY"
   },
   {
     "territory": {
@@ -235,14 +235,14 @@
       "name": "Scandinavia",
       "continent": 2
     },
-    "symbol": "INFANTRY"
+    "symbol": "ARTILLERY"
   },
   {
     "territory": {
       "name": "Siam",
       "continent": 4
     },
-    "symbol": "CAVALRY"
+    "symbol": "ARTILLERY"
   },
   {
     "territory": {
@@ -263,7 +263,7 @@
       "name": "Stati Uniti Orient.",
       "continent": 5
     },
-    "symbol": "CAVALRY"
+    "symbol": "ARTILLERY"
   },
   {
     "territory": {
@@ -277,7 +277,7 @@
       "name": "Ucraina",
       "continent": 2
     },
-    "symbol": "INFANTRY"
+    "symbol": "ARTILLERY"
   },
   {
     "territory": {

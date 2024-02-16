@@ -11,7 +11,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public class ObjectiveCard extends ICard{
 	@JsonProperty("objective")
-	private String objective;
+	private Objective objective;
 	
 
 }
