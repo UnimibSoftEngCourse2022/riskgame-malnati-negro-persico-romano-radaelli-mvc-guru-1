@@ -1,5 +1,6 @@
 package com.mvcguru.risiko.maven.eclipse.model.player;
 
+import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
@@ -17,7 +18,9 @@ import lombok.experimental.SuperBuilder;
 public class Player {	
 	
 	private String userName;
+	
 	private String gameId;
+	
 	private PlayerColor color;
 	
 	@JsonIgnore

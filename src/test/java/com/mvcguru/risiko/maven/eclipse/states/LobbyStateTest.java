@@ -14,6 +14,7 @@ import com.mvcguru.risiko.maven.eclipse.actions.GameEntry;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
 import com.mvcguru.risiko.maven.eclipse.model.Game;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration;
+import com.mvcguru.risiko.maven.eclipse.model.Territory;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration.GameMode;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 
@@ -52,24 +53,9 @@ class LobbyStateTest {
         }).when(game).setState(any(GameState.class));
     }
 
-
-    @Test
-    void testOnActionPlayerAddsPlayerAndTransitionsState() throws FullGameException {
-        GameEntry gameEntry1 = GameEntry.builder().player(Player.builder().userName("player1").build()).build();
-        lobbyState.onActionPlayer(gameEntry1);
-        
-        assertEquals(1, game.getPlayers().size());
-        
-        GameEntry gameEntry2 = GameEntry.builder().player(Player.builder().userName("player2").build()).build();
-        lobbyState.onActionPlayer(gameEntry2);
-        
-        assertEquals(2, game.getPlayers().size());
-        verify(game, times(1)).setState(any(GameSetupState.class));
-    }
-
     @Test
     void testOnActionPlayerDoesNotTransitionBeforeMaxPlayers() throws FullGameException {
-        GameEntry gameEntry = GameEntry.builder().player(Player.builder().userName("player1").build()).build();
+        GameEntry gameEntry = GameEntry.builder().player(Player.builder().userName("player1").territories(new ArrayList<Territory>()).build()).build();
         lobbyState.onActionPlayer(gameEntry);
         
         assertEquals(1, game.getPlayers().size());

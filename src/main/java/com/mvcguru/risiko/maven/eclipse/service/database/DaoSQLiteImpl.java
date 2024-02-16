@@ -19,6 +19,7 @@ import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.model.User;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 import com.mvcguru.risiko.maven.eclipse.service.FactoryGame;
+import com.mvcguru.risiko.maven.eclipse.model.Territory;
 
 public class DaoSQLiteImpl implements DataDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(DaoSQLiteImpl.class);
@@ -309,7 +310,7 @@ public class DaoSQLiteImpl implements DataDao {
                 while (rs.next()) {
                 	String username = rs.getString("username");
                 	String color = rs.getString("color");
-                	players.add(Player.builder().userName(username).gameId(gameId).color(Player.PlayerColor.valueOf(color)).build());
+                	players.add(Player.builder().userName(username).gameId(gameId).territories(new ArrayList<Territory>()).color(Player.PlayerColor.valueOf(color)).build());
                 }
             }
         } catch (SQLException e) {throw new GameException("Errore durante il recupero degli utenti nel gioco.", e);
