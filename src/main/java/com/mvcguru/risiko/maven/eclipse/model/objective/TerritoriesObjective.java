@@ -1,6 +1,6 @@
 package com.mvcguru.risiko.maven.eclipse.model.objective;
 
-public class TerritoriesObjective  extends Objective{
+public class TerritoriesObjective extends Objective{
 
 	@Override
 	public boolean isComplete() {
