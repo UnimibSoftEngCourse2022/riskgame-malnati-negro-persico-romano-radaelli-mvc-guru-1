@@ -38,7 +38,63 @@ class GameTest {
                 .build();
         game = new Game("gameId", config);
     }
+    
+    @Test
+    void testNoArgsConstructor() {
+        Game game = new Game();
+        assertNotNull(game, "Game should be instantiated");
+    }
 
+    @Test
+    void testAllArgsConstructor() {
+    	GameConfiguration config = GameConfiguration.builder()
+                .mode(GameMode.EASY)
+                .numberOfPlayers(4)
+                .idMap("TestMap")
+                .build();
+        Game game = new Game("gameId", config);
+
+        assertEquals("gameId", game.getId(), "ID should match the constructor argument");
+        assertEquals(config, game.getConfiguration(), "Configuration should match the constructor argument");
+    }
+
+    @Test
+    void testBuilderPattern() throws IOException {
+    	GameConfiguration config = GameConfiguration.builder()
+                .mode(GameMode.EASY)
+                .numberOfPlayers(4)
+                .idMap("TestMap")
+                .build(); 
+        IGame game = FactoryGame.getInstance().createGame(config);
+        
+        
+        assertEquals(game.getId(), game.getId(), "ID should match the builder's value");
+        assertEquals(config, game.getConfiguration(), "Configuration should match the builder's value");
+    }
+
+    @Test
+    void testEquals() {
+        GameConfiguration configuration = new GameConfiguration();
+        Game game1 = new Game("gameId", configuration);
+        Game game2 = new Game("gameId", configuration);
+
+        assertEquals(game1, game2, "Two games with the same ID and configuration should be equal");
+    }
+
+    @Test
+    void testHashCode() {
+    	GameConfiguration config = GameConfiguration.builder()
+                .mode(GameMode.EASY)
+                .numberOfPlayers(4)
+                .idMap("TestMap")
+                .build();
+    	
+        Game game1 = new Game("gameId", config);
+        Game game2 = new Game("gameId", config);
+
+        assertEquals(game1.hashCode(), game2.hashCode(), "Hashcodes should match for equal objects");
+    }    
+    
     @Test
     void testAddPlayer() throws FullGameException {
         Player player1 = new Player();

@@ -9,6 +9,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
+import com.mvcguru.risiko.maven.eclipse.exception.GameException;
 import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.User;
 import com.mvcguru.risiko.maven.eclipse.service.database.DataDao;
@@ -25,6 +27,12 @@ class UserRepositoryTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
     }
+    
+    @Test
+	void getIstance() throws UserException, DatabaseConnectionException, GameException {
+		UserRepository userRepository = UserRepository.getInstance();
+		assertNotNull(userRepository);
+	}
 
     @Test
     void testRegisterUser() throws UserException {
