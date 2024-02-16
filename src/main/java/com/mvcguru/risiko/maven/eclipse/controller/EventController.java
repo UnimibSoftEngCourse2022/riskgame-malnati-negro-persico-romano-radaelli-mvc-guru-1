@@ -1,14 +1,7 @@
 package com.mvcguru.risiko.maven.eclipse.controller;
 
-<<<<<<< HEAD
-import java.io.IOException;
-=======
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.slf4j.Logger;
->>>>>>> refs/heads/lorerada
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -28,17 +21,10 @@ import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.model.Territory;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 import com.mvcguru.risiko.maven.eclipse.service.GameRepository;
-<<<<<<< HEAD
-import org.slf4j.Logger;
-=======
-import com.mvcguru.risiko.maven.eclipse.service.database.DatabaseConnection;
->>>>>>> refs/heads/lorerada
 
 @Controller
 public class EventController {
 	
-    private static final Logger LOGGER = LoggerFactory.getLogger(EventController.class);
-
     private static final Logger LOGGER = LoggerFactory.getLogger(EventController.class);
 
 	@Autowired

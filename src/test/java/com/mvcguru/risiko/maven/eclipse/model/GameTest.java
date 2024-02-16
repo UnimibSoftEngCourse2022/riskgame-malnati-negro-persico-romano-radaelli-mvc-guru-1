@@ -10,10 +10,7 @@ import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration.GameMode;
 import com.mvcguru.risiko.maven.eclipse.model.card.ICard;
 import com.mvcguru.risiko.maven.eclipse.model.card.ObjectiveCard;
 import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
-<<<<<<< HEAD
-=======
 import com.mvcguru.risiko.maven.eclipse.model.deck.IDeck;
->>>>>>> refs/heads/lorerada
 import com.mvcguru.risiko.maven.eclipse.model.deck.ObjectivesDeck;
 import com.mvcguru.risiko.maven.eclipse.model.deck.TerritoriesDeck;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
