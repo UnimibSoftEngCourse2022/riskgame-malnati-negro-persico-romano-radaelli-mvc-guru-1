@@ -32,13 +32,14 @@ public class LobbyState extends GameState{
         	game.setState(GameSetupState.builder().game(game).build());
         	game.getState().setupGame();
         }
-        
+     
     }
 	
 	public void onActionPlayer (GameExit gameExit) {
 		LOGGER.info("LobbyState: uscita giocatore - azione rilevata");
 		game.getPlayers().remove(gameExit.getPlayer());
-	}
+	}  
+
     
 
 }

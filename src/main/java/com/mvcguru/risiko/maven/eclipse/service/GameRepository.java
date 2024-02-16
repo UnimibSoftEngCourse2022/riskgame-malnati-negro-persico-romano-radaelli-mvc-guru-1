@@ -1,5 +1,6 @@
 package com.mvcguru.risiko.maven.eclipse.service;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -27,39 +28,27 @@ public class GameRepository {
 	}
 	
 	public static synchronized GameRepository getInstance() throws DatabaseConnectionException, GameException, UserException {
-		 if (instance == null) {
-			 System.out.println("Getinstance");
-	            instance = new GameRepository();
-	        }
-	        return instance;
+		 if (instance == null) { instance = new GameRepository();} return instance;
 	}
 	
 	public synchronized void registerGame(IGame game) throws GameException {
-		if (game != null) {
-			
+		if (game != null) 
 			db.registerGame(game);
-			}
-		else
-			System.out.println("Game is null");
 	}
 	
 	public synchronized void deleteGame(IGame game) throws GameException {
 		if (game != null)
 			db.deleteGame(game);
-		else
-			System.out.println("Game is null");
 	}
 	
-	public synchronized IGame getGameById(String gameId) throws GameException, FullGameException {
+	public synchronized IGame getGameById(String gameId) throws GameException, FullGameException, IOException {
 		IGame game = db.getGameById(gameId);
 		List<Player> lista = db.getPlayerInGame(gameId);
-		for (Player p : lista) {
-			game.addPlayer(p);
-			}
+		for (Player p : lista) { game.addPlayer(p); }
 		return game;
 	}
 	
-	public synchronized List<IGame> getAllGames() throws GameException, FullGameException {
+	public synchronized List<IGame> getAllGames() throws GameException, FullGameException, IOException {
 		List<IGame> games = db.getAllGames();
 		for (IGame g : games ) {
 			List<Player> lista = db.getPlayerInGame(g.getId());
@@ -70,11 +59,11 @@ public class GameRepository {
 		return games;
 	}
 	
-	public synchronized void add(Player player) throws GameException {
+	public synchronized void addPlayer(Player player) throws GameException {
 		db.insertPlayer(player);
 	}
 	
-	public synchronized void remove(String username) throws GameException {
+	public synchronized void removePlayer(String username) throws GameException {
 		db.deletePlayer(username);
 	}
 	

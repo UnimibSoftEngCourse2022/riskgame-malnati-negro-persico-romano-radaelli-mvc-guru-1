@@ -1,26 +1,19 @@
 package com.mvcguru.risiko.maven.eclipse.service;
 
+import java.io.IOException;
 import java.util.UUID;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
-import com.mvcguru.risiko.maven.eclipse.exception.GameException;
-import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.Game;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
+import com.mvcguru.risiko.maven.eclipse.states.GameState;
 import com.mvcguru.risiko.maven.eclipse.states.LobbyState;
 import lombok.Data;
 
 @Data
 public class FactoryGame {
-	private static final Logger LOGGER = LoggerFactory.getLogger(FactoryGame.class);
-
     private static FactoryGame instance;
-    
-    private String idGame;
+    private GameState gameState;
+    private static String idGame;
 
 
     private FactoryGame() {
@@ -33,17 +26,25 @@ public class FactoryGame {
         return instance;
     }
 
-    public static String creaId() {
-        String idGame = UUID.randomUUID().toString();
+    public static String createId() {
+         idGame = UUID.randomUUID().toString();
         return idGame;
     }
-
-
-    public IGame createGame(GameConfiguration configuration) {
     
-        IGame partita = new Game(creaId(), configuration);     
-        partita.setState(LobbyState.builder().game(partita).build());
-        return partita;
+	public static String getIdGame() {
+		return idGame;
+	}		
+
+
+    public IGame createGame(GameConfiguration configuration) throws IOException {
+    
+        IGame game = new Game(createId(), configuration);
+        
+        game.createTerritoryDeck(configuration);
+        game.createObjectiveDeck(configuration);
+        game.setState(LobbyState.builder().game(game).build());
+        
+        return game;
     }
     
 }

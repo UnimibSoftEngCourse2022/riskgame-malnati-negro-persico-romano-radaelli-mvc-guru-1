@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Card, Container, Carousel, Button } from "react-bootstrap";
 import AppController from "../../application/AppController";
 import "../../styles/carouselStyle.css";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 
 function CarouselComponent() {
   const [index, setIndex] = useState(0);

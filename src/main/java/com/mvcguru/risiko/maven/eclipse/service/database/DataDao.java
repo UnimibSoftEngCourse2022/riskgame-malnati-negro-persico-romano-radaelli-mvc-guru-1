@@ -1,8 +1,7 @@
 package com.mvcguru.risiko.maven.eclipse.service.database;
 
+import java.io.IOException;
 import java.util.List;
-
-import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
 import com.mvcguru.risiko.maven.eclipse.exception.GameException;
 import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
@@ -16,11 +15,11 @@ public interface DataDao {
     void deleteUser(User user) throws UserException;
     void createUsersTable() throws UserException;
 	//GameDao
-    IGame getGameById(String gameId) throws GameException;
+    IGame getGameById(String gameId) throws GameException, IOException;
     void registerGame(IGame game) throws GameException;
     void deleteGame(IGame game) throws GameException;
     void createGamesTable() throws GameException;
-    List<IGame> getAllGames() throws GameException;
+    List<IGame> getAllGames() throws GameException, IOException;
 	//PlayerDao
 	void insertPlayer(Player player) throws GameException;
 	void deletePlayer(String username) throws GameException;

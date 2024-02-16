@@ -19,7 +19,7 @@ public class ObjectivesDeck implements IDeck{
 
 	@Override
 	public void insertCard(ICard card) {
-		//Non necessario
+		cards.add((ObjectiveCard) card);
 	}
 
 	@Override

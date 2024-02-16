@@ -1,5 +1,6 @@
 package com.mvcguru.risiko.maven.eclipse.service.database;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -37,12 +38,8 @@ public class DaoSQLiteImpl implements DataDao {
 	            createUsersTable();
 	            createGamesTable();
 	            createPlayerTable();
-				if (connection.isClosed()) {
-					throw new DatabaseConnectionException("Connessione al database non riuscita");
-				}
-	        } catch (SQLException e) {
-	            throw new DatabaseConnectionException("Connessione al database non riuscita");
-	        }
+				if (connection.isClosed()) {throw new DatabaseConnectionException("Connessione al database non riuscita");}
+	        } catch (SQLException e) {throw new DatabaseConnectionException("Connessione al database non riuscita");}
 	    }
 
     private PreparedStatement prepareStatement(String sql, String... parameters) throws SQLException {
@@ -52,11 +49,7 @@ public class DaoSQLiteImpl implements DataDao {
             for (int i = 0; i < parameters.length; i++) {
                 pstmt.setString(i + 1, parameters[i]);
             }
-        } catch (SQLException e) {
-            if (pstmt != null) {
-                pstmt.close();
-            }
-            throw e;
+        } catch (SQLException e) {if (pstmt != null) {pstmt.close();}throw e;
         }
         return pstmt;
     }
@@ -76,8 +69,7 @@ public class DaoSQLiteImpl implements DataDao {
 	        if (connection != null) {
 	            try {
 	                connection.close();
-	            } catch (SQLException e) {
-	                LOGGER.error("Error closing database connection", e);
+	            } catch (SQLException e) {LOGGER.error("Error closing database connection", e);
 	            }
 	        }
 	    }
@@ -113,8 +105,7 @@ public class DaoSQLiteImpl implements DataDao {
 	        try {
 	            pstmt = prepareStatement(sql);
 	            pstmt.execute();
-	        } catch (SQLException e) {
-	        	throw new GameException("Errore durante la creazione della tabella partite.", e);
+	        } catch (SQLException e) {throw new GameException("Errore durante la creazione della tabella partite.", e);
 	        } finally {
 	            closePreparedStatement(pstmt);
 	        }
@@ -133,8 +124,7 @@ public class DaoSQLiteImpl implements DataDao {
         try {
             pstmt = prepareStatement(sql);
             pstmt.execute();
-        } catch (SQLException e) {
-        	throw new GameException("Errore durante la creazione della tabella partite.", e);
+        } catch (SQLException e) {throw new GameException("Errore durante la creazione della tabella partite.", e);
         } finally {
             closePreparedStatement(pstmt);
         }
@@ -200,7 +190,7 @@ public class DaoSQLiteImpl implements DataDao {
     
     //GameDao methods
 	@Override
-	public IGame getGameById(String gameId) throws GameException {
+	public IGame getGameById(String gameId) throws GameException, IOException {
 		   String sql = "SELECT * FROM games WHERE game_id = ?";
 		    PreparedStatement pstmt = null;
 		    ResultSet rs = null;
@@ -214,8 +204,7 @@ public class DaoSQLiteImpl implements DataDao {
 		            game = extractGameFromResultSet(rs);
 		            
 		        }
-		    } catch (SQLException e) {
-		        throw new GameException("Errore durante il recupero del gioco con ID " + gameId, e);
+		    } catch (SQLException e) {throw new GameException("Errore durante il recupero del gioco con ID " + gameId, e);
 		    }
 		    return game;
 	}
@@ -232,8 +221,7 @@ public class DaoSQLiteImpl implements DataDao {
             pstmt.setInt(3, game.getConfiguration().getNumberOfPlayers());
             pstmt.setString(4, game.getConfiguration().getIdMap());
             pstmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new GameException("Errore durante la registrazione del gioco", e);
+        } catch (SQLException e) {throw new GameException("Errore durante la registrazione del gioco", e);
         } finally {
             closePreparedStatement(pstmt);
         }
@@ -247,15 +235,14 @@ public class DaoSQLiteImpl implements DataDao {
             pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, game.getId());
             pstmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new GameException("Errore durante l'eliminazione del gioco", e);
+        } catch (SQLException e) {throw new GameException("Errore durante l'eliminazione del gioco", e);
         } finally {
             closePreparedStatement(pstmt);
         }
     }
 
 	@Override
-    public List<IGame> getAllGames() throws GameException {
+    public List<IGame> getAllGames() throws GameException, IOException {
         String sql = "SELECT * FROM games";
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -269,14 +256,13 @@ public class DaoSQLiteImpl implements DataDao {
             }
             rs.close();
             return games;
-        } catch (SQLException e) {
-            throw new GameException("Errore durante il recupero di tutte le partite", e);
+        } catch (SQLException e) {throw new GameException("Errore durante il recupero di tutte le partite", e);
         } finally {
             closePreparedStatement(pstmt);
         }
     }
 
-	private IGame extractGameFromResultSet(ResultSet rs) throws GameException{
+	private IGame extractGameFromResultSet(ResultSet rs) throws GameException, IOException{
 		IGame newGame = null;
 		GameConfiguration config = GameConfiguration.builder().build();
         try {
@@ -301,8 +287,7 @@ public class DaoSQLiteImpl implements DataDao {
             pstmt.setString(2, game_id);
             pstmt.setString(3, color);
             pstmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new GameException("Errore durante l'inserimento del giocatore.", e);
+        } catch (SQLException e) {throw new GameException("Errore durante l'inserimento del giocatore.", e);
         }
     }
 
@@ -311,8 +296,7 @@ public class DaoSQLiteImpl implements DataDao {
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, username);
             pstmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new GameException("Errore durante l'eliminazione del giocatore.", e);
+        } catch (SQLException e) {throw new GameException("Errore durante l'eliminazione del giocatore.", e);
         }
     }
 
@@ -328,8 +312,7 @@ public class DaoSQLiteImpl implements DataDao {
                 	players.add(Player.builder().userName(username).gameId(gameId).color(Player.PlayerColor.valueOf(color)).build());
                 }
             }
-        } catch (SQLException e) {
-            throw new GameException("Errore durante il recupero degli utenti nel gioco.", e);
+        } catch (SQLException e) {throw new GameException("Errore durante il recupero degli utenti nel gioco.", e);
         }
         return players;
     }
