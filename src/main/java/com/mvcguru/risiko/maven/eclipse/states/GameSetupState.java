@@ -22,7 +22,9 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 public class GameSetupState extends GameState {
+	
 	private static final Logger LOGGER = LoggerFactory.getLogger(GameSetupState.class);
+
 
 	@Override
 	public void onActionPlayer(TerritorySetup action) {
