@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
+import com.mvcguru.risiko.maven.eclipse.actions.ComboRequest;
 import com.mvcguru.risiko.maven.eclipse.actions.GameEntry;
 import com.mvcguru.risiko.maven.eclipse.actions.GameExit;
 import com.mvcguru.risiko.maven.eclipse.actions.TerritorySetup;
@@ -34,6 +35,8 @@ public abstract class GameState implements Serializable {
     public void onActionPlayer(GameExit gameExit) { }
 
 	public void onActionPlayer(TerritorySetup territorySetup) { }
+	
+	public void onActionPlayer(ComboRequest comboRequest) { }
 
 	public void setUpGame() {}
 }

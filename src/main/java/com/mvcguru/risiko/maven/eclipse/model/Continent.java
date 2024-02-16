@@ -1,5 +1,6 @@
 package com.mvcguru.risiko.maven.eclipse.model;
 
-public interface Continent {
+public class Continent {
 
+	
 }
