@@ -17,10 +17,7 @@ import com.mvcguru.risiko.maven.eclipse.service.database.DataDao;
 
 public class GameRepository {
 	private static GameRepository instance;
-	private DataDao db;
-	private static final Logger LOGGER = LoggerFactory.getLogger(FactoryGame.class);
-
-	
+	private DataDao db;	
 	
 	public GameRepository() throws DatabaseConnectionException, GameException, UserException {
 		super();

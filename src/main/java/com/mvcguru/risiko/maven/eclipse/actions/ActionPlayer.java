@@ -12,7 +12,8 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 public abstract class ActionPlayer implements Serializable {
-	protected Player player;
+	
+	protected transient Player player;
 
     protected ActionPlayer() {}
 

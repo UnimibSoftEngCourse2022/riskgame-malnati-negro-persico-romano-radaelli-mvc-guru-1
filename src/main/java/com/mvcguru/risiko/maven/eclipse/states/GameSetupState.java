@@ -5,8 +5,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.mvcguru.risiko.maven.eclipse.actions.TerritorySetup;
+import com.mvcguru.risiko.maven.eclipse.model.card.ICard;
 import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
+import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard.CardSymbol;
 import com.mvcguru.risiko.maven.eclipse.model.deck.IDeck;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player.PlayerColor;
@@ -29,17 +34,33 @@ public class GameSetupState extends GameState {
 //		}
 //		//game.setState(Nuovostato);
 	}
+	private static final Logger LOGGER = LoggerFactory.getLogger(GameSetupState.class);
 	
-	private void setUpGame() {
+	@Override
+	public void setUpGame() {
+		LOGGER.info("GameSetupState: inizio setup partita");
 		assignColor(game.getPlayers());
+		LOGGER.info("GameSetupState: assegnamento colori completato");
 		assignTerritories(game.getDeckTerritory());
+		LOGGER.info("GameSetupState: assegnamento territori completato");
 		assignObjective(game.getDeckObjective());
+		LOGGER.info("GameSetupState: assegnamento obiettivi completato");
+		ICard cardJolly1 = TerritoryCard.builder().territory(null).symbol(CardSymbol.JOLLY).build();
+		ICard cardJolly2 = TerritoryCard.builder().territory(null).symbol(CardSymbol.JOLLY).build();
+		game.getDeckTerritory().insertCard(cardJolly1);
+		game.getDeckTerritory().insertCard(cardJolly2);
 	}
 
 	private void assignObjective(IDeck deckObjective) {
 		deckObjective.shuffle();
+		ICard card = null;
+		
 		for (Player player : game.getPlayers()) {
-			player.setObjective(deckObjective.drawCard());
+			card = deckObjective.drawCard();
+			player.setObjective(card);
+	        if(game.getConfiguration().getMode().name().equals("EASY")){
+	        	deckObjective.insertCard(card);
+	        }
 		}
 	}
     

@@ -19,7 +19,8 @@ public class TerritoryCard extends ICard{
 	public enum CardSymbol {
 		INFANTRY,
 		CAVALRY,
-		ARTILLERY;
+		ARTILLERY,
+		JOLLY;
 	}
 	
 }

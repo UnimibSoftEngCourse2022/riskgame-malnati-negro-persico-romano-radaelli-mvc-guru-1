@@ -30,16 +30,18 @@ public class LobbyState extends GameState{
         	LOGGER.info("LobbyState: inizio partita");
 
         	game.setState(GameSetupState.builder().game(game).build());
-        	game.getState().setupGame();
-        }
-     
+
+        	
+        	
+        	LOGGER.info(game.getState().getClass().toString());
+        	
+        	game.getState().setUpGame();
+        }        
     }
 	
+	@Override
 	public void onActionPlayer (GameExit gameExit) {
 		LOGGER.info("LobbyState: uscita giocatore - azione rilevata");
 		game.getPlayers().remove(gameExit.getPlayer());
-	}  
-
-    
-
+	} 
 }

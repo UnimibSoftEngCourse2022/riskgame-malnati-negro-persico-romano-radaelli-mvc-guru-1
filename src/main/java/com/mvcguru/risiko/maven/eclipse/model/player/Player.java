@@ -18,7 +18,9 @@ import lombok.experimental.SuperBuilder;
 public class Player {	
 	
 	private String userName;
+	
 	private String gameId;
+	
 	private PlayerColor color;
 	
 	@JsonIgnore
@@ -27,8 +29,6 @@ public class Player {
 	private List<Territory> territories;
 	
 	private List<ICard> comboCards;
-	
-	//private boolean setupCompleted = false;
 	
 	private ICard objective;
 

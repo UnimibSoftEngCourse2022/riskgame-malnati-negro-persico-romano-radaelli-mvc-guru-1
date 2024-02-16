@@ -9,8 +9,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
 import com.mvcguru.risiko.maven.eclipse.exception.GameException;
+import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 import com.mvcguru.risiko.maven.eclipse.service.database.DataDao;
@@ -31,6 +33,12 @@ class GameRepositoryTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
     }
+    
+    @Test
+	void getIstance() throws DatabaseConnectionException, GameException, UserException {
+		GameRepository gameRepository = GameRepository.getInstance();
+		assertNotNull(gameRepository);
+	}
 
     @Test
     void testRegisterGame() throws GameException {

@@ -10,6 +10,10 @@ import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration.GameMode;
 import com.mvcguru.risiko.maven.eclipse.model.card.ICard;
 import com.mvcguru.risiko.maven.eclipse.model.card.ObjectiveCard;
 import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
+<<<<<<< HEAD
+=======
+import com.mvcguru.risiko.maven.eclipse.model.deck.IDeck;
+>>>>>>> refs/heads/lorerada
 import com.mvcguru.risiko.maven.eclipse.model.deck.ObjectivesDeck;
 import com.mvcguru.risiko.maven.eclipse.model.deck.TerritoriesDeck;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
@@ -37,7 +41,63 @@ class GameTest {
                 .build();
         game = new Game("gameId", config);
     }
+    
+    @Test
+    void testNoArgsConstructor() {
+        Game game = new Game();
+        assertNotNull(game, "Game should be instantiated");
+    }
 
+    @Test
+    void testAllArgsConstructor() {
+    	GameConfiguration config = GameConfiguration.builder()
+                .mode(GameMode.EASY)
+                .numberOfPlayers(4)
+                .idMap("TestMap")
+                .build();
+        Game game = new Game("gameId", config);
+
+        assertEquals("gameId", game.getId(), "ID should match the constructor argument");
+        assertEquals(config, game.getConfiguration(), "Configuration should match the constructor argument");
+    }
+
+    @Test
+    void testBuilderPattern() throws IOException {
+    	GameConfiguration config = GameConfiguration.builder()
+                .mode(GameMode.EASY)
+                .numberOfPlayers(4)
+                .idMap("TestMap")
+                .build(); 
+        IGame game = FactoryGame.getInstance().createGame(config);
+        
+        
+        assertEquals(game.getId(), game.getId(), "ID should match the builder's value");
+        assertEquals(config, game.getConfiguration(), "Configuration should match the builder's value");
+    }
+
+    @Test
+    void testEquals() {
+        GameConfiguration configuration = new GameConfiguration();
+        Game game1 = new Game("gameId", configuration);
+        Game game2 = new Game("gameId", configuration);
+
+        assertEquals(game1, game2, "Two games with the same ID and configuration should be equal");
+    }
+
+    @Test
+    void testHashCode() {
+    	GameConfiguration config = GameConfiguration.builder()
+                .mode(GameMode.EASY)
+                .numberOfPlayers(4)
+                .idMap("TestMap")
+                .build();
+    	
+        Game game1 = new Game("gameId", config);
+        Game game2 = new Game("gameId", config);
+
+        assertEquals(game1.hashCode(), game2.hashCode(), "Hashcodes should match for equal objects");
+    }    
+    
     @Test
     void testAddPlayer() throws FullGameException {
         Player player1 = new Player();
@@ -93,7 +153,7 @@ class GameTest {
                 .build();
     	IGame game = FactoryGame.getInstance().createGame(config);
     	
-    	TerritoriesDeck testDeck = game.createTerritoryDeck(config);
+    	IDeck testDeck = game.createTerritoryDeck(config);
     	
     	ICard c = testDeck.drawCard();
     	TerritoryCard card = TerritoryCard.builder().territory(Territory.builder().name("Afganistan").continent(4).build()).symbol(TerritoryCard.CardSymbol.CAVALRY).build();
@@ -115,7 +175,7 @@ class GameTest {
     	
     	IGame game = FactoryGame.getInstance().createGame(config);
     	
-    	ObjectivesDeck testObjectivesDeck = game.createObjectiveDeck(config);
+    	IDeck testObjectivesDeck = game.createObjectiveDeck(config);
     	
     	ICard c = testObjectivesDeck.drawCard();
     	
@@ -132,7 +192,7 @@ class GameTest {
     	
     	IGame game2 = FactoryGame.getInstance().createGame(config2);
     	
-    	ObjectivesDeck testObjectivesDeck2 = game2.createObjectiveDeck(config2);
+    	IDeck testObjectivesDeck2 = game2.createObjectiveDeck(config2);
     	
     	ICard c2 = testObjectivesDeck2.drawCard();
     	
@@ -149,7 +209,7 @@ class GameTest {
     	
     	IGame game3 = FactoryGame.getInstance().createGame(config3);
     	
-    	ObjectivesDeck testObjectivesDeck3 = game3.createObjectiveDeck(config3);
+    	IDeck testObjectivesDeck3 = game3.createObjectiveDeck(config3);
     	
     	ICard c3 = testObjectivesDeck3.drawCard();
     	

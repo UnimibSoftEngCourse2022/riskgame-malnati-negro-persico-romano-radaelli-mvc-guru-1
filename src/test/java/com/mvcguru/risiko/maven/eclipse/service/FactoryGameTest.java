@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration.GameMode;
+import com.mvcguru.risiko.maven.eclipse.states.GameState;
 import com.mvcguru.risiko.maven.eclipse.states.LobbyState;
 
 class FactoryGameTest {
@@ -29,7 +30,24 @@ class FactoryGameTest {
         assertEquals(4, game.getConfiguration().getNumberOfPlayers());
         assertEquals("TestMap", game.getConfiguration().getIdMap());
         assertTrue(game.getState() instanceof LobbyState);
-        
-        
+           
+    }
+    
+    @Test
+    void testSingletonInstance() {
+        FactoryGame instance1 = FactoryGame.getInstance();
+        FactoryGame instance2 = FactoryGame.getInstance();
+
+        assertNotNull(instance1, "Instance should not be null");
+        assertSame(instance1, instance2, "Instances should be the same");
+    }
+
+    @Test
+    void testGameState() {
+        FactoryGame instance = FactoryGame.getInstance();
+        GameState gameState = instance.getGameState();
+        instance.setGameState(gameState);
+
+        assertSame(gameState, instance.getGameState(), "GameState should be set and retrieved correctly");
     }
 }

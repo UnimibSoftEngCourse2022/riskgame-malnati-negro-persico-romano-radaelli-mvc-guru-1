@@ -9,8 +9,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class SpringConfig implements WebMvcConfigurer {
+	
+	private final Environment env;
+
     @Autowired
-    private Environment env;
+    public SpringConfig(Environment env) {
+        this.env = env;	
+    }
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {

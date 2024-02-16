@@ -12,6 +12,16 @@ class UserTest {
 	    String password = "bobbybobby00";
         user = new User(username, password);
     }
+	
+	@Test
+    void testUserConstructorAndGetters() {
+        String expectedUsername = "testuser";
+        String expectedPassword = "testpassword";
+        User user = new User(expectedUsername, expectedPassword);
+        
+        assertEquals(expectedUsername, user.getUsername(), "Username should match");
+        assertEquals(expectedPassword, user.getPassword(), "Password should match");
+    }
     
 	@Test
 	void testGet() {

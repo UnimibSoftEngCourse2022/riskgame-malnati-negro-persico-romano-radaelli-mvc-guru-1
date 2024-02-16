@@ -1,7 +1,9 @@
 package com.mvcguru.risiko.maven.eclipse.states;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mvcguru.risiko.maven.eclipse.actions.GameEntry;
 import com.mvcguru.risiko.maven.eclipse.actions.TerritorySetup;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
@@ -23,15 +25,19 @@ class GameStateTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         gameState = spy(GameState.class);
-        doNothing().when(gameState).setupGame();
+        doNothing().when(gameState).setUpGame();
         doNothing().when(gameState).playTurn();
         gameState.game = game;
+    }
+    
+    private static class MockGameState extends GameState {
+        // Mock subclass to test serialization and implemented methods of GameState.
     }
 
     @Test
     void testSetupGame() {
-        gameState.setupGame();
-        verify(gameState, times(1)).setupGame();
+        gameState.setUpGame();
+        verify(gameState, times(1)).setUpGame();
     }
 
     @Test
