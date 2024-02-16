@@ -1,5 +1,6 @@
 package com.mvcguru.risiko.maven.eclipse.model;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.slf4j.Logger;
@@ -44,5 +45,9 @@ public abstract class IGame {
     public abstract void broadcast();
 
 	public abstract Player findPlayerByUsername(String username);
+	
+	public abstract IDeck createTerritoryDeck(GameConfiguration configuration) throws IOException;
+	
+	public abstract IDeck createObjectiveDeck(GameConfiguration configuration) throws IOException;
    
 }

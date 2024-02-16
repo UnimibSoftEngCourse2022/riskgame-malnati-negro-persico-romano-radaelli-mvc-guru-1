@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams, useLocation } from "react-router-dom"; // Importa useParams e useLocation
 import PartitaObserverSingleton from "../application/PartitaObserverSingleton";
-import SetupMap from "../component/mappa/SetupStateMap";
+import SetupStateMap from "../component/mappa/SetupStateMap";
 
 function MappaPage() {
   const { idPartita } = useParams(); // Ottieni l'idPartita dall'URL
@@ -62,7 +62,8 @@ class Mappa extends React.Component {
               </div>
             ))}
         </div>
-        <SetupMap props={giocatori} />
+        {console.log("giocatori", giocatori)}
+        <SetupStateMap props={giocatori} />
       </div>
     );
   }

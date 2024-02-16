@@ -11,7 +11,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class TerritorySetup extends ActionPlayer{
 	
-	protected SetUpBody setUpBody;
+	protected transient SetUpBody setUpBody;
 	@Override
 	public void accept(GameState gameState) throws FullGameException {
 		gameState.onActionPlayer(this);

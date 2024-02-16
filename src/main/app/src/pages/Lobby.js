@@ -50,7 +50,13 @@ class LobbyClass extends React.Component {
     const utentiTotali = partita.configuration.players;
     this.setState({ utentiTotali });
 
+    console.log("itenti totali", utentiTotali);
+    console.log("utentiConnessi", utentiConnessi);
+
     if (utentiConnessi.length === utentiTotali) {
+      console.log("deento navigazione");
+      console.log("deento navigazione", this.state.nickname);
+      console.log("deento partita navigazione", partita);
       this.props.navigate(`/mappa/${this.state.nickname}`, {
         state: { partita },
       });
@@ -75,7 +81,7 @@ class LobbyClass extends React.Component {
       <Container>
         <h2>Lobby: {idPartita}</h2>
         <p>utenti totali: {utentiTotali}</p>
-        <h3>Utenti Connessi:</h3>
+        <h3>Utenti Max permessi:</h3>
         <Container>
           {Array.isArray(utentiConnessi) && utentiConnessi.length > 0 ? (
             utentiConnessi.map((utente, index) => (

@@ -19,17 +19,14 @@ import lombok.experimental.SuperBuilder;
 @JsonSubTypes({
     @JsonSubTypes.Type(value = LobbyState.class, name = "LobbyState"),
     @JsonSubTypes.Type(value = GameSetupState.class, name = "SetupState")
-    // Aggiungi qui altre annotazioni @JsonSubTypes per i futuri stati
 })
 public abstract class GameState implements Serializable {
 
     @JsonIgnore
-    protected IGame game;
+    protected transient IGame game;
 
     protected GameState() {  }
     
-    public void setupGame() {  }
-
     public void playTurn() {  }
     
     public void onActionPlayer(GameEntry gameEntry) throws FullGameException{ }
@@ -37,4 +34,6 @@ public abstract class GameState implements Serializable {
     public void onActionPlayer(GameExit gameExit) { }
 
 	public void onActionPlayer(TerritorySetup territorySetup) { }
+
+	public void setUpGame() {}
 }

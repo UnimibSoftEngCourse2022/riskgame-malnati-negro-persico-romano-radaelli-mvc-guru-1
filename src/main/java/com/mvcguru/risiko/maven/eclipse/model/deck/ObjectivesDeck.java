@@ -5,9 +5,16 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import com.mvcguru.risiko.maven.eclipse.model.Card.ICard;
-import com.mvcguru.risiko.maven.eclipse.model.Card.ObjectiveCard;
+import com.mvcguru.risiko.maven.eclipse.model.card.ICard;
+import com.mvcguru.risiko.maven.eclipse.model.card.ObjectiveCard;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+
+@Data
+@SuperBuilder
+@NoArgsConstructor
 public class ObjectivesDeck implements IDeck{
 	
     private Queue<ObjectiveCard> cards = new LinkedList<>();
@@ -19,7 +26,7 @@ public class ObjectivesDeck implements IDeck{
 
 	@Override
 	public void insertCard(ICard card) {
-		//Non necessario
+		cards.add((ObjectiveCard) card);
 	}
 
 	@Override

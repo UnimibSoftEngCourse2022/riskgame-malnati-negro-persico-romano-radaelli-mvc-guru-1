@@ -1,69 +1,80 @@
 package com.mvcguru.risiko.maven.eclipse.service;
 
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
+import com.mvcguru.risiko.maven.eclipse.exception.GameException;
 import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.User;
 import com.mvcguru.risiko.maven.eclipse.service.database.DataDao;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import static org.mockito.Mockito.*;
-
-import java.lang.reflect.Field;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class UserRepositoryTest {
 
+    @Mock
+    private DataDao dataDao;
+
+    @InjectMocks
     private UserRepository userRepository;
-    private DataDao mockedDataDao;
 
     @BeforeEach
-    void setUp() throws Exception {
-        userRepository = UserRepository.getInstance(); // Assuming getInstance handles exceptions internally for simplicity
-        mockedDataDao = mock(DataDao.class);
-        
-        // Injecting mocked DataDao instance using reflection
-        Field dbField = UserRepository.class.getDeclaredField("db");
-        dbField.setAccessible(true);
-        dbField.set(userRepository, mockedDataDao);
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
     }
+    
+    @Test
+	void getIstance() throws UserException, DatabaseConnectionException, GameException {
+		UserRepository userRepository = UserRepository.getInstance();
+		assertNotNull(userRepository);
+	}
 
     @Test
     void testRegisterUser() throws UserException {
-        User user = new User("testUser", "password");
+        User user = new User("testUser", "password123");
+        doNothing().when(dataDao).registerUser(any(User.class));
         userRepository.registerUser(user);
-        verify(mockedDataDao, times(1)).registerUser(user);
+        verify(dataDao, times(1)).registerUser(user);
     }
 
     @Test
     void testGetUser() throws UserException {
-        User expectedUser = new User("testUser", "password");
-        when(mockedDataDao.getUserByUsernameAndPassword("testUser", "password")).thenReturn(expectedUser);
-        
-        User actualUser = userRepository.getUser(expectedUser);
-        
-        verify(mockedDataDao, times(1)).getUserByUsernameAndPassword("testUser", "password");
-        assertEquals(expectedUser, actualUser);
+        User user = new User("testUser", "password123");
+        when(dataDao.getUserByUsernameAndPassword(user.getUsername(), user.getPassword())).thenReturn(user);
+        User result = userRepository.getUser(user);
+        assertNotNull(result);
+        assertEquals(user.getUsername(), result.getUsername());
+        assertEquals(user.getPassword(), result.getPassword());
     }
 
     @Test
     void testGetUserName() throws UserException {
-        User user = new User("testUser", "password");
-        when(mockedDataDao.getUserByUsernameAndPassword("testUser", "password")).thenReturn(user);
-        
-        String userName = userRepository.getUserName(user);
-        
-        verify(mockedDataDao, times(1)).getUserByUsernameAndPassword("testUser", "password");
-        assertEquals("testUser", userName);
+        User user = new User("testUser", "password123");
+        when(dataDao.getUserByUsernameAndPassword(user.getUsername(), user.getPassword())).thenReturn(user);
+        String username = userRepository.getUserName(user);
+        assertNotNull(username);
+        assertEquals(user.getUsername(), username);
     }
 
     @Test
     void testGetUserPassword() throws UserException {
-        User user = new User("testUser", "password");
-        when(mockedDataDao.getUserByUsernameAndPassword("testUser", "password")).thenReturn(user);
-        
-        String userPassword = userRepository.getUserPassword(user);
-        
-        verify(mockedDataDao, times(1)).getUserByUsernameAndPassword("testUser", "password");
-        assertEquals("password", userPassword);
+        User user = new User("testUser", "password123");
+        when(dataDao.getUserByUsernameAndPassword(user.getUsername(), user.getPassword())).thenReturn(user);
+        String password = userRepository.getUserPassword(user);
+        assertNotNull(password);
+        assertEquals(user.getPassword(), password);
+    }
+
+    @Test
+    void testDeleteUser() throws UserException {
+        User user = new User("testUser", "password123");
+        doNothing().when(dataDao).deleteUser(any(User.class));
+        userRepository.deleteUser(user);
+        verify(dataDao, times(1)).deleteUser(user);
     }
 }

@@ -1,5 +1,6 @@
 package com.mvcguru.risiko.maven.eclipse.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,12 +21,15 @@ import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
 import com.mvcguru.risiko.maven.eclipse.exception.GameException;
 import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
+import com.mvcguru.risiko.maven.eclipse.model.Territory;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 import com.mvcguru.risiko.maven.eclipse.service.GameRepository;
+import com.mvcguru.risiko.maven.eclipse.service.database.DatabaseConnection;
 
 @Controller
 public class EventController {
-	private static final Logger LOGGER = LoggerFactory.getLogger(GameController.class);
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(EventController.class);
 
 	@Autowired
     public EventController(SimpMessagingTemplate template) {
@@ -35,42 +39,37 @@ public class EventController {
     }
 	
 	@MessageMapping("/partite/{id}/entra")
-    public void enterInTheGame(@Payload PlayerBody body, @DestinationVariable String id) {
+    public void enterInTheGame(@Payload PlayerBody body, @DestinationVariable String id) throws Exception {
 		IGame game = null;
 		try {
 			game = GameRepository.getInstance().getGameById(id);
-			Player player = Player.builder().userName(body.getUsername()).gameId(id).color(Player.PlayerColor.GREY).build();
+			Player player = Player.builder().userName(body.getUsername()).gameId(id).territories(new ArrayList<Territory>()).color(Player.PlayerColor.GREY).build();
 			GameEntry action = GameEntry.builder().player(player).build();
 			game.onActionPlayer(action);
-			GameRepository.getInstance().add(player);
-		} catch (GameException | DatabaseConnectionException | UserException e) {
-			//segnala errore
+			GameRepository.getInstance().addPlayer(player);
+		} catch (GameException | DatabaseConnectionException | UserException e) {throw e;
 		} catch (FullGameException e) {
-			//Map<String, Object> headers = new HashMap<>();
-            // headers.put("nickname", body.getUsername());
             MessageBrokerSingleton.getInstance().getTemplate().convertAndSend("/topic/partite/" + id, "Partita piena");
         }
     }
 	
-	@MessageMapping("/partite/{id}/esci")
-    public void esci(
+	@MessageMapping("/partite/{id}/esci") 
+    public void exit(
             @DestinationVariable String id,
-            @Payload PlayerBody body) throws FullGameException {
+            @Payload PlayerBody body) throws Exception {
 		IGame game = null;
-		LOGGER.info("Uscita giocatore", body.getUsername());
 		try {
             game = GameRepository.getInstance().getGameById(id);
             Player player = game.findPlayerByUsername(body.getUsername());
             GameExit action = GameExit.builder().player(player).build();
             game.onActionPlayer(action);
-            GameRepository.getInstance().remove(body.getUsername());
-        } catch (GameException | DatabaseConnectionException | UserException e) {
-            //segnala errore
-        }
+            GameRepository.getInstance().removePlayer(body.getUsername());
+        } catch (GameException | DatabaseConnectionException | UserException e) {LOGGER.error("Errore durante l'uscita dalla partita", e);}
+        
     }
 	
 	@MessageMapping("/partite/{id}/confermaSetup")
-	public void confermaSetup(@DestinationVariable String id, @Payload SetUpBody body) {
+	public void confirmSetup(@DestinationVariable String id, @Payload SetUpBody body) throws Exception {
 	    try {
 	        IGame game = GameRepository.getInstance().getGameById(id);
 	        Player player = game.findPlayerByUsername(body.getUsername());
@@ -78,9 +77,7 @@ public class EventController {
 	            TerritorySetup action = TerritorySetup.builder().player(player).setUpBody(body).build();
 	            game.onActionPlayer(action);
 	        }
-	    } catch (Exception e) {
-	        //segnala errore
-	    }
+	    } catch (Exception e) {LOGGER.error("Errore durante la conferma del setup", e);}
 	}
 
 

@@ -15,7 +15,7 @@ function Root() {
         {/* <Route path={"/partita/:id"} element={<Partita />} /> */}
         <Route path={"/partita/:id"} element={<NewPartita />} />
         <Route path="/lobby/:idPartita" element={<Lobby />} />
-        <Route path="/mappa/:idPartita" element={<Mappa />} />
+        <Route path="/mappa/:id" element={<Mappa />} />
       </Routes>
     </Router>
   );

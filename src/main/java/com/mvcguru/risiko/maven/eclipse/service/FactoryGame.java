@@ -1,29 +1,22 @@
 package com.mvcguru.risiko.maven.eclipse.service;
 
+import java.io.IOException;
 import java.util.UUID;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
-import com.mvcguru.risiko.maven.eclipse.exception.GameException;
-import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.Game;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
+import com.mvcguru.risiko.maven.eclipse.model.deck.IDeck;
+import com.mvcguru.risiko.maven.eclipse.states.GameState;
 import com.mvcguru.risiko.maven.eclipse.states.LobbyState;
 import lombok.Data;
 
 @Data
 public class FactoryGame {
-	private static final Logger LOGGER = LoggerFactory.getLogger(FactoryGame.class);
-
     private static FactoryGame instance;
-    
-    private String idGame;
+    private GameState gameState;
 
-
-    private FactoryGame() {
+    public FactoryGame() {
         // Costruttore privato per impedire l'istanziazione esterna
     }
 
@@ -33,17 +26,24 @@ public class FactoryGame {
         return instance;
     }
 
-    public static String creaId() {
-        String idGame = UUID.randomUUID().toString();
-        return idGame;
+    public static String createId() {
+        return UUID.randomUUID().toString();
     }
 
-
-    public IGame createGame(GameConfiguration configuration) {
+    public IGame createGame(GameConfiguration configuration) throws IOException {
     
-        IGame partita = new Game(creaId(), configuration);     
-        partita.setState(LobbyState.builder().game(partita).build());
-        return partita;
+        IGame game = new Game(createId(), configuration);
+        IDeck deckTerritory = game.createTerritoryDeck(configuration);
+        IDeck deckObjective = game.createObjectiveDeck(configuration);
+        
+        game.setDeckTerritory(deckTerritory);
+        game.setDeckObjective(deckObjective);
+        
+        game.setState(LobbyState.builder().game(game).build());
+
+        
+        
+        return game;
     }
     
 }

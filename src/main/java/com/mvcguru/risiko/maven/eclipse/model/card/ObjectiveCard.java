@@ -1,17 +1,17 @@
-package com.mvcguru.risiko.maven.eclipse.model.Card;
+package com.mvcguru.risiko.maven.eclipse.model.card;
 
-import com.mvcguru.risiko.maven.eclipse.states.GameSetupState;
-import com.mvcguru.risiko.maven.eclipse.states.GameState;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Data
+@SuperBuilder
 @NoArgsConstructor
 public class ObjectiveCard extends ICard{
-	
+	@JsonProperty("objective")
 	private String objective;
-
+	
 
 }
