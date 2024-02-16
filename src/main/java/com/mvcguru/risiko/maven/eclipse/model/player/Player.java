@@ -17,7 +17,9 @@ import lombok.experimental.SuperBuilder;
 public class Player {	
 	
 	private String userName;
+	
 	private String gameId;
+	
 	private PlayerColor color;
 	
 	@JsonIgnore

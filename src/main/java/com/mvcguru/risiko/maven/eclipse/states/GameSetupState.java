@@ -24,7 +24,7 @@ public class GameSetupState extends GameState {
 		//action.getPlayer().setSetupCompleted(true);
 	}
 	
-	private void setUpGame() {
+	public void setUpGame() {
 		assignColor(game.getPlayers());
 		assignTerritories(game.getDeckTerritory());
 		assignObjective(game.getDeckObjective());

@@ -31,10 +31,5 @@ public class LobbyState extends GameState{
         	game.setState(GameSetupState.builder().game(game).build());
         	game.getState().setupGame();
         }
-        
     }    
-	
-	
-    
-
 }
