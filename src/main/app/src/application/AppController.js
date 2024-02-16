@@ -18,10 +18,6 @@ class AppController {
     this.client.activate();
   }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> refs/heads/andrea
   async creaPartita(configuration) {
     //qui arriva la configurazione della partita
     console.log("fetch crea partita ", JSON.stringify(configuration));
@@ -64,7 +60,6 @@ class AppController {
 
       // Combina l'ID della partita con le informazioni di configurazione
       const nuovaPartita = {
-        id: idNuovaPartita,
         ...configuration, // Espande tutte le proprietà di configuration nell'oggetto
       };
 
@@ -97,39 +92,40 @@ class AppController {
       throw error;
     }
   }
-  
+
   entraInPartita(idPartita, nickname) {
-  if (!this.client || !this.client.connected) {
-	  console.error("Client STOMP non connesso");
-  }
+    if (!this.client || !this.client.connected) {
+      console.error("Client STOMP non connesso");
+    }
 
-  this.client.subscribe(`/topic/partite/${idPartita}`, (message) => {
-    PartitaObserverSingleton.notifyListeners(JSON.parse(message.body));
-    console.log("Messaggio ricevuto:", message.body);
-  });
+    this.client.subscribe(`/topic/partite/${idPartita}`, (message) => {
+      PartitaObserverSingleton.notifyListeners(JSON.parse(message.body));
+      console.log("Messaggio ricevuto:", message.body);
+    });
 
-  const payload = { username: nickname };
-  this.client.publish({
-    destination: `/app/partite/${idPartita}/entra`,
-    body: JSON.stringify(payload),
-  });
-}
-
-	esciDallaPartita(idPartita, nickname) {
-  if (this.client && this.client.connected) {
-    this.client.unsubscribe(`/topic/partite/${idPartita}`);
-    // Notifica al server l'uscita dalla partita
     const payload = { username: nickname };
     this.client.publish({
-      destination: `/app/partite/${idPartita}/esci`,
+      destination: `/app/partite/${idPartita}/entra`,
       body: JSON.stringify(payload),
     });
-    console.log(`Notifica di uscita dalla partita ${idPartita} inviata, ${nickname} si è disconnesso`);
-  } else {
-    console.error("Client STOMP non connesso");
   }
-}
 
+  esciDallaPartita(idPartita, nickname) {
+    if (this.client && this.client.connected) {
+      this.client.unsubscribe(`/topic/partite/${idPartita}`);
+      // Notifica al server l'uscita dalla partita
+      const payload = { username: nickname };
+      this.client.publish({
+        destination: `/app/partite/${idPartita}/esci`,
+        body: JSON.stringify(payload),
+      });
+      console.log(
+        `Notifica di uscita dalla partita ${idPartita} inviata, ${nickname} si è disconnesso`
+      );
+    } else {
+      console.error("Client STOMP non connesso");
+    }
+  }
 }
 
 // Esporta l'istanza per utilizzarla nell'app

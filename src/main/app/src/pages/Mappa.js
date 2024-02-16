@@ -1,6 +1,15 @@
 import React from "react";
+import { useParams, useLocation } from "react-router-dom"; // Importa useParams e useLocation
+import PartitaObserverSingleton from "../application/PartitaObserverSingleton";
 
-export default class Mappa extends React.Component {
+function MappaPage() {
+  const { idPartita } = useParams(); // Ottieni l'idPartita dall'URL
+  const location = useLocation(); // Accedi allo state di navigazione
+
+  return <Mappa idPartita={idPartita} partita={location.state?.partita} />;
+}
+
+class Mappa extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -13,14 +22,21 @@ export default class Mappa extends React.Component {
 
   componentDidMount() {
     PartitaObserverSingleton.addListener(this.updatePartita);
+
+    console.log("props partita", this.props.partita);
+    if (this.props.partita) {
+      this.updatePartita(this.props.partita);
+    }
   }
 
   updatePartita(partita) {
-    console.log("stato partita", partita.state);
-    this.setState({ statoPartita: partita.state.type });
-    console.log("giocatore partita", partita.players);
-    const giocatori = partita.players;
-    this.setState({ giocatori });
+    console.log("stato partita", partita);
+    if (partita && partita.state && partita.players) {
+      this.setState({
+        statoPartita: partita.state.type,
+        giocatori: partita.players,
+      });
+    }
   }
 
   render() {
@@ -35,15 +51,19 @@ export default class Mappa extends React.Component {
         )}
         <div>
           <h2>Informazioni Giocatori:</h2>
-          {giocatori.map((player, index) => (
-            <div key={index}>
-              <p>Nome Utente: {player.userName}</p>
-              <p>ID Gioco: {player.gameId}</p>
-              <p>Colore: {player.color}</p>
-            </div>
-          ))}
+          {giocatori
+            .filter((player) => player.userName !== null)
+            .map((player, index) => (
+              <div key={index}>
+                <p>Nome Utente: {player.userName}</p>
+                <p>ID Gioco: {player.gameId}</p>
+                <p>Colore: {player.color}</p>
+              </div>
+            ))}
         </div>
       </div>
     );
   }
 }
+
+export default MappaPage;

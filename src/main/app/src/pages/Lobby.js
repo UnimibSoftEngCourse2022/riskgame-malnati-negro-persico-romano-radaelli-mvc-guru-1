@@ -2,6 +2,7 @@ import React from "react";
 import AppController from "../application/AppController";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import PartitaObserverSingleton from "../application/PartitaObserverSingleton";
+import { Button, Card, Container } from "react-bootstrap";
 
 function LobbyPage() {
   const params = useParams();
@@ -18,6 +19,7 @@ class LobbyClass extends React.Component {
       nickname: null,
       utentiConnessi: [],
       utentiTotali: null,
+      partita: null,
     };
 
     this.updatePartita = this.updatePartita.bind(this);
@@ -34,13 +36,12 @@ class LobbyClass extends React.Component {
     );
 
     this.setState({ idPartita, nickname });
-    // questa classe lobby diventa un listener
     PartitaObserverSingleton.addListener(this);
-    // this.connettiALobby(idPartita, nickname);
   }
 
   updatePartita(partita) {
     console.log("update partita in lobby", partita);
+    this.setState({ partita });
     const utentiConnessi = partita.players
       .filter((player) => player.userName !== null)
       .map((player) => player.userName);
@@ -48,12 +49,18 @@ class LobbyClass extends React.Component {
 
     const utentiTotali = partita.configuration.players;
     this.setState({ utentiTotali });
+
+    if (utentiConnessi.length === utentiTotali) {
+      this.props.navigate(`/mappa/${this.state.idPartita}`, {
+        state: { partita },
+      });
+    }
   }
 
   esciDallaLobby = () => {
     const { idPartita, nickname } = this.state;
     AppController.esciDallaPartita(idPartita, nickname);
-    // Controlla se il nickname inizia con "Ospite_"
+
     if (nickname.startsWith("Ospite_")) {
       this.props.navigate(`/partita/null`);
     } else {
@@ -65,23 +72,23 @@ class LobbyClass extends React.Component {
     const { idPartita, utentiConnessi, utentiTotali } = this.state;
     console.log("utentiConnessi in Lobby", utentiConnessi);
     return (
-      <div>
+      <Container>
         <h2>Lobby: {idPartita}</h2>
         <p>utenti totali: {utentiTotali}</p>
         <h3>Utenti Connessi:</h3>
-        <div>
+        <Container>
           {Array.isArray(utentiConnessi) && utentiConnessi.length > 0 ? (
             utentiConnessi.map((utente, index) => (
-              <p className="text-dark" key={index}>
-                {utente}
-              </p>
+              <Card className="text-dark w-50" key={index}>
+                <Card.Body>{utente}</Card.Body>
+              </Card>
             ))
           ) : (
-            <p>Nessun utente connesso</p>
+            <p>Al momento non c'è nessun utente connesso</p>
           )}
-          <button onClick={this.esciDallaLobby}>Esci dalla Lobby</button>
-        </div>
-      </div>
+          <Button onClick={this.esciDallaLobby}>Esci dalla Lobby</Button>
+        </Container>
+      </Container>
     );
   }
 }

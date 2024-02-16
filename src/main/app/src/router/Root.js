@@ -12,10 +12,10 @@ function Root() {
     <Router>
       <Routes>
         <Route path="/" element={<LayoutHome children={<Home />} />} />
-        <Route path={"/partita/:id"} element={<Partita />} />
-        {/* <Route path={"/partita/:id"} element={<NewPartita />} /> */}
+        {/* <Route path={"/partita/:id"} element={<Partita />} /> */}
+        <Route path={"/partita/:id"} element={<NewPartita />} />
         <Route path="/lobby/:idPartita" element={<Lobby />} />
-        <Route path="/mappa" element={<Mappa />} />
+        <Route path="/mappa/:idPartita" element={<Mappa />} />
       </Routes>
     </Router>
   );

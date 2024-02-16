@@ -6,9 +6,9 @@ import { useParams } from "react-router-dom";
 function CreaPartita() {
   const [difficolta, setDifficolta] = useState("");
   const [players, setPlayers] = useState("");
-  const [nomeMappa, setNomeMappa] = useState("");
+  const [nomeLobby, setNomeLobby] = useState("");
   const [isLobbyCreated, setIsLobbyCreated] = useState("");
-  const { id } = useParams;
+  const { id } = useParams();
 
   const handleDifficolta = (e) => {
     setDifficolta(e.target.value);
@@ -71,18 +71,15 @@ function CreaPartita() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //qui creo configurazione
+    // Rimosso il riferimento a this.state, non necessario in un componente funzionale
     const configuration = {
-      difficolta: difficolta,
+      difficolta,
       players: parseInt(players),
-      nomeMappa: nomeMappa,
+      nomeLobby,
     };
     try {
-      const result = await AppController.creaPartitaComponent(configuration);
-      setIsLobbyCreated(
-        //qui non ti arrivava nessun id, ora ti arriva
-        `Lobby creata con successo! ID Lobby: ${result.id}`
-      );
+      const result = await AppController.creaPartita(configuration); // Assicurati che questo sia il nome corretto del metodo
+      setIsLobbyCreated(`Lobby creata con successo! ID Lobby: ${result.id.id}`); // Presumendo che result.id sia l'oggetto che contiene l'id
     } catch (error) {
       setIsLobbyCreated(`Errore nella creazione della lobby: ${error.message}`);
     }
@@ -125,13 +122,9 @@ function CreaPartita() {
           <Form.Control
             type="text"
             placeholder="Inserisci nome mappa"
-            value={nomeMappa}
-            onChange={(e) => setNomeMappa(e.target.value)}
+            value={nomeLobby}
+            onChange={(e) => setNomeLobby(e.target.value)}
           />
-        </Form.Group>
-
-        <Form.Group className="mb-3" controlId="formOptionDifficolta">
-          <Form.Label>A quale quiz vuoi rispondere?</Form.Label>
         </Form.Group>
 
         <Container className="d-flex justify-content-center">

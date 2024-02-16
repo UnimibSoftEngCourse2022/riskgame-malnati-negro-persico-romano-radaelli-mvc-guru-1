@@ -16,7 +16,13 @@ function CarouselComponent() {
     if (!effectiveNickname || effectiveNickname === "null") {
       effectiveNickname = `Ospite_${Date.now()}`;
     }
-    navigate(`/lobby/${idPartita}?nickname=${effectiveNickname}`);
+    try {
+      AppController.entraInPartita(idPartita, effectiveNickname);
+      navigate(`/lobby/${idPartita}?nickname=${effectiveNickname}`);
+    } catch (error) {
+      alert("Errore: " + error.message); // Mostra un popup con l'errore
+      console.error("Errore durante l'entrata nella partita:", error);
+    }
   };
 
   useEffect(() => {
@@ -41,12 +47,7 @@ function CarouselComponent() {
 
     // Registra l'oggetto listener in PartitaObserverSingleton
     PartitaObserverSingleton.addListener({ updatePartita });
-
-    // Rimozione del listener quando il componente viene smontato
-    // return () => {
-    //   PartitaObserverSingleton.removeListener(updateLobbies);
-    // };
-  }, []);
+  }, []); // Dipendenze vuote indicano che questo effetto viene eseguito solo al montaggio e smontaggio
 
   const handleSelect = (selectedIndex) => {
     setIndex(selectedIndex);
