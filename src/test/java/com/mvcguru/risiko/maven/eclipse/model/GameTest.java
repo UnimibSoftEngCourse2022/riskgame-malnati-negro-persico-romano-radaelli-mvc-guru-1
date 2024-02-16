@@ -156,7 +156,6 @@ class GameTest {
     	
     	assertEquals(card, c, "The drawn card should be the same as the inserted card");
     	assertNotEquals(card2, c, "The drawn card should be the same as the inserted card");
-    	
     }
     
     @Test

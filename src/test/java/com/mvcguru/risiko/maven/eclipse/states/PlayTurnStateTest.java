@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import com.mvcguru.risiko.maven.eclipse.actions.GameEntry;
 import com.mvcguru.risiko.maven.eclipse.actions.TerritorySetup;
-import com.mvcguru.risiko.maven.eclipse.controller.SetUpBody;
+import com.mvcguru.risiko.maven.eclipse.controller.bodyRequest.SetUpBody;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
