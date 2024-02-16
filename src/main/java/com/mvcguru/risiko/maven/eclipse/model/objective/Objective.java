@@ -2,6 +2,7 @@ package com.mvcguru.risiko.maven.eclipse.model.objective;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mvcguru.risiko.maven.eclipse.model.Continent;
+import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player.PlayerColor;
 
 import lombok.Data;
@@ -19,7 +20,7 @@ public abstract class Objective {
 
 	protected boolean isComplete;
 	
-	public abstract boolean isComplete();
+	public abstract boolean isComplete(IGame game);
 	
 	
 
