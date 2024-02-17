@@ -20,5 +20,7 @@ public class Continent {
 	private String name;
 	@JsonProperty("territories")
 	private List<Territory> territories;
+	@JsonProperty("bonus")
+	private int bonusArmies;
 	
 }

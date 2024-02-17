@@ -56,6 +56,11 @@ public class Game extends IGame {
         MessageBrokerSingleton.getInstance().broadcast(this);
 	}
 	
+	@Override
+	public <T> void broadcast(String idGame, String idUser,T object) {
+		MessageBrokerSingleton.getInstance().broadcast(idGame, idUser, object);
+	}
+	
 	public Player findPlayerByUsername(String username) {
         for (Player player : players) {
             if (player.getUserName().equals(username)) {
@@ -128,6 +133,8 @@ public class Game extends IGame {
 		
         broadcast();
 	}	
+	
+	
 	
 	public List<Continent> parsingContinent() throws IOException {
 		ObjectMapper mapper = new ObjectMapper();

@@ -18,7 +18,7 @@ public class Territory {
 	
 	private int armies;
 	
-	private Player owner;
+	private String IdOwner;
 	
 	private List<Territory> neighbors;
 	

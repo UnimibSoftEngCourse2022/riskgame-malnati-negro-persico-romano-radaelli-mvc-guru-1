@@ -11,9 +11,11 @@ import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
 import com.mvcguru.risiko.maven.eclipse.exception.GameException;
 import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
+import com.mvcguru.risiko.maven.eclipse.model.Territory;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 import com.mvcguru.risiko.maven.eclipse.service.database.DaoSQLiteImpl;
 import com.mvcguru.risiko.maven.eclipse.service.database.DataDao;
+import com.mvcguru.risiko.maven.eclipse.states.GameState;
 
 public class GameRepository {
 	private static GameRepository instance;
@@ -56,6 +58,11 @@ public class GameRepository {
 		return games;
 	}
 	
+	public synchronized void updateState(String gameId, GameState newState) throws GameException{
+		db.updateState(gameId, newState);
+	}
+    
+	
 	public synchronized void addPlayer(Player player) throws GameException {
 		db.insertPlayer(player);
 	}
@@ -63,5 +70,18 @@ public class GameRepository {
 	public synchronized void removePlayer(String username) throws GameException {
 		db.deletePlayer(username);
 	}
+	
+	public synchronized void insertTerritory(Territory territory) throws GameException{
+		db.insertTerritory(territory);
+	}
+	
+	public synchronized void deleteTerritory(String name) throws GameException{
+		db.deleteTerritory(name);
+	}
+	
+	public synchronized void updateTerritoryOwner(String territoryName, Player player) throws GameException{
+		db.updateTerritoryOwner(territoryName, player);
+	}
+
 	
 }

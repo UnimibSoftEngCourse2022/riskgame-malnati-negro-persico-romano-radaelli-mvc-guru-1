@@ -3,6 +3,7 @@ package com.mvcguru.risiko.maven.eclipse.controller.bodyRequest;
 import java.util.List;
 
 import com.mvcguru.risiko.maven.eclipse.model.card.ICard;
+import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
 
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
@@ -13,6 +14,6 @@ public class ComboRequestBody {
 	
 	private String username;
 	
-	private List<ICard> comboCards;
+	private List<TerritoryCard> comboCards;
 
 }

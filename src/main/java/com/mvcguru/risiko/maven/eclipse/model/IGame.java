@@ -45,6 +45,8 @@ public abstract class IGame {
     public abstract void onActionPlayer(ActionPlayer action) throws FullGameException, IOException;
     
     public abstract void broadcast();
+    
+    public abstract <T> void broadcast(String idGame, String idUser,T object);
 
 	public abstract Player findPlayerByUsername(String username);
 	
