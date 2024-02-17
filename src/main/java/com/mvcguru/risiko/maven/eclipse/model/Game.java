@@ -44,7 +44,7 @@ public class Game extends IGame {
     }
 
 	@Override
-	public void onActionPlayer(ActionPlayer action) throws FullGameException {
+	public void onActionPlayer(ActionPlayer action) throws FullGameException, IOException {
 		action.accept(state);
 		broadcast();
 	}

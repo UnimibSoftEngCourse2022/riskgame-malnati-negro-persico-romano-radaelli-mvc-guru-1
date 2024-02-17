@@ -1,5 +1,6 @@
 package com.mvcguru.risiko.maven.eclipse.states;
 
+import java.io.IOException;
 import java.util.List;
 
 import com.mvcguru.risiko.maven.eclipse.actions.ComboRequest;
@@ -15,7 +16,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class PlayTurnState extends GameState{
 	
-	public void onActionPlayer(ComboRequest comboRequest) {
+	public void onActionPlayer(ComboRequest comboRequest) throws IOException {
 		game.getCurrentTurn().setComboCards(comboRequest.getRequestComboBody().getComboCards());
 		game.getCurrentTurn().numberOfTroopsCalculation(
 				game.findPlayerByUsername(

@@ -1,5 +1,6 @@
 package com.mvcguru.risiko.maven.eclipse.states;
 
+import java.io.IOException;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -36,7 +37,7 @@ public abstract class GameState implements Serializable {
 
 	public void onActionPlayer(TerritorySetup territorySetup) { }
 	
-	public void onActionPlayer(ComboRequest comboRequest) { }
+	public void onActionPlayer(ComboRequest comboRequest) throws IOException { }
 
 	public void setUpGame() {}
 }

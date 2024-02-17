@@ -1,5 +1,6 @@
 package com.mvcguru.risiko.maven.eclipse.model;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
@@ -19,7 +20,11 @@ public class Turn implements Serializable{
 	
 	private List<ICard> comboCards;
 	
-	public void numberOfTroopsCalculation(List<Territory> territories) {
+	private Continent continent;
+	
+	public void numberOfTroopsCalculation(List<Territory> territories) throws IOException {
+		continent = Continent.builder().territories(territories).build();
+		
 		
 		numberOfTroops = territories.size() / 3;
 		
@@ -28,26 +33,26 @@ public class Turn implements Serializable{
 	}
 	
 	public int comboCardsCheck() {
-		if(comboCards.size() != 3) {
-            return 0;
-        }
-		
-		String combo = comboCards.get(0).toString() + comboCards.get(1).toString() + comboCards.get(2).toString();
-		for (ICard card : comboCards) {
-			System.out.println(card.toString());
-			
-		}
-		
-		switch(combo) {
-			case "ARTILLERYARTILLERYARTILLERY":
-				return 4;
-			case "CAVALRYCAVALRYCAVALRY":
-				return 6;
-			case "INFANTRYINFANTRYINFANTRY":
-				return 8;
-			
-		}
-		
+//		if(comboCards.size() != 3) {
+//            return 0;
+//        }
+//		
+//		String combo = comboCards.get(0).toString() + comboCards.get(1).toString() + comboCards.get(2).toString();
+//		for (ICard card : comboCards) {
+//			System.out.println(card.toString());
+//			
+//		}
+//		
+//		switch(combo) {
+//			case "ARTILLERYARTILLERYARTILLERY":
+//				return 4;
+//			case "CAVALRYCAVALRYCAVALRY":
+//				return 6;
+//			case "INFANTRYINFANTRYINFANTRY":
+//				return 8;
+//			
+//		}
+//		
 		return 0;
 	}
 	

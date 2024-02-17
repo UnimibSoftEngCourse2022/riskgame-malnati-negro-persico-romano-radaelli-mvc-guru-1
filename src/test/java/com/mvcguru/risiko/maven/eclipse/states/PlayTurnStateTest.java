@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -13,6 +14,8 @@ import com.mvcguru.risiko.maven.eclipse.actions.GameEntry;
 import com.mvcguru.risiko.maven.eclipse.actions.TerritorySetup;
 import com.mvcguru.risiko.maven.eclipse.controller.bodyRequest.SetUpBody;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
+import com.mvcguru.risiko.maven.eclipse.model.Continent;
+
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.model.Territory;
@@ -69,5 +72,6 @@ class PlayTurnStateTest {
 		TerritorySetup territorySetup2 = TerritorySetup.builder().player(player2).setUpBody(setUpBody2).build();
 		game.getState().onActionPlayer(territorySetup2);
 		assertEquals(game.getState().getClass(), PlayTurnState.class);
+		
     }
 }
