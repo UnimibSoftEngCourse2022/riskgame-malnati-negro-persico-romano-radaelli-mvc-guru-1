@@ -111,7 +111,7 @@ public class Game extends IGame {
                 .player(players.get(0))
                 .build();
 		//currentTurn.numberOfTroopsCalculation(currentTurn.getPlayer().getTerritories());
-		broadcast();
+		//broadcast();
 	}
 	
 	public void changeTurn() {

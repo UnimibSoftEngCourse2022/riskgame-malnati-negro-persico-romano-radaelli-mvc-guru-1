@@ -24,7 +24,6 @@ import lombok.experimental.SuperBuilder;
 public abstract class IGame {
 	protected static final Logger LOGGER = LoggerFactory.getLogger(IGame.class);
 
-	
 	protected String id;
 	
 	protected GameConfiguration configuration;

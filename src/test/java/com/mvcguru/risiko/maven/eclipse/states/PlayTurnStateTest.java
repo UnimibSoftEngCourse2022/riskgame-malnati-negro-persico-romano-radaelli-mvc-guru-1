@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import com.mvcguru.risiko.maven.eclipse.actions.GameEntry;
 import com.mvcguru.risiko.maven.eclipse.actions.TerritorySetup;
-import com.mvcguru.risiko.maven.eclipse.controller.SetUpBody;
+import com.mvcguru.risiko.maven.eclipse.controller.bodyRequest.SetUpBody;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
@@ -62,6 +62,8 @@ class PlayTurnStateTest {
 		SetUpBody setUpBody1 = SetUpBody.builder().username(player1.getUserName()).territories(player1.getTerritories()).build();
 		TerritorySetup territorySetup = TerritorySetup.builder().player(player1).setUpBody(setUpBody1).build();
 		game.getState().onActionPlayer(territorySetup);
+		
+		
 		
 		SetUpBody setUpBody2 = SetUpBody.builder().username(player2.getUserName()).territories(player2.getTerritories()).build();
 		TerritorySetup territorySetup2 = TerritorySetup.builder().player(player2).setUpBody(setUpBody2).build();
