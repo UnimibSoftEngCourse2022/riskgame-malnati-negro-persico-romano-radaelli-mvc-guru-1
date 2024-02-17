@@ -3,7 +3,8 @@ package com.mvcguru.risiko.maven.eclipse.model;
 import java.io.Serializable;
 import java.util.List;
 
-import com.mvcguru.risiko.maven.eclipse.model.card.ICard;
+import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
+import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard.CardSymbol;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 
 import lombok.Data;
@@ -17,7 +18,7 @@ public class Turn implements Serializable{
 	
 	private int numberOfTroops;
 	
-	private List<ICard> comboCards;
+	private List<TerritoryCard> comboCards;
 	
 	public void numberOfTroopsCalculation(List<Territory> territories) {
 		
@@ -25,30 +26,43 @@ public class Turn implements Serializable{
 		
 		numberOfTroops += comboCardsCheck();
 		
+		//numberOfTroops += continentsCheck(territories);
+		
 	}
 	
 	public int comboCardsCheck() {
+		int troops = 0;
+		
 		if(comboCards.size() != 3) {
             return 0;
         }
 		
-		String combo = comboCards.get(0).toString() + comboCards.get(1).toString() + comboCards.get(2).toString();
-		for (ICard card : comboCards) {
-			System.out.println(card.toString());
+		if (comboCards.get(0).getSymbol() == comboCards.get(1).getSymbol() && comboCards.get(1).getSymbol() == comboCards.get(2).getSymbol()) {
+			if (comboCards.get(0).getSymbol() == CardSymbol.ARTILLERY ) 
+				troops = 4;
+			else if (comboCards.get(0).getSymbol() == CardSymbol.CAVALRY) 
+				troops = 6;
+			else 
+				troops = 8;
+		}
+		else if (comboCards.get(0).getSymbol() != comboCards.get(1).getSymbol()
+				&& comboCards.get(1).getSymbol() != comboCards.get(2).getSymbol()
+				&& comboCards.get(0).getSymbol() != comboCards.get(2).getSymbol()) {
+			troops = 10;
+		} 
+		else if ((comboCards.get(0).getSymbol() == CardSymbol.JOLLY && comboCards.get(1).getSymbol() == comboCards.get(2).getSymbol())
+				|| (comboCards.get(1).getSymbol() == CardSymbol.JOLLY && comboCards.get(0).getSymbol() == comboCards.get(2).getSymbol())
+				|| (comboCards.get(2).getSymbol() == CardSymbol.JOLLY && comboCards.get(1).getSymbol() == comboCards.get(0).getSymbol())) {
 			
+			troops = 10;
 		}
 		
-		switch(combo) {
-			case "ARTILLERYARTILLERYARTILLERY":
-				return 4;
-			case "CAVALRYCAVALRYCAVALRY":
-				return 6;
-			case "INFANTRYINFANTRYINFANTRY":
-				return 8;
-			
+		for (TerritoryCard card : comboCards) {
+			if (player.getTerritories().contains(card.getTerritory()))
+				troops += 2;
 		}
 		
-		return 0;
+		return troops;
 	}
 	
 }

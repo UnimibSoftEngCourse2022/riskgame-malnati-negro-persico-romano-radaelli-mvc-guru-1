@@ -154,8 +154,7 @@
   {
     "territory": {
       "name": "Gran Bretagna",
-      "continent": 2,
-      "svgPath": "
+      "continent": 2
     },
     "symbol": "CAVALRY"
   },
