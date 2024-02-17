@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.mvcguru.risiko.maven.eclipse.actions.GameEntry;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
+import com.mvcguru.risiko.maven.eclipse.model.Continent;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.model.Territory;
@@ -14,6 +15,7 @@ import com.mvcguru.risiko.maven.eclipse.service.FactoryGame;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -48,14 +50,30 @@ class GameSetupStateTest {
     	
 		for (Player player : game.getPlayers()) {
 			assertNotNull(player.getColor());
-			LOGGER.info("Player: {}", player.getColor());
 			assertFalse(player.getTerritories().isEmpty());
-			LOGGER.info("Player: {}", player.getTerritories());
 			assertNotNull(player.getObjective());
-			LOGGER.info("Player: {}", player.getObjective());
 		}
 		
+		List<Continent> continents = game.parsingContinent();
 		
+		for (Continent continent : continents) {
+			assertNotNull(continent.getContinentId());
+			LOGGER.info("Continent intId: {}", continent.getContinentId());
+			assertNotNull(continent.getName());
+			LOGGER.info("Continent name: {}", continent.getName());
+			assertFalse(continent.getTerritories().isEmpty());
+			LOGGER.info("Continent territories: {}", continent.getTerritories());
+		}
+		
+		List<Territory> lista = continents.get(0).getTerritories();
+		for (Territory territory : lista) {
+			LOGGER.info("Territory: {}", territory);
+		}
+		
+		List<Territory> lista2 = player1.getTerritories();
+		for (Territory territory : lista2) {
+			LOGGER.info("Territory: {}", territory);
+        }
 		
     }
 }

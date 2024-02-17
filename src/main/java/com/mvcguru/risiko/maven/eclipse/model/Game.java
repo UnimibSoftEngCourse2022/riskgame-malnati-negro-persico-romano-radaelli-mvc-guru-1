@@ -2,6 +2,8 @@ package com.mvcguru.risiko.maven.eclipse.model;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.FileCopyUtils;
@@ -110,6 +112,8 @@ public class Game extends IGame {
 		currentTurn = Turn.builder()
                 .player(players.get(0))
                 .build();
+		//currentTurn.numberOfTroopsCalculation(currentTurn.getPlayer().getTerritories());
+		//broadcast();
 	}
 	
 	public void changeTurn() {
@@ -123,7 +127,21 @@ public class Game extends IGame {
                 .build());
 		
         broadcast();
-	}
+	}	
 	
+	public List<Continent> parsingContinent() throws IOException {
+		ObjectMapper mapper = new ObjectMapper();
+        byte[] data = FileCopyUtils.copyToByteArray(new ClassPathResource("continent.json").getInputStream());
+        String json = new String(data, StandardCharsets.UTF_8);
+        Continent[] continents = mapper.readValue(json, Continent[].class);
+        
+        List<Continent> continent = new ArrayList<Continent>();
+		for (Continent c : continents) {
+			continent.add(c);
+		}
+		
+		return continent;
+		
+	}
 	
 }
