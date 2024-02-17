@@ -28,7 +28,7 @@ public class GameSetupState extends GameState {
 
 	@Override
 	public void onActionPlayer(TerritorySetup action) {
-		action.getPlayer().setTerritories(action.getSetUpBody().getTerritories());
+		//action.getPlayer().setTerritories(action.getSetUpBody().getTerritories());
 		action.getPlayer().setSetUpCompleted(true);
 		for (Player player : game.getPlayers()) {
 			if (!player.isSetUpCompleted()) {

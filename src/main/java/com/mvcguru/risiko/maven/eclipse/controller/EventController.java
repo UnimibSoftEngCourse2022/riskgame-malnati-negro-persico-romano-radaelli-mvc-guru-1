@@ -66,6 +66,7 @@ public class EventController {
 	@MessageMapping("/partite/{id}/confermaSetup")
 	public void confirmSetup(@DestinationVariable String id, @Payload SetUpBody body) throws Exception {
 	    try {
+	    	System.out.println("sono qui" + id + " " + body.getUsername() + " " + body.getTerritories().size());
 	        IGame game = GameRepository.getInstance().getGameById(id);
 	        Player player = game.findPlayerByUsername(body.getUsername());
 	        if (player != null) {

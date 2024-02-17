@@ -12,5 +12,5 @@ import lombok.experimental.SuperBuilder;
 public class SetUpBody {
 	private String username;
 	
-	private List<Territory> territories;
+	private List<TerritoryBody> territories;
 }

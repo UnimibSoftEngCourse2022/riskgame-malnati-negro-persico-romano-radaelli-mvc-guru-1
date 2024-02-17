@@ -10,7 +10,7 @@ class AppController {
         // Aggiungi le sottoscrizioni ai topic qui, se necessario
       },
       onDisconnect: () => {
-        console.log("Disconnected from STOMP");
+        console.log("Disconnected from STOMP");	
       },
       // Altri eventi e configurazioni...
     });
@@ -100,7 +100,7 @@ class AppController {
 
     this.client.subscribe(`/topic/partite/${idPartita}`, (message) => {
       PartitaObserverSingleton.notifyListeners(JSON.parse(message.body));
-      console.log("Messaggio ricevuto:", message.body);
+      console.log("Aggiornamento topic ricevuto:", JSON.parse(message.body));
     });
 
     const payload = { username: nickname };
@@ -126,7 +126,35 @@ class AppController {
       console.error("Client STOMP non connesso");
     }
   }
+  
+  setUpPartita(idPartita, nickname, territoriAssegnati) {
+  if (!this.client || !this.client.connected) {
+    console.error("Client STOMP non connesso");
+    return;
+  }
+
+  // Assicurati che territoriAssegnati sia un array di oggetti che corrispondono
+  // alla struttura di TerritoryBody, ovvero con i campi `name` e `troops`.
+  const setUpBody = {
+    username: nickname,
+    territories: territoriAssegnati.map(({ name, troops }) => ({
+      name, // nome del territorio
+      troops // numero di truppe assegnate
+    }))
+  };
+
+  // Pubblicazione del messaggio al topic di setup della partita
+  this.client.publish({
+    destination: `/app/partite/${idPartita}/confermaSetup`,
+    body: JSON.stringify(setUpBody),
+  });
+
+  console.log(`Setup per la partita ${idPartita} inviato:`, setUpBody);
 }
+
+}
+
+	
 
 // Esporta l'istanza per utilizzarla nell'app
 const appController = new AppController();
