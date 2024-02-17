@@ -2,6 +2,7 @@ package com.mvcguru.risiko.maven.eclipse.model;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +25,6 @@ import lombok.experimental.SuperBuilder;
 public abstract class IGame {
 	protected static final Logger LOGGER = LoggerFactory.getLogger(IGame.class);
 
-	
 	protected String id;
 	
 	protected GameConfiguration configuration;
@@ -53,5 +53,7 @@ public abstract class IGame {
 	public abstract IDeck createObjectiveDeck(GameConfiguration configuration) throws IOException;
 
 	public void startGame() { }
+	
+	public abstract List<Continent> parsingContinent() throws IOException;
    
 }

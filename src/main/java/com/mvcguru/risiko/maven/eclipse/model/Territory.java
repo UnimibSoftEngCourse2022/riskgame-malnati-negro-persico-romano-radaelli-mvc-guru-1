@@ -21,4 +21,6 @@ public class Territory {
 	private Player owner;
 	
 	private List<Territory> neighbors;
+	
+	private String svgPath;
 }
