@@ -34,5 +34,4 @@ public interface DataDao {
 	void createTerritoryTable() throws GameException;
 	void updateTerritoryOwner(String territoryName, Player player) throws GameException;
 
-	void closeConnection();
 }

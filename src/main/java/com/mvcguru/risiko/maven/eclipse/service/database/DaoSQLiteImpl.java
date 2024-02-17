@@ -68,17 +68,6 @@ public class DaoSQLiteImpl implements DataDao {
 	            }
 	        }
 	    }
-
-	    @Override
-	    public void closeConnection() {
-	        if (connection != null) {
-	            try {
-	                connection.close();
-	            } catch (SQLException e) {
-	                LOGGER.error("Error closing database connection", e);
-	            }
-	        }
-	    }
 	 
 	    public static Connection getConnection(String url) throws SQLException {
 	        return DriverManager.getConnection(url);
@@ -266,7 +255,7 @@ public class DaoSQLiteImpl implements DataDao {
 	    PreparedStatement pstmt = null;
 	    try {
 	        pstmt = connection.prepareStatement(sql);
-	        pstmt.setString(1, newState.getClass().getName().toString());
+	        pstmt.setString(1, newState.getClass().getName());
 	        pstmt.setString(2, gameId);
 	        int updatedRows = pstmt.executeUpdate();
 	        if (updatedRows == 0) {
