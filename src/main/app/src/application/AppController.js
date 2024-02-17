@@ -132,7 +132,7 @@ class AppController {
     console.error("Client STOMP non connesso");
     return;
   }
-
+  console.log("territoriAssegnatinellotomp", territoriAssegnati);
   // Assicurati che territoriAssegnati sia un array di oggetti che corrispondono
   // alla struttura di TerritoryBody, ovvero con i campi `name` e `troops`.
   const setUpBody = {
@@ -142,6 +142,8 @@ class AppController {
       troops // numero di truppe assegnate
     }))
   };
+  
+  console.log("setUpBodystomp", setUpBody);
 
   // Pubblicazione del messaggio al topic di setup della partita
   this.client.publish({

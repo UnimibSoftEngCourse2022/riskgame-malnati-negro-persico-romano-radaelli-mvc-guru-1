@@ -67,6 +67,11 @@ public class EventController {
 	public void confirmSetup(@DestinationVariable String id, @Payload SetUpBody body) throws Exception {
 	    try {
 	    	System.out.println("sono qui" + id + " " + body.getUsername() + " " + body.getTerritories().size());
+	    	LOGGER.info("Territori: " + body.getTerritories().toString());
+	    	LOGGER.info("DIO");
+	    	LOGGER.info("DIO");
+	    	LOGGER.info("DIO");
+	    	LOGGER.info("DIO");
 	        IGame game = GameRepository.getInstance().getGameById(id);
 	        Player player = game.findPlayerByUsername(body.getUsername());
 	        if (player != null) {

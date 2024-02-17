@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import AppController from "../../application/AppController";
+
 
 function SetUpStateMap({ idPlayer, giocatori }) {
   const [player, setPlayer] = useState(null);
@@ -38,7 +40,12 @@ function SetUpStateMap({ idPlayer, giocatori }) {
 	    if (totalTroops > troopsToAssign) {
 	      alert(`Il numero totale di truppe assegnate supera il limite di ${troopsToAssign}. Hai assegnato ${totalTroops} truppe.`);
     } else {
+		const territoriAssegnatiArray = Object.entries(troopAssignments).map(([name, troops]) => ({
+      name,
+      troops: Number(troops)
+    }));
       console.log("Assegnazioni delle truppe:", troopAssignments);
+      AppController.setUpPartita(player.gameId, idPlayer, territoriAssegnatiArray);
       // Qui puoi procedere con l'invio delle assegnazioni, ad esempio tramite una chiamata API
     }
   };
