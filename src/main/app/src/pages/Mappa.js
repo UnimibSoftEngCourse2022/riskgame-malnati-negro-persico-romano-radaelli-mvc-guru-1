@@ -2,6 +2,7 @@ import React from "react";
 import { useParams, useLocation } from "react-router-dom"; // Importa useParams e useLocation
 import PartitaObserverSingleton from "../application/PartitaObserverSingleton";
 import SetupStateMap from "../component/mappa/SetupStateMap";
+import SvgMap from "../component/mappa/SvgMap";
 
 function MappaPage() {
   const { idPartita } = useParams(); // Ottieni l'idPartita dall'URL
@@ -37,20 +38,26 @@ class Mappa extends React.Component {
       });
     }
   }
-  
+
   renderSetUpState() {
     const partita = this.state.partita;
     console.log("partita", partita);
     console.log("partita.state", partita.state.type);
     if (partita && partita.state.type === "SetupState") {
       console.log("Stp per andare all component");
-      return <SetupStateMap giocatori={partita.players} idPlayer={this.state.nickname} />;
+      return (
+        <SetupStateMap
+          giocatori={partita.players}
+          idPlayer={this.state.nickname}
+          game={partita}
+        />
+      );
     }
     return null;
   }
 
   render() {
-	 const partita = this.state.partita;
+    const partita = this.state.partita;
     return (
       <div>
         <h1 className="h1">Prova il nuovo Gioco di Risiko</h1>

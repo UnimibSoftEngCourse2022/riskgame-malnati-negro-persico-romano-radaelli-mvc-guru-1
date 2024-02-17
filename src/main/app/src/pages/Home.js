@@ -48,7 +48,7 @@ class Home extends React.Component {
           />
         )}
         {user.user && <span>Benvenuto {user.user}</span>}
-        <h1 className="h1">Prova il nuovo Gioco di Risiko</h1>
+        <h1 className="h1">Prova il nuovo Gioco di Risiko colions</h1>
         <PlayComponent />
       </div>
     );
