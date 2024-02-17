@@ -63,6 +63,8 @@ class PlayTurnStateTest {
 		TerritorySetup territorySetup = TerritorySetup.builder().player(player1).setUpBody(setUpBody1).build();
 		game.getState().onActionPlayer(territorySetup);
 		
+		
+		
 		SetUpBody setUpBody2 = SetUpBody.builder().username(player2.getUserName()).territories(player2.getTerritories()).build();
 		TerritorySetup territorySetup2 = TerritorySetup.builder().player(player2).setUpBody(setUpBody2).build();
 		game.getState().onActionPlayer(territorySetup2);
