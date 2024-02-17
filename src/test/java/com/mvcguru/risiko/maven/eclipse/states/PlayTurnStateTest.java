@@ -12,7 +12,10 @@ import org.slf4j.LoggerFactory;
 import com.mvcguru.risiko.maven.eclipse.actions.GameEntry;
 import com.mvcguru.risiko.maven.eclipse.actions.TerritorySetup;
 import com.mvcguru.risiko.maven.eclipse.controller.bodyRequest.SetUpBody;
+import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
+import com.mvcguru.risiko.maven.eclipse.exception.GameException;
+import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.model.Territory;
@@ -25,7 +28,7 @@ class PlayTurnStateTest {
 	private static final Logger LOGGER = LoggerFactory.getLogger(GameSetupState.class);
 
     @Test
-    void assignAllTest() throws IOException, FullGameException {
+    void assignAllTest() throws IOException, FullGameException, GameException, DatabaseConnectionException, UserException {
     	GameConfiguration config = GameConfiguration.builder()
                 .mode(GameMode.EASY)
                 .numberOfPlayers(2)

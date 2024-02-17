@@ -9,12 +9,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mvcguru.risiko.maven.eclipse.actions.TerritorySetup;
+import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
+import com.mvcguru.risiko.maven.eclipse.exception.GameException;
+import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.card.ICard;
 import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
 import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard.CardSymbol;
 import com.mvcguru.risiko.maven.eclipse.model.deck.IDeck;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player.PlayerColor;
+import com.mvcguru.risiko.maven.eclipse.service.GameRepository;
 
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -40,14 +44,10 @@ public class GameSetupState extends GameState {
 	}
 	
 	@Override
-	public void setUpGame() {
-		LOGGER.info("GameSetupState: inizio setup partita");
+	public void setUpGame() throws GameException, DatabaseConnectionException, UserException {
 		assignColor(game.getPlayers());
-		LOGGER.info("GameSetupState: assegnamento colori completato");
 		assignTerritories(game.getDeckTerritory());
-		LOGGER.info("GameSetupState: assegnamento territori completato");
 		assignObjective(game.getDeckObjective());
-		LOGGER.info("GameSetupState: assegnamento obiettivi completato");
 		ICard cardJolly1 = TerritoryCard.builder().territory(null).symbol(CardSymbol.JOLLY).build();
 		ICard cardJolly2 = TerritoryCard.builder().territory(null).symbol(CardSymbol.JOLLY).build();
 		game.getDeckTerritory().insertCard(cardJolly1);
@@ -67,13 +67,15 @@ public class GameSetupState extends GameState {
 		}
 	}
     
-	private void assignTerritories(IDeck deckTerritory) {
+	private void assignTerritories(IDeck deckTerritory) throws GameException, DatabaseConnectionException, UserException {
 	    deckTerritory.shuffle();
 	    int playerIndex = 0;
 	    TerritoryCard card = (TerritoryCard)deckTerritory.drawCard(); 
 	    
 	    while (card != null) {
 	    	game.getPlayers().get(playerIndex % game.getPlayers().size()).getTerritories().add(card.getTerritory());
+	    	card.getTerritory().setOwner(game.getPlayers().get(playerIndex % game.getPlayers().size()));
+	    	GameRepository.getInstance().insertTerritory(card.getTerritory());
 	        playerIndex++;
 	        card = (TerritoryCard) deckTerritory.drawCard(); 
 	    }

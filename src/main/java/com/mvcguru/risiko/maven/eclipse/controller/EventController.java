@@ -67,13 +67,7 @@ public class EventController {
 	
 	@MessageMapping("/partite/{id}/confermaSetup")
 	public void confirmSetup(@DestinationVariable String id, @Payload SetUpBody body) throws Exception {
-	    try {
-	    	System.out.println("sono qui" + id + " " + body.getUsername() + " " + body.getTerritories().size());
-	    	LOGGER.info("Territori: " + body.getTerritories().toString());
-	    	LOGGER.info("DIO");
-	    	LOGGER.info("DIO");
-	    	LOGGER.info("DIO");
-	    	LOGGER.info("DIO");
+	    try {	    	
 	        IGame game = GameRepository.getInstance().getGameById(id);
 	        Player player = game.findPlayerByUsername(body.getUsername());
 	        if (player != null) {

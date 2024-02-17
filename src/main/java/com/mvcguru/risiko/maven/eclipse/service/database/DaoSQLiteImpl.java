@@ -1,4 +1,4 @@
-package com.mvcguru.risiko.maven.eclipse.service.database;
+	package com.mvcguru.risiko.maven.eclipse.service.database;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -7,7 +7,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import com.mvcguru.risiko.maven.eclipse.states.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +28,7 @@ import com.mvcguru.risiko.maven.eclipse.model.Territory;
 public class DaoSQLiteImpl implements DataDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(DaoSQLiteImpl.class);
     private Connection connection;
+    private Map<String, GameState> stateMapping;
     private static DaoSQLiteImpl instance;
     
     
@@ -313,6 +317,9 @@ public class DaoSQLiteImpl implements DataDao {
 	        config.setIdMap(rs.getString("idMap"));
 	        newGame = FactoryGame.getInstance().createGame(config);
 	        newGame.setId(rs.getString("gameId"));
+	        String stateName = rs.getString("state");
+            GameState gameState = stateMapping.get(stateName);
+            newGame.setState(gameState);
 			} catch (SQLException e) {throw new GameException("Errore durante il recupero di una partita", e);
 			}
         return newGame;
@@ -387,6 +394,13 @@ public class DaoSQLiteImpl implements DataDao {
         } catch (SQLException e) {
             throw new GameException("Errore durante l'eliminazione del territorio.", e);
         }
+    }
+    
+    private void initializeStateMapping() {
+        stateMapping = new HashMap<>();
+        stateMapping.put(GameSetupState.class.getSimpleName(), new GameSetupState());
+        stateMapping.put(LobbyState.class.getSimpleName(), new LobbyState());
+        stateMapping.put(PlayTurnState.class.getSimpleName(), new PlayTurnState());
     }
     
     public void updateTerritoryOwner(String territoryName, Player player) throws GameException {

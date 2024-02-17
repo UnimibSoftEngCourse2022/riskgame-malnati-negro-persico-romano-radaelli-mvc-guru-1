@@ -6,7 +6,10 @@ import static org.mockito.Mockito.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mvcguru.risiko.maven.eclipse.actions.GameEntry;
 import com.mvcguru.risiko.maven.eclipse.actions.TerritorySetup;
+import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
+import com.mvcguru.risiko.maven.eclipse.exception.GameException;
+import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +25,7 @@ class GameStateTest {
     private GameState gameState;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws GameException, DatabaseConnectionException, UserException {
         MockitoAnnotations.openMocks(this);
         gameState = spy(GameState.class);
         doNothing().when(gameState).setUpGame();
@@ -35,7 +38,7 @@ class GameStateTest {
     }
 
     @Test
-    void testSetupGame() {
+    void testSetupGame() throws GameException, DatabaseConnectionException, UserException {
         gameState.setUpGame();
         verify(gameState, times(1)).setUpGame();
     }
@@ -47,7 +50,7 @@ class GameStateTest {
     }
 
     @Test
-    void testOnActionPlayerGameEntry() throws FullGameException {
+    void testOnActionPlayerGameEntry() throws FullGameException, GameException, DatabaseConnectionException, UserException {
         GameEntry gameEntry = mock(GameEntry.class);
         gameState.onActionPlayer(gameEntry);
         verify(gameState, times(1)).onActionPlayer(gameEntry);

@@ -8,7 +8,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mvcguru.risiko.maven.eclipse.actions.ActionPlayer;
+import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
+import com.mvcguru.risiko.maven.eclipse.exception.GameException;
+import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.deck.IDeck;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 import com.mvcguru.risiko.maven.eclipse.states.GameState;
@@ -42,15 +45,11 @@ public abstract class IGame {
 
     public abstract void addPlayer(Player g) throws FullGameException;
     
-    public abstract void onActionPlayer(ActionPlayer action) throws FullGameException;
+    public abstract void onActionPlayer(ActionPlayer action) throws FullGameException, GameException, DatabaseConnectionException, UserException;
     
     public abstract void broadcast();
 
 	public abstract Player findPlayerByUsername(String username);
-	
-	public abstract IDeck createTerritoryDeck(GameConfiguration configuration) throws IOException;
-	
-	public abstract IDeck createObjectiveDeck(GameConfiguration configuration) throws IOException;
 
 	public void startGame() { }
 	
