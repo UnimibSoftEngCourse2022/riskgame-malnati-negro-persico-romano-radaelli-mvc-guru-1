@@ -20,13 +20,12 @@ import com.mvcguru.risiko.maven.eclipse.service.FactoryGame;
 
 class DaoSQLiteImplTest {
     private DataDao data;
-    private final String DB_URL = "jdbc:sqlite::memory:";
     
 
     @BeforeEach
     void setUp() {
         try {
-            data = new DaoSQLiteImpl(DB_URL);
+            data = DaoSQLiteImpl.getInstance();
         } catch (Exception e) {
             fail("Error during test setup: " + e.getMessage(), e);
         }
@@ -171,4 +170,6 @@ class DaoSQLiteImplTest {
         assertEquals(player1, usersInGame.get(0));
         assertEquals(player2, usersInGame.get(1));
     }
+    
+    
 }
