@@ -110,12 +110,13 @@ public class GameSetupState extends GameState {
 	}
 
 
-	private void assignColor(List<Player> players) {
+	private void assignColor(List<Player> players) throws GameException, DatabaseConnectionException, UserException {
 		List<PlayerColor> colors = new ArrayList<>(Arrays.asList(PlayerColor.values()));
 		colors.remove(PlayerColor.GREY);
 		Collections.shuffle(colors);
 		for (int i = 0; i < players.size(); i++) {
 			players.get(i).setColor(colors.get(i));
+			GameRepository.getInstance().updatePlayerColor(players.get(i).getUserName(), players.get(i).getColor());
 		}
 		
 	}

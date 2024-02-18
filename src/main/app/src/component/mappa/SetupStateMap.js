@@ -10,7 +10,6 @@ function SetUpStateMap({ idPlayer, giocatori, game }) {
   const [troopsToAssign, setTroopsToAssign] = useState(0);
   const [mappa, setMappa] = useState([]);
   const [initialTroopsToAssign, setInitialTroopsToAssign] = useState(0);
-  const [myTerritories, setMyTerritories] = useState({});
 
   useEffect(() => {
     console.log("Props ricevute:", { idPlayer, giocatori });
@@ -29,18 +28,9 @@ function SetUpStateMap({ idPlayer, giocatori, game }) {
     console.log("player", currentPlayer);
 
     if (currentPlayer) {
-      // Inizializza le assegnazioni delle truppe per ogni territorio
-      const territoriGiocatore = giocatori
-        .find((p) => p.userName === idPlayer)
-        .territories.map((territory) => ({
-          name: territory.name,
-        }));
-      setMyTerritories(territoriGiocatore);
-      console.log("territoriGiocatore", territoriGiocatore);
-
       const initialAssignments = currentPlayer.territories.reduce(
         (acc, territory) => {
-          acc[territory.name] = 0;
+          acc[territory.name] = 1;
           return acc;
         },
         {}
@@ -49,8 +39,12 @@ function SetUpStateMap({ idPlayer, giocatori, game }) {
 
       // Calcola il numero di truppe assegnabili in base al numero di giocatori
       const troopsBasedOnPlayers = { 2: 40, 3: 35, 4: 30, 5: 25, 6: 20 };
-      setTroopsToAssign(troopsBasedOnPlayers[giocatori.length] || 20);
-      setInitialTroopsToAssign(troopsBasedOnPlayers[giocatori.length] || 20); 
+      const totalTerritories = currentPlayer.territories.length; // Numero totale di territori del giocatore corrente
+	  const troopsToAssignInitially = troopsBasedOnPlayers[giocatori.length] || 20; // Totale truppe basato sul numero di giocatori
+
+	  // Sottrai il numero totale di territori dal totale di truppe assegnabili per tenere conto della truppa iniziale per territorio
+	  setTroopsToAssign(troopsToAssignInitially - totalTerritories);
+	  setInitialTroopsToAssign(troopsToAssignInitially); 
     }
   }, [giocatori, idPlayer]);
 
@@ -86,7 +80,7 @@ function SetUpStateMap({ idPlayer, giocatori, game }) {
   // Callback che gestisce il click su un territorio
   const handleTerritoryClick = (territoryName, action) => {
   setTroopAssignments((prevAssignments) => {
-    const currentTroops = prevAssignments[territoryName] || 0;
+    const currentTroops = prevAssignments[territoryName];
     if (action === 'add') {
       if (troopsToAssign <= 0) {
         alert("Non puoi assegnare più truppe. Hai raggiunto il limite.");
@@ -95,7 +89,7 @@ function SetUpStateMap({ idPlayer, giocatori, game }) {
       setTroopsToAssign(troopsToAssign - 1);
       return { ...prevAssignments, [territoryName]: currentTroops + 1 };
     } else if (action === 'remove') {
-      if (currentTroops <= 0) {
+      if (currentTroops <= 1) {
         alert("Non ci sono truppe da rimuovere in questo territorio.");
         return prevAssignments; // Esci senza fare modifiche
       }

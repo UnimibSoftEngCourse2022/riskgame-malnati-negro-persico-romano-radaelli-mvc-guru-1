@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Container, Alert, Tooltip, OverlayTrigger } from "react-bootstrap";
-import { useParams } from "react-router-dom";
 
 function SvgMap({ paths, gioco, onTerritoryClick, truppeAssegnate }) {
 const handleTerritoryClick = (e, territory, action) => {
@@ -12,31 +11,28 @@ const handleTerritoryClick = (e, territory, action) => {
   const [myTerritories, setMyTerritories] = useState([]);
   const [myColor, setMyColor] = useState("");
   const [objective, setObjective] = useState("");
-
+  const [territoryColorMap, setTerritoryColorMap] = useState({});
   const url = window.location.href;
   const nickname = url.split("/").pop();
 
   useEffect(() => {
-    console.log("sei nel gioco", gioco);
-    console.log("nickname", nickname);
     const player = gioco.players.find((p) => p.userName === nickname);
-    console.log("sei il giocatore", player);
     if (player) {
       const territoriGiocatore = player.territories.map((t) => t.name);
       setMyTerritories(territoriGiocatore);
-      console.log("territoriGiocatore", territoriGiocatore);
       setMyColor(player.color);
-      console.log("myColor", myColor);
     }
+    
+     const territoryColorMap = {};
+ 	 gioco.players.forEach(player => {
+    	player.territories.forEach(territory => {
+      	territoryColorMap[territory.name] = player.color;
+    	});
+  		});
+  // Ora hai una mappa nomeTerritorio -> coloreGiocatore
+  setTerritoryColorMap(territoryColorMap);
 
     setObjective(gioco.deckObjective.cards[0].objective);
-
-    // Debugging logs
-    console.log("ID del giocatore corrente:", nickname);
-    console.log(
-      "Giocatori nella partita:",
-      gioco.players.map((p) => p.userName)
-    );
   }, [gioco, nickname, myColor]);
   
   const renderTooltip = (props, name) => (
@@ -58,7 +54,7 @@ const handleTerritoryClick = (e, territory, action) => {
       >
         {paths.map(({ d, name }, index) => {
           const isTerritoryOwned = myTerritories.includes(name);
-          const fillColor = isTerritoryOwned ? myColor : "grey";
+          const fillColor = territoryColorMap[name] || "grey"; 
           return (
 			   <OverlayTrigger
               key={index}

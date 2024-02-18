@@ -405,6 +405,24 @@ public class DaoSQLiteImpl implements DataDao {
 			closePreparedStatement(pstmt);
 		}
 	}
+	
+	public void updatePlayerColor(String username, Player.PlayerColor color) throws GameException {
+		String sql = "UPDATE players SET color = ? WHERE username = ?";
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = connection.prepareStatement(sql);
+			pstmt.setString(1, color.name());
+			pstmt.setString(2, username);
+			int updatedRows = pstmt.executeUpdate();
+			if (updatedRows == 0) {
+				LOGGER.error("Nessun giocatore aggiornato: potrebbe non esistere un giocatore con lo username specificato.");
+						}
+		} catch (SQLException e) {
+			throw new GameException("Errore durante l'aggiornamento del colore del giocatore.", e);
+		} finally {
+			closePreparedStatement(pstmt);
+		}
+	}
 
     public void deletePlayer(String username) throws GameException {
         String sql = "DELETE FROM players WHERE username = ?";
@@ -517,9 +535,10 @@ public class DaoSQLiteImpl implements DataDao {
 				while (rs.next()) {
 					String name = rs.getString("name");
 					int continent = rs.getInt("continent");
+					String idOwner = rs.getString("player");
 					int armies = rs.getInt("armies");
 					String svgPath = rs.getString("svgPath");
-					Territory territory = Territory.builder().name(name).continent(continent).armies(armies).svgPath(svgPath).build();
+					Territory territory = Territory.builder().name(name).continent(continent).IdOwner(idOwner).armies(armies).svgPath(svgPath).build();
 					result.add(territory);
 				}
 				return result;
