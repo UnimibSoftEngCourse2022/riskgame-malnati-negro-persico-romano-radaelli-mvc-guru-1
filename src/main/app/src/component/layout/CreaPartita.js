@@ -7,8 +7,6 @@ function CreaPartita() {
   const [players, setPlayers] = useState("");
   const [nomeMappa, setNomeMappa] = useState("");
   const [isLobbyCreated, setIsLobbyCreated] = useState("");
-  const { id } = useParams();
-
   const handleDifficolta = (e) => {
     setDifficolta(e.target.value);
   };
