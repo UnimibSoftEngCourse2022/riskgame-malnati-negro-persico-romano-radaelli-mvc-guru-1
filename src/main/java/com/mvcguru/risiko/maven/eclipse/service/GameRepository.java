@@ -9,6 +9,8 @@ import com.mvcguru.risiko.maven.eclipse.exception.GameException;
 import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.model.Territory;
+import com.mvcguru.risiko.maven.eclipse.model.Turn;
+import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 import com.mvcguru.risiko.maven.eclipse.service.database.DaoSQLiteImpl;
 import com.mvcguru.risiko.maven.eclipse.service.database.DataDao;
@@ -41,10 +43,14 @@ public class GameRepository {
 		IGame game = db.getGameById(gameId);
 		List<Player> lista = db.getPlayerInGame(gameId);
 		List<Territory> territories = null;
-		for (Player p : lista) { 
-			game.addPlayer(p);  
+		List<TerritoryCard> comboCards = null;
+		game.setCurrentTurn(db.getLastTurnByGameId(gameId));
+		for (Player p : lista) {  
 			territories = db.getAllTerritories(p.getUserName()); 
+			comboCards = db.getAllComboCards(p.getUserName(), gameId);
 			p.setTerritories(territories);
+			p.setComboCards(comboCards);
+			game.addPlayer(p); 
 			}
 
 		return game;
@@ -100,6 +106,34 @@ public class GameRepository {
 	
 	public synchronized List<Territory> getAllTerritories(String player) throws GameException {
 		return db.getAllTerritories(player);
+	}
+	
+	public synchronized void insertTurn(Turn turn) throws GameException {
+		db.insertTurn(turn);
+	}
+	
+	public synchronized void deleteTurn(Turn turn) throws GameException {
+		db.deleteTurn(turn);
+	}
+	
+	public synchronized void updateTurnIndex(Turn turn, int index) throws GameException {
+		db.updateTurnIndex(turn, index);
+	}
+	
+	public synchronized void insertComboCard(TerritoryCard t, Player owner, String gameId) throws GameException {
+        db.insertComboCard(t, owner, gameId);
+    }
+	
+	public synchronized void deleteComboCard(TerritoryCard t, Player owner, String gameId) throws GameException {
+		db.deleteComboCard(t, owner, gameId);
+	}
+	
+	public synchronized void updateOwner(TerritoryCard t, String player, String gameId) throws GameException {
+		db.updateOwner(t, player, gameId);
+	}
+	
+	public synchronized List<TerritoryCard> getAllComboCards(String player, String gameId) throws GameException {
+		return db.getAllComboCards(player, gameId);
 	}
 	
 

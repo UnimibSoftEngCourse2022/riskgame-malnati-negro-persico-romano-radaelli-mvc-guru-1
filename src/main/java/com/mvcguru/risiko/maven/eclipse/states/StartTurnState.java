@@ -12,7 +12,11 @@ import com.mvcguru.risiko.maven.eclipse.controller.body_request.TerritoryCardBod
 import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
 import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard.CardSymbol;
 
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
+@SuperBuilder
+@NoArgsConstructor
 public class StartTurnState extends GameState{
 	
 	@Override

@@ -74,6 +74,7 @@ public class Game extends IGame {
                 .player(players.get(0))
                 .indexTurn(1)
                 .build();
+		
 	}
 	
 	public void changeTurn() {
@@ -86,5 +87,12 @@ public class Game extends IGame {
         // cambio stato? 
         broadcast();
 	}	
-	
+		
+	public List<Territory> findTerritoriesByName(List<String> territoriesName) {
+		List<Territory> territories = new ArrayList<>();
+		for (String name : territoriesName) {
+			
+		}
+		return territories;
+	}
 }

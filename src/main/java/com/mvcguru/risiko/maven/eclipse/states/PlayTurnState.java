@@ -7,6 +7,7 @@ import com.mvcguru.risiko.maven.eclipse.actions.AttackRequest;
 import com.mvcguru.risiko.maven.eclipse.actions.ComboRequest;
 import com.mvcguru.risiko.maven.eclipse.actions.TerritorySetup;
 import com.mvcguru.risiko.maven.eclipse.controller.body_request.DefenderNoticeBody;
+import com.mvcguru.risiko.maven.eclipse.controller.body_request.TerritoryBody;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class PlayTurnState extends GameState{
 	
+
 //	AttackRequest attackRequest;
 //	
 //		@Override
@@ -49,4 +51,5 @@ public class PlayTurnState extends GameState{
 //	}
 //	
 //	
+
 }

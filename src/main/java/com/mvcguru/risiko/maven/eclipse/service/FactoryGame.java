@@ -24,16 +24,15 @@ import com.mvcguru.risiko.maven.eclipse.model.deck.TerritoriesDeck;
 import com.mvcguru.risiko.maven.eclipse.states.GameState;
 import com.mvcguru.risiko.maven.eclipse.states.LobbyState;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class FactoryGame {
 	private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(FactoryGame.class);
     private static FactoryGame instance;
     private GameState gameState;
 
-    public FactoryGame() {
-        // Costruttore privato per impedire l'istanziazione esterna
-    }
 
     public static synchronized FactoryGame getInstance() {
         if (instance == null)
@@ -106,11 +105,11 @@ public class FactoryGame {
     public IGame createGame(GameConfiguration configuration) throws IOException {
     
         IGame game = new Game(createId(), configuration);
+        
         game.setDeckTerritory(createTerritoryDeck(configuration));
         game.setDeckObjective(createObjectiveDeck(configuration));
-        game.setState(LobbyState.builder().game(game).build());
         game.setContinents(parsingContinent());
-
+        game.setState(LobbyState.builder().game(game).build());
         return game;
     }
     

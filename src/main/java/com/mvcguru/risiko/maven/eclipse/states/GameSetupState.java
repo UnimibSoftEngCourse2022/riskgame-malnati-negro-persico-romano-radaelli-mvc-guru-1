@@ -58,7 +58,8 @@ public class GameSetupState extends GameState {
 				return;
 			}
 		}
-		game.setState(PlayTurnState.builder().game(game).build());
+		game.setState(StartTurnState.builder().game(game).build());
+		GameRepository.getInstance().updateState(game.getId(), game.getState());
 		game.startGame(); 
 	}
 	
