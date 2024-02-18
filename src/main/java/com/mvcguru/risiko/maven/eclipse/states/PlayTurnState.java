@@ -1,13 +1,12 @@
 package com.mvcguru.risiko.maven.eclipse.states;
 
+
 import java.io.IOException;
-import java.util.List;
 
 import com.mvcguru.risiko.maven.eclipse.actions.AttackRequest;
 import com.mvcguru.risiko.maven.eclipse.actions.ComboRequest;
 import com.mvcguru.risiko.maven.eclipse.actions.TerritorySetup;
 import com.mvcguru.risiko.maven.eclipse.controller.bodyRequest.DefenderNoticeBody;
-import com.mvcguru.risiko.maven.eclipse.model.Territory;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,7 +27,7 @@ public class PlayTurnState extends GameState{
 	} 
 	
 	public void onActionPlayer(TerritorySetup action) {
-		game.getCurrentTurn().getPlayer().setTerritories(action.getSetUpBody().getTerritories());
+		//game.getCurrentTurn().getPlayer().setTerritories(action.getSetUpBody().getTerritories());
 		game.broadcast();
 	}
 	

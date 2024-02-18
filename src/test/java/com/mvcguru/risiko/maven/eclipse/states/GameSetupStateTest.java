@@ -4,7 +4,10 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.mvcguru.risiko.maven.eclipse.actions.GameEntry;
+import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
+import com.mvcguru.risiko.maven.eclipse.exception.GameException;
+import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.Continent;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
@@ -23,7 +26,7 @@ class GameSetupStateTest {
 	private static final Logger LOGGER = LoggerFactory.getLogger(GameSetupState.class);
 
     @Test
-    void assignAllTest() throws IOException, FullGameException {
+    void assignAllTest() throws IOException, FullGameException, GameException, DatabaseConnectionException, UserException {
     	GameConfiguration config = GameConfiguration.builder()
                 .mode(GameMode.EASY)
                 .numberOfPlayers(2)

@@ -1,5 +1,5 @@
 package com.mvcguru.risiko.maven.eclipse.controller;
-import java.io.IOException;
+
 import java.util.ArrayList;
 
 import org.slf4j.Logger;
@@ -42,9 +42,11 @@ public class EventController {
 		IGame game = null;
 		try {
 			game = GameRepository.getInstance().getGameById(id);
+			LOGGER.info("Partita trovata: {}", game.getId());
 			Player player = Player.builder().userName(body.getUsername()).gameId(id).territories(new ArrayList<Territory>()).color(Player.PlayerColor.GREY).build();
 			GameEntry action = GameEntry.builder().player(player).build();
 			game.onActionPlayer(action);
+			LOGGER.info("Partita dopo action: {}", game);
 			GameRepository.getInstance().addPlayer(player);
 		} catch (GameException | DatabaseConnectionException | UserException e) {throw e;
 		} catch (FullGameException e) {
@@ -67,13 +69,17 @@ public class EventController {
 	
 	@MessageMapping("/partite/{id}/confermaSetup")
 	public void confirmSetup(@DestinationVariable String id, @Payload SetUpBody body) throws Exception {
-	    try {
+	    try {	    
+	    	LOGGER.info("Inizio setup");
 	        IGame game = GameRepository.getInstance().getGameById(id);
+	        
 	        Player player = game.findPlayerByUsername(body.getUsername());
 	        if (player != null) {
 	            TerritorySetup action = TerritorySetup.builder().player(player).setUpBody(body).build();
 	            game.onActionPlayer(action);
 	        }
+	        LOGGER.info("Fine setup player : {}", game.findPlayerByUsername(body.getUsername()));
+	        LOGGER.info("Fine setup territori: {}", game.findPlayerByUsername(body.getUsername()).getTerritories());
 	    } catch (Exception e) {LOGGER.error("Errore durante la conferma del setup", e);}
 	}
 

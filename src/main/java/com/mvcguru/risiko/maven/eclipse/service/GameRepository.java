@@ -1,6 +1,7 @@
 package com.mvcguru.risiko.maven.eclipse.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -43,7 +44,13 @@ public class GameRepository {
 	public synchronized IGame getGameById(String gameId) throws GameException, FullGameException, IOException {
 		IGame game = db.getGameById(gameId);
 		List<Player> lista = db.getPlayerInGame(gameId);
-		for (Player p : lista) { game.addPlayer(p); }
+		List<Territory> territories = new ArrayList<Territory>();
+		for (Player p : lista) { 
+			game.addPlayer(p);  
+			territories = db.getAllTerritories(p.getUserName()); 
+			p.setTerritories(territories);
+			}
+
 		return game;
 	}
 	
@@ -67,12 +74,16 @@ public class GameRepository {
 		db.insertPlayer(player);
 	}
 	
+	public synchronized void updateSetUpCompleted(String username, boolean setUpCompleted) throws GameException {
+		db.updateSetUpCompleted(username, setUpCompleted);
+	}
+	
 	public synchronized void removePlayer(String username) throws GameException {
 		db.deletePlayer(username);
 	}
 	
-	public synchronized void insertTerritory(Territory territory) throws GameException{
-		db.insertTerritory(territory);
+	public synchronized void insertTerritory(Territory territory, String gameId) throws GameException{
+		db.insertTerritory(territory, gameId);
 	}
 	
 	public synchronized void deleteTerritory(String name) throws GameException{
@@ -81,6 +92,14 @@ public class GameRepository {
 	
 	public synchronized void updateTerritoryOwner(String territoryName, Player player) throws GameException{
 		db.updateTerritoryOwner(territoryName, player);
+	}
+	
+	public synchronized void updateTerritoryArmies(String territoryName, int armies) throws GameException {
+		db.updateTerritoryArmies(territoryName, armies);
+	}
+	
+	public synchronized List<Territory> getAllTerritories(String player) throws GameException {
+		return db.getAllTerritories(player);
 	}
 
 	
