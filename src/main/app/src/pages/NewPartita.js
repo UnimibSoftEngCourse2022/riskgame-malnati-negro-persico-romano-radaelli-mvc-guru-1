@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Form, Card, Carousel } from "react-bootstrap";
 import AppController from "../application/AppController";
 import { withAuth } from "../auth/AuthContext";
-import { useNavigate, useParams} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "../styles/carouselStyle.css";
 
 function NewPartitaPage() {
@@ -82,13 +82,13 @@ class NewPartita extends React.Component {
     if (!effectiveNickname || effectiveNickname === "null") {
       effectiveNickname = `Ospite_${Date.now()}`;
     }
-   try {
-    AppController.entraInPartita(idPartita, effectiveNickname);
-    this.props.navigate(`/lobby/${idPartita}?nickname=${effectiveNickname}`);
-  } catch (error) {
-    alert("Errore: " + error.message); // Mostra un popup con l'errore
-    console.error("Errore durante l'entrata nella partita:", error);
-  }
+    try {
+      AppController.entraInPartita(idPartita, effectiveNickname);
+      this.props.navigate(`/lobby/${idPartita}?nickname=${effectiveNickname}`);
+    } catch (error) {
+      alert("Errore: " + error.message); // Mostra un popup con l'errore
+      console.error("Errore durante l'entrata nella partita:", error);
+    }
   };
 
   renderLobbyOptions = () => {
@@ -135,16 +135,16 @@ class NewPartita extends React.Component {
                   {lobby.configuration.players}
                 </p>
                 {/* Implementa qui la funzione per unirsi alla lobby se necessario */}
-                <Button 
-                onClick={() => {
-    			if (lobby.players.length >= lobby.configuration.players) {
-      				alert('La lobby è piena!');
-    			} else {
-      				this.uniscitiAllaLobby(lobby.id);
-    			}
-  				}}
+                <Button
+                  onClick={() => {
+                    if (lobby.players.length >= lobby.configuration.players) {
+                      alert("La lobby è piena!");
+                    } else {
+                      this.uniscitiAllaLobby(lobby.id);
+                    }
+                  }}
                 >
-                  Unisci a lobby
+                  Vai
                 </Button>
               </Card.Body>
             </Card>
@@ -160,7 +160,7 @@ class NewPartita extends React.Component {
     // const { user } = this.props;
     const { difficolta, nomeMappa, isLobbyCreated } = this.state;
     return (
-      <div>
+      <div className="container d-flex flex-column justify-content-center">
         {/* <Container>
           <span className="h3">
             Benvenuto nella pagina partita,{" "}
@@ -168,51 +168,52 @@ class NewPartita extends React.Component {
           </span>
           <p>Crea una lobby oppure unisciti a una già esistente</p>
         </Container> */}
-
-        {/* Form per creare una partita */}
-        <Form onSubmit={this.handleSubmit}>
-          <Form.Group className="mb-3">
-            <Form.Label>Difficoltà</Form.Label>
-            <Form.Control
-              as="select"
-              value={difficolta}
-              onChange={this.handleDifficolta}
-            >
-              <option value="">Seleziona un livello di difficoltà</option>
-              <option value="EASY">Facile</option>
-              <option value="MEDIUM">Medio</option>
-              <option value="HARD">Difficile</option>
-            </Form.Control>
-          </Form.Group>
-
-          {difficolta && (
+        <Card className="w-75">
+          {/* Form per creare una partita */}
+          <Form onSubmit={this.handleSubmit}>
             <Form.Group className="mb-3">
-              <Form.Label>Numero di Giocatori</Form.Label>
+              <Form.Label>Difficoltà</Form.Label>
               <Form.Control
                 as="select"
-                value={this.state.players}
-                onChange={this.handlePlayersNumber}
+                value={difficolta}
+                onChange={this.handleDifficolta}
               >
-                <option value="">Seleziona il numero di giocatori</option>
-                {this.renderLobbyOptions()}
+                <option value="">Seleziona un livello di difficoltà</option>
+                <option value="EASY">Facile</option>
+                <option value="MEDIUM">Medio</option>
+                <option value="HARD">Difficile</option>
               </Form.Control>
             </Form.Group>
-          )}
 
-          <Form.Group className="mb-3">
-            <Form.Label>Nome Mappa</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Inserisci il nome della mappa"
-              value={nomeMappa}
-              onChange={this.handleNomeMappa}
-            />
-          </Form.Group>
+            {difficolta && (
+              <Form.Group className="mb-3">
+                <Form.Label>Numero di Giocatori</Form.Label>
+                <Form.Control
+                  as="select"
+                  value={this.state.players}
+                  onChange={this.handlePlayersNumber}
+                >
+                  <option value="">Seleziona il numero di giocatori</option>
+                  {this.renderLobbyOptions()}
+                </Form.Control>
+              </Form.Group>
+            )}
 
-          <Button variant="primary" type="submit">
-            Crea Lobby
-          </Button>
-        </Form>
+            <Form.Group className="mb-3">
+              <Form.Label>Nome Mappa</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Inserisci il nome della mappa"
+                value={nomeMappa}
+                onChange={this.handleNomeMappa}
+              />
+            </Form.Group>
+
+            <Button variant="primary" type="submit">
+              Crea Lobby
+            </Button>
+          </Form>
+        </Card>
 
         {isLobbyCreated && <p>{isLobbyCreated}</p>}
 
