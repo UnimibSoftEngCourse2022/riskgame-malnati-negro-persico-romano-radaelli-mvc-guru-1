@@ -24,8 +24,8 @@ class TerritoryTest {
         territory.setName("TerritoryName");
         territory.setArmies(5);
         
-        Player owner = new Player();
-        territory.setOwner(owner);
+        
+        territory.setIdOwner("idOwner");
 
         List<Territory> neighbors = new ArrayList<>();
         neighbors.add(new Territory()); 
@@ -34,13 +34,12 @@ class TerritoryTest {
         assertEquals(1, territory.getContinent(), "Continent getter should return what was set");
         assertEquals("TerritoryName", territory.getName(), "Name getter should return what was set");
         assertEquals(5, territory.getArmies(), "Armies getter should return what was set");
-        assertSame(owner, territory.getOwner(), "Owner getter should return what was set");
+        assertSame("idOwner", territory.getIdOwner(), "Owner getter should return what was set");
         assertEquals(neighbors, territory.getNeighbors(), "Neighbors getter should return what was set");
     }
 
     @Test
     void testBuilder() {
-        Player owner = new Player(); 
         List<Territory> neighbors = new ArrayList<>();
         neighbors.add(new Territory()); 
 
@@ -48,14 +47,14 @@ class TerritoryTest {
                                         .continent(2)
                                         .name("AnotherTerritory")
                                         .armies(10)
-                                        .owner(owner)
+                                        .idOwner("idOwner")
                                         .neighbors(neighbors)
                                         .build();
 
         assertEquals(2, territory.getContinent(), "Builder should set continent correctly");
         assertEquals("AnotherTerritory", territory.getName(), "Builder should set name correctly");
         assertEquals(10, territory.getArmies(), "Builder should set armies correctly");
-        assertSame(owner, territory.getOwner(), "Builder should set owner correctly");
+        assertSame("idOwner", territory.getIdOwner(), "Builder should set owner correctly");
         assertEquals(neighbors, territory.getNeighbors(), "Builder should set neighbors correctly");
     }
 

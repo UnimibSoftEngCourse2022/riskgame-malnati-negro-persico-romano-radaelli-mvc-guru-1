@@ -25,8 +25,8 @@ public class MessageBrokerSingleton {
     }
 
 
-    public <T> void broadcast(String idGame, String name,T object){
-        template.convertAndSend("/topic/partite/" + idGame + "/" + name, object);
+    public <T> void broadcast(String idGame, String idUser, T object){
+        template.convertAndSend("/topic/partite/" + idGame + "/" + idUser, object);
     }
 }
 

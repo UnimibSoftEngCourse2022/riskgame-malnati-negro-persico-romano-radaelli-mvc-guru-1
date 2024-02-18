@@ -2,7 +2,6 @@ import React from "react";
 import { useParams, useLocation } from "react-router-dom"; // Importa useParams e useLocation
 import PartitaObserverSingleton from "../application/PartitaObserverSingleton";
 import SetupStateMap from "../component/mappa/SetupStateMap";
-import SvgMap from "../component/mappa/SvgMap";
 
 function MappaPage() {
   const { idPartita } = useParams(); // Ottieni l'idPartita dall'URL

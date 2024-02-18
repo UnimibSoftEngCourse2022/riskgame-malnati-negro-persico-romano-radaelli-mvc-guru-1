@@ -2,8 +2,7 @@ package com.mvcguru.risiko.maven.eclipse.controller;
 
 import java.util.List;
 
-import com.mvcguru.risiko.maven.eclipse.model.Territory;
-
+import com.mvcguru.risiko.maven.eclipse.controller.body_request.TerritoryBody;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 

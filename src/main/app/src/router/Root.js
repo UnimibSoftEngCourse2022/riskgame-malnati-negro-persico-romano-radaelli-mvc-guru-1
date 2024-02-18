@@ -4,7 +4,6 @@ import Home from "../pages/Home";
 import LayoutHome from "../component/layout/LayoutHome";
 import Lobby from "../pages/Lobby";
 import NewPartita from "../pages/NewPartita";
-import Partita from "../pages/Partita";
 import Mappa from "../pages/Mappa";
 
 function Root() {

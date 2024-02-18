@@ -1,5 +1,6 @@
 package com.mvcguru.risiko.maven.eclipse.model.player;
 
+import java.io.Serializable;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
@@ -15,7 +16,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Player {	
+public class Player implements Serializable{	
 	
 	private String userName;
 	
@@ -36,6 +37,15 @@ public class Player {
 
 	public enum PlayerColor {
 		RED, YELLOW, GREEN, BLUE, BLACK, PURPLE, GREY
+	}
+	
+	public Territory getTerritoryByName(String name) {
+		for (Territory territory : territories) {
+            if (territory.getName() == name) {
+                return territory;
+            }
+        }
+        return null;
 	}
 
 }
