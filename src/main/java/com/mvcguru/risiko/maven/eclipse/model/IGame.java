@@ -45,7 +45,7 @@ public abstract class IGame {
 
     public abstract void addPlayer(Player g) throws FullGameException;
     
-    public abstract void onActionPlayer(ActionPlayer action) throws FullGameException, GameException, DatabaseConnectionException, UserException;
+    public abstract void onActionPlayer(ActionPlayer action) throws FullGameException, GameException, DatabaseConnectionException, UserException, IOException;
     
     public abstract void broadcast();
 

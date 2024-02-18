@@ -21,10 +21,11 @@ import com.mvcguru.risiko.maven.eclipse.service.FactoryGame;
 
 class DaoSQLiteImplTest {
     private DaoSQLiteImpl data;
+    private final String URL = "jdbc:sqlite::memory:";
 
     @BeforeEach
     void setUp() throws DatabaseConnectionException, UserException, GameException {
-        data = DaoSQLiteImpl.getInstance();
+        data = new DaoSQLiteImpl(URL);
     }
 
     @Test

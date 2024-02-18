@@ -1,5 +1,6 @@
 package com.mvcguru.risiko.maven.eclipse.states;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -9,7 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mvcguru.risiko.maven.eclipse.actions.TerritorySetup;
+import com.mvcguru.risiko.maven.eclipse.controller.bodyRequest.TerritoryBody;
 import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
+import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
 import com.mvcguru.risiko.maven.eclipse.exception.GameException;
 import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.card.ICard;
@@ -31,16 +34,45 @@ public class GameSetupState extends GameState {
 
 
 	@Override
-	public void onActionPlayer(TerritorySetup action) {
-		//action.getPlayer().setTerritories(action.getSetUpBody().getTerritories());
-		action.getPlayer().setSetUpCompleted(true);
-		for (Player player : game.getPlayers()) {
-			if (!player.isSetUpCompleted()) {
+	public void onActionPlayer(TerritorySetup action) throws GameException, DatabaseConnectionException, UserException, FullGameException, IOException{
+		Player player = action.getPlayer();
+		LOGGER.info("BOOLEANA: {}", player.isSetUpCompleted());
+		for(TerritoryBody t : action.getSetUpBody().getTerritories()) {
+			String territoryName = t.getName();
+			int troops = t.getTroops();
+			player.getTerritories().stream().filter(territory -> territory.getName().equals(territoryName)).findFirst()
+					.ifPresent(territory -> {
+						territory.setArmies(troops);
+						try {
+							GameRepository.getInstance().updateTerritoryArmies(territory.getName(), territory.getArmies());
+						} catch (GameException | DatabaseConnectionException | UserException e) {
+							LOGGER.error("Errore nell'aggiornamento delle truppe del territorio {}", territory.getName());
+						}
+						LOGGER.info("Territorio {} con truppe  {}", territory.getName(), territory.getArmies());
+					});
+		}
+		
+		player.setSetUpCompleted(true);
+
+		LOGGER.info("BOOLEANA: {}", player.isSetUpCompleted());
+		GameRepository.getInstance().updateSetUpCompleted(action.getPlayer().getUserName(), true);
+
+		LOGGER.info("BOOLEANA: {}", player.isSetUpCompleted());
+
+		LOGGER.info("BOOLEANA: {}", player.isSetUpCompleted());
+		for (Player p : GameRepository.getInstance().getGameById(action.getPlayer().getGameId()).getPlayers()) {
+			if (!p.isSetUpCompleted()) {
+
+				LOGGER.info("BOOLEANA: {}", p.isSetUpCompleted());
 				return;
 			}
 		}
+
+		LOGGER.info("BOOLEANA: {}", player.isSetUpCompleted());
 		game.setState(PlayTurnState.builder().game(game).build());
 		game.startGame();
+
+		LOGGER.info("BOOLEANA: {}", player.isSetUpCompleted());
 	}
 	
 	@Override
@@ -71,7 +103,6 @@ public class GameSetupState extends GameState {
 	    deckTerritory.shuffle();
 	    int playerIndex = 0;
 	    TerritoryCard card = (TerritoryCard)deckTerritory.drawCard(); 
-	    
 	    while (card != null) {
 	    	game.getPlayers().get(playerIndex % game.getPlayers().size()).getTerritories().add(card.getTerritory());
 	    	card.getTerritory().setOwner(game.getPlayers().get(playerIndex % game.getPlayers().size()));

@@ -50,7 +50,7 @@ public class Game extends IGame {
     }
 
 	@Override
-	public void onActionPlayer(ActionPlayer action) throws FullGameException, GameException, DatabaseConnectionException, UserException {
+	public void onActionPlayer(ActionPlayer action) throws FullGameException, GameException, DatabaseConnectionException, UserException, IOException {
 		action.accept(state);
 		broadcast();
 	}

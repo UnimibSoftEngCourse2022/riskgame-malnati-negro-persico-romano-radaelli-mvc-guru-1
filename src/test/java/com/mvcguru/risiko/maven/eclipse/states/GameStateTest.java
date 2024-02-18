@@ -1,9 +1,8 @@
 package com.mvcguru.risiko.maven.eclipse.states;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
 import com.mvcguru.risiko.maven.eclipse.actions.GameEntry;
 import com.mvcguru.risiko.maven.eclipse.actions.TerritorySetup;
 import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
@@ -57,7 +56,7 @@ class GameStateTest {
     }
 
     @Test
-    void testOnActionPlayerTerritorySetup() {
+    void testOnActionPlayerTerritorySetup() throws GameException, DatabaseConnectionException, UserException, FullGameException, IOException {
         TerritorySetup territorySetup = mock(TerritorySetup.class);
         gameState.onActionPlayer(territorySetup);
         verify(gameState, times(1)).onActionPlayer(territorySetup);

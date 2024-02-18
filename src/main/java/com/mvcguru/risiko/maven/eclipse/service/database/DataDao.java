@@ -33,5 +33,9 @@ public interface DataDao {
 	void deleteTerritory(String name) throws GameException;
 	void createTerritoryTable() throws GameException;
 	void updateTerritoryOwner(String territoryName, Player player) throws GameException;
+	void updateTerritoryArmies(String territoryName, int armies) throws GameException;
+	List<Territory> getAllTerritories(String player) throws GameException;
+	void closeConnection();
+	void updateSetUpCompleted(String username, boolean setUpCompleted) throws GameException;
 
 }

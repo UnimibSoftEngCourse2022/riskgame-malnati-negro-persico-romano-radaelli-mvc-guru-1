@@ -169,10 +169,8 @@ class GameTest {
                 .build();
     	
     	IGame game = FactoryGame.getInstance().createGame(config);
-    	
-    	IDeck testObjectivesDeck = game.createObjectiveDeck(config);
-    	
-    	ICard c = testObjectivesDeck.drawCard();
+    	    	
+    	ICard c = game.getDeckObjective().drawCard();
     	
     	ObjectiveCard card = ObjectiveCard.builder().objective("Conquistare più territori possibili in 4 turni.").build();
     	
@@ -186,10 +184,8 @@ class GameTest {
                 .build();
     	
     	IGame game2 = FactoryGame.getInstance().createGame(config2);
-    	
-    	IDeck testObjectivesDeck2 = game2.createObjectiveDeck(config2);
-    	
-    	ICard c2 = testObjectivesDeck2.drawCard();
+    	    	
+    	ICard c2 = game.getDeckObjective().drawCard();
     	
     	ObjectiveCard card2 = ObjectiveCard.builder().objective("Conquistare 12 territori presidiandoli con almeno due armate ciascuno.").build();
     	
@@ -203,10 +199,8 @@ class GameTest {
                 .build();
     	
     	IGame game3 = FactoryGame.getInstance().createGame(config3);
-    	
-    	IDeck testObjectivesDeck3 = game3.createObjectiveDeck(config3);
-    	
-    	ICard c3 = testObjectivesDeck3.drawCard();
+    	    	
+    	ICard c3 = game.getDeckObjective().drawCard();
     	
     	ObjectiveCard card3 = ObjectiveCard.builder().objective("Conquistare 18 territori presidiandoli con almeno due armate ciascuno.").build();
     	

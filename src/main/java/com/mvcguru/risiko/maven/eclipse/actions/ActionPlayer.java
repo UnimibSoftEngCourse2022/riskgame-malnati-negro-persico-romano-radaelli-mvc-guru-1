@@ -1,5 +1,6 @@
 package com.mvcguru.risiko.maven.eclipse.actions;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
@@ -20,6 +21,6 @@ public abstract class ActionPlayer implements Serializable {
 
     protected ActionPlayer() {}
 
-    public abstract void accept(GameState gameState) throws FullGameException, GameException, DatabaseConnectionException, UserException;
+    public abstract void accept(GameState gameState) throws FullGameException, GameException, DatabaseConnectionException, UserException, IOException;
     
 }
