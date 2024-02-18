@@ -74,6 +74,10 @@ public class GameRepository {
 		db.updateSetUpCompleted(username, setUpCompleted);
 	}
 	
+	public synchronized void updatePlayerColor(String username, Player.PlayerColor color) throws GameException {
+		db.updatePlayerColor(username, color);
+	}
+	
 	public synchronized void removePlayer(String username) throws GameException {
 		db.deletePlayer(username);
 	}
@@ -97,6 +101,7 @@ public class GameRepository {
 	public synchronized List<Territory> getAllTerritories(String player) throws GameException {
 		return db.getAllTerritories(player);
 	}
+	
 
 	
 }

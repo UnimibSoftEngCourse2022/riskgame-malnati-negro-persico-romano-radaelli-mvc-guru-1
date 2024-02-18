@@ -127,7 +127,7 @@ class AppController {
     }
   }
   
-  setUpPartita(idPartita, nickname, territoriAssegnati) {
+  setUpPartita(idPartita, territoriAssegnati) {
   if (!this.client || !this.client.connected) {
     console.error("Client STOMP non connesso");
     return;
@@ -135,23 +135,16 @@ class AppController {
   console.log("territoriAssegnatinellotomp", territoriAssegnati);
   // Assicurati che territoriAssegnati sia un array di oggetti che corrispondono
   // alla struttura di TerritoryBody, ovvero con i campi `name` e `troops`.
-  const setUpBody = {
-    username: nickname,
-    territories: territoriAssegnati.map(({ name, troops }) => ({
-      name, // nome del territorio
-      troops // numero di truppe assegnate
-    }))
-  };
   
-  console.log("setUpBodystomp", setUpBody);
+  console.log("setUpBodystomp", territoriAssegnati);
 
   // Pubblicazione del messaggio al topic di setup della partita
   this.client.publish({
     destination: `/app/partite/${idPartita}/confermaSetup`,
-    body: JSON.stringify(setUpBody),
+    body: JSON.stringify(territoriAssegnati),
   });
 
-  console.log(`Setup per la partita ${idPartita} inviato:`, setUpBody);
+  console.log(`Setup per la partita ${idPartita} inviato:`, territoriAssegnati);
 }
 
 }

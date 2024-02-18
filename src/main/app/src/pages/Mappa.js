@@ -37,20 +37,26 @@ class Mappa extends React.Component {
       });
     }
   }
-  
+
   renderSetUpState() {
     const partita = this.state.partita;
     console.log("partita", partita);
     console.log("partita.state", partita.state.type);
     if (partita && partita.state.type === "SetupState") {
       console.log("Stp per andare all component");
-      return <SetupStateMap giocatori={partita.players} idPlayer={this.state.nickname} />;
+      return (
+        <SetupStateMap
+          giocatori={partita.players}
+          idPlayer={this.state.nickname}
+          game={partita}
+        />
+      );
     }
     return null;
   }
 
   render() {
-	 const partita = this.state.partita;
+    const partita = this.state.partita;
     return (
       <div>
         <h1 className="h1">Prova il nuovo Gioco di Risiko</h1>
