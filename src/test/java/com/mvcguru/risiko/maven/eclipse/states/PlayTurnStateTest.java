@@ -5,20 +5,15 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.mvcguru.risiko.maven.eclipse.actions.AttackRequest;
 import com.mvcguru.risiko.maven.eclipse.actions.ComboRequest;
 import com.mvcguru.risiko.maven.eclipse.actions.GameEntry;
 import com.mvcguru.risiko.maven.eclipse.actions.TerritorySetup;
 import com.mvcguru.risiko.maven.eclipse.controller.bodyRequest.ComboRequestBody;
 import com.mvcguru.risiko.maven.eclipse.controller.bodyRequest.SetUpBody;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
-import com.mvcguru.risiko.maven.eclipse.model.Continent;
-
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.model.Territory;
@@ -26,7 +21,6 @@ import com.mvcguru.risiko.maven.eclipse.model.card.ICard;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration.GameMode;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 import com.mvcguru.risiko.maven.eclipse.service.FactoryGame;
-
 import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
 import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard.CardSymbol;
 
@@ -85,7 +79,7 @@ class PlayTurnStateTest {
 		
 		List<TerritoryCard> comboCards = new ArrayList<>();
 		
-		ICard c1 = TerritoryCard.builder().territory(Territory.builder().name("Cina").build()).symbol(CardSymbol.JOLLY).build();
+		ICard c1 = TerritoryCard.builder().territory(Territory.builder().name("Cina").build()).symbol(CardSymbol.ARTILLERY).build();
 		ICard c2 = TerritoryCard.builder().territory(Territory.builder().name("Egitto").build()).symbol(CardSymbol.ARTILLERY).build();
 		ICard c3 = TerritoryCard.builder().territory(Territory.builder().name("Brasile").build()).symbol(CardSymbol.JOLLY).build();
 		
@@ -96,6 +90,8 @@ class PlayTurnStateTest {
 		ComboRequestBody comboRequestBody = ComboRequestBody.builder().username(player1.getUserName()).comboCards(comboCards).build();
 		ComboRequest comboRequest = ComboRequest.builder().player(player1).comboRequestBody(comboRequestBody).build();
 		
+		assertEquals(game.getCurrentTurn().comboCardsCheck(comboCards), 12);
+		
 		game.getState().onActionPlayer(comboRequest);
 		
 		List<Territory> list = new ArrayList<>();
@@ -103,7 +99,7 @@ class PlayTurnStateTest {
 		list.add(Territory.builder().name("Argentina").build());
 		list.add(Territory.builder().name("Perù").build());
 		list.add(Territory.builder().name("Venezuela").build());
-		game.getCurrentTurn().continentCheck(list);
+		assertEquals( game.getCurrentTurn().continentCheck(list), 0);
 		
     }
 }

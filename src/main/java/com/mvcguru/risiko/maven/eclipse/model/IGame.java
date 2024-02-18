@@ -39,6 +39,8 @@ public abstract class IGame {
     protected GameState state;
     
     protected Turn currentTurn;
+    
+    protected List<Continent> continents;
 
     public abstract void addPlayer(Player g) throws FullGameException;
     

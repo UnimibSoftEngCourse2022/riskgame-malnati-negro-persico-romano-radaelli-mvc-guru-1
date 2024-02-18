@@ -37,5 +37,14 @@ public class Player {
 	public enum PlayerColor {
 		RED, YELLOW, GREEN, BLUE, BLACK, PURPLE, GREY
 	}
+	
+	public Territory getTerritoryByName(String name) {
+		for (Territory territory : territories) {
+            if (territory.getName() == name) {
+                return territory;
+            }
+        }
+        return null;
+	}
 
 }

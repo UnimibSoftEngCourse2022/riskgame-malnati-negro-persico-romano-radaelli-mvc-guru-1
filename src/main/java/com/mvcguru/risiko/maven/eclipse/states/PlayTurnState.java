@@ -21,10 +21,10 @@ public class PlayTurnState extends GameState{
 	AttackRequest attackRequest;
 	
 	public void onActionPlayer(ComboRequest comboRequest) throws IOException {
-		game.getCurrentTurn().setComboCards(comboRequest.getComboRequestBody().getComboCards());
 		game.getCurrentTurn().numberOfTroopsCalculation(
 				game.findPlayerByUsername(
-						comboRequest.getComboRequestBody().getUsername()).getTerritories());
+						comboRequest.getComboRequestBody().getUsername()).getTerritories()
+				,comboRequest.getComboRequestBody().getComboCards());
 	} 
 	
 	public void onActionPlayer(TerritorySetup action) {
@@ -45,6 +45,11 @@ public class PlayTurnState extends GameState{
 	
 	public void onActionPlayer(DefenderNoticeBody defenderNoticeBody) {
 		game.getCurrentTurn().attack(attackRequest.getRequestAttackBody(), defenderNoticeBody);
+	}
+	
+	public void onActionPlayer(int numTroops) {
+		game.getCurrentTurn().moveTroops(numTroops);
+		game.broadcast();
 	}
 	
 	

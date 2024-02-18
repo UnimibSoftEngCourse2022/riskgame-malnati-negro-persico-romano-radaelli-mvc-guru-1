@@ -39,6 +39,8 @@ public class FactoryGame {
         game.setDeckTerritory(deckTerritory);
         game.setDeckObjective(deckObjective);
         
+        game.setContinents(game.parsingContinent());
+        
         game.setState(LobbyState.builder().game(game).build());
 
         
