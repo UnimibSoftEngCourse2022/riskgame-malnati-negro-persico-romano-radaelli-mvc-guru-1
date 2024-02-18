@@ -1,11 +1,13 @@
 import React from "react";
-import { useParams, useLocation } from "react-router-dom"; // Importa useParams e useLocation
+import { useParams, useLocation } from "react-router-dom";
 import PartitaObserverSingleton from "../application/PartitaObserverSingleton";
 import SetupStateMap from "../component/mappa/SetupStateMap";
+import StartTurnState from "../component/mappa/StartTurnState";
+import { Container } from "react-bootstrap";
 
 function MappaPage() {
-  const { idPartita } = useParams(); // Ottieni l'idPartita dall'URL
-  const location = useLocation(); // Accedi allo state di navigazione
+  const { idPartita } = useParams();
+  const location = useLocation();
   console.log("location partita", location.state?.partita);
 
   return <Mappa idPartita={idPartita} partita={location.state?.partita} />;
@@ -40,10 +42,9 @@ class Mappa extends React.Component {
 
   renderSetUpState() {
     const partita = this.state.partita;
-    console.log("partita", partita);
-    console.log("partita.state", partita.state.type);
+
     if (partita && partita.state.type === "SetupState") {
-      console.log("Stp per andare all component");
+      console.log("Sto per andare all component SetupState");
       return (
         <SetupStateMap
           giocatori={partita.players}
@@ -55,27 +56,66 @@ class Mappa extends React.Component {
     return null;
   }
 
+  renderStartTurnState() {
+    const partita = this.state.partita;
+    console.log("partita", partita);
+    console.log("partita.state", partita.state.type);
+
+    if (partita && partita.state.type === "PlayTurnState") {
+      console.log("Sto per andare all component PlayTurnState");
+      return <StartTurnState idPlayer={this.state.nickname} game={partita} />;
+    }
+    return null;
+  }
+
   render() {
     const partita = this.state.partita;
+    const nickname = this.state.nickname;
+    console.log("stato partita in Mappa page", this.state.partita.state.type);
+    console.log("nickname", nickname);
+
+    const currentPlayer = partita.players.find((p) => p.userName === nickname);
+
+    console.log(
+      " giocatore corrente",
+      currentPlayer ? currentPlayer.userName : "not found"
+    );
+
+    const colorPlayer = currentPlayer ? currentPlayer.color : "red";
+    console.log("color giocatore", colorPlayer);
     return (
-      <div>
-        <h1 className="h1">Prova il nuovo Gioco di Risiko</h1>
+      <Container style={{ height: "100vh" }}>
         <p>Stato partita: {partita.state.type}</p>
-        <div>
-          <h2>Informazioni Giocatori:</h2>
-          {partita.players
-            .filter((player) => player.userName !== null)
-            .map((player, index) => (
-              <div key={index}>
-                <p>Nome Utente: {player.userName}</p>
-                <p>ID Gioco: {player.gameId}</p>
-                <p>Colore: {player.color}</p>
-              </div>
-            ))}
+        <p style={{ color: colorPlayer }}>
+          Sei il giocatore: {this.state.nickname}
+        </p>
+        <div className="d-flex flew-row justify-content-center align-items-center">
+          <span>Il colore delle tue truppe è il: </span>
+          <div
+            style={{
+              backgroundColor: colorPlayer,
+              width: "15px",
+              height: "15px",
+            }}
+          ></div>
         </div>
-        {this.state.partita === "SetupState" && this.renderSetUpState()}
-        {this.state.partita === "StartTurnState" && this.renderSetUpState()}
-      </div>
+
+        <Container>
+          {this.state.partita.state.type === "SetupState" &&
+            currentPlayer?.setUpCompleted === false &&
+            this.renderSetUpState()}
+        </Container>
+
+        {this.state.partita.state.type === "SetupState" &&
+          currentPlayer?.setUpCompleted === true && (
+            <div className="card">
+              <p className="text-body-secondary">..attendi altri giocatori..</p>
+            </div>
+          )}
+
+        {this.state.partita.state.type === "PlayTurnState" &&
+          this.renderStartTurnState()}
+      </Container>
     );
   }
 }
