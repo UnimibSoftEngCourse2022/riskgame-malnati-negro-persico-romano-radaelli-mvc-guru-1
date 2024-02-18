@@ -29,7 +29,6 @@ public class PlayTurnState extends GameState{
 	
 	public void onActionPlayer(TerritorySetup action) {
 		game.getCurrentTurn().getPlayer().setTerritories(action.getSetUpBody().getTerritories());
-		game.broadcast();
 	}
 	
 	public void onActionPlayer(AttackRequest attackRequest) {

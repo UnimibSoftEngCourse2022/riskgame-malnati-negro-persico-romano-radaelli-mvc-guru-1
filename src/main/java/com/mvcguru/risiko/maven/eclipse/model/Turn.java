@@ -39,6 +39,7 @@ public class Turn implements Serializable{
 		
 		LOGGER.info("Number of troops: {}", numberOfTroops);
 		
+		player.getGame().broadcast(player.getGame().getId(),player.getUserName(), numberOfTroops); //da cambiare
 	}
 	
 	public int continentCheck(List<Territory> territories) throws IOException {
@@ -64,7 +65,6 @@ public class Turn implements Serializable{
 		}
 		return troops;
 	}
-	
 	
 	
 	public int comboCardsCheck(List<TerritoryCard> comboCards) {
