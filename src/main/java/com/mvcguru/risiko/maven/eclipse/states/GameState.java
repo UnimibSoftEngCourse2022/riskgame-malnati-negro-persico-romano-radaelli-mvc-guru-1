@@ -23,7 +23,8 @@ import lombok.experimental.SuperBuilder;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({
     @JsonSubTypes.Type(value = LobbyState.class, name = "LobbyState"),
-    @JsonSubTypes.Type(value = GameSetupState.class, name = "SetupState")
+    @JsonSubTypes.Type(value = GameSetupState.class, name = "SetupState"),
+    @JsonSubTypes.Type(value = StartTurnState.class, name = "StartTurnState")
 })
 public abstract class GameState implements Serializable {
 

@@ -19,13 +19,13 @@ public class PlayTurnState extends GameState{
 	
 	AttackRequest attackRequest;
 	
-	@Override
-	public void onActionPlayer(ComboRequest comboRequest) throws IOException {
-		game.getCurrentTurn().setComboCards(comboRequest.getComboRequestBody().getComboCards());
-		game.getCurrentTurn().numberOfTroopsCalculation(
-				game.findPlayerByUsername(
-						comboRequest.getComboRequestBody().getUsername()).getTerritories());
-	} 
+		@Override
+		public void onActionPlayer(ComboRequest comboRequest) throws IOException {
+			game.getCurrentTurn().setComboCards(comboRequest.getComboRequestBody().getComboCards());
+			game.getCurrentTurn().numberOfTroopsCalculation(
+					game.findPlayerByUsername(
+							comboRequest.getComboRequestBody().getUsername()).getTerritories());
+		} 
 	
 	@Override
 	public void onActionPlayer(TerritorySetup action) {
