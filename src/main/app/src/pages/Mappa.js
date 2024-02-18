@@ -74,7 +74,8 @@ class Mappa extends React.Component {
               </div>
             ))}
         </div>
-        {this.renderSetUpState()}
+        {this.state.partita === "SetupState" && this.renderSetUpState()}
+        {this.state.partita === "StartTurnState" && this.renderSetUpState()}
       </div>
     );
   }
