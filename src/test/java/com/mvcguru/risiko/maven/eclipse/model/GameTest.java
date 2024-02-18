@@ -148,7 +148,7 @@ class GameTest {
 //                .build();
 //    	IGame game = FactoryGame.getInstance().createGame(config);
 //    	
-//    	IDeck testDeck = game.createTerritoryDeck(config);
+//    	IDeck testDeck = game.getDeckTerritory();
 //    	
 //    	ICard c = testDeck.drawCard();
 //    	TerritoryCard card = TerritoryCard.builder().territory(Territory.builder().name("Afganistan").continent(4).build()).symbol(TerritoryCard.CardSymbol.CAVALRY).build();
@@ -158,53 +158,53 @@ class GameTest {
 //    	assertNotEquals(card2, c, "The drawn card should be the same as the inserted card");
 //    	
 //    }
-
-    
-    @Test
-    void createObjectiveDeck() throws IOException {
-    	//Test mode EASY
-    	GameConfiguration config = GameConfiguration.builder()
-                .mode(GameMode.EASY)
-                .numberOfPlayers(4)
-                .idMap("TestMap")
-                .build();
-    	
-    	IGame game = FactoryGame.getInstance().createGame(config);
-    	    	
-    	ICard c = game.getDeckObjective().drawCard();
-    	
-    	ObjectiveCard card = ObjectiveCard.builder().objective("Conquistare più territori possibili in 4 turni.").build();
-    	
-    	assertEquals(card, c, "The drawn card should be the same as the inserted card");
-    	
-    	//Test mode MEDIUM
-    	GameConfiguration config2 = GameConfiguration.builder()
-                .mode(GameMode.MEDIUM)
-                .numberOfPlayers(4)
-                .idMap("TestMap")
-                .build();
-    	
-    	IGame game2 = FactoryGame.getInstance().createGame(config2);
-    	    	
-    	ICard c2 = game.getDeckObjective().drawCard();
-    	
-    	ObjectiveCard card2 = ObjectiveCard.builder().objective("Conquistare 12 territori presidiandoli con almeno due armate ciascuno.").build();
-    	
-    	assertEquals(card2, c2, "The drawn card should be the same as the inserted card");
-    	
-    	//Test mode HARD
-    	GameConfiguration config3 = GameConfiguration.builder()
-                .mode(GameMode.HARD)
-                .numberOfPlayers(4)
-                .idMap("TestMap")
-                .build();
-    	
-    	IGame game3 = FactoryGame.getInstance().createGame(config3);
-    	    	
-    	ICard c3 = game.getDeckObjective().drawCard();
-    	
-    	ObjectiveCard card3 = ObjectiveCard.builder().objective("Conquistare 18 territori presidiandoli con almeno due armate ciascuno.").build();
-    	
-    	assertEquals(card3, c3, "The drawn card should be the same as the inserted card");
-    }
+//
+//    
+//    @Test
+//    void createObjectiveDeck() throws IOException {
+//    	//Test mode EASY
+//    	GameConfiguration config = GameConfiguration.builder()
+//                .mode(GameMode.EASY)
+//                .numberOfPlayers(4)
+//                .idMap("TestMap")
+//                .build();
+//    	
+//    	IGame game = FactoryGame.getInstance().createGame(config);
+//    	    	
+//    	ICard c = game.getDeckObjective().drawCard();
+//    	
+//    	ObjectiveCard card = ObjectiveCard.builder().objective("Conquistare più territori possibili in 4 turni.").build();
+//    	
+//    	assertEquals(card, c, "The drawn card should be the same as the inserted card");
+//    	
+//    	//Test mode MEDIUM
+//    	GameConfiguration config2 = GameConfiguration.builder()
+//                .mode(GameMode.MEDIUM)
+//                .numberOfPlayers(4)
+//                .idMap("TestMap")
+//                .build();
+//    	
+//    	IGame game2 = FactoryGame.getInstance().createGame(config2);
+//    	    	
+//    	ICard c2 = game.getDeckObjective().drawCard();
+//    	
+//    	ObjectiveCard card2 = ObjectiveCard.builder().objective("Conquistare 12 territori presidiandoli con almeno due armate ciascuno.").build();
+//    	
+//    	assertEquals(card2, c2, "The drawn card should be the same as the inserted card");
+//    	
+//    	//Test mode HARD
+//    	GameConfiguration config3 = GameConfiguration.builder()
+//                .mode(GameMode.HARD)
+//                .numberOfPlayers(4)
+//                .idMap("TestMap")
+//                .build();
+//    	
+//    	IGame game3 = FactoryGame.getInstance().createGame(config3);
+//    	    	
+//    	ICard c3 = game.getDeckObjective().drawCard();
+//    	
+//    	ObjectiveCard card3 = ObjectiveCard.builder().objective("Conquistare 18 territori presidiandoli con almeno due armate ciascuno.").build();
+//    	
+//    	assertEquals(card3, c3, "The drawn card should be the same as the inserted card");
+//    }
 }

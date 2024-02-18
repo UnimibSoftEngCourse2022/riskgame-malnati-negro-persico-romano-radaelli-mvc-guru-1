@@ -23,6 +23,7 @@ import lombok.Data;
 
 @Data
 public class FactoryGame {
+	private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(FactoryGame.class);
     private static FactoryGame instance;
     private GameState gameState;
 
@@ -40,46 +41,63 @@ public class FactoryGame {
         return UUID.randomUUID().toString();
     }
     
-public IDeck createTerritoryDeck(GameConfiguration configuration) throws IOException {
-		
-		ObjectMapper mapper = new ObjectMapper();
-        byte[] data = FileCopyUtils.copyToByteArray(new ClassPathResource("territories_difficult.json").getInputStream());
+    public IDeck createTerritoryDeck(GameConfiguration configuration) throws IOException {
+        GameMode mode = configuration.getMode();
+        String fileName = getFileNameForGameMode(mode);
+        if (fileName == null) {
+        	LOGGER.error("Unsupported game mode: {}", mode);
+        }
+        
+        ObjectMapper mapper = new ObjectMapper();
+        byte[] data = FileCopyUtils.copyToByteArray(new ClassPathResource(fileName).getInputStream());
         String json = new String(data, StandardCharsets.UTF_8);
         TerritoryCard[] territoriesCard = mapper.readValue(json, TerritoryCard[].class);
         
         IDeck deck = new TerritoriesDeck();
-		for (TerritoryCard territoryCard : territoriesCard) {
-	            deck.insertCard(territoryCard);
-			}
-		return deck;
+        for (TerritoryCard territoryCard : territoriesCard) {
+            deck.insertCard(territoryCard);
         }
+        return deck;
+    }
 
-	public IDeck createObjectiveDeck(GameConfiguration configuration) throws IOException {
-		GameMode mode = configuration.getMode();
-		ObjectMapper mapper = new ObjectMapper();
-		byte[] data = null;
-		switch (mode) {
-			case EASY:
-				data = FileCopyUtils.copyToByteArray(new ClassPathResource("objectives_easy.json").getInputStream());
-				break;
-			case MEDIUM:
-				data = FileCopyUtils.copyToByteArray(new ClassPathResource("objectives_medium.json").getInputStream());
-				break;
-            case HARD:
-				data = FileCopyUtils.copyToByteArray(new ClassPathResource("objectives_hard.json").getInputStream());
-				break;
-			default:
-				break;
-		}
+    private String getFileNameForGameMode(GameMode mode) {
+        switch (mode) {
+            case EASY: return "territories_easy.json";
+            case MEDIUM: return "territories_medium.json";
+            case HARD: return "territories_hard.json";
+            default: return null;
+        }
+    }
+
+
+    public IDeck createObjectiveDeck(GameConfiguration configuration) throws IOException {
+        GameMode mode = configuration.getMode();
+        String fileName = getFileNameForObjectiveGameMode(mode);
+        if (fileName == null) {
+        	LOGGER.error("Unsupported game mode: {}", mode);
+        }
         
+        ObjectMapper mapper = new ObjectMapper();
+        byte[] data = FileCopyUtils.copyToByteArray(new ClassPathResource(fileName).getInputStream());
         String json = new String(data, StandardCharsets.UTF_8);
         ObjectiveCard[] objectives = mapper.readValue(json, ObjectiveCard[].class);
+        
         IDeck deck = new ObjectivesDeck();
-		for (ObjectiveCard o : objectives) {
+        for (ObjectiveCard o : objectives) {
             deck.insertCard(o);
         }
-		return deck;
-	}
+        return deck;
+    }
+
+    private String getFileNameForObjectiveGameMode(GameMode mode) {
+        switch (mode) {
+            case EASY: return "objectives_easy.json";
+            case MEDIUM: return "objectives_medium.json";
+            case HARD: return "objectives_hard.json";
+            default: return null;
+        }
+    }
+
 
     public IGame createGame(GameConfiguration configuration) throws IOException {
     

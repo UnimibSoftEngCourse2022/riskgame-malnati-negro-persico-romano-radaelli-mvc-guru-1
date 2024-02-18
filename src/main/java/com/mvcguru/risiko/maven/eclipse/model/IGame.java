@@ -1,6 +1,7 @@
 package com.mvcguru.risiko.maven.eclipse.model;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +26,7 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @NoArgsConstructor
-public abstract class IGame {
+public abstract class IGame implements Serializable{
 	protected static final Logger LOGGER = LoggerFactory.getLogger(IGame.class);
 
 	protected String id;

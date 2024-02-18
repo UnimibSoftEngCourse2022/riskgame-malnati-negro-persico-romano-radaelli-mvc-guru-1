@@ -3,10 +3,6 @@ package com.mvcguru.risiko.maven.eclipse.service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
 import com.mvcguru.risiko.maven.eclipse.exception.GameException;
@@ -44,7 +40,7 @@ public class GameRepository {
 	public synchronized IGame getGameById(String gameId) throws GameException, FullGameException, IOException {
 		IGame game = db.getGameById(gameId);
 		List<Player> lista = db.getPlayerInGame(gameId);
-		List<Territory> territories = new ArrayList<Territory>();
+		List<Territory> territories = null;
 		for (Player p : lista) { 
 			game.addPlayer(p);  
 			territories = db.getAllTerritories(p.getUserName()); 

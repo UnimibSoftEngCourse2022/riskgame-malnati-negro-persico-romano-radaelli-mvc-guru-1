@@ -8,7 +8,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.mvcguru.risiko.maven.eclipse.actions.TerritorySetup;
-import com.mvcguru.risiko.maven.eclipse.controller.bodyRequest.TerritoryBody;
+import com.mvcguru.risiko.maven.eclipse.controller.body_request.TerritoryBody;
 import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
 import com.mvcguru.risiko.maven.eclipse.exception.GameException;
@@ -29,11 +29,10 @@ public class GameSetupState extends GameState {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(GameSetupState.class);
 
-
 	@Override
 	public void onActionPlayer(TerritorySetup action) throws GameException, DatabaseConnectionException, UserException, FullGameException, IOException{
 		Player player = action.getPlayer();
-		LOGGER.info("BOOLEANA: {}", player.isSetUpCompleted());
+		 
 		for(TerritoryBody t : action.getSetUpBody().getTerritories()) {
 			String territoryName = t.getName();
 			int troops = t.getTroops();
@@ -49,14 +48,9 @@ public class GameSetupState extends GameState {
 					});
 		}
 		
-		player.setSetUpCompleted(true);
-
-		LOGGER.info("BOOLEANA: {}", player.isSetUpCompleted());
+		player.setSetUpCompleted(true); 
 		GameRepository.getInstance().updateSetUpCompleted(action.getPlayer().getUserName(), true);
 
-		LOGGER.info("BOOLEANA: {}", player.isSetUpCompleted());
-
-		LOGGER.info("BOOLEANA: {}", player.isSetUpCompleted());
 		for (Player p : GameRepository.getInstance().getGameById(action.getPlayer().getGameId()).getPlayers()) {
 			if (!p.isSetUpCompleted()) {
 
@@ -64,12 +58,8 @@ public class GameSetupState extends GameState {
 				return;
 			}
 		}
-
-		LOGGER.info("BOOLEANA: {}", player.isSetUpCompleted());
 		game.setState(PlayTurnState.builder().game(game).build());
-		game.startGame();
-
-		LOGGER.info("BOOLEANA: {}", player.isSetUpCompleted());
+		game.startGame(); 
 	}
 	
 	@Override

@@ -6,7 +6,6 @@ public class DestroyArmyObjective extends Objective{
 
 	@Override
 	public boolean isComplete(IGame game) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

@@ -6,13 +6,11 @@ public class TerritoriesObjective extends Objective{
 
 	@Override
 	public boolean isComplete() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean isComplete(IGame game) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

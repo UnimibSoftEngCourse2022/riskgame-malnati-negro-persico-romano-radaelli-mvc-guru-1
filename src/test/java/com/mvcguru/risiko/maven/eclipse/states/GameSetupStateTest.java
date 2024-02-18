@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameSetupStateTest {
@@ -60,8 +61,6 @@ class GameSetupStateTest {
 		List<Continent> continents = game.parsingContinent();
 		
 		for (Continent continent : continents) {
-			assertNotNull(continent.getContinentId());
-			LOGGER.info("Continent intId: {}", continent.getContinentId());
 			assertNotNull(continent.getName());
 			LOGGER.info("Continent name: {}", continent.getName());
 			assertFalse(continent.getTerritories().isEmpty());

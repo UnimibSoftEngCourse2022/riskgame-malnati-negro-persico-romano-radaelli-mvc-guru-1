@@ -1,4 +1,6 @@
-package com.mvcguru.risiko.maven.eclipse.controller.bodyRequest;
+package com.mvcguru.risiko.maven.eclipse.controller.body_request;
+
+import java.io.Serializable;
 
 import com.mvcguru.risiko.maven.eclipse.model.Territory;
 
@@ -7,7 +9,7 @@ import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder
-public class AttackRequestBody {
+public class AttackRequestBody implements Serializable{
 	
 	private Territory attackerTerritory;
 	

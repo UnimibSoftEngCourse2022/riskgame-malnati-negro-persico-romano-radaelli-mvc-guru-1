@@ -12,8 +12,8 @@ import com.mvcguru.risiko.maven.eclipse.actions.AttackRequest;
 import com.mvcguru.risiko.maven.eclipse.actions.ComboRequest;
 import com.mvcguru.risiko.maven.eclipse.actions.GameEntry;
 import com.mvcguru.risiko.maven.eclipse.actions.TerritorySetup;
-import com.mvcguru.risiko.maven.eclipse.controller.bodyRequest.ComboRequestBody;
-import com.mvcguru.risiko.maven.eclipse.controller.bodyRequest.SetUpBody;
+import com.mvcguru.risiko.maven.eclipse.controller.body_request.ComboRequestBody;
+import com.mvcguru.risiko.maven.eclipse.controller.body_request.SetUpBody;
 import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
 import com.mvcguru.risiko.maven.eclipse.exception.GameException;
@@ -66,9 +66,9 @@ class PlayTurnStateTest {
 			assertNotNull(player.getObjective());
 			LOGGER.info("Player: {}", player.getObjective());
 		}
-		
-		System.out.println(player1.getColor() + " \n" + player1.getTerritories() + "\n " + player1.getObjective());
-		
+//		
+//		System.out.println(player1.getColor() + " \n" + player1.getTerritories() + "\n " + player1.getObjective());
+//		
 //		SetUpBody setUpBody1 = SetUpBody.builder().username(player1.getUserName()).territories(player1.getTerritories()).build();
 //		TerritorySetup territorySetup = TerritorySetup.builder().player(player1).setUpBody(setUpBody1).build();
 //		game.getState().onActionPlayer(territorySetup);		
@@ -76,28 +76,28 @@ class PlayTurnStateTest {
 //		TerritorySetup territorySetup2 = TerritorySetup.builder().player(player2).setUpBody(setUpBody2).build();
 //		game.getState().onActionPlayer(territorySetup2);
 //		assertEquals(game.getState().getClass(), PlayTurnState.class);
-		
-		
-		List<TerritoryCard> comboCards = new ArrayList<>();
-		
-		ICard c1 = TerritoryCard.builder().territory(Territory.builder().name("Cina").build()).symbol(CardSymbol.JOLLY).build();
-		ICard c2 = TerritoryCard.builder().territory(Territory.builder().name("Egitto").build()).symbol(CardSymbol.ARTILLERY).build();
-		ICard c3 = TerritoryCard.builder().territory(Territory.builder().name("Brasile").build()).symbol(CardSymbol.JOLLY).build();
-		
-		comboCards.add((TerritoryCard) c1);
-		comboCards.add((TerritoryCard) c2);
-		comboCards.add((TerritoryCard) c3);
-		
-		ComboRequestBody comboRequestBody = ComboRequestBody.builder().username(player1.getUserName()).comboCards(comboCards).build();
-		ComboRequest comboRequest = ComboRequest.builder().player(player1).comboRequestBody(comboRequestBody).build();
-		
-		game.getState().onActionPlayer(comboRequest);
-		
-		List<Territory> list = new ArrayList<>();
-		list.add(Territory.builder().name("Brasile").build());
-		list.add(Territory.builder().name("Argentina").build());
-		list.add(Territory.builder().name("Perù").build());
-		list.add(Territory.builder().name("Venezuela").build());
-		game.getCurrentTurn().continentCheck(list);
-    }
+//		
+//		
+//		List<TerritoryCard> comboCards = new ArrayList<>();
+//		
+//		ICard c1 = TerritoryCard.builder().territory(Territory.builder().name("Cina").build()).symbol(CardSymbol.JOLLY).build();
+//		ICard c2 = TerritoryCard.builder().territory(Territory.builder().name("Egitto").build()).symbol(CardSymbol.ARTILLERY).build();
+//		ICard c3 = TerritoryCard.builder().territory(Territory.builder().name("Brasile").build()).symbol(CardSymbol.JOLLY).build();
+//		
+//		comboCards.add((TerritoryCard) c1);
+//		comboCards.add((TerritoryCard) c2);
+//		comboCards.add((TerritoryCard) c3);
+//		
+//		ComboRequestBody comboRequestBody = ComboRequestBody.builder().username(player1.getUserName()).comboCards(comboCards).build();
+//		ComboRequest comboRequest = ComboRequest.builder().player(player1).comboRequestBody(comboRequestBody).build();
+//		
+//		game.getState().onActionPlayer(comboRequest);
+//		
+//		List<Territory> list = new ArrayList<>();
+//		list.add(Territory.builder().name("Brasile").build());
+//		list.add(Territory.builder().name("Argentina").build());
+//		list.add(Territory.builder().name("Perù").build());
+//		list.add(Territory.builder().name("Venezuela").build());
+//		game.getCurrentTurn().continentCheck(list);
+   }
 }

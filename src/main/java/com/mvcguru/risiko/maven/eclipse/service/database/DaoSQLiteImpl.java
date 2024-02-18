@@ -240,7 +240,7 @@ public class DaoSQLiteImpl implements DataDao {
 		            game = extractGameFromResultSet(rs);
 		            
 		        }
-		    } catch (SQLException e) {throw new GameException("Errore durante il recupero del gioco con ID " + gameId, e);
+		    } catch (SQLException e) {LOGGER.error("Errore durante il recupero del gioco con ID {}, {}", gameId, e);
 		    }
 		    return game;
 	}
@@ -253,7 +253,7 @@ public class DaoSQLiteImpl implements DataDao {
 		int numberOfPlayers = game.getConfiguration().getNumberOfPlayers();
 		String idMap = game.getConfiguration().getIdMap();
 		String state = game.getState().getClass().getSimpleName();
-		LOGGER.info("Stato: " + game.getState().getClass().getSimpleName());
+		LOGGER.info("Stato: {}", game.getState().getClass().getSimpleName());
 		
         String sql = "INSERT INTO games (gameId, mode, number_of_players, idMap, state) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement pstmt = null;
@@ -319,7 +319,6 @@ public class DaoSQLiteImpl implements DataDao {
             while (rs.next()) {
             	LOGGER.info("Prima extract");
                 IGame game = extractGameFromResultSet(rs);
-                LOGGER.info("partita: " + game.toString());
                 games.add(game);
             }
             rs.close();
@@ -342,7 +341,7 @@ public class DaoSQLiteImpl implements DataDao {
 	        LOGGER.info("Dopo factory" );
 	        newGame.setId(rs.getString("gameId"));
 	        String stateName = rs.getString("state");
-	        LOGGER.info("Stato: " + stateName);
+	        LOGGER.info("Stato: {}", stateName);
             switch (stateName) {
             case "GameSetupState":
                 newGame.setState(GameSetupState.builder().game(newGame).build());
@@ -366,11 +365,11 @@ public class DaoSQLiteImpl implements DataDao {
 	//PlayerDao methods
 	public void insertPlayer(Player player) throws GameException {
 		String username = player.getUserName();
-		LOGGER.info("Username: " + username);
+		LOGGER.info("Username: {}", username);
 		String gameId = player.getGameId();
-		LOGGER.info("GameId: " + gameId);
+		LOGGER.info("GameId: {}", gameId);
 		String color = player.getColor().name();
-		LOGGER.info("Colore: " + color);
+		LOGGER.info("Colore: {}", color);
 		boolean setUpCompleted = player.isSetUpCompleted();
 		PreparedStatement pstmt = null;
 		String sql = "INSERT INTO players (username, gameId, color, setUpCompleted) VALUES (?, ?, ?, ?)";
@@ -396,8 +395,7 @@ public class DaoSQLiteImpl implements DataDao {
 			pstmt.setString(2, username);
 			int updatedRows = pstmt.executeUpdate();
 			if (updatedRows == 0) {
-				LOGGER.error(
-						"Nessun giocatore aggiornato: potrebbe non esistere un giocatore con lo username specificato.");
+				LOGGER.error("Nessun giocatore aggiornato: potrebbe non esistere un giocatore con lo username specificato.");
 			}
 		} catch (SQLException e) {
 			throw new GameException("Errore durante l'aggiornamento del setup completato del giocatore.", e);
@@ -540,8 +538,7 @@ public class DaoSQLiteImpl implements DataDao {
 			pstmt.setString(2, territoryName);
 			int updatedRows = pstmt.executeUpdate();
 			if (updatedRows == 0) {
-				LOGGER.error(
-						"Nessun territorio aggiornato: potrebbe non esistere un territorio con il nome specificato.");
+				LOGGER.error("Nessun territorio aggiornato: potrebbe non esistere un territorio con il nome specificato.");
 			}
 		} catch (SQLException e) {
 			throw new GameException("Errore durante l'aggiornamento delle truppe del territorio.", e);
