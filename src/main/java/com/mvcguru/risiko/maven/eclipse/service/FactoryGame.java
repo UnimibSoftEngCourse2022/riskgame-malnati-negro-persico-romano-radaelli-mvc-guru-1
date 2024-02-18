@@ -2,12 +2,16 @@ package com.mvcguru.risiko.maven.eclipse.service;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.FileCopyUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mvcguru.risiko.maven.eclipse.model.Continent;
 import com.mvcguru.risiko.maven.eclipse.model.Game;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
@@ -105,8 +109,17 @@ public class FactoryGame {
         game.setDeckTerritory(createTerritoryDeck(configuration));
         game.setDeckObjective(createObjectiveDeck(configuration));
         game.setState(LobbyState.builder().game(game).build());
+        game.setContinents(parsingContinent());
 
         return game;
     }
+    
+    public List<Continent> parsingContinent() throws IOException {
+		ObjectMapper mapper = new ObjectMapper();
+        byte[] data = FileCopyUtils.copyToByteArray(new ClassPathResource("continent.json").getInputStream());
+        String json = new String(data, StandardCharsets.UTF_8);
+        Continent[] continents = mapper.readValue(json, Continent[].class);
+        return new ArrayList<>(Arrays.asList(continents));
+	}
     
 }

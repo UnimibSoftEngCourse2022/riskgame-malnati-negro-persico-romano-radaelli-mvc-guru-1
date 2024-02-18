@@ -17,6 +17,7 @@ import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
 import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard.CardSymbol;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
@@ -26,19 +27,20 @@ public class Turn implements Serializable {
     private static final Logger LOGGER = LoggerFactory.getLogger(Turn.class);
 
     private Player player;
-    private int numberOfTroops;
-    private List<TerritoryCard> comboCards;
-    private List<Continent> continent;
+    
+    @Builder.Default
+    private int numberOfTroops = 0;
+    
+    private int indexTurn;
 
     public void numberOfTroopsCalculation(List<Territory> territories) throws IOException {
-        numberOfTroops = territories.size() / 3;
-        numberOfTroops += comboCardsCheck();
+        numberOfTroops += territories.size() / 3;
         numberOfTroops += continentCheck(territories);
     }
 
     public int continentCheck(List<Territory> territories) throws IOException {
         int troops = 0;
-        continent = player.getGame().parsingContinent();
+        List<Continent> continent = player.getGame().getContinents();
         List<String> territoriesName = territories.stream().map(Territory::getName).collect(Collectors.toList());
 
         for (Continent c : continent) {
@@ -52,21 +54,20 @@ public class Turn implements Serializable {
         return troops;
     }
 
-    public int comboCardsCheck() {
+    public void comboCardsCheck(List<TerritoryCard> comboCards) {
         if (comboCards.size() != 3) {
-            return 0;
+            return;
         }
-
         long distinctSymbols = comboCards.stream().map(TerritoryCard::getSymbol).distinct().count();
         if (distinctSymbols == 1) {
-            return troopsForSingleSymbolCombo();
+        	numberOfTroops = troopsForSingleSymbolCombo(comboCards);
         } else if (distinctSymbols == 3 || comboCards.stream().anyMatch(card -> card.getSymbol() == CardSymbol.JOLLY)) {
-            return troopsForMixedCombo();
+        	numberOfTroops = troopsForMixedCombo(comboCards);
         }
-        return 0;
+        return;
     }
 
-    private int troopsForSingleSymbolCombo() {
+    private int troopsForSingleSymbolCombo(List<TerritoryCard> comboCards) {
         switch (comboCards.get(0).getSymbol()) {
             case ARTILLERY:
                 return 4;
@@ -79,7 +80,7 @@ public class Turn implements Serializable {
         }
     }
 
-    private int troopsForMixedCombo() {
+    private int troopsForMixedCombo(List<TerritoryCard> comboCards) {
         int troops = comboCards.stream().anyMatch(card -> card.getSymbol() == CardSymbol.JOLLY) ? 12 : 10;
         for (TerritoryCard card : comboCards) {
             if (player.getTerritories().contains(card.getTerritory()))

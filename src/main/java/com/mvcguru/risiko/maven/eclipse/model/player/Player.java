@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.model.Territory;
 import com.mvcguru.risiko.maven.eclipse.model.card.ICard;
+import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,7 +30,7 @@ public class Player implements Serializable{
 	
 	private List<Territory> territories;
 	
-	private List<ICard> comboCards;
+	private List<TerritoryCard> comboCards;
 	
 	private boolean setUpCompleted = false;
 	

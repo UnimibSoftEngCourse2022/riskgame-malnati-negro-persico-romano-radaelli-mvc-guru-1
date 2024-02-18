@@ -11,9 +11,12 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
+import com.mvcguru.risiko.maven.eclipse.actions.ComboRequest;
 import com.mvcguru.risiko.maven.eclipse.actions.GameEntry;
 import com.mvcguru.risiko.maven.eclipse.actions.GameExit;
 import com.mvcguru.risiko.maven.eclipse.actions.TerritorySetup;
+import com.mvcguru.risiko.maven.eclipse.actions.TurnSetUp;
+import com.mvcguru.risiko.maven.eclipse.controller.body_request.ComboRequestBody;
 import com.mvcguru.risiko.maven.eclipse.controller.body_request.PlayerBody;
 import com.mvcguru.risiko.maven.eclipse.controller.body_request.SetUpBody;
 import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
@@ -82,6 +85,36 @@ public class EventController {
 	        LOGGER.info("Fine setup territori: {}", game.findPlayerByUsername(body.getUsername()).getTerritories());
 	    } catch (Exception e) {LOGGER.error("Errore durante la conferma del setup", e);}
 	}
+	
+	@MessageMapping("/partite/{id}/comboRequest")
+	public void comboRequest(@DestinationVariable String id, @Payload ComboRequestBody body) throws Exception {
+		try {
+			LOGGER.info("Inizio Combo request");
+			IGame game = GameRepository.getInstance().getGameById(id);
+			Player player = game.findPlayerByUsername(body.getUsername());
+			if (player != null) {
+				ComboRequest action = ComboRequest.builder().player(player).comboRequestBody(body).build();
+				game.onActionPlayer(action);
+			}
+			LOGGER.info("Fine Combo request");
+		}catch(Exception e) {LOGGER.error("Errore durante la combo request", e);}
+	}
+	
+	@MessageMapping("/partite/{id}/turnAssignation")
+	public void turnAssignation(@DestinationVariable String id, @Payload SetUpBody body) throws Exception {
+		try {
+			IGame game = GameRepository.getInstance().getGameById(id);
+			Player player = game.findPlayerByUsername(body.getUsername());
+			if (player != null) {
+				TurnSetUp action = TurnSetUp.builder().player(player).setUpBody(body).build();
+				game.onActionPlayer(action);
+			}
+		} catch (Exception e) {
+			LOGGER.error("Errore durante l'assegnazione del turno", e);
+		}
+	}
+	
+	
 
 
 }

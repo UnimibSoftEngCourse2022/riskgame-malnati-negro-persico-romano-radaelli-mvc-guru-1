@@ -7,6 +7,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mvcguru.risiko.maven.eclipse.model.Territory;
 import com.mvcguru.risiko.maven.eclipse.model.card.ICard;
+import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player.PlayerColor;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
 
@@ -25,7 +26,7 @@ class PlayerTest {
         PlayerColor color = PlayerColor.BLUE;
         IGame game = null; 
         List<Territory> territories = new ArrayList<>();
-        List<ICard> comboCards = new ArrayList<>();
+        List<TerritoryCard> comboCards = new ArrayList<>();
         ICard objective = null; 
         Player player = new Player(userName, gameId, color, game, territories, comboCards, false, objective);
 
@@ -44,7 +45,7 @@ class PlayerTest {
         String gameId = "Game456";
         PlayerColor color = PlayerColor.GREEN;
         List<Territory> territories = new ArrayList<>();
-        List<ICard> comboCards = new ArrayList<>();
+        List<TerritoryCard> comboCards = new ArrayList<>();
         ICard objective = null; 
 
         Player player = Player.builder()

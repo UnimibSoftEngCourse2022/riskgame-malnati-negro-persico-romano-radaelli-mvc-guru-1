@@ -12,6 +12,6 @@ public class ComboRequestBody implements Serializable{
 	
 	private String username;
 	
-	private List<TerritoryCard> comboCards;
+	private List<TerritoryCardBody> comboCards;
 
 }

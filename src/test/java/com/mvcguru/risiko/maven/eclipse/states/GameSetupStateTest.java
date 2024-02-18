@@ -58,7 +58,7 @@ class GameSetupStateTest {
 			assertNotNull(player.getObjective());
 		}
 		
-		List<Continent> continents = game.parsingContinent();
+		List<Continent> continents = game.getContinents();
 		
 		for (Continent continent : continents) {
 			assertNotNull(continent.getName());

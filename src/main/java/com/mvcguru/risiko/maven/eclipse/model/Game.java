@@ -72,28 +72,19 @@ public class Game extends IGame {
 	public void startGame() {
 		currentTurn = Turn.builder()
                 .player(players.get(0))
+                .indexTurn(1)
                 .build();
 	}
 	
 	public void changeTurn() {
-		
 		Player curr = currentTurn.getPlayer();
 		LOGGER.info("Cambio turno - giocatore corrente {}", curr.getUserName());
-		
-		setState(PlayTurnState.builder().build());
         setCurrentTurn(Turn.builder()
                 .player(players.get((players.indexOf(curr) + 1) % players.size()))
+                .indexTurn(currentTurn.getIndexTurn() + 1)
                 .build());
-		
+        // cambio stato? 
         broadcast();
 	}	
-	
-	public List<Continent> parsingContinent() throws IOException {
-		ObjectMapper mapper = new ObjectMapper();
-        byte[] data = FileCopyUtils.copyToByteArray(new ClassPathResource("continent.json").getInputStream());
-        String json = new String(data, StandardCharsets.UTF_8);
-        Continent[] continents = mapper.readValue(json, Continent[].class);
-        return new ArrayList<>(Arrays.asList(continents));
-	}
 	
 }
