@@ -116,34 +116,34 @@ public class Turn implements Serializable{
 	    int numAttDice = attackRequestBody.getNumDice();
 	    int numDefDice = defenderNoticeBody.getNumAttDice();
 	    
-//	   int[] attRolls = new Integer[numAttDice];
-//	    Integer[] defRolls = new Integer[numDefDice];
-//	    
-//	    for (int i = 0; i < numAttDice; i++) {
-//	       attRolls[i] = (int) (Math.random() * 6) + 1;
-//	    }
-//	    
-//	    for (int i = 0; i < numDefDice; i++) {
-//	        defRolls[i] = (int) (Math.random() * 6) + 1;
-//	    }
-//	    
-//	    Arrays.sort(attRolls, Collections.reverseOrder());
-//	    Arrays.sort(defRolls, Collections.reverseOrder());
-//	    
-//	    int numComparisons = Math.min(numAttDice, numDefDice);
-//	    int attLosses = 0;
-//	    int defLosses = 0;
-//	    
-//	    for (int i = 0; i < numComparisons; i++) {
-//	        if (attRolls[i] > defRolls[i]) {
-//	            defLosses++;
-//	        } else {
-//	            attLosses++;
-//	        }
-//	    }
-//	    
-//	    System.out.println("Attacker losses: " + attLosses + " | Defender losses: " + defLosses);
-//	}
+	    Integer[] attRolls = new Integer[numAttDice];
+	    Integer[] defRolls = new Integer[numDefDice];
+	    
+	    for (int i = 0; i < numAttDice; i++) {
+	       attRolls[i] = (int) (Math.random() * 6) + 1;
+	    }
+	    
+	    for (int i = 0; i < numDefDice; i++) {
+	        defRolls[i] = (int) (Math.random() * 6) + 1;
+	    }
+	    
+	    Arrays.sort(attRolls, Collections.reverseOrder());
+	    Arrays.sort(defRolls, Collections.reverseOrder());
+	    
+	    int numComparisons = Math.min(numAttDice, numDefDice);
+	    int attLosses = 0;
+	    int defLosses = 0;
+	    
+	    for (int i = 0; i < numComparisons; i++) {
+	        if (attRolls[i] > defRolls[i]) {
+	            defLosses++;
+	        } else {
+	            attLosses++;
+	        }
+	    }
+	    
+	    System.out.println("Attacker losses: " + attLosses + " | Defender losses: " + defLosses);
+	}
 
 	}
-}
+
