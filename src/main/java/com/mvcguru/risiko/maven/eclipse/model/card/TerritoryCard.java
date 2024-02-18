@@ -12,11 +12,12 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 public class TerritoryCard extends ICard implements Serializable{
+	
 	@JsonProperty("territory")
 	private Territory territory;
 	
 	@JsonProperty("symbol")
-	private CardSymbol symbol;		//attributo per il simbolo della carta
+	private CardSymbol symbol;
 	
 	public enum CardSymbol {
 		INFANTRY,

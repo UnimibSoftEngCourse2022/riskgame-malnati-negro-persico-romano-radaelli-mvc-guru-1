@@ -20,6 +20,8 @@ import java.util.Collections;
 public class Turn implements Serializable{
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(Turn.class);
+	
+	private int index;
 
 	private Player player;
 	

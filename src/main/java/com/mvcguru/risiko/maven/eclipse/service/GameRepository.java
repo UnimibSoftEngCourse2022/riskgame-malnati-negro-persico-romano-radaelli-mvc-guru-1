@@ -9,6 +9,8 @@ import com.mvcguru.risiko.maven.eclipse.exception.GameException;
 import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.model.Territory;
+import com.mvcguru.risiko.maven.eclipse.model.Turn;
+import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 import com.mvcguru.risiko.maven.eclipse.service.database.DaoSQLiteImpl;
 import com.mvcguru.risiko.maven.eclipse.service.database.DataDao;
@@ -100,6 +102,34 @@ public class GameRepository {
 	
 	public synchronized List<Territory> getAllTerritories(String player) throws GameException {
 		return db.getAllTerritories(player);
+	}
+	
+	public synchronized void insertTurn(Turn turn) throws GameException {
+		db.insertTurn(turn);
+	}
+	
+	public synchronized void deleteTurn(Turn turn) throws GameException {
+		db.deleteTurn(turn);
+	}
+	
+	public synchronized void updateTurnIndex(Turn turn, int index) throws GameException {
+		db.updateTurnIndex(turn, index);
+	}
+	
+	public synchronized void insertComboCard(TerritoryCard t, Player owner, String gameId) throws GameException {
+        db.insertComboCard(t, owner, gameId);
+    }
+	
+	public synchronized void deleteComboCard(TerritoryCard t, Player owner, String gameId) throws GameException {
+		db.deleteComboCard(t, owner, gameId);
+	}
+	
+	public synchronized void updateOwner(TerritoryCard t, String player, String gameId) throws GameException {
+		db.updateOwner(t, player, gameId);
+	}
+	
+	public synchronized List<TerritoryCard> getAllComboCards(TerritoryCard t, String player, String gameId) throws GameException {
+		return db.getAllComboCards(t, player, gameId);
 	}
 	
 
