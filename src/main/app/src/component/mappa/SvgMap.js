@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Container, Alert } from "react-bootstrap";
+import { Container, Alert, Tooltip, OverlayTrigger } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 
 function SvgMap({ paths, gioco, onTerritoryClick, truppeAssegnate }) {
+const handleTerritoryClick = (e, territory, action) => {
+    e.preventDefault(); // Questo impedisce la comparsa del menu contestuale del browser
+    
+    // Chiama direttamente onTerritoryClick con l'azione specifica
+    onTerritoryClick(territory, action);
+};
   const [myTerritories, setMyTerritories] = useState([]);
   const [myColor, setMyColor] = useState("");
   const [objective, setObjective] = useState("");
@@ -24,14 +30,20 @@ function SvgMap({ paths, gioco, onTerritoryClick, truppeAssegnate }) {
     }
 
     setObjective(gioco.deckObjective.cards[0].objective);
-    truppeAssegnate.map;
+
     // Debugging logs
     console.log("ID del giocatore corrente:", nickname);
     console.log(
       "Giocatori nella partita:",
       gioco.players.map((p) => p.userName)
     );
-  }, [gioco, nickname]);
+  }, [gioco, nickname, myColor]);
+  
+  const renderTooltip = (props, name) => (
+    <Tooltip id="button-tooltip" {...props}>
+      {`${name}: ${truppeAssegnate[name] || 0} truppe`}
+    </Tooltip>
+  );
 
   return (
     <Container>
@@ -48,17 +60,23 @@ function SvgMap({ paths, gioco, onTerritoryClick, truppeAssegnate }) {
           const isTerritoryOwned = myTerritories.includes(name);
           const fillColor = isTerritoryOwned ? myColor : "grey";
           return (
-            <path
+			   <OverlayTrigger
               key={index}
+              placement="top"
+              overlay={(props) => renderTooltip(props, name)}
+            >
+            <path
               id={name}
               d={d}
               stroke="black"
               fill={fillColor} // Usa il colore specifico del giocatore
               opacity="0.5"
-              onClick={() => isTerritoryOwned && onTerritoryClick(name)}
+              onClick={(e) => isTerritoryOwned && handleTerritoryClick(e, name, 'add')}
+               onContextMenu={(e) => isTerritoryOwned && handleTerritoryClick(e, name, 'remove')}
             >
-              <title>{`${name}: ${truppe} `}</title>
+              <title>{`${name}: ${truppeAssegnate[name] || 0} truppe`}</title>
             </path>
+            </OverlayTrigger>
           );
         })}
       </svg>
