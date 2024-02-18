@@ -6,6 +6,7 @@ import SetupStateMap from "../component/mappa/SetupStateMap";
 function MappaPage() {
   const { idPartita } = useParams(); // Ottieni l'idPartita dall'URL
   const location = useLocation(); // Accedi allo state di navigazione
+  console.log("location partita", location.state?.partita);
 
   return <Mappa idPartita={idPartita} partita={location.state?.partita} />;
 }
@@ -14,45 +15,55 @@ class Mappa extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      statoPartita: null,
-      giocatori: [],
+      partita: props.partita,
+      nickname: null,
     };
 
     this.updatePartita = this.updatePartita.bind(this);
   }
 
   componentDidMount() {
+    const url = window.location.href;
+    const nickname = url.split("/").pop();
+    this.setState({ nickname: nickname });
     PartitaObserverSingleton.addListener(this);
-
-    console.log("props partita", this.props.partita);
-    if (this.props.partita) {
-      this.updatePartita(this.props.partita);
-    }
   }
 
   updatePartita(partita) {
-    console.log("stato partita", partita);
-    if (partita && partita.state && partita.players) {
+    console.log("Partita update", partita);
+    if (partita) {
       this.setState({
-        statoPartita: partita.state.type,
-        giocatori: partita.players,
+        partita: partita,
       });
     }
   }
 
-  render() {
-    const { statoPartita, giocatori } = this.state;
+  renderSetUpState() {
+    const partita = this.state.partita;
+    console.log("partita", partita);
+    console.log("partita.state", partita.state.type);
+    if (partita && partita.state.type === "SetupState") {
+      console.log("Stp per andare all component");
+      return (
+        <SetupStateMap
+          giocatori={partita.players}
+          idPlayer={this.state.nickname}
+          game={partita}
+        />
+      );
+    }
+    return null;
+  }
 
+  render() {
+    const partita = this.state.partita;
     return (
       <div>
         <h1 className="h1">Prova il nuovo Gioco di Risiko</h1>
-        <p>Stato partita: {statoPartita}</p>
-        {statoPartita === "SetUpState" && (
-          <div>Qua componente set up state</div>
-        )}
+        <p>Stato partita: {partita.state.type}</p>
         <div>
           <h2>Informazioni Giocatori:</h2>
-          {giocatori
+          {partita.players
             .filter((player) => player.userName !== null)
             .map((player, index) => (
               <div key={index}>
@@ -62,8 +73,7 @@ class Mappa extends React.Component {
               </div>
             ))}
         </div>
-        {console.log("giocatori", giocatori)}
-        <SetupStateMap props={giocatori} />
+        {this.renderSetUpState()}
       </div>
     );
   }

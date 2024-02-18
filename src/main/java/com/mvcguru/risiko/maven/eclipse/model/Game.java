@@ -3,6 +3,7 @@ package com.mvcguru.risiko.maven.eclipse.model;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.core.io.ClassPathResource;
@@ -11,22 +12,18 @@ import org.springframework.util.FileCopyUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mvcguru.risiko.maven.eclipse.actions.ActionPlayer;
 import com.mvcguru.risiko.maven.eclipse.controller.MessageBrokerSingleton;
+import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
-import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration.GameMode;
-import com.mvcguru.risiko.maven.eclipse.model.card.ObjectiveCard;
-import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
-import com.mvcguru.risiko.maven.eclipse.model.deck.IDeck;
-import com.mvcguru.risiko.maven.eclipse.model.deck.ObjectivesDeck;
-import com.mvcguru.risiko.maven.eclipse.model.deck.TerritoriesDeck;
+import com.mvcguru.risiko.maven.eclipse.exception.GameException;
+import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 import com.mvcguru.risiko.maven.eclipse.states.PlayTurnState;
-
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 public class Game extends IGame {
 	
@@ -46,7 +43,7 @@ public class Game extends IGame {
     }
 
 	@Override
-	public void onActionPlayer(ActionPlayer action) throws FullGameException, IOException {
+	public void onActionPlayer(ActionPlayer action) throws FullGameException, GameException, DatabaseConnectionException, UserException, IOException {
 		action.accept(state);
 		broadcast();
 	}
@@ -70,49 +67,8 @@ public class Game extends IGame {
         return null;
     }
 
-	public IDeck createTerritoryDeck(GameConfiguration configuration) throws IOException {
-		
-		ObjectMapper mapper = new ObjectMapper();
-        byte[] data = FileCopyUtils.copyToByteArray(new ClassPathResource("territories_difficult.json").getInputStream());
-        String json = new String(data, StandardCharsets.UTF_8);
-        TerritoryCard[] territoriesCard = mapper.readValue(json, TerritoryCard[].class);
-        
-        IDeck deck = new TerritoriesDeck();
-		for (TerritoryCard territoryCard : territoriesCard) {
-	            deck.insertCard(territoryCard);
-			}
-		return deck;
-        }
-
-	public IDeck createObjectiveDeck(GameConfiguration configuration) throws IOException {
-		GameMode mode = configuration.getMode();
-		ObjectMapper mapper = new ObjectMapper();
-		byte[] data = null;
-		switch (mode) {
-			case EASY:
-				data = FileCopyUtils.copyToByteArray(new ClassPathResource("objectives_easy.json").getInputStream());
-				break;
-			case MEDIUM:
-				data = FileCopyUtils.copyToByteArray(new ClassPathResource("objectives_medium.json").getInputStream());
-				break;
-            case HARD:
-				data = FileCopyUtils.copyToByteArray(new ClassPathResource("objectives_hard.json").getInputStream());
-				break;
-			default:
-				LOGGER.error("Game mode not found");
-				break;
-		}
-        
-        String json = new String(data, StandardCharsets.UTF_8);
-        LOGGER.info("json: {}", json);
-        ObjectiveCard[] objectives = mapper.readValue(json, ObjectiveCard[].class);
-        IDeck deck = new ObjectivesDeck();
-		for (ObjectiveCard o : objectives) {
-            deck.insertCard(o);
-        }
-		return deck;
-	}
 	
+	@Override
 	public void startGame() {
 		currentTurn = Turn.builder()
                 .player(players.get(0))
@@ -132,21 +88,20 @@ public class Game extends IGame {
         broadcast();
 	}	
 	
-	
-	
 	public List<Continent> parsingContinent() throws IOException {
 		ObjectMapper mapper = new ObjectMapper();
         byte[] data = FileCopyUtils.copyToByteArray(new ClassPathResource("continent.json").getInputStream());
         String json = new String(data, StandardCharsets.UTF_8);
         Continent[] continents = mapper.readValue(json, Continent[].class);
-        
-        List<Continent> continent = new ArrayList<Continent>();
-		for (Continent c : continents) {
-			continent.add(c);
+        return new ArrayList<>(Arrays.asList(continents));
+	}
+	
+	public List<Territory> findTerritoriesByName(List<String> territoriesName) {
+		List<Territory> territories = new ArrayList<>();
+		for (String name : territoriesName) {
+			
 		}
-		
-		return continent;
-		
+		return territories;
 	}
 	
 }

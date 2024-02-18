@@ -11,7 +11,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.mvcguru.risiko.maven.eclipse.actions.GameEntry;
+import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
+import com.mvcguru.risiko.maven.eclipse.exception.GameException;
+import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.Game;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration;
 import com.mvcguru.risiko.maven.eclipse.model.Territory;
@@ -54,7 +57,7 @@ class LobbyStateTest {
     }
 
     @Test
-    void testOnActionPlayerDoesNotTransitionBeforeMaxPlayers() throws FullGameException {
+    void testOnActionPlayerDoesNotTransitionBeforeMaxPlayers() throws FullGameException, GameException, DatabaseConnectionException, UserException {
         GameEntry gameEntry = GameEntry.builder().player(Player.builder().userName("player1").territories(new ArrayList<Territory>()).build()).build();
         lobbyState.onActionPlayer(gameEntry);
         

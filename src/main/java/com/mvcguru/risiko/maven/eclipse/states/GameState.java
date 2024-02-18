@@ -11,8 +11,10 @@ import com.mvcguru.risiko.maven.eclipse.actions.ComboRequest;
 import com.mvcguru.risiko.maven.eclipse.actions.GameEntry;
 import com.mvcguru.risiko.maven.eclipse.actions.GameExit;
 import com.mvcguru.risiko.maven.eclipse.actions.TerritorySetup;
+import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
-
+import com.mvcguru.risiko.maven.eclipse.exception.GameException;
+import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
@@ -32,16 +34,15 @@ public abstract class GameState implements Serializable {
     
     public void playTurn() {  }
     
-    public void onActionPlayer(GameEntry gameEntry) throws FullGameException{ }
+    public void onActionPlayer(GameEntry gameEntry) throws FullGameException, GameException, DatabaseConnectionException, UserException{ }
     
     public void onActionPlayer(GameExit gameExit) { }
 
-	public void onActionPlayer(TerritorySetup territorySetup) { }
+	public void onActionPlayer(TerritorySetup territorySetup) throws GameException, DatabaseConnectionException, UserException, FullGameException, IOException { }
 	
 	public void onActionPlayer(ComboRequest comboRequest) throws IOException { }
 	
 	public void onActionPlayer(AttackRequest attackRequest) {}
 
-	public void setUpGame() {}
-	
+	public void setUpGame() throws GameException, DatabaseConnectionException, UserException {}
 }

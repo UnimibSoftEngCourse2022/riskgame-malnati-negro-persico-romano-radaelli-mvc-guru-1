@@ -30,17 +30,11 @@ class LobbyClass extends React.Component {
     const query = new URLSearchParams(location.search);
     const idPartita = params.idPartita;
     const nickname = query.get("nickname");
-
-    console.log(
-      `Componente montato. Nickname: ${nickname}, ID Partita: ${idPartita}`
-    );
-
     this.setState({ idPartita, nickname });
     PartitaObserverSingleton.addListener(this);
   }
 
   updatePartita(partita) {
-    console.log("update partita in lobby", partita);
     this.setState({ partita });
     const utentiConnessi = partita.players
       .filter((player) => player.userName !== null)
@@ -50,13 +44,8 @@ class LobbyClass extends React.Component {
     const utentiTotali = partita.configuration.players;
     this.setState({ utentiTotali });
 
-    console.log("itenti totali", utentiTotali);
-    console.log("utentiConnessi", utentiConnessi);
-
     if (utentiConnessi.length === utentiTotali) {
-      console.log("deento navigazione");
-      console.log("deento navigazione", this.state.nickname);
-      console.log("deento partita navigazione", partita);
+		console.log("Partita che sto passando alla mappa: ", partita);
       this.props.navigate(`/mappa/${this.state.nickname}`, {
         state: { partita },
       });
@@ -76,7 +65,6 @@ class LobbyClass extends React.Component {
 
   render() {
     const { idPartita, utentiConnessi, utentiTotali } = this.state;
-    console.log("utentiConnessi in Lobby", utentiConnessi);
     return (
       <Container>
         <h2>Lobby: {idPartita}</h2>

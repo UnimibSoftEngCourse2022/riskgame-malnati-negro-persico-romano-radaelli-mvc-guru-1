@@ -25,13 +25,18 @@ public interface DataDao {
     List<IGame> getAllGames() throws GameException, IOException;
 	//PlayerDao
 	void insertPlayer(Player player) throws GameException;
+	void updateSetUpCompleted(String username, boolean setUpCompleted) throws GameException;
+	void updatePlayerColor(String username, Player.PlayerColor color) throws GameException;
 	void deletePlayer(String username) throws GameException;
 	List<Player> getPlayerInGame(String gameId) throws GameException;
 	void createPlayerTable() throws GameException;
 	//TerritoryDao
-	void insertTerritory(Territory territory) throws GameException;
+	void insertTerritory(Territory territory, String gameId) throws GameException;
 	void deleteTerritory(String name) throws GameException;
 	void createTerritoryTable() throws GameException;
 	void updateTerritoryOwner(String territoryName, Player player) throws GameException;
+	void updateTerritoryArmies(String territoryName, int armies) throws GameException;
+	List<Territory> getAllTerritories(String player) throws GameException;
+	void closeConnection();
 
 }

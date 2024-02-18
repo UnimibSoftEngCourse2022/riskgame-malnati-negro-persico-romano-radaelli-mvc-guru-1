@@ -1,8 +1,7 @@
 package com.mvcguru.risiko.maven.eclipse.model;
 
+import java.io.Serializable;
 import java.util.List;
-import com.mvcguru.risiko.maven.eclipse.model.player.Player;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -10,7 +9,7 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @NoArgsConstructor
-public class Territory {
+public class Territory implements Serializable{
 	
 	private int continent;
 	
@@ -18,7 +17,7 @@ public class Territory {
 	
 	private int armies;
 	
-	private String IdOwner;
+	private String idOwner;
 	
 	private List<Territory> neighbors;
 	

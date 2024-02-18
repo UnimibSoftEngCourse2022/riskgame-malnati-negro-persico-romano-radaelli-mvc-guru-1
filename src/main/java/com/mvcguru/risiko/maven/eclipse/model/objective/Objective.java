@@ -1,6 +1,5 @@
 package com.mvcguru.risiko.maven.eclipse.model.objective;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mvcguru.risiko.maven.eclipse.model.Continent;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player.PlayerColor;
@@ -12,11 +11,15 @@ public abstract class Objective {
 	
 	protected String description;
 	
-	protected int n_territory;
+	protected int nTerritory;
 	
-	protected Continent continent1, continent2, continent3;
+	protected Continent continent1;
 	
-	protected PlayerColor col_army ;
+	protected Continent continent2;
+	
+	protected Continent continent3;
+	
+	protected PlayerColor colorArmy ;
 
 	protected boolean isComplete;
 	

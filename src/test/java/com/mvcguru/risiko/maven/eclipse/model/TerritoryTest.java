@@ -47,7 +47,7 @@ class TerritoryTest {
                                         .continent(2)
                                         .name("AnotherTerritory")
                                         .armies(10)
-                                        .IdOwner("idOwner")
+                                        .idOwner("idOwner")
                                         .neighbors(neighbors)
                                         .build();
 

@@ -1,8 +1,7 @@
 package com.mvcguru.risiko.maven.eclipse.actions;
 
 import java.io.IOException;
-
-import com.mvcguru.risiko.maven.eclipse.controller.bodyRequest.AttackRequestBody;
+import com.mvcguru.risiko.maven.eclipse.controller.body_request.AttackRequestBody;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
 import com.mvcguru.risiko.maven.eclipse.states.GameState;
 

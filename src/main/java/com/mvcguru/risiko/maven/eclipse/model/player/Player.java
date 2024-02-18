@@ -1,5 +1,6 @@
 package com.mvcguru.risiko.maven.eclipse.model.player;
 
+import java.io.Serializable;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
@@ -15,7 +16,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Player {	
+public class Player implements Serializable{	
 	
 	private String userName;
 	

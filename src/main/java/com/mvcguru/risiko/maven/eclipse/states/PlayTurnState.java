@@ -1,13 +1,13 @@
 package com.mvcguru.risiko.maven.eclipse.states;
 
+
 import java.io.IOException;
-import java.util.List;
 
 import com.mvcguru.risiko.maven.eclipse.actions.AttackRequest;
 import com.mvcguru.risiko.maven.eclipse.actions.ComboRequest;
 import com.mvcguru.risiko.maven.eclipse.actions.TerritorySetup;
-import com.mvcguru.risiko.maven.eclipse.controller.bodyRequest.DefenderNoticeBody;
-import com.mvcguru.risiko.maven.eclipse.model.Territory;
+import com.mvcguru.risiko.maven.eclipse.controller.body_request.DefenderNoticeBody;
+import com.mvcguru.risiko.maven.eclipse.controller.body_request.TerritoryBody;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +20,7 @@ public class PlayTurnState extends GameState{
 	
 	AttackRequest attackRequest;
 	
+	@Override
 	public void onActionPlayer(ComboRequest comboRequest) throws IOException {
 		game.getCurrentTurn().numberOfTroopsCalculation(
 				game.findPlayerByUsername(
@@ -27,10 +28,14 @@ public class PlayTurnState extends GameState{
 				,comboRequest.getComboRequestBody().getComboCards());
 	} 
 	
+	@Override
 	public void onActionPlayer(TerritorySetup action) {
-		game.getCurrentTurn().getPlayer().setTerritories(action.getSetUpBody().getTerritories());
+		for(TerritoryBody territory : action.getSetUpBody().getTerritories()) {
+            game.getCurrentTurn().getPlayer().getTerritoryByName(territory.getName()).setArmies(territory.getTroops());
+        }
 	}
 	
+	@Override
 	public void onActionPlayer(AttackRequest attackRequest) {
 		this.attackRequest = attackRequest;
 		DefenderNoticeBody defenderNoticeBody = DefenderNoticeBody.builder()
