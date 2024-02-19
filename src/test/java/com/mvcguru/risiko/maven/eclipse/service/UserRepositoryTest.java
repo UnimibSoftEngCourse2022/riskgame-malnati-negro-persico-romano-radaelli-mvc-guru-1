@@ -35,11 +35,11 @@ class UserRepositoryTest {
 	}
 
     @Test
-    void testRegisterUser() throws UserException {
+    void testinsertUser() throws UserException, GameException {
         User user = new User("testUser", "password123");
-        doNothing().when(dataDao).registerUser(any(User.class));
-        userRepository.registerUser(user);
-        verify(dataDao, times(1)).registerUser(user);
+        doNothing().when(dataDao).insertUser(any(User.class));
+        userRepository.insertUser(user);
+        verify(dataDao, times(1)).insertUser(user);
     }
 
     @Test

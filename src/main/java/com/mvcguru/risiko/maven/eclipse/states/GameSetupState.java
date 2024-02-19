@@ -109,7 +109,7 @@ public class GameSetupState extends GameState {
 		Collections.shuffle(colors);
 		for (int i = 0; i < players.size(); i++) {
 			players.get(i).setColor(colors.get(i));
-			GameRepository.getInstance().updatePlayerColor(players.get(i).getUserName(), players.get(i).getColor());
+			GameRepository.getInstance().updatePlayerColor(players.get(i));
 		}
 		
 	}

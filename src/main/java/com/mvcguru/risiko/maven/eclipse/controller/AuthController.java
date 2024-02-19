@@ -33,7 +33,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<Void> registerUser(@RequestBody User user){
     	try {
-    		UserRepository.getInstance().registerUser(user);
+    		UserRepository.getInstance().insertUser(user);
     	}catch(Exception e) {
     		LOGGER.error("Errore nella registrazione", e);
     		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
