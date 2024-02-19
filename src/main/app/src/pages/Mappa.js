@@ -113,7 +113,7 @@ class Mappa extends React.Component {
             </div>
           )}
 
-        {this.state.partita.state.type === "PlayTurnState" &&
+        {this.state.partita.state.type === "StartTurnState" &&
           this.renderStartTurnState()}
       </Container>
     );

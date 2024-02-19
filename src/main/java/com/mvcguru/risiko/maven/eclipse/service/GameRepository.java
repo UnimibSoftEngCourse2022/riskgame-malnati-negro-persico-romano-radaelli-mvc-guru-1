@@ -10,11 +10,13 @@ import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.model.Territory;
 import com.mvcguru.risiko.maven.eclipse.model.Turn;
+import com.mvcguru.risiko.maven.eclipse.model.card.ICard;
 import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 import com.mvcguru.risiko.maven.eclipse.service.database.DaoSQLiteImpl;
 import com.mvcguru.risiko.maven.eclipse.service.database.DataDao;
 import com.mvcguru.risiko.maven.eclipse.states.GameState;
+import com.mvcguru.risiko.maven.eclipse.model.deck.TerritoriesDeck;
 
 public class GameRepository {
 	private static GameRepository instance;
@@ -48,6 +50,7 @@ public class GameRepository {
 		for (Player p : lista) {  
 			territories = db.getAllTerritories(p.getUserName()); 
 			comboCards = db.getAllComboCards(p.getUserName(), gameId);
+			((TerritoriesDeck)game.getDeckTerritory()).getCards().removeAll(comboCards);
 			p.setTerritories(territories);
 			p.setComboCards(comboCards);
 			game.addPlayer(p); 
@@ -100,6 +103,10 @@ public class GameRepository {
 		db.updateTerritoryOwner(territoryName, player);
 	}
 	
+	public synchronized void updateObjective(String username, ICard objective) throws GameException {
+		db.updatePlayerObjective(username, objective);
+	}
+	
 	public synchronized void updateTerritoryArmies(String territoryName, int armies) throws GameException {
 		db.updateTerritoryArmies(territoryName, armies);
 	}
@@ -135,6 +142,7 @@ public class GameRepository {
 	public synchronized List<TerritoryCard> getAllComboCards(String player, String gameId) throws GameException {
 		return db.getAllComboCards(player, gameId);
 	}
+	
 	
 
 	

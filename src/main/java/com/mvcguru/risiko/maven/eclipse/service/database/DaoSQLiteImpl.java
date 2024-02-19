@@ -7,6 +7,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import com.mvcguru.risiko.maven.eclipse.model.card.ICard;
+import com.mvcguru.risiko.maven.eclipse.model.card.ObjectiveCard;
 import java.util.List;
 import com.mvcguru.risiko.maven.eclipse.states.*;
 import org.slf4j.Logger;
@@ -175,7 +178,7 @@ public class DaoSQLiteImpl implements DataDao {
     @Override
     public void createTurnTable() throws GameException {
         String sql = "CREATE TABLE IF NOT EXISTS turns (" +
-                     "index INTEGER," +
+                     "indexTurn INTEGER," +
                      "player TEXT," +
                      "gameId TEXT," +
                      "numberOfTroops INTEGER," +
@@ -183,7 +186,7 @@ public class DaoSQLiteImpl implements DataDao {
                      "defenderTerritory TEXT," +
                      "FOREIGN KEY(player) REFERENCES players(username)," +
                      "FOREIGN KEY(gameId) REFERENCES games(gameId)," +
-                     "PRIMARY KEY (index, player, gameId)" +
+                     "PRIMARY KEY (indexTurn, gameId)" +
                      ");";
         PreparedStatement pstmt = null;
         try {
@@ -248,7 +251,6 @@ public class DaoSQLiteImpl implements DataDao {
             throw new UserException("L'utente non può essere null", new SQLException());
         }
 		if (getUserByUsernameAndPassword(user.getUsername(), user.getPassword()) != null) {
-			LOGGER.debug("Sono qua");
 			throw new UserException("L'utente esiste già", new SQLException());
 		}
         String sql = "INSERT INTO users(username, password) VALUES(?, ?)";
@@ -302,9 +304,7 @@ public class DaoSQLiteImpl implements DataDao {
 		String mode = game.getConfiguration().getMode().name();
 		int numberOfPlayers = game.getConfiguration().getNumberOfPlayers();
 		String idMap = game.getConfiguration().getIdMap();
-		String state = game.getState().getClass().getSimpleName();
-		LOGGER.info("Stato: {}", game.getState().getClass().getSimpleName());
-		
+		String state = game.getState().getClass().getSimpleName();		
         String sql = "INSERT INTO games (gameId, mode, number_of_players, idMap, state) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement pstmt = null;
         try {
@@ -360,13 +360,10 @@ public class DaoSQLiteImpl implements DataDao {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         List<IGame> games = new ArrayList<>();
-        LOGGER.info("prima di try");
         try {
             pstmt = connection.prepareStatement(sql);
             rs = pstmt.executeQuery();
-            LOGGER.info("Dopo query");
             while (rs.next()) {
-            	LOGGER.info("Prima extract");
                 IGame game = extractGameFromResultSet(rs);
                 games.add(game);
             }
@@ -387,10 +384,8 @@ public class DaoSQLiteImpl implements DataDao {
 	        config.setIdMap(rs.getString("idMap"));
 	        
 	        newGame = FactoryGame.getInstance().createGame(config);
-	        LOGGER.info("Dopo factory" );
 	        newGame.setId(rs.getString("gameId"));
 	        String stateName = rs.getString("state");
-	        LOGGER.info("Stato: {}", stateName);
             switch (stateName) {
             case "GameSetupState":
                 newGame.setState(GameSetupState.builder().game(newGame).build());
@@ -405,7 +400,6 @@ public class DaoSQLiteImpl implements DataDao {
             	LOGGER.error("Stato non riconosciuto");
                 break;
             }
-            LOGGER.info("Stato Aggiornato {}", newGame.getState());
 			} catch (SQLException e) {throw new GameException("Errore durante il recupero di una partita", e);
 			}
         return newGame;
@@ -416,17 +410,16 @@ public class DaoSQLiteImpl implements DataDao {
 		String username = player.getUserName();
 		String gameId = player.getGameId();
 		String color = player.getColor().name();
-		String objective = player.getObjective().toString();
+		//String objective = ((ObjectiveCard)player.getObjective()).getObjective();
 		boolean setUpCompleted = player.isSetUpCompleted();
 		PreparedStatement pstmt = null;
-		String sql = "INSERT INTO players (username, gameId, color, objective, setUpCompleted) VALUES (?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO players (username, gameId, color, setUpCompleted) VALUES (?, ?, ?, ?)";
         try{
         	pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, username);
             pstmt.setString(2, gameId);
             pstmt.setString(3, color);
-            pstmt.setString(4, objective);
-            pstmt.setBoolean(5, setUpCompleted);
+            pstmt.setBoolean(4, setUpCompleted);
             pstmt.executeUpdate();
         } catch (SQLException e) {throw new GameException("Errore durante l'inserimento del giocatore.", e);
         }finally {
@@ -447,6 +440,26 @@ public class DaoSQLiteImpl implements DataDao {
 			}
 		} catch (SQLException e) {
 			throw new GameException("Errore durante l'aggiornamento del setup completato del giocatore.", e);
+		} finally {
+			closePreparedStatement(pstmt);
+		}
+	}
+	
+	public void updatePlayerObjective(String username, ICard objective) throws GameException {
+		String sql = "UPDATE players SET objective = ? WHERE username = ?";
+		PreparedStatement pstmt = null;
+		try {
+			LOGGER.info(((ObjectiveCard)objective).getObjective());
+			pstmt = connection.prepareStatement(sql);
+			pstmt.setString(1, ((ObjectiveCard)objective).getObjective());
+			pstmt.setString(2, username);
+			int updatedRows = pstmt.executeUpdate();
+			if (updatedRows == 0) {
+				LOGGER.error(
+						"Nessun giocatore aggiornato: potrebbe non esistere un giocatore con lo username specificato.");
+			}
+		} catch (SQLException e) {
+			throw new GameException("Errore durante l'aggiornamento dell'obiettivo del giocatore.", e);
 		} finally {
 			closePreparedStatement(pstmt);
 		}
@@ -485,7 +498,7 @@ public class DaoSQLiteImpl implements DataDao {
 
     public List<Player> getPlayerInGame(String gameId) throws GameException {
         List<Player> players = new ArrayList<>();
-        String sql = "SELECT username, gameId, color, setUpCompleted FROM players WHERE gameId = ?";
+        String sql = "SELECT username, gameId, color, objective, setUpCompleted FROM players WHERE gameId = ?";
         PreparedStatement pstmt = null;
         try{
         	pstmt = connection.prepareStatement(sql);
@@ -495,10 +508,13 @@ public class DaoSQLiteImpl implements DataDao {
                 	String username = rs.getString("username");
                 	String color = rs.getString("color");
                 	boolean setUpCompleted = rs.getBoolean("setUpCompleted");
+                	ICard objective = ObjectiveCard.builder().objective(rs.getString("objective")).build();
+                	LOGGER.info("Obiettivo: {}", objective);
                 	players.add(Player.builder()
                 			.userName(username)
                 			.gameId(gameId)
                 			.territories(new ArrayList<Territory>())
+                			.objective(objective)
                 			.color(Player.PlayerColor.valueOf(color))
                 		    .setUpCompleted(setUpCompleted).build());
                 }
@@ -622,7 +638,7 @@ public class DaoSQLiteImpl implements DataDao {
 		int numberOfTroops = turn.getNumberOfTroops();
 		String attackerTerritory = turn.getAttackerTerritory().getName();
 		String defenderTerritory = turn.getDefenderTerritory().getName();
-		String sql = "INSERT INTO turns (index, player, gameId, numberOfTroops, attackerTerritory, defenderTerritory) VALUES (?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO turns (indexTurn, player, gameId, numberOfTroops, attackerTerritory, defenderTerritory) VALUES (?, ?, ?, ?, ?, ?)";
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = connection.prepareStatement(sql);
@@ -642,7 +658,7 @@ public class DaoSQLiteImpl implements DataDao {
 
 	@Override
 	public void deleteTurn(Turn turn) throws GameException {
-		String sql = "DELETE FROM turns WHERE index = ? AND player = ? AND gameId = ?";
+		String sql = "DELETE FROM turns WHERE indexTurn = ? AND player = ? AND gameId = ?";
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = connection.prepareStatement(sql);
@@ -659,7 +675,7 @@ public class DaoSQLiteImpl implements DataDao {
 
 	@Override
 	public void updateTurnIndex(Turn turn, int index) throws GameException {
-		String sql = "UPDATE turns SET index = ? WHERE player = ? AND gameId = ?";
+		String sql = "UPDATE turns SET indexTurn = ? WHERE player = ? AND gameId = ?";
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = connection.prepareStatement(sql);
@@ -720,7 +736,7 @@ public class DaoSQLiteImpl implements DataDao {
 	
 	@Override
 	public void updateOwner(TerritoryCard t, String player, String gameId) throws GameException {
-		String territory = t.getTerritory().toString();
+		String territory = t.getTerritory().getName();
 		String sql = "UPDATE comboCards SET player = ? WHERE gameId = ? AND territory = ?";
 		PreparedStatement pstmt = null;
 		try {
@@ -765,7 +781,7 @@ public class DaoSQLiteImpl implements DataDao {
 
 	@Override
 	public Turn getLastTurnByGameId(String gameId) throws GameException {
-	    String sql = "SELECT * FROM turns WHERE gameId = ? ORDER BY index DESC LIMIT 1";
+	    String sql = "SELECT * FROM turns WHERE gameId = ? ORDER BY indexTurn DESC LIMIT 1";
 	    PreparedStatement pstmt = null;
 	    Turn turn = null;
 		try {

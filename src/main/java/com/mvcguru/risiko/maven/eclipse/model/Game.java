@@ -38,7 +38,6 @@ public class Game extends IGame {
             throw new FullGameException("Partita piena");
         }     
         players.add(g);
-        LOGGER.info("Aggiunta giocatore - giocatore aggiunto {}", g.getUserName());
         g.setGame(this);
     }
 

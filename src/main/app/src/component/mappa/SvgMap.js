@@ -32,7 +32,7 @@ function SvgMap({ paths, gioco, onTerritoryClick, truppeAssegnate }) {
     // Ora hai una mappa nomeTerritorio -> coloreGiocatore
     setTerritoryColorMap(territoryColorMap);
 
-    setObjective(gioco.deckObjective.cards[0].objective);
+    setObjective(player.objective.objective);
   }, [gioco, nickname, myColor]);
 
   const renderTooltip = (props, name) => (

@@ -48,6 +48,7 @@ public class GameController {
 		try {
 			lobbies = GameRepository.getInstance().getAllGames();
 		} catch (Exception e) {
+			LOGGER.error("Errore nel recupero delle partite", e);
 			return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(lobbies);

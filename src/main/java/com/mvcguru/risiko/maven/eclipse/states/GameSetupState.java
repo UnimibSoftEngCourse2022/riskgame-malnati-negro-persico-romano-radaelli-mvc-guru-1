@@ -74,14 +74,17 @@ public class GameSetupState extends GameState {
 		game.getDeckTerritory().insertCard(cardJolly2);
 	}
 
-	private void assignObjective(IDeck deckObjective) {
+	private void assignObjective(IDeck deckObjective) throws GameException, DatabaseConnectionException, UserException {
 		deckObjective.shuffle();
 		ICard card = null;
 		
 		for (Player player : game.getPlayers()) {
 			card = deckObjective.drawCard();
+			LOGGER.info("Carta obiettivo: {}", card);
 			player.setObjective(card);
+			GameRepository.getInstance().updateObjective(player.getUserName(), card);
 	        if(game.getConfiguration().getMode().name().equals("EASY")){
+	        	LOGGER.info("Modalità facile");
 	        	deckObjective.insertCard(card);
 	        }
 		}

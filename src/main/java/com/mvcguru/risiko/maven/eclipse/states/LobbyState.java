@@ -24,7 +24,6 @@ public class LobbyState extends GameState{
         game.addPlayer(gameEntry.getPlayer());        
         if (game.getPlayers().size() == game.getConfiguration().getNumberOfPlayers()) {
         	game.setState(GameSetupState.builder().game(game).build()); 
-        	LOGGER.info("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         	game.getState().setUpGame();
         	GameRepository.getInstance().updateState(game.getId(), game.getState());
         }
@@ -32,7 +31,6 @@ public class LobbyState extends GameState{
 	
 	@Override
 	public void onActionPlayer (GameExit gameExit) {
-		LOGGER.info("LobbyState: uscita giocatore - azione rilevata");
 		game.getPlayers().remove(gameExit.getPlayer());
 	}
 }
