@@ -86,30 +86,36 @@ class Mappa extends React.Component {
     return (
       <Container style={{ height: "100vh" }}>
         <p>Stato partita: {partita.state.type}</p>
-        <p style={{ color: colorPlayer }}>
-          Sei il giocatore: {this.state.nickname}
-        </p>
-        <div className="d-flex flew-row justify-content-center align-items-center">
-          <span>Il colore delle tue truppe è il: </span>
-          <div
-            style={{
-              backgroundColor: colorPlayer,
-              width: "15px",
-              height: "15px",
-            }}
-          ></div>
-        </div>
 
         <Container>
           {this.state.partita.state.type === "SetupState" &&
-            currentPlayer?.setUpCompleted === false &&
-            this.renderSetUpState()}
+            currentPlayer?.setUpCompleted === false && (
+              <div>
+                <p style={{ color: colorPlayer }}>
+                  Sei il giocatore: {this.state.nickname}
+                </p>
+                <div className="d-flex flew-row justify-content-center align-items-center">
+                  <span>Il colore delle tue truppe è il </span>
+                  <div
+                    style={{
+                      backgroundColor: colorPlayer,
+                      width: "15px",
+                      height: "15px",
+                      marginLeft: "3px",
+                    }}
+                  ></div>
+                </div>
+                {this.renderSetUpState()}
+              </div>
+            )}
         </Container>
 
         {this.state.partita.state.type === "SetupState" &&
           currentPlayer?.setUpCompleted === true && (
-            <div className="card">
-              <p className="text-body-secondary">..attendi altri giocatori..</p>
+            <div className="">
+              <p className="text-body-secondary fs-2">
+                ..attendi che finiscano anche gli altri giocatori..
+              </p>
             </div>
           )}
 

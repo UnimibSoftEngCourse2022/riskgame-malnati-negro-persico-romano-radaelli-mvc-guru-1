@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Form, Card, Carousel } from "react-bootstrap";
+import { Button, Form, Card, Carousel, Container } from "react-bootstrap";
 import AppController from "../application/AppController";
 import { withAuth } from "../auth/AuthContext";
 import { useNavigate, useParams } from "react-router-dom";
@@ -157,67 +157,62 @@ class NewPartita extends React.Component {
   };
 
   render() {
-    // const { user } = this.props;
     const { difficolta, nomeMappa, isLobbyCreated } = this.state;
     return (
-      <div className="container d-flex flex-column justify-content-center">
-        {/* <Container>
-          <span className="h3">
-            Benvenuto nella pagina partita,{" "}
-            {user.user ? user.user : "Utente Generico"}
-          </span>
-          <p>Crea una lobby oppure unisciti a una già esistente</p>
-        </Container> */}
-        <Card className="w-75">
-          {/* Form per creare una partita */}
-          <Form onSubmit={this.handleSubmit}>
-            <Form.Group className="mb-3">
-              <Form.Label>Difficoltà</Form.Label>
-              <Form.Control
-                as="select"
-                value={difficolta}
-                onChange={this.handleDifficolta}
-              >
-                <option value="">Seleziona un livello di difficoltà</option>
-                <option value="EASY">Facile</option>
-                <option value="MEDIUM">Medio</option>
-                <option value="HARD">Difficile</option>
-              </Form.Control>
-            </Form.Group>
-
-            {difficolta && (
+      <div
+        style={{ height: "100vh" }}
+        className="container d-flex flex-column justify-content-center align-itmes-center border"
+      >
+        <Container className="w-75">
+          <Card className="p-2">
+            {/* Form per creare una partita */}
+            <Form className="w-50" onSubmit={this.handleSubmit}>
               <Form.Group className="mb-3">
-                <Form.Label>Numero di Giocatori</Form.Label>
+                <Form.Label>Difficoltà</Form.Label>
                 <Form.Control
                   as="select"
-                  value={this.state.players}
-                  onChange={this.handlePlayersNumber}
+                  value={difficolta}
+                  onChange={this.handleDifficolta}
                 >
-                  <option value="">Seleziona il numero di giocatori</option>
-                  {this.renderLobbyOptions()}
+                  <option value="">Seleziona un livello di difficoltà</option>
+                  <option value="EASY">Facile</option>
+                  <option value="MEDIUM">Medio</option>
+                  <option value="HARD">Difficile</option>
                 </Form.Control>
               </Form.Group>
-            )}
 
-            <Form.Group className="mb-3">
-              <Form.Label>Nome Mappa</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Inserisci il nome della mappa"
-                value={nomeMappa}
-                onChange={this.handleNomeMappa}
-              />
-            </Form.Group>
+              {difficolta && (
+                <Form.Group className="mb-3">
+                  <Form.Label>Numero di Giocatori</Form.Label>
+                  <Form.Control
+                    as="select"
+                    value={this.state.players}
+                    onChange={this.handlePlayersNumber}
+                  >
+                    <option value="">Seleziona il numero di giocatori</option>
+                    {this.renderLobbyOptions()}
+                  </Form.Control>
+                </Form.Group>
+              )}
 
-            <Button variant="primary" type="submit">
-              Crea Lobby
-            </Button>
-          </Form>
-        </Card>
+              <Form.Group className="mb-3">
+                <Form.Label>Nome Mappa</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Inserisci il nome della mappa"
+                  value={nomeMappa}
+                  onChange={this.handleNomeMappa}
+                />
+              </Form.Group>
 
+              <Button variant="primary" type="submit">
+                Crea Lobby
+              </Button>
+            </Form>
+          </Card>
+        </Container>
         {isLobbyCreated && <p>{isLobbyCreated}</p>}
-
-        {this.renderCarousel()}
+        <Container className="w-75">{this.renderCarousel()}</Container>
       </div>
     );
   }
