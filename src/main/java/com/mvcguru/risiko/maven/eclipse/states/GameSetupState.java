@@ -102,7 +102,7 @@ public class GameSetupState extends GameState {
 	            playerIndex++;
 	        }
 	        card = (TerritoryCard) deckTerritory.drawCard();
-	    }
+	    }
 	}
 
 	private void assignColor(List<Player> players) throws GameException, DatabaseConnectionException, UserException {
