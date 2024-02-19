@@ -4,6 +4,7 @@ import PartitaObserverSingleton from "../application/PartitaObserverSingleton";
 import SetupStateMap from "../component/mappa/SetupStateMap";
 import StartTurnState from "../component/mappa/StartTurnState";
 import { Container } from "react-bootstrap";
+import BattleState from "../component/mappa/BattleState";
 
 function MappaPage() {
   const { idPartita } = useParams();
@@ -68,6 +69,18 @@ class Mappa extends React.Component {
     return null;
   }
 
+  renderBattleState() {
+    const partita = this.state.partita;
+    console.log("partita dentro battle state", partita);
+    console.log("partita.state", partita.state.type);
+
+    if (partita && partita.state.type === "BattleState") {
+      console.log("Sto per andare all component BattleState");
+      return <BattleState idPlayer={this.state.nickname} game={partita} />;
+    }
+    return null;
+  }
+
   render() {
     const partita = this.state.partita;
     const nickname = this.state.nickname;
@@ -84,35 +97,15 @@ class Mappa extends React.Component {
     const colorPlayer = currentPlayer ? currentPlayer.color : "red";
     console.log("color giocatore", colorPlayer);
     return (
-      <Container style={{ height: "100vh" }}>
-        <p>Stato partita: {partita.state.type}</p>
-
-        <Container>
-          {this.state.partita.state.type === "SetupState" &&
-            currentPlayer?.setUpCompleted === false && (
-              <div>
-                <p style={{ color: colorPlayer }}>
-                  Sei il giocatore: {this.state.nickname}
-                </p>
-                <div className="d-flex flew-row justify-content-center align-items-center">
-                  <span>Il colore delle tue truppe è il </span>
-                  <div
-                    style={{
-                      backgroundColor: colorPlayer,
-                      width: "15px",
-                      height: "15px",
-                      marginLeft: "3px",
-                    }}
-                  ></div>
-                </div>
-                {this.renderSetUpState()}
-              </div>
-            )}
-        </Container>
+      <div style={{ flexGrow: "1" , height: "100%" }} >
+        {this.state.partita.state.type === "SetupState" &&
+          currentPlayer?.setUpCompleted === false && (
+            <div>{this.renderSetUpState()}</div>
+          )}
 
         {this.state.partita.state.type === "SetupState" &&
           currentPlayer?.setUpCompleted === true && (
-            <div className="">
+            <div className="border">
               <p className="text-body-secondary fs-2">
                 ..attendi che finiscano anche gli altri giocatori..
               </p>
@@ -121,7 +114,10 @@ class Mappa extends React.Component {
 
         {this.state.partita.state.type === "StartTurnState" &&
           this.renderStartTurnState()}
-      </Container>
+
+        {this.state.partita.state.type === "BattleState" &&
+          this.renderBattleState()}
+      </div>
     );
   }
 }

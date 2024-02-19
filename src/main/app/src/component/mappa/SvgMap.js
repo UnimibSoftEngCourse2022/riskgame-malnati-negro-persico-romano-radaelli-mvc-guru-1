@@ -9,6 +9,7 @@ function SvgMap({ paths, gioco, onTerritoryClick, truppeAssegnate }) {
 
     onTerritoryClick(territory, action);
   };
+
   const [myTerritories, setMyTerritories] = useState([]);
   const [myColor, setMyColor] = useState("");
   const [objective, setObjective] = useState("");
@@ -17,7 +18,6 @@ function SvgMap({ paths, gioco, onTerritoryClick, truppeAssegnate }) {
   const url = window.location.href;
   const nickname = url.split("/").pop();
 
-  // qua set cordinate carri armati
   const findCoordinates = (nomeTerritorio) => {
     const territorio = coordinateTruppe.territori.find(
       (t) => t.nome === nomeTerritorio
@@ -54,7 +54,7 @@ function SvgMap({ paths, gioco, onTerritoryClick, truppeAssegnate }) {
   );
 
   return (
-    <Container className="w-100">
+    <div className="">
       {showAlert && (
         <Alert variant="info" onClose={handleCloseAlert} dismissible>
           Obiettivo del Gioco: {objective}
@@ -127,7 +127,7 @@ function SvgMap({ paths, gioco, onTerritoryClick, truppeAssegnate }) {
           })}
         </svg>
       </Container>
-    </Container>
+    </div>
   );
 }
 

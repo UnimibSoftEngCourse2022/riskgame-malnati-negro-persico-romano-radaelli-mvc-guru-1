@@ -4,6 +4,8 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import PartitaObserverSingleton from "../application/PartitaObserverSingleton";
 import { Button, Card, Container } from "react-bootstrap";
 
+import { IoMdPerson } from "react-icons/io";
+
 function LobbyPage() {
   const params = useParams();
   const navigate = useNavigate();
@@ -45,7 +47,7 @@ class LobbyClass extends React.Component {
     this.setState({ utentiTotali });
 
     if (utentiConnessi.length === utentiTotali) {
-		console.log("Partita che sto passando alla mappa: ", partita);
+      console.log("Partita che sto passando alla mappa: ", partita);
       this.props.navigate(`/mappa/${this.state.nickname}`, {
         state: { partita },
       });
@@ -64,24 +66,30 @@ class LobbyClass extends React.Component {
   };
 
   render() {
-    const { idPartita, utentiConnessi, utentiTotali } = this.state;
+    const { idPartita, utentiConnessi, utentiTotali, partita } = this.state;
+    console.log("partita il Lobby", partita);
     return (
-      <Container>
-        <h2>Lobby: {idPartita}</h2>
-        <p>utenti totali: {utentiTotali}</p>
-        <h3>Utenti Max permessi:</h3>
-        <Container>
+      <Container className="p-2">
+        <h2>Ti sei unito alla Lobby: {partita?.configuration.nomeMappa}</h2>
+        <p>utenti necessari a far inziare la partita: {utentiTotali}</p>
+        <h3>Utenti collegati:</h3>
+        <Container className="w-50 bg-secondary d-flex flex-row border rounded shadow">
           {Array.isArray(utentiConnessi) && utentiConnessi.length > 0 ? (
             utentiConnessi.map((utente, index) => (
-              <Card className="text-dark w-50" key={index}>
+              <Card className="text-dark w-25 m-2" key={index}>
+                <Card.Header>
+                  <IoMdPerson style={{ color: "#000000", fontSize: "60px" }} />
+                </Card.Header>
                 <Card.Body>{utente}</Card.Body>
               </Card>
             ))
           ) : (
             <p>Al momento non c'è nessun utente connesso</p>
           )}
-          <Button onClick={this.esciDallaLobby}>Esci dalla Lobby</Button>
         </Container>
+        <Button className="mt-3" onClick={this.esciDallaLobby}>
+          Esci dalla Lobby
+        </Button>
       </Container>
     );
   }
