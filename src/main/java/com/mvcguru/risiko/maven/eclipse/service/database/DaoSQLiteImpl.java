@@ -141,22 +141,26 @@ public class DaoSQLiteImpl implements DataDao {
                       game.getConfiguration().getIdMap(), game.getState().getClass().getSimpleName());
     }
 
+    @Override
     public void insertPlayer(Player player) throws GameException {
         executeInsert("INSERT INTO players (username, gameId, color, setUpCompleted) VALUES (?, ?, ?, ?)",
                       player.getUserName(), player.getGameId(), player.getColor().name(), player.isSetUpCompleted());
     }
 
+    @Override
     public void insertTerritory(Territory territory, String gameId) throws GameException {
         executeInsert("INSERT INTO territories (name, player, gameId, continent, armies, svgPath) VALUES (?, ?, ?, ?, ?, ?)",
                       territory.getName(), territory.getIdOwner(), gameId, territory.getContinent(), territory.getArmies(), territory.getSvgPath());
     }
 
+    @Override
     public void insertTurn(Turn turn) throws GameException {
         executeInsert("INSERT INTO turns (indexTurn, player, gameId, numberOfTroops, attackerTerritory, defenderTerritory) VALUES (?, ?, ?, ?, ?, ?)",
                       turn.getIndexTurn(), turn.getPlayer().getUserName(), turn.getPlayer().getGameId(), turn.getNumberOfTroops(),
                       turn.getAttackerTerritory().getName(), turn.getDefenderTerritory().getName());
     }
 
+    @Override
     public void insertComboCard(TerritoryCard t, Player owner, String gameId) throws GameException {
         executeInsert("INSERT INTO comboCards (player, gameId, territory, symbol) VALUES (?, ?, ?, ?)",
                       owner.getUserName(), gameId, t.getTerritory().getName(), t.getSymbol().name());
@@ -230,6 +234,7 @@ public class DaoSQLiteImpl implements DataDao {
         }
     }
     
+    @Override
     public List<Player> getPlayerInGame(String gameId) throws GameException {
         List<Player> players = new ArrayList<>();
         String sql = "SELECT username, gameId, color, objective, setUpCompleted FROM players WHERE gameId = ?";
@@ -260,6 +265,7 @@ public class DaoSQLiteImpl implements DataDao {
         return players;
     }
     
+    @Override
     public List<Territory> getAllTerritories(String player) throws GameException {
 		String sql = "SELECT * FROM territories WHERE player = ?";
 		PreparedStatement pstmt = null;
@@ -370,26 +376,31 @@ public class DaoSQLiteImpl implements DataDao {
         executeUpdate(sql, newState.getClass().getSimpleName(), gameId);
     }
     
+    @Override
     public void updateSetUpCompleted(String username, boolean setUpCompleted) throws GameException {
         String sql = "UPDATE players SET setUpCompleted = ? WHERE username = ?";
         executeUpdate(sql, setUpCompleted, username);
     }
 
+    @Override
     public void updatePlayerObjective(String username, ICard objective) throws GameException {
         String sql = "UPDATE players SET objective = ? WHERE username = ?";
         executeUpdate(sql, ((ObjectiveCard)objective).getObjective(), username);
     }
 
+    @Override
     public void updatePlayerColor(Player player) throws GameException {
         String sql = "UPDATE players SET color = ? WHERE username = ?";
         executeUpdate(sql, player.getColor().name(), player.getUserName());
     }
 
+    @Override
     public void updateTerritoryOwner(String territoryName, Player player) throws GameException {
         String sql = "UPDATE territories SET player = ? WHERE name = ?";
         executeUpdate(sql, player.getUserName(), territoryName);
     }
 
+    @Override
     public void updateTerritoryArmies(String territoryName, int troops) throws GameException {
         String sql = "UPDATE territories SET armies = ? WHERE name = ?";
         executeUpdate(sql, troops, territoryName);
@@ -410,98 +421,57 @@ public class DaoSQLiteImpl implements DataDao {
     // --------------------------------------------------------
     // ------------------------ DELETE ------------------------
     // --------------------------------------------------------
+    private void executeDelete(String sql, Object... params) {
+        PreparedStatement pstmt = null;
+        try {
+        	pstmt = connection.prepareStatement(sql);
+            for (int i = 0; i < params.length; i++) {
+                pstmt.setObject(i + 1, params[i]);
+            }
+            pstmt.executeUpdate();
+        } catch (SQLException e) {LOGGER.error("Errore durante l'eliminazione", e);
+        } finally {
+            closePreparedStatement(pstmt);
+        }
+    }
 
     @Override
     public void deleteUser(User user) throws UserException {
         String sql = "DELETE FROM users WHERE username = ?";
-        PreparedStatement pstmt = null;
-        try {
-            pstmt = prepareStatement(sql, user.getUsername());
-            pstmt.executeUpdate();
-        } catch (SQLException e) {throw new UserException("Errore durante l'eliminazione dell'utente.", e);
-        } finally {
-            closePreparedStatement(pstmt);
-        }
+        executeDelete(sql, user.getUsername());
     }
     
-	@Override
+    @Override
     public void deleteGame(IGame game) throws GameException {
         String sql = "DELETE FROM games WHERE gameId = ?";
-        PreparedStatement pstmt = null;
-        try {
-            pstmt = connection.prepareStatement(sql);
-            pstmt.setString(1, game.getId());
-            pstmt.executeUpdate();
-        } catch (SQLException e) {throw new GameException("Errore durante l'eliminazione del gioco", e);
-        } finally {
-            closePreparedStatement(pstmt);
-        }
+        executeDelete(sql, game.getId());
     }
 
+    @Override
     public void deletePlayer(String username) throws GameException {
         String sql = "DELETE FROM players WHERE username = ?";
-        PreparedStatement pstmt = null;
-        try  {
-        	pstmt = connection.prepareStatement(sql);
-            pstmt.setString(1, username);
-            pstmt.executeUpdate();
-        } catch (SQLException e) {throw new GameException("Errore durante l'eliminazione del giocatore.", e);
-        }finally {
-            closePreparedStatement(pstmt);
-        }
+        executeDelete(sql, username);
     }
-    
+
+    @Override
     public void deleteTerritory(String name) throws GameException {
         String sql = "DELETE FROM territories WHERE name = ?";
-        PreparedStatement pstmt = null;
-        try {
-        	pstmt = prepareStatement(sql);
-            pstmt.setString(1, name);
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new GameException("Errore durante l'eliminazione del territorio.", e);
-        }finally {
-            closePreparedStatement(pstmt);
-        }
+        executeDelete(sql, name);
     }
-    
-	@Override
-	public void deleteTurn(Turn turn) throws GameException {
-		String sql = "DELETE FROM turns WHERE indexTurn = ? AND player = ? AND gameId = ?";
-		PreparedStatement pstmt = null;
-		try {
-			pstmt = connection.prepareStatement(sql);
-			pstmt.setInt(1, turn.getIndexTurn());
-			pstmt.setString(2, turn.getPlayer().getUserName());
-			pstmt.setString(3, turn.getPlayer().getGameId());
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			throw new GameException("Errore durante l'eliminazione del turno.", e);
-		} finally {
-			closePreparedStatement(pstmt);
-		}
-	}
 
-	@Override
-	public void deleteComboCard(TerritoryCard t, Player owner, String gameId) throws GameException {
-		String territoryComboCard = t.getTerritory().getName();
-		String symbolComboCard = t.getSymbol().name();
-		String sqlComboCard = "DELETE FROM comboCards WHERE player = ? AND gameId = ? AND territory = ? AND symbol = ?";
-		PreparedStatement pstmt = null;
-		try {
-			pstmt = connection.prepareStatement(sqlComboCard);
-			pstmt.setString(1, owner.getUserName());
-			pstmt.setString(2, gameId);
-			pstmt.setString(3, territoryComboCard);
-			pstmt.setString(4, symbolComboCard);
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			throw new GameException("Errore durante l'eliminazione della carta combo.", e);
-		} finally {
-			closePreparedStatement(pstmt);
-		}
-	}
-	
+    @Override
+    public void deleteTurn(Turn turn) throws GameException {
+        String sql = "DELETE FROM turns WHERE indexTurn = ? AND player = ? AND gameId = ?";
+        executeDelete(sql, turn.getIndexTurn(), turn.getPlayer().getUserName(), turn.getPlayer().getGameId());
+    }
+
+    @Override
+    public void deleteComboCard(TerritoryCard t, Player owner, String gameId) throws GameException {
+        String sql = "DELETE FROM comboCards WHERE player = ? AND gameId = ? AND territory = ? AND symbol = ?";
+        executeDelete(sql, owner.getUserName(), gameId, t.getTerritory().getName(), t.getSymbol().name());
+    }
+
+	// --------------------------------------------------------
 	private IGame extractGameFromResultSet(ResultSet rs) throws GameException, IOException{
 		IGame newGame = null;
 		GameConfiguration config = GameConfiguration.builder().build();
@@ -533,6 +503,5 @@ public class DaoSQLiteImpl implements DataDao {
 			} catch (SQLException e) {throw new GameException("Errore durante il recupero di una partita", e);
 			}
         return newGame;
-	}
-		
+	}		
 }
