@@ -1,0 +1,214 @@
+{
+  "territori": [
+    {
+      "nome": "Egitto",
+      "x": 500,
+      "y": 350
+    },
+    {
+      "nome": "Africa Orientale",
+      "x": 530,
+      "y": 400
+    },
+    {
+      "nome": "Afghanistan",
+      "x": 630,
+      "y": 250
+    },
+    {
+      "nome": "Africa del Nord",
+      "x": 420,
+      "y": 370
+    },
+    {
+      "nome": "America Centrale",
+      "x": 165,
+      "y": 305
+    },
+    {
+      "nome": "Australia Occidentale",
+      "x": 780,
+      "y": 550
+    },
+    {
+      "nome": "Australia Orientale",
+      "x": 880,
+      "y": 550
+    },
+    {
+      "nome": "Brasile",
+      "x": 290,
+      "y": 450
+    },
+    {
+      "nome": "Cina",
+      "x": 750,
+      "y": 280
+    },
+    {
+      "nome": "Cità",
+      "x": 800,
+      "y": 180
+    },
+    {
+      "nome": "Europa Meridionale",
+      "x": 470,
+      "y": 260
+    },
+    {
+      "nome": "Giappone",
+      "x": 900,
+      "y": 230
+    },
+    {
+      "nome": "Groenlandia",
+      "x": 380,
+      "y": 70
+    },
+    {
+      "nome": "India",
+      "x": 690,
+      "y": 360
+    },
+    {
+      "nome": "Islanda",
+      "x": 410,
+      "y": 140
+    },
+    {
+      "nome": "Kamchatka",
+      "x": 900,
+      "y": 123
+    },
+    {
+      "nome": "Medio Oriente",
+      "x": 570,
+      "y": 330
+    },
+    {
+      "nome": "Ontario",
+      "x": 220,
+      "y": 180
+    },
+    {
+      "nome": "Siberia",
+      "x": 730,
+      "y": 100
+    },
+    {
+      "nome": "Stati Uniti Occ.",
+      "x": 150,
+      "y": 225
+    },
+    {
+      "nome": "Stati Uniti Orient.",
+      "x": 230,
+      "y": 250
+    },
+    {
+      "nome": "Territori del Nord O.",
+      "x": 130,
+      "y": 115
+    },
+    {
+      "nome": "Ucraina",
+      "x": 560,
+      "y": 170
+    },
+    {
+      "nome": "Africa del Sud",
+      "x": 480,
+      "y": 560
+    },
+    {
+      "nome": "Alaska",
+      "x": 40,
+      "y": 100
+    },
+    {
+      "nome": "Alberta",
+      "x": 150,
+      "y": 170
+    },
+    {
+      "nome": "Argentina",
+      "x": 220,
+      "y": 550
+    },
+    {
+      "nome": "Congo",
+      "x": 480,
+      "y": 470
+    },
+    {
+      "nome": "Europa Occidentale",
+      "x": 420,
+      "y": 280
+    },
+    {
+      "nome": "Europa Settentrionale",
+      "x": 465,
+      "y": 210
+    },
+    {
+      "nome": "Indonesia",
+      "x": 770,
+      "y": 450
+    },
+    {
+      "nome": "Jacuzia",
+      "x": 820,
+      "y": 120
+    },
+    {
+      "nome": "Madagascar",
+      "x": 565,
+      "y": 560
+    },
+    {
+      "nome": "Mongolia",
+      "x": 800,
+      "y": 230
+    },
+    {
+      "nome": "Nuova Guinea",
+      "x": 900,
+      "y": 450
+    },
+    {
+      "nome": "Perù",
+      "x": 220,
+      "y": 460
+    },
+    {
+      "nome": "Quebec",
+      "x": 300,
+      "y": 170
+    },
+    {
+      "nome": "Scandinavia",
+      "x": 460,
+      "y": 150
+    },
+    {
+      "nome": "Siam",
+      "x": 770,
+      "y": 360
+    },
+    {
+      "nome": "Urali",
+      "x": 660,
+      "y": 150
+    },
+    {
+      "nome": "Gran Bretagna",
+      "x": 400,
+      "y": 210
+    },
+    {
+      "nome": "Venezuela",
+      "x": 210,
+      "y": 370
+    }
+  ]
+}

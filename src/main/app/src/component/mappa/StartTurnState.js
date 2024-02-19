@@ -48,9 +48,8 @@ function StartTurnState({ idPlayer, game }) {
 
   return (
     <div>
-      <p>componente di inizio turno</p>
       {!renderMap ? (
-        <Container className="bg-dark border rounded shadow">
+        <Container className="bg-dark border rounded shadow p-2">
           {comboCard && comboCard.length > 3 ? (
             <div>hai le carte combo</div>
           ) : (
@@ -59,21 +58,21 @@ function StartTurnState({ idPlayer, game }) {
             </div>
           )}
 
-          <div>
+          <div className="p-2">
             <p className="text-white">vuoi usare le carte ?</p>
-            <Button>Si</Button>
+            <Button onClick={handleClick}>Si</Button>
             <Button onClick={handleClick}>No</Button>
           </div>
         </Container>
       ) : (
         <div>
-          map
           <SvgMap
             paths={mappa}
             gioco={game}
             truppeAssegnate={troopAssignments}
             onTerritoryClick={handleTerritoryClick}
           />
+          <Container className="bg-secondary">console di gioco</Container>
         </div>
       )}
     </div>
