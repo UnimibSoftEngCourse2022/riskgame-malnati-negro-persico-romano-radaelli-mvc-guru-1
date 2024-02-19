@@ -118,7 +118,7 @@ public class FactoryGame {
     
     public List<Continent> parsingContinent() throws IOException {
 		ObjectMapper mapper = new ObjectMapper();
-        byte[] data = FileCopyUtils.copyToByteArray(new ClassPathResource("continent.json").getInputStream());
+        byte[] data = FileCopyUtils.copyToByteArray(new ClassPathResource("continent_hard.json").getInputStream());
         String json = new String(data, StandardCharsets.UTF_8);
         Continent[] continents = mapper.readValue(json, Continent[].class);
         return new ArrayList<>(Arrays.asList(continents));
