@@ -75,7 +75,7 @@ public class Game extends IGame {
                 .indexTurn(currentTurn.getIndexTurn() + 1)
                 .build());
         currentTurn.numberOfTroopsCalculation(currentTurn.getPlayer().getTerritories());
-        
+       
         //broadcast();Chiamo change turn dallo stato fine turno con la action, alla fine della action faccio broadcast
 	}
 }
