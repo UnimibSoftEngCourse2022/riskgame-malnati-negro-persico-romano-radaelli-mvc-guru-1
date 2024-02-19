@@ -32,7 +32,6 @@ import com.mvcguru.risiko.maven.eclipse.model.Turn;
 @SuperBuilder
 public class DaoSQLiteImpl implements DataDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(DaoSQLiteImpl.class);
-    private static final String ERROR_LOG_PLAYER = "Nessun giocatore aggiornato: potrebbe non esistere un giocatore con lo username specificato.";
     private Connection connection;
     private static DaoSQLiteImpl instance;
     
@@ -82,7 +81,7 @@ public class DaoSQLiteImpl implements DataDao {
         createTable("CREATE TABLE IF NOT EXISTS games (gameId TEXT PRIMARY KEY, mode TEXT NOT NULL, number_of_players INTEGER NOT NULL, idMap TEXT NOT NULL, state TEXT NOT NULL);");
         createTable("CREATE TABLE IF NOT EXISTS players (username TEXT, gameId TEXT, color TEXT, objective TEXT, setUpCompleted BOOLEAN NOT NULL, FOREIGN KEY(gameId) REFERENCES games(gameId), PRIMARY KEY (username));");
         createTable("CREATE TABLE IF NOT EXISTS territories (name TEXT, gameId TEXT, player TEXT, continent INTEGER, armies INTEGER, svgPath TEXT, FOREIGN KEY(player) REFERENCES players(username), FOREIGN KEY(gameId) REFERENCES games(gameId), PRIMARY KEY (name, player, gameId));");
-        createTable("CREATE TABLE IF NOT EXISTS turns (indexTurn INTEGER, player TEXT, gameId TEXT, numberOfTroops INTEGER, attackerTerritory TEXT, defenderTerritory TEXT, FOREIGN KEY(player) REFERENCES players(username), FOREIGN KEY(gameId) REFERENCES games(gameId), PRIMARY KEY (indexTurn, gameId));");
+        createTable("CREATE TABLE IF NOT EXISTS turns (indexTurn INTEGER, player TEXT, gameId TEXT, numberOfTroops INTEGER, attackerTerritory TEXT, defenderTerritory TEXT, numAttackDice TEXT, numDifenceDice TEXT, isConquered BOOLEAN NOT NULL, FOREIGN KEY(player) REFERENCES players(username), FOREIGN KEY(gameId) REFERENCES games(gameId), PRIMARY KEY (indexTurn, gameId));");
         createTable("CREATE TABLE IF NOT EXISTS comboCards (player TEXT, gameId TEXT, territory TEXT, symbol TEXT, FOREIGN KEY(player) REFERENCES players(username), FOREIGN KEY(gameId) REFERENCES games(gameId), FOREIGN KEY(territory) REFERENCES territories(name), PRIMARY KEY (player, gameId, territory, symbol));");
     }
 
@@ -112,9 +111,11 @@ public class DaoSQLiteImpl implements DataDao {
         return DriverManager.getConnection(url);
     }
     
-    // --------------------------------------------------------
-    // ------------------------ INSERT ------------------------
-    // --------------------------------------------------------
+    
+// ----------------------------------------------------------------------------------------------------------------
+// ------------------------ INSERT --------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------
+    
     private void executeInsert(String sql, Object... values) throws GameException {
     	PreparedStatement pstmt = null;
         try {
@@ -166,10 +167,11 @@ public class DaoSQLiteImpl implements DataDao {
                       owner.getUserName(), gameId, t.getTerritory().getName(), t.getSymbol().name());
     }
 
-
-    // --------------------------------------------------------
-    // ------------------------ READ --------------------------
-    // --------------------------------------------------------
+    
+// ----------------------------------------------------------------------------------------------------------------
+// ------------------------ READ ----------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------
+    
     @Override
     public User getUserByUsernameAndPassword(String username, String password) throws UserException {
         String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
@@ -349,9 +351,11 @@ public class DaoSQLiteImpl implements DataDao {
 		}
 	}
     
-    // --------------------------------------------------------
-    // ------------------------ UPDATE ------------------------
-    // --------------------------------------------------------
+
+// ----------------------------------------------------------------------------------------------------------------
+// ------------------------ UPDATE --------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------
+    
     private void executeUpdate(String sql, Object... params) throws GameException {
     	PreparedStatement pstmt = null;
         try {
@@ -411,6 +415,24 @@ public class DaoSQLiteImpl implements DataDao {
         String sql = "UPDATE turns SET indexTurn = ? WHERE player = ? AND gameId = ?";
         executeUpdate(sql, index, turn.getPlayer().getUserName(), turn.getPlayer().getGameId());
     }
+    
+    @Override
+    public void updateNumAttackDice(int indexTurn, String gameId, String numAttackDice) throws GameException {
+        String sql = "UPDATE turns SET numAttackDice = ? WHERE indexTurn = ? AND gameId = ?";
+        executeUpdate(sql, numAttackDice, indexTurn, gameId);
+    }
+
+    @Override
+    public void updateNumDefenseDice(int indexTurn, String gameId, String numDefenseDice) throws GameException {
+        String sql = "UPDATE turns SET numDefenseDice = ? WHERE indexTurn = ? AND gameId = ?";
+        executeUpdate(sql, numDefenseDice, indexTurn, gameId);
+    }
+
+    @Override
+    public void updateIsConquered(int indexTurn, String gameId, boolean isConquered) throws GameException {
+        String sql = "UPDATE turns SET isConquered = ? WHERE indexTurn = ? AND gameId = ?";
+        executeUpdate(sql, isConquered, indexTurn, gameId);
+    }
 
     @Override
     public void updateOwner(TerritoryCard t, String player, String gameId) throws GameException {
@@ -418,9 +440,11 @@ public class DaoSQLiteImpl implements DataDao {
         executeUpdate(sql, player, gameId, t.getTerritory().getName());
     }
 
-    // --------------------------------------------------------
-    // ------------------------ DELETE ------------------------
-    // --------------------------------------------------------
+
+// ----------------------------------------------------------------------------------------------------------------
+// ------------------------ DELETE --------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------
+    
     private void executeDelete(String sql, Object... params) {
         PreparedStatement pstmt = null;
         try {
@@ -471,7 +495,11 @@ public class DaoSQLiteImpl implements DataDao {
         executeDelete(sql, owner.getUserName(), gameId, t.getTerritory().getName(), t.getSymbol().name());
     }
 
-	// --------------------------------------------------------
+
+// ----------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------
+    
 	private IGame extractGameFromResultSet(ResultSet rs) throws GameException, IOException{
 		IGame newGame = null;
 		GameConfiguration config = GameConfiguration.builder().build();

@@ -142,7 +142,15 @@ public class GameRepository {
 		return db.getAllComboCards(player, gameId);
 	}
 	
+	public synchronized void updateNumAttackDice(int indexTurn, String gameId, String numAttackDice) throws GameException {
+		db.updateNumAttackDice(indexTurn, gameId, numAttackDice);
+	}
 	
-
+	public synchronized void updateNumDefenseDice(int indexTurn, String gameId, String numDefenseDice) throws GameException {
+		db.updateNumDefenseDice(indexTurn, gameId, numDefenseDice);
+	}
 	
+	public synchronized void updateIsConquered(int indexTurn, String gameId, boolean isConquered) throws GameException {
+		db.updateIsConquered(indexTurn, gameId, isConquered);
+	}
 }
