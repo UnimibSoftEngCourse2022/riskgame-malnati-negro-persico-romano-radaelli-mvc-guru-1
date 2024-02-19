@@ -77,7 +77,6 @@ public class Turn implements Serializable{
             if (player.getTerritories().contains(card.getTerritory()))
             	numberOfTroops += 2;
         }
-        return;
     }
     
     private int troopsForSingleSymbolCombo(List<TerritoryCard> comboCards) {
@@ -101,7 +100,7 @@ public class Turn implements Serializable{
     }
     
 	private int troopsForTris(List<TerritoryCard> comboCards) {
-		if(!comboCards.stream().anyMatch(card -> card.getSymbol() == CardSymbol.JOLLY))
+		if(!comboCards.stream().noneMatch(card -> card.getSymbol() == CardSymbol.JOLLY))
 			return 10;
 		return 0;
 	}

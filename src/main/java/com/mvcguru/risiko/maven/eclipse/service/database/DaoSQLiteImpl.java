@@ -415,7 +415,7 @@ public class DaoSQLiteImpl implements DataDao {
 		String color = player.getColor().name();
 		boolean setUpCompleted = player.isSetUpCompleted();
 		PreparedStatement pstmt = null;
-		String sql = "INSERT INTO players (username, gameIdP, color, setUpCompleted, ) VALUES (?, ?, ?, ?)";
+		String sql = "INSERT INTO players (username, gameIdP, color, setUpCompleted) VALUES (?, ?, ?, ?)";
         try{
         	pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, username);
@@ -598,7 +598,7 @@ public class DaoSQLiteImpl implements DataDao {
 				while (rs.next()) {
 					String name = rs.getString("name");
 					int continent = rs.getInt("continent");
-					String idOwner = rs.getString("player");
+					String idOwner = rs.getString("playerTY");
 					int armies = rs.getInt("armies");
 					String svgPath = rs.getString("svgPath");
 					Territory territory = Territory.builder().name(name).continent(continent).idOwner(idOwner).armies(armies).svgPath(svgPath).build();
@@ -705,7 +705,7 @@ public class DaoSQLiteImpl implements DataDao {
 			try (ResultSet rs = pstmt.executeQuery()) {
 				if (rs.next()) {
 					int index = rs.getInt("index");
-					String player = rs.getString("player");
+					String player = rs.getString("playerTN");
 					int numberOfTroops = rs.getInt("numberOfTroops");
 					String attackerTerritory = rs.getString("attackerTerritory");
 					String defenderTerritory = rs.getString("defenderTerritory");
