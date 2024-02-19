@@ -5,17 +5,17 @@ import java.io.Serializable;
 import com.mvcguru.risiko.maven.eclipse.model.Territory;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder
+@NoArgsConstructor
 public class AttackRequestBody implements Serializable{
 	
-	private Territory attackerTerritory;
+	private BattleBody attackerTerritory;
 	
-	private Territory defenderTerritory;
+	private BattleBody defenderTerritory;
 	
-	private int numDice;
-	
-	private String idGame;
+	private int numAttDice;
 }
