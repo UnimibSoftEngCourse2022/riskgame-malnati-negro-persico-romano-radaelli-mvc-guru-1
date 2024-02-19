@@ -70,10 +70,7 @@ public class GameSetupState extends GameState {
 		assignColor(game.getPlayers());
 		assignTerritories(game.getDeckTerritory());
 		assignObjective(game.getDeckObjective());
-		ICard cardJolly1 = TerritoryCard.builder().territory(null).symbol(CardSymbol.JOLLY).build();
-		ICard cardJolly2 = TerritoryCard.builder().territory(null).symbol(CardSymbol.JOLLY).build();
-		game.getDeckTerritory().insertCard(cardJolly1);
-		game.getDeckTerritory().insertCard(cardJolly2);
+
 	}
 
 	private void assignObjective(IDeck deckObjective) throws GameException, DatabaseConnectionException, UserException {
@@ -89,18 +86,23 @@ public class GameSetupState extends GameState {
 	        }
 		}
 	}
-    
+	
 	private void assignTerritories(IDeck deckTerritory) throws GameException, DatabaseConnectionException, UserException {
 	    deckTerritory.shuffle();
 	    int playerIndex = 0;
-	    TerritoryCard card = (TerritoryCard)deckTerritory.drawCard(); 
+	    TerritoryCard card = (TerritoryCard)deckTerritory.drawCard();
 	    while (card != null) {
-	    	game.getPlayers().get(playerIndex % game.getPlayers().size()).getTerritories().add(card.getTerritory());
-	    	card.getTerritory().setIdOwner(game.getPlayers().get(playerIndex % game.getPlayers().size()).getUserName());
-	    	GameRepository.getInstance().insertTerritory(card.getTerritory(), game.getId());
-	        playerIndex++;
-	        card = (TerritoryCard) deckTerritory.drawCard(); 
-	    }
+	        if (card.getSymbol().equals(CardSymbol.JOLLY)) {
+	            deckTerritory.insertCard(card);
+	            deckTerritory.shuffle();
+	        } else {
+	            game.getPlayers().get(playerIndex % game.getPlayers().size()).getTerritories().add(card.getTerritory());
+	            card.getTerritory().setIdOwner(game.getPlayers().get(playerIndex % game.getPlayers().size()).getUserName());
+	            GameRepository.getInstance().insertTerritory(card.getTerritory(), game.getId());
+	            playerIndex++;
+	        }
+	        card = (TerritoryCard) deckTerritory.drawCard();
+	    }
 	}
 
 	private void assignColor(List<Player> players) throws GameException, DatabaseConnectionException, UserException {

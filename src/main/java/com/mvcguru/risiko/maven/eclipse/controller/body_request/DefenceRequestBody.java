@@ -7,10 +7,10 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @NoArgsConstructor
-public class TerritoryBody {
+public class DefenceRequestBody {
+
+	private int numDefDice;
 	
-	private String name;
-	
-	private int troops;
+	private String username;
 
 }

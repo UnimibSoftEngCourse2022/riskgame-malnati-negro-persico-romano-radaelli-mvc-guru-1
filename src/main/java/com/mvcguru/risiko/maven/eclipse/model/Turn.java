@@ -1,11 +1,14 @@
 package com.mvcguru.risiko.maven.eclipse.model;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.mvcguru.risiko.maven.eclipse.controller.body_request.ResultNoticeBody;
 import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
 import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard.CardSymbol;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
@@ -29,6 +32,12 @@ public class Turn implements Serializable{
 	private Territory attackerTerritory;
 	
 	private Territory defenderTerritory;
+	
+	private int numAttDice;
+	
+	private int numDefDice;
+	
+	private boolean isConquered = false;
 	
     public void numberOfTroopsCalculation(List<Territory> territories) {
         numberOfTroops += territories.size() / 3;
@@ -110,6 +119,70 @@ public class Turn implements Serializable{
 				player.getTerritoryByName(attackerTerritory.getName()).getArmies() - numTroops);
 		player.getTerritoryByName(defenderTerritory.getName()).setArmies(
 				player.getTerritoryByName(defenderTerritory.getName()).getArmies() + numTroops);
-		player.getGame().broadcast();
 	}
+	
+	//////////////////////////////////////
+	
+	public void attack() {
+		
+	    
+	    Integer[] attRolls = new Integer[numAttDice];
+	    Integer[] defRolls = new Integer[numDefDice];
+	    
+	    for (int i = 0; i < numAttDice; i++) {
+	       attRolls[i] = (int) (Math.random() * 6) + 1;
+	    }
+	    
+	    for (int i = 0; i < numDefDice; i++) {
+	        defRolls[i] = (int) (Math.random() * 6) + 1;
+	    }
+	    
+	    Arrays.sort(attRolls, Collections.reverseOrder());
+	    Arrays.sort(defRolls, Collections.reverseOrder());
+	    
+	    int numComparisons = Math.min(numAttDice, numDefDice);
+	    int attLosses = 0;
+	    int defLosses = 0;
+	    
+	    for (int i = 0; i < numComparisons; i++) {
+	        if (attRolls[i] > defRolls[i]) 
+	            defLosses++;
+	        else
+	            attLosses++;
+	    }
+	    LOGGER.info("Attacker losses: {} | Defender losses: {}", attLosses, defLosses);
+	    
+	    if(player.getTerritoryByName(defenderTerritory.getName()).getArmies() > defLosses) {
+	    	
+	    	 player.getTerritoryByName(attackerTerritory.getName())
+		    	.setArmies(player.getTerritoryByName(attackerTerritory.getName()).getArmies() - attLosses);
+	    	 
+	    	 player.getTerritoryByName(defenderTerritory.getName())
+		    	.setArmies(player.getTerritoryByName(defenderTerritory.getName()).getArmies() - defLosses);
+	    	 
+			ResultNoticeBody result = ResultNoticeBody.builder().isConquered(false).lostAttTroops(attLosses).lostDefTroops(defLosses).build();
+			resetBattleInfo();
+	    	 
+	    	player.getGame().broadcast(player.getGame().getId(), player.getUserName(), result);
+	    }
+		else {
+			isConquered = true;
+			ResultNoticeBody result = ResultNoticeBody.builder().isConquered(false).lostAttTroops(attLosses).lostDefTroops(defLosses).build();
+			
+			player.getTerritoryByName(defenderTerritory.getName())
+			.setIdOwner(attackerTerritory.getIdOwner());
+			
+			//todo: gestione conquista territorio
+			
+			player.getGame().broadcast(player.getGame().getId(), player.getUserName(), result);
+		}
+	}
+	
+	public void resetBattleInfo() {
+		attackerTerritory = null;
+        defenderTerritory = null;
+        numAttDice = 0;
+        numDefDice = 0;
+	}
+	
 }

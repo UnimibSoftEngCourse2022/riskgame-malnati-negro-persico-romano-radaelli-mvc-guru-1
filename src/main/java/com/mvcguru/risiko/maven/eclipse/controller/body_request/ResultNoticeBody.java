@@ -7,10 +7,12 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @NoArgsConstructor
-public class DefenderNoticeBody {
-	
-	private String idAttackerUser;
-	
-	private int numAttDice;
+public class ResultNoticeBody {
 
+	private boolean isConquered;
+	
+	private int lostAttTroops;
+	
+	private int lostDefTroops;
+	
 }
