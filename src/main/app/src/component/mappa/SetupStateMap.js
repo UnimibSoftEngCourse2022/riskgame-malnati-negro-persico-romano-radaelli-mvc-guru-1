@@ -125,9 +125,9 @@ function SetUpStateMap({ idPlayer, giocatori, game }) {
       </div>
 
       <p>
-        posiziona le truppe in base al tuo obbiettivo utilizza il click sinistro
-        per aggiungere truppe al territorio utilizza il click destro per
-        rimuovere le truppe dal territorio
+        posiziona le truppe in base al tuo obbiettivo, utilizza il click
+        sinistro per aggiungere delle truppe al territorio e utilizza il click
+        destro per rimuoverle
       </p>
       <Container>
         <SvgMap
