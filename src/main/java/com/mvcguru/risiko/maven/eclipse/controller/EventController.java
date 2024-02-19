@@ -11,12 +11,16 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
+import com.mvcguru.risiko.maven.eclipse.actions.AttackRequest;
 import com.mvcguru.risiko.maven.eclipse.actions.ComboRequest;
+import com.mvcguru.risiko.maven.eclipse.actions.DefenceRequest;
 import com.mvcguru.risiko.maven.eclipse.actions.GameEntry;
 import com.mvcguru.risiko.maven.eclipse.actions.GameExit;
 import com.mvcguru.risiko.maven.eclipse.actions.TerritorySetup;
 import com.mvcguru.risiko.maven.eclipse.actions.TurnSetUp;
+import com.mvcguru.risiko.maven.eclipse.controller.body_request.AttackRequestBody;
 import com.mvcguru.risiko.maven.eclipse.controller.body_request.ComboRequestBody;
+import com.mvcguru.risiko.maven.eclipse.controller.body_request.DefenceRequestBody;
 import com.mvcguru.risiko.maven.eclipse.controller.body_request.PlayerBody;
 import com.mvcguru.risiko.maven.eclipse.controller.body_request.SetUpBody;
 import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
@@ -110,12 +114,50 @@ public class EventController {
 				game.onActionPlayer(action);
 				LOGGER.info("Fine assegnazione del turno");
 			}
-		} catch (Exception e) {
-			LOGGER.error("Errore durante l'assegnazione del turno", e);
-		}
+		} catch (Exception e) { LOGGER.error("Errore durante l'assegnazione del turno", e); }
 	}
 	
+	@MessageMapping("/partite/{id}/attack")
+	public void attackRequest(@DestinationVariable String id, @Payload AttackRequestBody body) {
+		try {
+			IGame game = GameRepository.getInstance().getGameById(id);
+			LOGGER.info("Inizio assegnazione del turno {}", body);
+			Player player = game.findPlayerByUsername(body.getAttackerTerritory().getUsername());
+			if(player != null) {
+				AttackRequest action = AttackRequest.builder().player(player).requestAttackBody(body).build();
+				game.onActionPlayer(action);
+			}
+		}
+		catch(Exception e){ LOGGER.error("Errore durante la richiesta di attacco", e);}
+	}
 	
+	@MessageMapping("/partite/{id}/defence")
+	public void attackRequest(@DestinationVariable String id, @Payload DefenceRequestBody body) {
+		try {
+			IGame game = GameRepository.getInstance().getGameById(id);
+			LOGGER.info("Inizio assegnazione del turno {}", body);
+			Player player = game.findPlayerByUsername(body.getUsername());
+			if(player != null) {
+				DefenceRequest action = DefenceRequest.builder().player(player).defenderRequestBody(body).build();
+				game.onActionPlayer(action);
+			}
+		}
+		catch(Exception e){ LOGGER.error("Errore durante la richiesta di difesa", e);}
+	}
 
+//	@MessageMapping("/partite/{id}/conquerAssigment")
+//	public void attackRequest(@DestinationVariable String id, @Payload int troops) {
+//		try {
+//			IGame game = GameRepository.getInstance().getGameById(id);
+//			LOGGER.info("Inizio assegnazione del turno {}", troops);
+//			game.getCurrentTurn().moveTroops(troops);
+//			Player player = game.getCurrentTurn().getPlayer();
+//			if(player != null) {
+//				DefenceRequest action = DefenceRequest.builder().player(player).defenderRequestBody(body).build();
+//				game.onActionPlayer(action);
+//			}
+//		}
+//		catch(Exception e){ LOGGER.error("Errore durante la richiesta di difesa", e);}
+//	}
 
 }

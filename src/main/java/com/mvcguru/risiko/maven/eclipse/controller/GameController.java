@@ -32,7 +32,7 @@ public class GameController {
 		IGame nuovaPartita = FactoryGame.getInstance().createGame(configuration);
 		
 		try {
-			GameRepository.getInstance().registerGame(nuovaPartita);
+			GameRepository.getInstance().insertGame(nuovaPartita);
 		} catch (Exception e) {
 			LOGGER.error("Errore nella registrazione della partita", e);
 			return ResponseEntity.badRequest().build();

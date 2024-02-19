@@ -20,9 +20,9 @@ public class UserRepository {
 		 if (instance == null) { instance = new UserRepository();} return instance;
 	}
 	
-	public synchronized void registerUser(User user) throws UserException {
+	public synchronized void insertUser(User user) throws UserException, GameException {
 		if(user != null)
-			db.registerUser(user);
+			db.insertUser(user);
 	}
 	
 	public synchronized User getUser(User user) throws UserException {

@@ -30,9 +30,9 @@ public class GameRepository {
 		 if (instance == null) { instance = new GameRepository();} return instance;
 	}
 	
-	public synchronized void registerGame(IGame game) throws GameException {
+	public synchronized void insertGame(IGame game) throws GameException {
 		if (game != null) 
-			db.registerGame(game);
+			db.insertGame(game);
 	}
 	
 	public synchronized void deleteGame(IGame game) throws GameException {
@@ -82,8 +82,8 @@ public class GameRepository {
 		db.updateSetUpCompleted(username, setUpCompleted);
 	}
 	
-	public synchronized void updatePlayerColor(String username, Player.PlayerColor color) throws GameException {
-		db.updatePlayerColor(username, color);
+	public synchronized void updatePlayerColor(Player player) throws GameException {
+		db.updatePlayerColor(player);
 	}
 	
 	public synchronized void removePlayer(String username) throws GameException {
@@ -142,7 +142,15 @@ public class GameRepository {
 		return db.getAllComboCards(player, gameId);
 	}
 	
+	public synchronized void updateNumAttackDice(int indexTurn, String gameId, String numAttackDice) throws GameException {
+		db.updateNumAttackDice(indexTurn, gameId, numAttackDice);
+	}
 	
-
+	public synchronized void updateNumDefenseDice(int indexTurn, String gameId, String numDefenseDice) throws GameException {
+		db.updateNumDefenseDice(indexTurn, gameId, numDefenseDice);
+	}
 	
+	public synchronized void updateIsConquered(int indexTurn, String gameId, boolean isConquered) throws GameException {
+		db.updateIsConquered(indexTurn, gameId, isConquered);
+	}
 }

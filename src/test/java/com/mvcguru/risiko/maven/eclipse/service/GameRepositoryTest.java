@@ -40,11 +40,11 @@ class GameRepositoryTest {
 	}
 
     @Test
-    void testRegisterGame() throws GameException {
+    void testinsertGame() throws GameException {
         IGame game = mock(IGame.class);
-        doNothing().when(dataDao).registerGame(any(IGame.class));
-        gameRepository.registerGame(game);
-        verify(dataDao, times(1)).registerGame(game);
+        doNothing().when(dataDao).insertGame(any(IGame.class));
+        gameRepository.insertGame(game);
+        verify(dataDao, times(1)).insertGame(game);
     }
 
     @Test
