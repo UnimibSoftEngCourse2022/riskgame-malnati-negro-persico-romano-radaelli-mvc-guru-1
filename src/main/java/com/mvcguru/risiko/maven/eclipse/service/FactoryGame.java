@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.FileCopyUtils;
 
@@ -24,16 +26,17 @@ import com.mvcguru.risiko.maven.eclipse.model.deck.TerritoriesDeck;
 import com.mvcguru.risiko.maven.eclipse.states.GameState;
 import com.mvcguru.risiko.maven.eclipse.states.LobbyState;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 public class FactoryGame {
-	private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(FactoryGame.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(FactoryGame.class);
     private static FactoryGame instance;
     private GameState gameState;
 
-
+	public FactoryGame() {
+		//default constructor	
+	}
+    
     public static synchronized FactoryGame getInstance() {
         if (instance == null)
             instance = new FactoryGame();

@@ -32,10 +32,10 @@ import com.mvcguru.risiko.maven.eclipse.model.Turn;
 @SuperBuilder
 public class DaoSQLiteImpl implements DataDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(DaoSQLiteImpl.class);
+    private static final String ERROR_LOG_PLAYER = "Nessun giocatore aggiornato: potrebbe non esistere un giocatore con lo username specificato.";
     private Connection connection;
     private static DaoSQLiteImpl instance;
     
-
     public DaoSQLiteImpl(String dbUrl) throws DatabaseConnectionException, UserException, GameException {
         try {
             connection = DriverManager.getConnection(dbUrl);
@@ -98,126 +98,126 @@ public class DaoSQLiteImpl implements DataDao {
     }       
 
     public void createUsersTable() throws UserException {
-        String sql = "CREATE TABLE IF NOT EXISTS users (\n"
+        String sqlUser = "CREATE TABLE IF NOT EXISTS users (\n"
                 + "username text PRIMARY KEY,\n"
                 + "password text NOT NULL\n"
                 + ");";
-        PreparedStatement pstmt = null;
+        PreparedStatement pstmtUser = null;
         try {
-            pstmt = prepareStatement(sql);
-            pstmt.execute();
+            pstmtUser = prepareStatement(sqlUser);
+            pstmtUser.execute();
         } catch (SQLException e) {throw new UserException("Errore durante la creazione della tabella users.", e);
         } finally {
-            closePreparedStatement(pstmt);
+            closePreparedStatement(pstmtUser);
         }
     }
     
 	@Override
 	public void createGamesTable() throws GameException {
-		String sql = "CREATE TABLE IF NOT EXISTS games (\n" +
+		String sqlGame = "CREATE TABLE IF NOT EXISTS games (\n" +
 	             "gameId TEXT PRIMARY KEY,\n" +
 	             "mode TEXT NOT NULL,\n" +
 	             "number_of_players INTEGER NOT NULL,\n" +
 	             "idMap TEXT NOT NULL,\n" +
 	             "state TEXT NOT NULL\n" +
 	             ");";
-        PreparedStatement pstmt = null;
+        PreparedStatement pstmtGame = null;
         try {
-            pstmt = prepareStatement(sql);
-            pstmt.execute();
+            pstmtGame = prepareStatement(sqlGame);
+            pstmtGame.execute();
         } catch (SQLException e) {throw new GameException("Errore durante la creazione della tabella partite.", e);
         } finally {
-            closePreparedStatement(pstmt);
+            closePreparedStatement(pstmtGame);
         }
     }
 
     @Override
     public void createPlayerTable() throws GameException {
-        String sql = "CREATE TABLE IF NOT EXISTS players (" +
+        String sqlPlayer = "CREATE TABLE IF NOT EXISTS players (" +
                      "username TEXT," +
-                     "gameId TEXT," +
+                     "gameIdP TEXT," +
                      "color TEXT," +
                      "objective TEXT,\n" +
 		             "setUpCompleted BOOLEAN NOT NULL,\n" +
-                     "FOREIGN KEY(gameId) REFERENCES games(gameId)," +
+                     "FOREIGN KEY(gameIdP) REFERENCES games(gameId)," +
                      "PRIMARY KEY (username)" +
                      ");";
-        PreparedStatement pstmt = null;
+        PreparedStatement pstmtPlayer = null;
         try {
-            pstmt = prepareStatement(sql);
-            pstmt.execute();
+            pstmtPlayer = prepareStatement(sqlPlayer);
+            pstmtPlayer.execute();
         } catch (SQLException e) {throw new GameException("Errore durante la creazione della tabella players.", e);
         } finally {
-            closePreparedStatement(pstmt);
+            closePreparedStatement(pstmtPlayer);
         }
     }
     
     @Override
     public void createTerritoryTable() throws GameException {
-        String sql = "CREATE TABLE IF NOT EXISTS territories (" +
+        String sqlTerritory = "CREATE TABLE IF NOT EXISTS territories (" +
                      "name TEXT," +
-                     "gameId TEXT," +
-                     "player TEXT," +
+                     "gameIdTY TEXT," +
+                     "playerTY TEXT," +
                      "continent INTEGER," +
                      "armies INTEGER," +
                      "svgPath TEXT," +
-                     "FOREIGN KEY(player) REFERENCES players(username)," +
-                     "FOREIGN KEY(gameId) REFERENCES games(gameId)," +
-                     "PRIMARY KEY (name, player, gameId)" +
+                     "FOREIGN KEY(playerTY) REFERENCES players(username)," +
+                     "FOREIGN KEY(gameIdTY) REFERENCES games(gameId)," +
+                     "PRIMARY KEY (name, playerTY, gameIdTY)" +
                      ");";
-        PreparedStatement pstmt = null;
+        PreparedStatement pstmtTerritory = null;
         try {
-            pstmt = prepareStatement(sql);
-            pstmt.execute();
+        	pstmtTerritory = prepareStatement(sqlTerritory);
+        	pstmtTerritory.execute();
         } catch (SQLException e) {throw new GameException("Errore durante la creazione della tabella territories.", e);
         } finally {
-            closePreparedStatement(pstmt);
+            closePreparedStatement(pstmtTerritory);
         }
     }
     
     @Override
     public void createTurnTable() throws GameException {
-        String sql = "CREATE TABLE IF NOT EXISTS turns (" +
+        String sqlTurn = "CREATE TABLE IF NOT EXISTS turns (" +
                      "indexTurn INTEGER," +
-                     "player TEXT," +
-                     "gameId TEXT," +
+                     "playerTN TEXT," +
+                     "gameIdTN TEXT," +
                      "numberOfTroops INTEGER," +
                      "attackerTerritory TEXT," +
                      "defenderTerritory TEXT," +
-                     "FOREIGN KEY(player) REFERENCES players(username)," +
-                     "FOREIGN KEY(gameId) REFERENCES games(gameId)," +
-                     "PRIMARY KEY (indexTurn, gameId)" +
+                     "FOREIGN KEY(playerTN) REFERENCES players(username)," +
+                     "FOREIGN KEY(gameIdTN) REFERENCES games(gameId)," +
+                     "PRIMARY KEY (indexTurn, gameIdTN)" +
                      ");";
-        PreparedStatement pstmt = null;
+        PreparedStatement pstmtTurn = null;
         try {
-            pstmt = prepareStatement(sql);
-            pstmt.execute();
+        	pstmtTurn = prepareStatement(sqlTurn);
+        	pstmtTurn.execute();
         } catch (SQLException e) {throw new GameException("Errore durante la creazione della tabella turns.", e);
         } finally {
-            closePreparedStatement(pstmt);
+            closePreparedStatement(pstmtTurn);
         }
     }
     
     @Override
 	public void createComboCardsTable() throws GameException {
-		String sql = "CREATE TABLE IF NOT EXISTS comboCards (" +
-					 "player TEXT," + 
-					 "gameId TEXT," + 
+		String sqlComboCard = "CREATE TABLE IF NOT EXISTS comboCards (" +
+					 "playerC TEXT," + 
+					 "gameIdC TEXT," + 
 					 "territory TEXT," + 
 					 "symbol TEXT," + 
-					 "FOREIGN KEY(player) REFERENCES players(username)," + 
-					 "FOREIGN KEY(gameId) REFERENCES games(gameId)," + 
+					 "FOREIGN KEY(playerC) REFERENCES players(username)," + 
+					 "FOREIGN KEY(gameIdC) REFERENCES games(gameId)," + 
 					 "FOREIGN KEY(territory) REFERENCES territories(name)," +
-					 "PRIMARY KEY (player, gameId, territory, symbol)" + 
+					 "PRIMARY KEY (playerC, gameIdC, territory, symbol)" + 
 					 ");";
-		PreparedStatement pstmt = null;
+		PreparedStatement pstmtComboCard = null;
 		try {
-			pstmt = prepareStatement(sql);
-			pstmt.execute();
+			pstmtComboCard = prepareStatement(sqlComboCard);
+			pstmtComboCard.execute();
 		} catch (SQLException e) {
 			throw new GameException("Errore durante la creazione della tabella comboCards.", e);
 		} finally {
-			closePreparedStatement(pstmt);
+			closePreparedStatement(pstmtComboCard);
 		}
 	}
 	
@@ -413,10 +413,9 @@ public class DaoSQLiteImpl implements DataDao {
 		String username = player.getUserName();
 		String gameId = player.getGameId();
 		String color = player.getColor().name();
-		//String objective = ((ObjectiveCard)player.getObjective()).getObjective();
 		boolean setUpCompleted = player.isSetUpCompleted();
 		PreparedStatement pstmt = null;
-		String sql = "INSERT INTO players (username, gameId, color, setUpCompleted) VALUES (?, ?, ?, ?)";
+		String sql = "INSERT INTO players (username, gameIdP, color, setUpCompleted, ) VALUES (?, ?, ?, ?)";
         try{
         	pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, username);
@@ -439,7 +438,7 @@ public class DaoSQLiteImpl implements DataDao {
 			pstmt.setString(2, username);
 			int updatedRows = pstmt.executeUpdate();
 			if (updatedRows == 0) {
-				LOGGER.error("Nessun giocatore aggiornato: potrebbe non esistere un giocatore con lo username specificato.");
+				LOGGER.error(ERROR_LOG_PLAYER);
 			}
 		} catch (SQLException e) {
 			throw new GameException("Errore durante l'aggiornamento del setup completato del giocatore.", e);
@@ -458,8 +457,7 @@ public class DaoSQLiteImpl implements DataDao {
 			pstmt.setString(2, username);
 			int updatedRows = pstmt.executeUpdate();
 			if (updatedRows == 0) {
-				LOGGER.error(
-						"Nessun giocatore aggiornato: potrebbe non esistere un giocatore con lo username specificato.");
+				LOGGER.error(ERROR_LOG_PLAYER);
 			}
 		} catch (SQLException e) {
 			throw new GameException("Errore durante l'aggiornamento dell'obiettivo del giocatore.", e);
@@ -477,7 +475,7 @@ public class DaoSQLiteImpl implements DataDao {
 			pstmt.setString(2, username);
 			int updatedRows = pstmt.executeUpdate();
 			if (updatedRows == 0) {
-				LOGGER.error("Nessun giocatore aggiornato: potrebbe non esistere un giocatore con lo username specificato.");
+				LOGGER.error(ERROR_LOG_PLAYER);
 						}
 		} catch (SQLException e) {
 			throw new GameException("Errore durante l'aggiornamento del colore del giocatore.", e);
@@ -501,7 +499,7 @@ public class DaoSQLiteImpl implements DataDao {
 
     public List<Player> getPlayerInGame(String gameId) throws GameException {
         List<Player> players = new ArrayList<>();
-        String sql = "SELECT username, gameId, color, objective, setUpCompleted FROM players WHERE gameId = ?";
+        String sql = "SELECT username, gameIdP, color, objective, setUpCompleted FROM players WHERE gameIdP = ?";
         PreparedStatement pstmt = null;
         try{
         	pstmt = connection.prepareStatement(sql);
@@ -537,7 +535,7 @@ public class DaoSQLiteImpl implements DataDao {
     	int armies = territory.getArmies();
     	String svgPath = territory.getSvgPath();
     	
-        String sql = "INSERT INTO territories (name, player, gameId, continent, armies, svgPath) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO territories (name, playerTY, gameIdTY, continent, armies, svgPath) VALUES (?, ?, ?, ?, ?, ?)";
         PreparedStatement pstmt = null;
         try {
         	pstmt = prepareStatement(sql);
@@ -571,7 +569,7 @@ public class DaoSQLiteImpl implements DataDao {
     
     public void updateTerritoryOwner(String territoryName, Player player) throws GameException {
     	String username = player.getUserName();
-    	String sql = "UPDATE territories SET player = ? WHERE name = ?";
+    	String sql = "UPDATE territories SET playerTY = ? WHERE name = ?";
     	PreparedStatement pstmt = null;
     	try{
     		pstmt = prepareStatement(sql);
@@ -590,7 +588,7 @@ public class DaoSQLiteImpl implements DataDao {
     }
     
 	public List<Territory> getAllTerritories(String player) throws GameException {
-		String sql = "SELECT * FROM territories WHERE player = ?";
+		String sql = "SELECT * FROM territories WHERE playerTY = ?";
 		PreparedStatement pstmt = null;
 		List<Territory> result = new ArrayList<>();
 		try {
@@ -641,7 +639,7 @@ public class DaoSQLiteImpl implements DataDao {
 		int numberOfTroops = turn.getNumberOfTroops();
 		String attackerTerritory = turn.getAttackerTerritory().getName();
 		String defenderTerritory = turn.getDefenderTerritory().getName();
-		String sql = "INSERT INTO turns (indexTurn, player, gameId, numberOfTroops, attackerTerritory, defenderTerritory) VALUES (?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO turns (indexTurn, playerTN, gameIdTN, numberOfTroops, attackerTerritory, defenderTerritory) VALUES (?, ?, ?, ?, ?, ?)";
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = connection.prepareStatement(sql);
@@ -661,7 +659,7 @@ public class DaoSQLiteImpl implements DataDao {
 
 	@Override
 	public void deleteTurn(Turn turn) throws GameException {
-		String sql = "DELETE FROM turns WHERE indexTurn = ? AND player = ? AND gameId = ?";
+		String sql = "DELETE FROM turns WHERE indexTurn = ? AND playerTN = ? AND gameIdTN = ?";
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = connection.prepareStatement(sql);
@@ -678,7 +676,7 @@ public class DaoSQLiteImpl implements DataDao {
 
 	@Override
 	public void updateTurnIndex(Turn turn, int index) throws GameException {
-		String sql = "UPDATE turns SET indexTurn = ? WHERE player = ? AND gameId = ?";
+		String sql = "UPDATE turns SET indexTurn = ? WHERE playerTN = ? AND gameIdTN = ?";
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = connection.prepareStatement(sql);
@@ -696,95 +694,9 @@ public class DaoSQLiteImpl implements DataDao {
 		}
 	}
 	
-	//ComboCardDao methods
-	@Override
-	public void insertComboCard(TerritoryCard t, Player owner, String gameId) throws GameException {
-		String territory = t.getTerritory().getName();
-		String symbol = t.getSymbol().name();
-		String sql = "INSERT INTO comboCards (player, gameId, territory, symbol) VALUES (?, ?, ?, ?)";
-		PreparedStatement pstmt = null;
-		try {
-			pstmt = connection.prepareStatement(sql);
-			pstmt.setString(1, owner.getUserName());
-			pstmt.setString(2, gameId);
-			pstmt.setString(3, territory);
-			pstmt.setString(4, symbol);
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			throw new GameException("Errore durante l'inserimento della carta combo.", e);
-		} finally {
-			closePreparedStatement(pstmt);
-		}
-	}
-	
-	@Override
-	public void deleteComboCard(TerritoryCard t, Player owner, String gameId) throws GameException {
-		String territory = t.getTerritory().getName();
-		String symbol = t.getSymbol().name();
-		String sql = "DELETE FROM comboCards WHERE player = ? AND gameId = ? AND territory = ? AND symbol = ?";
-		PreparedStatement pstmt = null;
-		try {
-			pstmt = connection.prepareStatement(sql);
-			pstmt.setString(1, owner.getUserName());
-			pstmt.setString(2, gameId);
-			pstmt.setString(3, territory);
-			pstmt.setString(4, symbol);
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			throw new GameException("Errore durante l'eliminazione della carta combo.", e);
-		} finally {
-			closePreparedStatement(pstmt);
-		}
-	}
-	
-	@Override
-	public void updateOwner(TerritoryCard t, String player, String gameId) throws GameException {
-		String territory = t.getTerritory().getName();
-		String sql = "UPDATE comboCards SET player = ? WHERE gameId = ? AND territory = ?";
-		PreparedStatement pstmt = null;
-		try {
-			pstmt = connection.prepareStatement(sql);
-			pstmt.setString(1, player);
-			pstmt.setString(2, gameId);
-			pstmt.setString(3, territory);
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			throw new GameException("Errore durante l'aggiornamento del proprietario della carta combo.", e);
-		} finally {
-			closePreparedStatement(pstmt);
-		}
-	}
-	
-	@Override
-	public List<TerritoryCard> getAllComboCards(String player, String gameId) throws GameException {
-		String sql = "SELECT * FROM comboCards WHERE player = ? AND gameId = ?";
-		PreparedStatement pstmt = null;
-		List<TerritoryCard> result = new ArrayList<>();
-		try {
-			pstmt = connection.prepareStatement(sql);
-			pstmt.setString(1, player);
-			pstmt.setString(2, gameId);
-			try (ResultSet rs = pstmt.executeQuery()) {
-				while (rs.next()) {
-					TerritoryCard card = TerritoryCard.builder()
-													  .territory(Territory.builder()
-															  .name((rs.getString("territory"))).build())
-													  .symbol(CardSymbol.valueOf(rs.getString("symbol")))
-													  .build();
-					result.add(card);
-				}
-				return result;
-			}
-		} catch (SQLException e) {
-			throw new GameException("Errore durante il recupero delle carte combo.", e);
-		} finally {
-			closePreparedStatement(pstmt);
-		}
-	}
-
 	@Override
 	public Turn getLastTurnByGameId(String gameId) throws GameException {
-	    String sql = "SELECT * FROM turns WHERE gameId = ? ORDER BY indexTurn DESC LIMIT 1";
+	    String sql = "SELECT * FROM turns WHERE gameIdTN = ? ORDER BY indexTurn DESC LIMIT 1";
 	    PreparedStatement pstmt = null;
 	    Turn turn = null;
 		try {
@@ -812,4 +724,89 @@ public class DaoSQLiteImpl implements DataDao {
 		}
 	}
 	
+	//ComboCardDao methods
+	@Override
+	public void insertComboCard(TerritoryCard t, Player owner, String gameId) throws GameException {
+		String territory = t.getTerritory().getName();
+		String symbol = t.getSymbol().name();
+		String sql = "INSERT INTO comboCards (playerC, gameIdC, territory, symbol) VALUES (?, ?, ?, ?)";
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = connection.prepareStatement(sql);
+			pstmt.setString(1, owner.getUserName());
+			pstmt.setString(2, gameId);
+			pstmt.setString(3, territory);
+			pstmt.setString(4, symbol);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new GameException("Errore durante l'inserimento della carta combo.", e);
+		} finally {
+			closePreparedStatement(pstmt);
+		}
+	}
+	
+	@Override
+	public void deleteComboCard(TerritoryCard t, Player owner, String gameId) throws GameException {
+		String territoryComboCard = t.getTerritory().getName();
+		String symbolComboCard = t.getSymbol().name();
+		String sqlComboCard = "DELETE FROM comboCards WHERE playerC = ? AND gameIdC = ? AND territory = ? AND symbol = ?";
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = connection.prepareStatement(sqlComboCard);
+			pstmt.setString(1, owner.getUserName());
+			pstmt.setString(2, gameId);
+			pstmt.setString(3, territoryComboCard);
+			pstmt.setString(4, symbolComboCard);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new GameException("Errore durante l'eliminazione della carta combo.", e);
+		} finally {
+			closePreparedStatement(pstmt);
+		}
+	}
+	
+	@Override
+	public void updateOwner(TerritoryCard t, String player, String gameId) throws GameException {
+		String territory = t.getTerritory().getName();
+		String sql = "UPDATE comboCards SET playerC = ? WHERE gameIdC = ? AND territory = ?";
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = connection.prepareStatement(sql);
+			pstmt.setString(1, player);
+			pstmt.setString(2, gameId);
+			pstmt.setString(3, territory);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new GameException("Errore durante l'aggiornamento del proprietario della carta combo.", e);
+		} finally {
+			closePreparedStatement(pstmt);
+		}
+	}
+	
+	@Override
+	public List<TerritoryCard> getAllComboCards(String player, String gameId) throws GameException {
+		String sql = "SELECT * FROM comboCards WHERE playerC = ? AND gameIdC = ?";
+		PreparedStatement pstmt = null;
+		List<TerritoryCard> result = new ArrayList<>();
+		try {
+			pstmt = connection.prepareStatement(sql);
+			pstmt.setString(1, player);
+			pstmt.setString(2, gameId);
+			try (ResultSet rs = pstmt.executeQuery()) {
+				while (rs.next()) {
+					TerritoryCard card = TerritoryCard.builder()
+													  .territory(Territory.builder()
+															  .name((rs.getString("territory"))).build())
+													  .symbol(CardSymbol.valueOf(rs.getString("symbol")))
+													  .build();
+					result.add(card);
+				}
+				return result;
+			}
+		} catch (SQLException e) {
+			throw new GameException("Errore durante il recupero delle carte combo.", e);
+		} finally {
+			closePreparedStatement(pstmt);
+		}
+	}	
 }

@@ -33,19 +33,21 @@ public class GameSetupState extends GameState {
 	public void onActionPlayer(TerritorySetup action) throws GameException, DatabaseConnectionException, UserException, FullGameException, IOException{
 		Player player = action.getPlayer();
 		 
-		for(TerritoryBody t : action.getSetUpBody().getTerritories()) {
-			String territoryName = t.getName();
-			int troops = t.getTroops();
-			player.getTerritories().stream().filter(territory -> territory.getName().equals(territoryName)).findFirst()
-					.ifPresent(territory -> {
-						territory.setArmies(troops);
-						try {
-							GameRepository.getInstance().updateTerritoryArmies(territory.getName(), territory.getArmies());
-						} catch (GameException | DatabaseConnectionException | UserException e) {
-							LOGGER.error("Errore nell'aggiornamento delle truppe del territorio {}", territory.getName());
-						}
-						LOGGER.info("Territorio {} con truppe  {}", territory.getName(), territory.getArmies());
-					});
+		for (TerritoryBody t : action.getSetUpBody().getTerritories()) {
+		    String territoryName = t.getName();
+		    int troops = t.getTroops();
+
+		    player.getTerritories().stream()
+		          .filter(territory -> territory.getName().equals(territoryName))
+		          .forEach(territory -> {
+		              territory.setArmies(troops);
+		              try {
+		                  GameRepository.getInstance().updateTerritoryArmies(territory.getName(), territory.getArmies());
+		              } catch (GameException | DatabaseConnectionException | UserException e) {
+		                  LOGGER.error("Errore nell'aggiornamento delle truppe del territorio {}", territory.getName());
+		              }
+		              LOGGER.info("Territorio {} con truppe {}", territory.getName(), territory.getArmies());
+		          });
 		}
 		
 		player.setSetUpCompleted(true); 

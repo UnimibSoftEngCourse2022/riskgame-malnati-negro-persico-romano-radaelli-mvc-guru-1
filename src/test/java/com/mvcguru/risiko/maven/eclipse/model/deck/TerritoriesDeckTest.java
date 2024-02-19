@@ -45,9 +45,7 @@ class TerritoriesDeckTest {
         deck.insertCard(card3);
         
         deck.shuffle();
-        ICard cSbagliata = deck.drawCard();
         assertTrue(true, "Test eseguito ma essendo randomico è difficile da testare sempre, ma lo shuffle va a buon fine");
-        //assertNotEquals(cSbagliata, card1, "The first card drawn should be card1");
 
     }
 }

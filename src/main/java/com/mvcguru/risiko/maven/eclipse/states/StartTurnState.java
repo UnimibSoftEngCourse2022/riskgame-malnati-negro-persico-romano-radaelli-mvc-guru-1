@@ -1,14 +1,10 @@
 package com.mvcguru.risiko.maven.eclipse.states;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.mvcguru.risiko.maven.eclipse.actions.ComboRequest;
-import com.mvcguru.risiko.maven.eclipse.actions.TerritorySetup;
 import com.mvcguru.risiko.maven.eclipse.actions.TurnSetUp;
 import com.mvcguru.risiko.maven.eclipse.controller.body_request.TerritoryBody;
 import com.mvcguru.risiko.maven.eclipse.controller.body_request.TerritoryCardBody;
@@ -16,10 +12,8 @@ import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
 import com.mvcguru.risiko.maven.eclipse.exception.GameException;
 import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
-import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard.CardSymbol;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 import com.mvcguru.risiko.maven.eclipse.service.GameRepository;
-import com.mvcguru.risiko.maven.eclipse.service.database.DaoSQLiteImpl;
 
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -28,12 +22,12 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public class StartTurnState extends GameState{
 	
-    private static final Logger LOGGER = LoggerFactory.getLogger(DaoSQLiteImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(StartTurnState.class);
 
 	
 	@Override
 	public void onActionPlayer(ComboRequest comboRequest) {
-		List<TerritoryCard> result = new ArrayList<TerritoryCard>();
+		List<TerritoryCard> result = new ArrayList<>();
 		for (TerritoryCardBody t : comboRequest.getComboRequestBody().getComboCards()) {
 			result.add(comboRequest.getPlayer().getComboCards().stream()
                     .filter(card -> card.getTerritory().getName().equals(t.getName()))

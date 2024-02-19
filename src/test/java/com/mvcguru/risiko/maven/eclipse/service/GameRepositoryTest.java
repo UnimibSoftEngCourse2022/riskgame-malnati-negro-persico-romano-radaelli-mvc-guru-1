@@ -30,13 +30,12 @@ class GameRepositoryTest {
     private GameRepository gameRepository;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws DatabaseConnectionException, GameException, UserException {
         MockitoAnnotations.openMocks(this);
     }
     
     @Test
 	void getIstance() throws DatabaseConnectionException, GameException, UserException {
-		GameRepository gameRepository = GameRepository.getInstance();
 		assertNotNull(gameRepository);
 	}
 

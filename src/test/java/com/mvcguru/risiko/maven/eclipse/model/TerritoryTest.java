@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 
 class TerritoryTest {
 
