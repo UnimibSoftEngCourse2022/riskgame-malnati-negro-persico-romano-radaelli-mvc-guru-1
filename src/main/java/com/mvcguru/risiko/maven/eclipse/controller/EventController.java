@@ -102,10 +102,13 @@ public class EventController {
 	public void turnAssignation(@DestinationVariable String id, @Payload SetUpBody body) throws Exception {
 		try {
 			IGame game = GameRepository.getInstance().getGameById(id);
+			LOGGER.info("Inizio assegnazione del turno {}", body);
 			Player player = game.findPlayerByUsername(body.getUsername());
 			if (player != null) {
 				TurnSetUp action = TurnSetUp.builder().player(player).setUpBody(body).build();
+				LOGGER.info("Parte action");
 				game.onActionPlayer(action);
+				LOGGER.info("Fine assegnazione del turno");
 			}
 		} catch (Exception e) {
 			LOGGER.error("Errore durante l'assegnazione del turno", e);

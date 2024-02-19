@@ -73,6 +73,7 @@ public class Game extends IGame {
                 .player(players.get(0))
                 .indexTurn(1)
                 .build();
+		currentTurn.numberOfTroopsCalculation(currentTurn.getPlayer().getTerritories());
 		
 	}
 	
@@ -83,8 +84,9 @@ public class Game extends IGame {
                 .player(players.get((players.indexOf(curr) + 1) % players.size()))
                 .indexTurn(currentTurn.getIndexTurn() + 1)
                 .build());
-        // cambio stato? 
-        broadcast();
+        currentTurn.numberOfTroopsCalculation(currentTurn.getPlayer().getTerritories());
+        
+        //broadcast();Chiamo change turn dallo stato fine turno con la action, alla fine della action faccio broadcast
 	}	
 		
 	public List<Territory> findTerritoriesByName(List<String> territoriesName) {

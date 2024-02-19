@@ -61,8 +61,8 @@ class Mappa extends React.Component {
     console.log("partita", partita);
     console.log("partita.state", partita.state.type);
 
-    if (partita && partita.state.type === "PlayTurnState") {
-      console.log("Sto per andare all component PlayTurnState");
+    if (partita && partita.state.type === "StartTurnState") {
+      console.log("Sto per andare all component StartTurnState");
       return <StartTurnState idPlayer={this.state.nickname} game={partita} />;
     }
     return null;

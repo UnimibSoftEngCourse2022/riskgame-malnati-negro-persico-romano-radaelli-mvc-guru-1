@@ -36,14 +36,14 @@ public class Turn implements Serializable{
 	
 	private Territory defenderTerritory;
 	
-    public void numberOfTroopsCalculation(List<Territory> territories) throws IOException {
+    public void numberOfTroopsCalculation(List<Territory> territories) {
         numberOfTroops += territories.size() / 3;
         numberOfTroops += continentCheck(territories);
 		LOGGER.info("Number of troops: {}", numberOfTroops);
       //player.getGame().broadcast(player.getGame().getId(),player.getUserName(), numberOfTroops); //da cambiare
     }
 
-    public int continentCheck(List<Territory> territories) throws IOException {
+    public int continentCheck(List<Territory> territories){
         int troops = 0;
         List<Continent> continent = player.getGame().getContinents();
         List<String> territoriesName = territories.stream().map(Territory::getName).collect(Collectors.toList());

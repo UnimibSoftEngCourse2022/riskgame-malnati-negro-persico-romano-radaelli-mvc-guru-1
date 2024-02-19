@@ -147,6 +147,19 @@ class AppController {
   console.log(`Setup per la partita ${idPartita} inviato:`, territoriAssegnati);
 }
 
+	setUpTurno(idPartita, territoriAssegnati) {
+		if (!this.client || !this.client.connected) {
+			console.error("Client STOMP non connesso");
+			return;
+		}
+		console.log("territoriAssegnati", territoriAssegnati);
+		this.client.publish({
+			destination: `/app/partite/${idPartita}/turnAssignation`,
+			body: JSON.stringify(territoriAssegnati),
+		});
+		console.log(`Setup per il turno della partita: ${idPartita} inviato:`, territoriAssegnati);
+	}
+
 }
 
 	

@@ -396,6 +396,9 @@ public class DaoSQLiteImpl implements DataDao {
             case "LobbyState":
                 newGame.setState(LobbyState.builder().game(newGame).build());
                 break;
+			case "BattleState":
+				newGame.setState(BattleState.builder().game(newGame).build());
+				break;
             default:
             	LOGGER.error("Stato non riconosciuto");
                 break;
