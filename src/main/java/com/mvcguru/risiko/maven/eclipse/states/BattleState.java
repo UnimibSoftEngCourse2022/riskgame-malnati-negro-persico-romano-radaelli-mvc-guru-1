@@ -16,7 +16,7 @@ public class BattleState extends GameState{
 		game.getCurrentTurn().setAttackerTerritory(
 				attackRequest.getPlayer().getTerritoryByName(attackRequest.getRequestAttackBody().getAttackerTerritory().getNameTerritory()));
 		game.getCurrentTurn().setDefenderTerritory(
-				attackRequest.getPlayer().getTerritoryByName(attackRequest.getRequestAttackBody().getDefenderTerritory().getNameTerritory()));
+				game.findPlayerByUsername(attackRequest.getRequestAttackBody().getDefenderTerritory().getUsername()).getTerritoryByName(attackRequest.getRequestAttackBody().getDefenderTerritory().getNameTerritory()));
 	}
 	
 	@Override

@@ -14,8 +14,6 @@ import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 import com.mvcguru.risiko.maven.eclipse.states.GameState;
 
 public interface DataDao {
-	
-	 void initializeDatabase();
 	//UserDao
     User getUserByUsernameAndPassword(String username, String password) throws UserException;
     void insertUser(User user) throws UserException, GameException;
