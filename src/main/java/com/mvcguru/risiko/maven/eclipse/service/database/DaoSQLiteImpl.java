@@ -451,7 +451,7 @@ public class DaoSQLiteImpl implements DataDao {
 		String sql = "UPDATE players SET objective = ? WHERE username = ?";
 		PreparedStatement pstmt = null;
 		try {
-			LOGGER.info(((ObjectiveCard)objective).getObjective());
+			LOGGER.info(((ObjectiveCard)objective).getObjective().toString());
 			pstmt = connection.prepareStatement(sql);
 			pstmt.setString(1, ((ObjectiveCard)objective).getObjective());
 			pstmt.setString(2, username);

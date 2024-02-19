@@ -132,7 +132,7 @@ public class EventController {
 	}
 	
 	@MessageMapping("/partite/{id}/defence")
-	public void attackRequest(@DestinationVariable String id, @Payload DefenceRequestBody body) {
+	public void defenceRequest(@DestinationVariable String id, @Payload DefenceRequestBody body) {
 		try {
 			IGame game = GameRepository.getInstance().getGameById(id);
 			LOGGER.info("Inizio assegnazione del turno {}", body);
@@ -146,15 +146,12 @@ public class EventController {
 	}
 
 	@MessageMapping("/partite/{id}/conquerAssigment")
-	public void attackRequest(@DestinationVariable String id, @Payload int troops) {
+	public void conquerAssignment(@DestinationVariable String id, @Payload int troops) {
 		try {
 			IGame game = GameRepository.getInstance().getGameById(id);
 			LOGGER.info("Inizio assegnazione del turno {}", troops);
 			game.getCurrentTurn().moveTroops(troops);
-			if(player != null) {
-				DefenceRequest action = DefenceRequest.builder().player(player).defenderRequestBody(body).build();
-				game.onActionPlayer(action);
-			}
+			
 		}
 		catch(Exception e){ LOGGER.error("Errore durante la richiesta di difesa", e);}
 	}
