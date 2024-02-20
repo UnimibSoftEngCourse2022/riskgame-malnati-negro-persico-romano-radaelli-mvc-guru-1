@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import AppController from "../../application/AppController";
 import SvgMap from "./SvgMap";
-import { Button, Container } from "react-bootstrap";
+import { Alert, Button, Container } from "react-bootstrap";
 
 function SetUpStateMap({ idPlayer, giocatori, game }) {
   const [player, setPlayer] = useState(null);
@@ -10,6 +10,7 @@ function SetUpStateMap({ idPlayer, giocatori, game }) {
   const [troopsToAssign, setTroopsToAssign] = useState(0);
   const [mappa, setMappa] = useState([]);
   const [initialTroopsToAssign, setInitialTroopsToAssign] = useState(0);
+  const [colorPlayer, setColorPlayer] = useState("");
 
   useEffect(() => {
     const pathD = giocatori.flatMap((player) =>
@@ -22,6 +23,10 @@ function SetUpStateMap({ idPlayer, giocatori, game }) {
 
     const currentPlayer = giocatori.find((p) => p.userName === idPlayer);
     setPlayer(currentPlayer);
+
+    console.log("player in setup", currentPlayer);
+    console.log("game in setup", game);
+    setColorPlayer(currentPlayer.color);
 
     if (currentPlayer) {
       const initialAssignments = currentPlayer.territories.reduce(
@@ -100,14 +105,31 @@ function SetUpStateMap({ idPlayer, giocatori, game }) {
   };
 
   return (
-    <Container>
+    <Container fluid className="">
+      {console.log("player in setup", player)}
+      {console.log("player name in setup", player.userName)}
+      {console.log("player color in setup", player.color)}
+      {player && <Alert>{player.objective.objective}</Alert>}
+      {console.log("player objective in setup", player.objective.objective)}
+
+      <div className="d-flex flew-row justify-content-center align-items-center">
+        <span>Il colore delle tue truppe è il </span>
+        <div
+          style={{
+            backgroundColor: `${colorPlayer}`,
+            width: "15px",
+            height: "15px",
+            marginLeft: "3px",
+          }}
+        ></div>
+      </div>
+
       <p>
         posiziona le truppe in base al tuo obbiettivo utilizza il click sinistro
         per aggiungere truppe al territorio utilizza il click destro per
         rimuovere le truppe dal territorio
       </p>
       <Container>
-        {console.log("troopAssignments", troopAssignments)}
         <SvgMap
           paths={mappa}
           gioco={game}
