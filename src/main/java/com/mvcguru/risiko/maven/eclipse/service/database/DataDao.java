@@ -50,6 +50,7 @@ public interface DataDao {
 	void updateDefenderTerritory(Turn turn, String defenderTerritory) throws GameException;
 	void updateAttackerTerritory(Turn turn, String attackerTerritory) throws GameException;
 	void updateIsConquered(Turn turn, boolean isConquered) throws GameException;
+	Turn getTurnByIndex(String gameId, String player, int index) throws GameException;
 	Turn getLastTurnByGameId(String gameId) throws GameException;
 	
 	//ComboCardDao

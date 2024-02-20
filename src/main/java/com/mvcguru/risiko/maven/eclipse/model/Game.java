@@ -69,6 +69,7 @@ public class Game extends IGame {
 		GameRepository.getInstance().insertTurn(currentTurn);		
 	}
 	
+	@Override
 	public void changeTurn() throws GameException, DatabaseConnectionException, UserException {
 		Player curr = currentTurn.getPlayer();
 		LOGGER.info("Cambio turno - giocatore corrente {}", curr.getUserName());
