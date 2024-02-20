@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.mvcguru.risiko.maven.eclipse.actions.ComboRequest;
 import com.mvcguru.risiko.maven.eclipse.actions.TurnSetUp;
+import com.mvcguru.risiko.maven.eclipse.controller.body_request.ResultNoticeBody;
 import com.mvcguru.risiko.maven.eclipse.controller.body_request.TerritoryBody;
 import com.mvcguru.risiko.maven.eclipse.controller.body_request.TerritoryCardBody;
 import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
@@ -74,6 +75,7 @@ public class StartTurnState extends GameState{
 		
 		game.setState(BattleState.builder().game(game).build());
 		GameRepository.getInstance().updateState(game.getId(), game.getState());
+		LOGGER.info("fine broadcast");
 		
 	}
 }

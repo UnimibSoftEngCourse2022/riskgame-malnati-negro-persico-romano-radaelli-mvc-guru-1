@@ -22,6 +22,7 @@ import com.mvcguru.risiko.maven.eclipse.controller.body_request.AttackRequestBod
 import com.mvcguru.risiko.maven.eclipse.controller.body_request.ComboRequestBody;
 import com.mvcguru.risiko.maven.eclipse.controller.body_request.DefenceRequestBody;
 import com.mvcguru.risiko.maven.eclipse.controller.body_request.PlayerBody;
+import com.mvcguru.risiko.maven.eclipse.controller.body_request.ResultNoticeBody;
 import com.mvcguru.risiko.maven.eclipse.controller.body_request.SetUpBody;
 import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
@@ -112,6 +113,7 @@ public class EventController {
 				TurnSetUp action = TurnSetUp.builder().player(player).setUpBody(body).build();
 				LOGGER.info("Parte action");
 				game.onActionPlayer(action);
+				game.broadcast(player.getUserName(), ResultNoticeBody.builder().isConquered(false).lostAttTroops(0).lostDefTroops(0).build());
 				LOGGER.info("Fine assegnazione del turno");
 			}
 		} catch (Exception e) { LOGGER.error("Errore durante l'assegnazione del turno", e); }

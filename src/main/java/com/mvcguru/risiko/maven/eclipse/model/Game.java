@@ -45,8 +45,8 @@ public class Game extends IGame {
 	}
 	
 	@Override
-	public <T> void broadcast(String idGame, String idUser,T object) {
-		MessageBrokerSingleton.getInstance().broadcast(idGame, idUser, object);
+	public <T> void broadcast(String idUser,T object) {
+		MessageBrokerSingleton.getInstance().broadcast(id, idUser, object);
 	}
 	
 	public Player findPlayerByUsername(String username) {
