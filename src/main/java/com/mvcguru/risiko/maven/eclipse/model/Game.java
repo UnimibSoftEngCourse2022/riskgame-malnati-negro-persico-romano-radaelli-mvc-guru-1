@@ -82,4 +82,9 @@ public class Game extends IGame {
        
         //broadcast();Chiamo change turn dallo stato fine turno con la action, alla fine della action faccio broadcast
 	}
+	
+	@Override
+	public void endGame() {
+		//GameRepository.getInstance().deleteGame(id);
+	}
 }

@@ -60,5 +60,7 @@ public abstract class IGame implements Serializable{
 	public void startGame() throws GameException, DatabaseConnectionException, UserException { }
 	
 	public void changeTurn() throws GameException, DatabaseConnectionException, UserException { }
+
+	public void endGame() {}
    
 }

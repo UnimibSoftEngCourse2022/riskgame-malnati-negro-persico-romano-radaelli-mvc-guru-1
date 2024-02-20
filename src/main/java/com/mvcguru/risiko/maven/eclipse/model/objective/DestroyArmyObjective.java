@@ -9,6 +9,7 @@ public class DestroyArmyObjective extends Objective{
 	public boolean isComplete(IGame game, String username) {
 		
 		Player player =game.findPlayerByUsername(username);
+		
 		if (player.getTerritories().size() == 0 && player.getColor() == colorArmy) {
 			isComplete = true;
 		}
