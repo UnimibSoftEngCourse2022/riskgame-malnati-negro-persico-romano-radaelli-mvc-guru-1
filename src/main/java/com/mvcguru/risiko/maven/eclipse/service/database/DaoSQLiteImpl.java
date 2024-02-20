@@ -400,14 +400,14 @@ public class DaoSQLiteImpl implements DataDao {
 
     @Override
     public void updateTerritoryOwner(String territoryName, Player player) throws GameException {
-        String sql = "UPDATE territories SET player = ? WHERE name = ?";
-        executeUpdate(sql, player.getUserName(), territoryName);
+        String sql = "UPDATE territories SET player = ? WHERE name = ? AND gameId = ?";
+        executeUpdate(sql, player.getUserName(), territoryName, player.getGameId());
     }
 
     @Override
-    public void updateTerritoryArmies(String territoryName, int troops) throws GameException {
-        String sql = "UPDATE territories SET armies = ? WHERE name = ?";
-        executeUpdate(sql, troops, territoryName);
+    public void updateTerritoryArmies(String territoryName, String gameId,  int troops) throws GameException {
+        String sql = "UPDATE territories SET armies = ? WHERE name = ? AND gameId = ?";
+        executeUpdate(sql, troops, territoryName, gameId);
     }
 
     @Override

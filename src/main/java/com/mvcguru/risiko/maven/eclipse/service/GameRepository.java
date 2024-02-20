@@ -106,8 +106,8 @@ public class GameRepository {
 		db.updatePlayerObjective(username, objective);
 	}
 	
-	public synchronized void updateTerritoryArmies(String territoryName, int armies) throws GameException {
-		db.updateTerritoryArmies(territoryName, armies);
+	public synchronized void updateTerritoryArmies(String territoryName, String gameId, int armies) throws GameException {
+		db.updateTerritoryArmies(territoryName, gameId, armies);
 	}
 	
 	public synchronized List<Territory> getAllTerritories(String player) throws GameException {

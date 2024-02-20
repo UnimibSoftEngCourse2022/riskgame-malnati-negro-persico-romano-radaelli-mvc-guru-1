@@ -37,7 +37,7 @@ public interface DataDao {
 	void insertTerritory(Territory territory, String gameId) throws GameException;
 	void deleteTerritory(String name) throws GameException;
 	void updateTerritoryOwner(String territoryName, Player player) throws GameException;
-	void updateTerritoryArmies(String territoryName, int armies) throws GameException;
+	void updateTerritoryArmies(String territoryName, String gameId, int troops) throws GameException;
 	List<Territory> getAllTerritories(String player) throws GameException;
 	
 	//TurnDao
@@ -59,4 +59,5 @@ public interface DataDao {
 	List<TerritoryCard> getAllComboCards(String player, String gameId) throws GameException;
 	
 	void closeConnection();
+	
 }
