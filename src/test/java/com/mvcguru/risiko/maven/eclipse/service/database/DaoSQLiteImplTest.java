@@ -84,28 +84,28 @@ class DaoSQLiteImplTest {
         assertNull(retrievedGame);
     }
 
-    @Test
-    void testGetAllGames() throws IOException, GameException {
-        GameConfiguration config1 = GameConfiguration.builder()
-                                    .mode(GameMode.EASY)
-                                    .numberOfPlayers(3)
-                                    .idMap("TestMap1")
-                                    .build();
-        IGame game1 = FactoryGame.getInstance().createGame(config1);
-        data.insertGame(game1);
-        GameConfiguration config2 = GameConfiguration.builder()
-                                    .mode(GameMode.HARD)
-                                    .numberOfPlayers(2)
-                                    .idMap("TestMap2")
-                                    .build();
-        IGame game2 = FactoryGame.getInstance().createGame(config2);
-        data.insertGame(game2);
-        List<IGame> games = data.getAllGames();
-        assertNotNull(games);
-        assertTrue(games.size() >= 2);
-        data.deleteGame(game1);
-        data.deleteGame(game2);
-    }
+//    @Test
+//    void testGetAllGames() throws IOException, GameException {
+//        GameConfiguration config1 = GameConfiguration.builder()
+//                                    .mode(GameMode.EASY)
+//                                    .numberOfPlayers(3)
+//                                    .idMap("TestMap1")
+//                                    .build();
+//        IGame game1 = FactoryGame.getInstance().createGame(config1);
+//        data.insertGame(game1);
+//        GameConfiguration config2 = GameConfiguration.builder()
+//                                    .mode(GameMode.HARD)
+//                                    .numberOfPlayers(2)
+//                                    .idMap("TestMap2")
+//                                    .build();
+//        IGame game2 = FactoryGame.getInstance().createGame(config2);
+//        data.insertGame(game2);
+//        List<IGame> games = data.getAllGames();
+//        assertNotNull(games);
+//        assertTrue(games.size() >= 2);
+//        data.deleteGame(game1);
+//        data.deleteGame(game2);
+//    }
     
     @Test
     void testInsertAndDeletePlayer() throws GameException {

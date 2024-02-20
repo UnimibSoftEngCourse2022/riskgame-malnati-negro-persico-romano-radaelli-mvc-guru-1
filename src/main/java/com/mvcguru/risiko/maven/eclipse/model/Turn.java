@@ -173,6 +173,9 @@ public class Turn implements Serializable{
 			defenderTerritory.setIdOwner(attackerTerritory.getIdOwner());
 			GameRepository.getInstance().updateTerritoryOwner(defenderTerritory.getName(), player);
 			ResultNoticeBody result = ResultNoticeBody.builder().isConquered(true).lostAttTroops(attLosses).lostDefTroops(defLosses).build();
+			//objective.issComplete(player.getGame(), player.getUserName());
+			
+			//todo: gestione conquista territorio
 			//player.getGame().broadcast(player.getGame().getId(), player.getUserName(), result);
 		}
 	}

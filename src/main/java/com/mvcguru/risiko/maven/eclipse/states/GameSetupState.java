@@ -81,9 +81,9 @@ public class GameSetupState extends GameState {
 			card = deckObjective.drawCard();
 			player.setObjective(card);
 			GameRepository.getInstance().updateObjective(player.getUserName(), card);
-	        if(game.getConfiguration().getMode().name().equals("EASY")){
+	        if(game.getConfiguration().getMode().name().equals("EASY"))
 	        	deckObjective.insertCard(card);
-	        }
+	        
 		}
 	}
 	

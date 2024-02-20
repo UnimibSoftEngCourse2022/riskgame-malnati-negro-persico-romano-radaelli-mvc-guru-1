@@ -29,7 +29,6 @@ import lombok.experimental.SuperBuilder;
 import com.mvcguru.risiko.maven.eclipse.model.Territory;
 import com.mvcguru.risiko.maven.eclipse.model.Turn;
 
-@SuperBuilder
 public class DaoSQLiteImpl implements DataDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(DaoSQLiteImpl.class);
     private Connection connection;
@@ -593,5 +592,5 @@ public class DaoSQLiteImpl implements DataDao {
 			} catch (SQLException e) {throw new GameException("Errore durante il recupero di una partita", e);
 			}
         return newGame;
-	}		
+	}
 }
