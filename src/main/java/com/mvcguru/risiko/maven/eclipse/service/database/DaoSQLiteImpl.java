@@ -156,9 +156,8 @@ public class DaoSQLiteImpl implements DataDao {
 
     @Override
     public void insertTurn(Turn turn) throws GameException {
-        executeInsert("INSERT INTO turns (indexTurn, player, gameId, numberOfTroops, attackerTerritory, defenderTerritory) VALUES (?, ?, ?, ?, ?, ?)",
-                      turn.getIndexTurn(), turn.getPlayer().getUserName(), turn.getPlayer().getGameId(), turn.getNumberOfTroops(),
-                      turn.getAttackerTerritory().getName(), turn.getDefenderTerritory().getName());
+        executeInsert("INSERT INTO turns (indexTurn, player, gameId, numberOfTroops, isConquered) VALUES (?, ?, ?, ?, ?)",
+                      turn.getIndexTurn(), turn.getPlayer().getUserName(), turn.getPlayer().getGameId(), turn.getNumberOfTroops(), turn.isConquered());
     }
 
     @Override
@@ -295,6 +294,34 @@ public class DaoSQLiteImpl implements DataDao {
 	}
     
     @Override
+	public Turn getTurnByIndex(String gameId, String player, int index) throws GameException {
+            String sql = "SELECT * FROM turns WHERE indexTurn = ? AND gameId = ? AND player = ?";
+            PreparedStatement pstmt = null;
+            Turn turn = null;
+            try {
+            	pstmt = prepareStatement(sql);
+                pstmt.setInt(1, index);
+                pstmt.setString(2, gameId);
+                pstmt.setString(3, player);
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    if (rs.next()) {
+                        int indexTurn = rs.getInt("indexTurn");
+                        int numberOfTroops = rs.getInt("numberOfTroops");
+                        boolean isConquered = rs.getBoolean("isConquered");
+                        turn = Turn.builder().indexTurn(indexTurn)
+                                .player(Player.builder().userName(player).gameId(gameId).build())
+                                .numberOfTroops(numberOfTroops).isConquered(isConquered).build();
+                    }
+                    return turn;
+                }
+            } catch (SQLException e) {
+                throw new GameException("Errore durante il recupero del turno.", e);
+            } finally {
+                closePreparedStatement(pstmt);
+            }
+    }
+    
+    @Override
 	public Turn getLastTurnByGameId(String gameId) throws GameException {
 	    String sql = "SELECT * FROM turns WHERE gameId = ? ORDER BY indexTurn DESC LIMIT 1";
 	    PreparedStatement pstmt = null;
@@ -304,11 +331,12 @@ public class DaoSQLiteImpl implements DataDao {
 			pstmt.setString(1, gameId);
 			try (ResultSet rs = pstmt.executeQuery()) {
 				if (rs.next()) {
-					int index = rs.getInt("index");
+					int index = rs.getInt("indexTurn");
 					String player = rs.getString("player");
 					int numberOfTroops = rs.getInt("numberOfTroops");
 					String attackerTerritory = rs.getString("attackerTerritory");
 					String defenderTerritory = rs.getString("defenderTerritory");
+					boolean isConquered = rs.getBoolean("isConquered");
 					turn = Turn.builder().indexTurn(index)
 							.player(Player.builder().userName(player).gameId(gameId).build())
 							.numberOfTroops(numberOfTroops)
@@ -408,12 +436,6 @@ public class DaoSQLiteImpl implements DataDao {
     public void updateTerritoryArmies(String territoryName, String gameId,  int troops) throws GameException {
         String sql = "UPDATE territories SET armies = ? WHERE name = ? AND gameId = ?";
         executeUpdate(sql, troops, territoryName, gameId);
-    }
-
-    @Override
-    public void updateTurnIndex(Turn turn, int index) throws GameException {
-        String sql = "UPDATE turns SET indexTurn = ? WHERE player = ? AND gameId = ?";
-        executeUpdate(sql, index, turn.getPlayer().getUserName(), turn.getPlayer().getGameId());
     }
     
     @Override

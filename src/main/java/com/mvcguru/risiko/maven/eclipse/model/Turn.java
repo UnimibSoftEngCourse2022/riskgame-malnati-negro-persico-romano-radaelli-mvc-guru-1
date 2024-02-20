@@ -44,6 +44,7 @@ public class Turn implements Serializable{
 	
 	private int numDefDice;
 	
+	@Builder.Default
 	private boolean isConquered = false;
 	
     public void numberOfTroopsCalculation(List<Territory> territories) {
@@ -163,22 +164,28 @@ public class Turn implements Serializable{
 	    	defenderTerritory.setArmies(defenderTerritory.getArmies() - defLosses);
 	    	GameRepository.getInstance().updateTerritoryArmies(defenderTerritory.getName(), player.getGameId(), defenderTerritory.getArmies());
 			ResultNoticeBody result = ResultNoticeBody.builder().isConquered(false).lostAttTroops(attLosses).lostDefTroops(defLosses).build();
-	    	player.getGame().broadcast(player.getGame().getId(), player.getUserName(), result);
+	    	//player.getGame().broadcast(player.getGame().getId(), player.getUserName(), result);
 			resetBattleInfo();
 	    }
 		else {
 			isConquered = true;
+			GameRepository.getInstance().updateIsConquered(this, isConquered);
 			defenderTerritory.setIdOwner(attackerTerritory.getIdOwner());
+			GameRepository.getInstance().updateTerritoryOwner(defenderTerritory.getName(), player);
 			ResultNoticeBody result = ResultNoticeBody.builder().isConquered(true).lostAttTroops(attLosses).lostDefTroops(defLosses).build();
-			player.getGame().broadcast(player.getGame().getId(), player.getUserName(), result);
+			//player.getGame().broadcast(player.getGame().getId(), player.getUserName(), result);
 		}
 	}
 	
-	public void resetBattleInfo() {
+	public void resetBattleInfo() throws GameException, DatabaseConnectionException, UserException {
 		attackerTerritory = null;
         defenderTerritory = null;
         numAttDice = 0;
         numDefDice = 0;
-	}
+        GameRepository.getInstance().updateAttackerTerritory(this, null);
+        GameRepository.getInstance().updateDefenderTerritory(this, null);
+        GameRepository.getInstance().updateNumAttackDice(this, 0);
+        GameRepository.getInstance().updateNumDefenseDice(this, 0);
+        }
 	
 }

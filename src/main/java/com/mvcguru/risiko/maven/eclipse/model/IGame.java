@@ -53,7 +53,7 @@ public abstract class IGame implements Serializable{
     
     public abstract void broadcast();
     
-    public abstract <T> void broadcast(String idGame, String idUser,T object);
+    public abstract <T> void broadcast(String idUser,T object);
 
 	public abstract Player findPlayerByUsername(String username);
 

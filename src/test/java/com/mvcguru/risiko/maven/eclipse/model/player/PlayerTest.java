@@ -86,7 +86,7 @@ class PlayerTest {
     }
     
     @Test
-    public void getTerritoryByName_ShouldReturnCorrectTerritory_WhenNameMatches() {
+    void getTerritoryByName_ShouldReturnCorrectTerritory_WhenNameMatches() {
     	Territory territory1 = new Territory();
         territory1.setName("Territory1");
         
@@ -102,7 +102,7 @@ class PlayerTest {
     }
 
     @Test
-    public void getTerritoryByName_ShouldReturnNull_WhenNoMatchFound() {
+    void getTerritoryByName_ShouldReturnNull_WhenNoMatchFound() {
     	Territory territory1 = new Territory();
         territory1.setName("Territory1");
         

@@ -17,8 +17,7 @@ function BattleState({ idPlayer, game }) {
     const pathD = [];
     const newTroopAssignments = {};
 
-    // il turno corrente arriva null dal backend
-    // setIsPlayersTurn(game.currentTurn.player.userName === idPlayer);
+    setIsPlayersTurn(game.currentTurn.player.userName === idPlayer);
 
     game.players.forEach((player) => {
       player.territories.forEach((territory) => {

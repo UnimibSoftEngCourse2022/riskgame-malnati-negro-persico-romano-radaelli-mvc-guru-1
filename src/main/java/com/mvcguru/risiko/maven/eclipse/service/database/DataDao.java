@@ -43,13 +43,13 @@ public interface DataDao {
 	//TurnDao
 	void insertTurn(Turn turn) throws GameException;
 	void deleteTurn(Turn turn) throws GameException;
-	void updateTurnIndex(Turn turn, int index) throws GameException;
 	void updateTurnNumberOfTroops(Turn turn, int numberOfTroops) throws GameException;
 	void updateNumAttackDice(Turn turn, int numAttackDice) throws GameException;
 	void updateNumDefenseDice(Turn turn, int numDefenseDice) throws GameException;
 	void updateDefenderTerritory(Turn turn, String defenderTerritory) throws GameException;
 	void updateAttackerTerritory(Turn turn, String attackerTerritory) throws GameException;
 	void updateIsConquered(Turn turn, boolean isConquered) throws GameException;
+	Turn getTurnByIndex(String gameId, String player, int index) throws GameException;
 	Turn getLastTurnByGameId(String gameId) throws GameException;
 	
 	//ComboCardDao

@@ -100,6 +100,7 @@ class NewPartita extends React.Component {
     }
     try {
       AppController.entraInPartita(idPartita, effectiveNickname);
+      AppController.subscribeToEsitiPartita(idPartita, effectiveNickname);
       this.props.navigate(`/lobby/${idPartita}?nickname=${effectiveNickname}`);
     } catch (error) {
       alert("Errore: " + error.message); // Mostra un popup con l'errore
