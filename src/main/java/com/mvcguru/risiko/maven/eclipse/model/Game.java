@@ -57,7 +57,6 @@ public class Game extends IGame {
         }
         return null;
     }
-
 	
 	@Override
 	public void startGame() throws GameException, DatabaseConnectionException, UserException {

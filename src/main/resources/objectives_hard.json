@@ -1,70 +1,84 @@
 [
     {
+    	"type": "territories",
         "objective": "Conquistare 18 territori presidiandoli con almeno due armate ciascuno.",
         "nTerritory": "18"
     },
     {
+        "type": "territories",
         "objective": "Conquistare 24 territori.",
         "nTerritory": "24"
     },
     {
+        "type": "conquerContinent",
         "objective": "Conquistare la totalità del Nord America e dell'Africa.",
         "continent1": "5",
         "continent2": "3"
     },
     {
+        "type": "conquerContinent",
         "objective": "Conquistare la totalità del Nord America e dell'Oceania.",
         "continent1": "5",
         "continent2": "6"
     },
     {
+        "type": "conquerContinent",
         "objective": "Conquistare la totalità dell'Asia e del Sud America.",
         "continent1": "4",
         "continent2": "1"
     },
     {
+        "type": "conquerContinent",
         "objective": "Conquistare la totalità dell'Asia e dell'Africa.",
         "continent1": "4",
         "continent2": "3"
     },
     {
+    	"type": "conquerContinent",
         "objective": "Conquistare la totalità dell'Europa, del Sud America e di un terzo continente a scelta.",
         "continent1": "5",
         "continent2": "1",
         "continent3": "7"
     },
     {
+    	"type": "conquerContinent",
         "objective": "Conquistare la totalità dell'Europa, dell'Oceania e di un terzo continente a scelta.",
         "continent1": "2",
         "continent2": "1",
         "continent3": "7"
     },
     {
+        "type": "destroyArmy",
         "objective": "Distruggere completamente l'armata rossa, se le armate non sono presenti nel gioco, se le armate sono possedute dal giocatore che ha l'obiettivo di distruggerle o se l'ultima armata viene distrutta da un altro giocatore, l'obiettivo diventa conquistare 24 territori.",
         "colorArmy": "RED",
         "nTerritory": "24"
     },
     {
+    	"type": "destroyArmy",
         "objective": "Distruggere completamente l'armata gialla, se le armate non sono presenti nel gioco, se le armate sono possedute dal giocatore che ha l'obiettivo di distruggerle o se l'ultima armata viene distrutta da un altro giocatore, l'obiettivo diventa conquistare 24 territori.",
     	"colorArmy": "YELLOW",
     	"nTerritory": "24"
     },
     {
+        "type": "destroyArmy",
         "objective": "Distruggere completamente l'armata verde, se le armate non sono presenti nel gioco, se le armate sono possedute dal giocatore che ha l'obiettivo di distruggerle o se l'ultima armata viene distrutta da un altro giocatore, l'obiettivo diventa conquistare 24 territori.",
     	"colorArmy": "GREEN",
     	"nTerritory": "24"
     },
     {
+        "type": "destroyArmy",
         "objective": "Distruggere completamente l'armata blu, se le armate non sono presenti nel gioco, se le armate sono possedute dal giocatore che ha l'obiettivo di distruggerle o se l'ultima armata viene distrutta da un altro giocatore, l'obiettivo diventa conquistare 24 territori.",
     	"colorArmy": "BLU",
     	"nTerritory": "24"
     },
     {
+        "type": "destroyArmy",
         "objective": "Distruggere completamente l'armata nero, se le armate non sono presenti nel gioco, se le armate sono possedute dal giocatore che ha l'obiettivo di distruggerle o se l'ultima armata viene distrutta da un altro giocatore, l'obiettivo diventa conquistare 24 territori.",
     	"colorArmy": "BLACK",
     	"nTerritory": "24"
     },
     {
+        "type": "destroyArmy",
         "objective": "Distruggere completamente l'armata viola, se le armate non sono presenti nel gioco, se le armate sono possedute dal giocatore che ha l'obiettivo di distruggerle o se l'ultima armata viene distrutta da un altro giocatore, l'obiettivo diventa conquistare 24 territori.",
     	"colorArmy": "PURPLE",
     	"nTerritory": "24"
