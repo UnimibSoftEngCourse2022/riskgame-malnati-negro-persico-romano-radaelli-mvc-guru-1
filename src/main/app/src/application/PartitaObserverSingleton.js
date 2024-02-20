@@ -31,7 +31,7 @@ class PartitaObserverSingleton {
   
 	notifyListenersEsiti(esiti) {
 		console.log("esiti in observer", esiti);
-		this.listenersEsiti.forEach((listener) => listener.updateEsiti(esiti));
+    	this.listenersEsiti.forEach((listener) => listener(esiti));
 	}
 
   // Implementazione del pattern Singleton

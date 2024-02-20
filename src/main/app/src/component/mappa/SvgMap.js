@@ -2,14 +2,17 @@ import React, { useEffect, useState } from "react";
 import { Container, Alert, Tooltip, OverlayTrigger } from "react-bootstrap";
 import SvgTanker from "./SvgTanker";
 import coordinateTruppe from "../../resources/tankersCoordinates.json";
+import Console from "./Console";
 
-function SvgMap({ paths, gioco, onTerritoryClick, truppeAssegnate }) {
-  const handleTerritoryClick = (e, territory, action) => {
-    e.preventDefault();
-
-    onTerritoryClick(territory, action);
-  };
-
+function SvgMap({
+  paths,
+  gioco,
+  onTerritoryClick,
+  truppeAssegnate,
+  territoryAttack,
+  territoryDefense,
+  territoryNeighbors,
+}) {
   const [myTerritories, setMyTerritories] = useState([]);
   const [myColor, setMyColor] = useState("");
   const [objective, setObjective] = useState("");
@@ -17,6 +20,14 @@ function SvgMap({ paths, gioco, onTerritoryClick, truppeAssegnate }) {
   const [showAlert, setShowAlert] = useState(true);
   const url = window.location.href;
   const nickname = url.split("/").pop();
+  const [gameState, setGameState] = useState("");
+  const [territoriAttaccabili, seTterritoriAttaccabili] = useState([]);
+
+  const handleTerritoryClick = (e, territory, action) => {
+    e.preventDefault();
+
+    onTerritoryClick(territory, action);
+  };
 
   const findCoordinates = (nomeTerritorio) => {
     const territorio = coordinateTruppe.territori.find(
@@ -45,7 +56,37 @@ function SvgMap({ paths, gioco, onTerritoryClick, truppeAssegnate }) {
     setTerritoryColorMap(territoryColorMap);
 
     setObjective(player.objective.objective);
+
+    const statoGioco = gioco.state.type;
+    setGameState(statoGioco);
+
+    const attackableTerritory = myTerritories.flatMap((myTerritory) =>
+      territoryNeighbors?.filter((neighbor) => neighbor != myTerritory)
+    );
+    seTterritoriAttaccabili(attackableTerritory);
+    console.log("territori attaccabili", territoriAttaccabili);
+
+    console.log("stato del gioco nella mappa", statoGioco);
   }, [gioco, nickname, myColor]);
+
+  const calculateOpacity = (
+    name,
+    territoryAttack,
+    territoryNeighbors,
+    territoriAttaccabili,
+    territoryDefense
+  ) => {
+    if (name === territoryDefense) return "1";
+    if (territoryNeighbors?.includes(name)) return "0.5";
+
+    return "0.5";
+  };
+
+  const calculateStrokeWidth = (name, territoryAttack, territoryNeighbors) => {
+    if (name === territoryAttack || territoryNeighbors?.includes(name))
+      return "2.5";
+    return "1.5";
+  };
 
   const renderTooltip = (props, name) => (
     <Tooltip id="button-tooltip" {...props}>
@@ -77,6 +118,21 @@ function SvgMap({ paths, gioco, onTerritoryClick, truppeAssegnate }) {
             const isTerritoryOwned = myTerritories.includes(name);
             const coordinates = findCoordinates(name);
             const fillColor = territoryColorMap[name] || "grey";
+
+            const setOpacity = calculateOpacity(
+              name,
+              territoryAttack,
+              territoryNeighbors,
+              territoriAttaccabili,
+              territoryDefense
+            );
+
+            const spessoreStroke = calculateStrokeWidth(
+              name,
+              territoryAttack,
+              territoryNeighbors
+            );
+
             return (
               <g key={index}>
                 <OverlayTrigger
@@ -87,16 +143,23 @@ function SvgMap({ paths, gioco, onTerritoryClick, truppeAssegnate }) {
                     id={name}
                     d={d}
                     stroke="black"
-                    strokeWidth="1.5"
+                    strokeWidth={spessoreStroke}
                     fill={fillColor}
-                    opacity="0.5"
+                    opacity={setOpacity}
                     onClick={(e) =>
                       isTerritoryOwned && handleTerritoryClick(e, name, "add")
                     }
-                    onContextMenu={(e) =>
-                      isTerritoryOwned &&
-                      handleTerritoryClick(e, name, "remove")
-                    }
+                    onContextMenu={(e) => {
+                      if (isTerritoryOwned && gameState === "setupState") {
+                        handleTerritoryClick(e, name, "remove");
+                      } else if (
+                        !isTerritoryOwned &&
+                        gameState !== "setupState"
+                      ) {
+                        handleTerritoryClick(e, name, "addNonOwned");
+                      }
+                      e.preventDefault(); // Previene l'apertura del menu contestuale del browser
+                    }}
                   />
                 </OverlayTrigger>
 
@@ -126,6 +189,7 @@ function SvgMap({ paths, gioco, onTerritoryClick, truppeAssegnate }) {
               </g>
             );
           })}
+          <Console />
         </svg>
       </Container>
     </div>
