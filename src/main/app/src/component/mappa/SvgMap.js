@@ -87,6 +87,7 @@ function SvgMap({ paths, gioco, onTerritoryClick, truppeAssegnate }) {
                     id={name}
                     d={d}
                     stroke="black"
+                    strokeWidth="1.5"
                     fill={fillColor}
                     opacity="0.5"
                     onClick={(e) =>

@@ -19,7 +19,7 @@ public class Territory implements Serializable{
 	
 	private String idOwner;
 	
-	private List<Territory> neighbors;
+	private List<String> neighbors;
 	
 	private String svgPath;
 }
