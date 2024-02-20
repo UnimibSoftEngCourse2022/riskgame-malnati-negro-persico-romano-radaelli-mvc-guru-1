@@ -86,6 +86,7 @@ public class FactoryGame {
         ObjectMapper mapper = new ObjectMapper();
         byte[] data = FileCopyUtils.copyToByteArray(new ClassPathResource(fileName).getInputStream());
         String json = new String(data, StandardCharsets.UTF_8);
+        
         ObjectiveCard[] objectives = mapper.readValue(json, ObjectiveCard[].class);
         
         IDeck deck = new ObjectivesDeck();

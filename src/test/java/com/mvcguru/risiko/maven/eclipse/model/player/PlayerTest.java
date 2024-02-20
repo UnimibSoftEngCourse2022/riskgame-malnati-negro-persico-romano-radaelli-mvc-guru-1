@@ -28,7 +28,8 @@ class PlayerTest {
         List<Territory> territories = new ArrayList<>();
         List<TerritoryCard> comboCards = new ArrayList<>();
         ICard objective = null; 
-        Player player = new Player(userName, gameId, color, game, territories, comboCards, false, objective);
+		Player player = Player.builder().userName(userName).gameId(gameId).color(color).game(game)
+				.territories(territories).comboCards(comboCards).objective(objective).build();
 
         assertEquals(userName, player.getUserName(), "UserName should match constructor argument");
         assertEquals(gameId, player.getGameId(), "GameId should match constructor argument");

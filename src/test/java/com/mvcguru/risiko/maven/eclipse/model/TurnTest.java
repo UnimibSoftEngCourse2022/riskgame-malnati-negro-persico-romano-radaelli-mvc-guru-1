@@ -4,6 +4,9 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.mvcguru.risiko.maven.eclipse.controller.body_request.ResultNoticeBody;
+import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
+import com.mvcguru.risiko.maven.eclipse.exception.GameException;
+import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
 import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard.CardSymbol;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
@@ -133,7 +136,7 @@ class TurnTest {
 //    }
 
     @Test
-    void moveTroops_ShouldCorrectlyMoveTroopsAfterConquest() {
+    void moveTroops_ShouldCorrectlyMoveTroopsAfterConquest() throws GameException, DatabaseConnectionException, UserException {
         when(player.getTerritoryByName("AttackerTerritory")).thenReturn(attackerTerritory);
         when(player.getTerritoryByName("DefenderTerritory")).thenReturn(defenderTerritory);
         when(attackerTerritory.getArmies()).thenReturn(10);
