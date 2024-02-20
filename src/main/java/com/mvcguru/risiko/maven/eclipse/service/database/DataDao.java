@@ -14,8 +14,6 @@ import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 import com.mvcguru.risiko.maven.eclipse.states.GameState;
 
 public interface DataDao {
-	
-	 void initializeDatabase();
 	//UserDao
     User getUserByUsernameAndPassword(String username, String password) throws UserException;
     void insertUser(User user) throws UserException, GameException;
@@ -39,16 +37,19 @@ public interface DataDao {
 	void insertTerritory(Territory territory, String gameId) throws GameException;
 	void deleteTerritory(String name) throws GameException;
 	void updateTerritoryOwner(String territoryName, Player player) throws GameException;
-	void updateTerritoryArmies(String territoryName, int armies) throws GameException;
+	void updateTerritoryArmies(String territoryName, String gameId, int troops) throws GameException;
 	List<Territory> getAllTerritories(String player) throws GameException;
 	
 	//TurnDao
 	void insertTurn(Turn turn) throws GameException;
 	void deleteTurn(Turn turn) throws GameException;
-	void updateTurnIndex(Turn turn, int index) throws GameException;
-	void updateNumAttackDice(int indexTurn, String gameId, String numAttackDice) throws GameException;
-	void updateNumDefenseDice(int indexTurn, String gameId, String numDefenseDice) throws GameException;
-	void updateIsConquered(int indexTurn, String gameId, boolean isConquered) throws GameException;
+	void updateTurnNumberOfTroops(Turn turn, int numberOfTroops) throws GameException;
+	void updateNumAttackDice(Turn turn, int numAttackDice) throws GameException;
+	void updateNumDefenseDice(Turn turn, int numDefenseDice) throws GameException;
+	void updateDefenderTerritory(Turn turn, String defenderTerritory) throws GameException;
+	void updateAttackerTerritory(Turn turn, String attackerTerritory) throws GameException;
+	void updateIsConquered(Turn turn, boolean isConquered) throws GameException;
+	Turn getTurnByIndex(String gameId, String player, int index) throws GameException;
 	Turn getLastTurnByGameId(String gameId) throws GameException;
 	
 	//ComboCardDao
@@ -58,4 +59,5 @@ public interface DataDao {
 	List<TerritoryCard> getAllComboCards(String player, String gameId) throws GameException;
 	
 	void closeConnection();
+	
 }

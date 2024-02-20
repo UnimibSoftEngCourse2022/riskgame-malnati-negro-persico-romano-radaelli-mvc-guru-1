@@ -3,21 +3,30 @@ package com.mvcguru.risiko.maven.eclipse.service.database;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import com.mvcguru.risiko.maven.eclipse.model.card.ICard;
+import com.mvcguru.risiko.maven.eclipse.model.card.ObjectiveCard;
 import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
 import com.mvcguru.risiko.maven.eclipse.exception.GameException;
 import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
+import com.mvcguru.risiko.maven.eclipse.model.Territory;
+import com.mvcguru.risiko.maven.eclipse.model.Turn;
 import com.mvcguru.risiko.maven.eclipse.model.User;
+import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
+import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard.CardSymbol;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration.GameMode;
 import com.mvcguru.risiko.maven.eclipse.service.FactoryGame;
 
 class DaoSQLiteImplTest {
+	Logger LOGGER = LoggerFactory.getLogger(DaoSQLiteImplTest.class);
     private DaoSQLiteImpl data;
 
     @BeforeEach
@@ -123,4 +132,89 @@ class DaoSQLiteImplTest {
         data.deletePlayer("user1");
         data.deletePlayer("user2");
     }
+    
+    @Test
+	void testGetConnection() {
+		try {
+			assertNotNull(data.getConnection("jdbc:sqlite:mydatabase.db"));
+		} catch (SQLException e) {
+			LOGGER.error("Errore durante la connessione al database", e);
+		}
+	}
+    
+    @Test
+	void insertTurn() throws GameException {
+    	Player player = Player.builder().userName("user1").gameId("game1").color(Player.PlayerColor.RED).build();
+    	Turn turn = Turn.builder().indexTurn(1).player(player).isConquered(false).build();
+		data.insertTurn(turn);
+		assertTrue(data.getLastTurnByGameId(player.getGameId()) != null);
+		data.deleteTurn(turn);
+	}
+    
+    @Test
+	void insertComboCards() throws GameException {
+		Player player = Player.builder().userName("user1").gameId("game1").color(Player.PlayerColor.RED).build();
+		Turn turn = Turn.builder().indexTurn(1).player(player).build();
+		Territory territory = Territory.builder().name("territory1").build();
+		TerritoryCard card1 = TerritoryCard.builder().territory(territory).symbol(CardSymbol.ARTILLERY).build();
+		
+		data.insertComboCard(card1, player, player.getGameId());
+		List<TerritoryCard> cards = data.getAllComboCards(player.getUserName(), player.getGameId());
+		
+		assertTrue(cards.contains(card1));
+		
+		data.deleteComboCard(card1, player, player.getGameId());
+		data.deleteTurn(turn);
+		
+	}
+    
+    @Test
+	void updateOwner() throws GameException {
+		Player player = Player.builder().userName("user1").gameId("game1").color(Player.PlayerColor.RED).build();
+		TerritoryCard t = TerritoryCard.builder().territory(Territory.builder().name("territory1").build()).symbol(CardSymbol.ARTILLERY).build();
+		data.updateOwner(t, player.getUserName(), player.getGameId());
+        
+		List<TerritoryCard> cards = data.getAllComboCards(player.getUserName(), player.getGameId());
+		
+		assertTrue(!cards.contains(t));
+		
+		data.deleteComboCard(t, player, player.getGameId());
+		
+		assertTrue(!cards.contains(t));
+		
+    }
+    
+    @Test
+    void updateIsConquered() throws GameException {
+    	Player playerInstance = Player.builder().userName("user1").gameId("game1").build();
+    	Territory attackerTerritoryInstance = null;
+    	Territory defenderTerritoryInstance = null;
+    	Turn turn = Turn.builder()
+                .player(playerInstance) 
+                .numberOfTroops(10) 
+                .indexTurn(1) 
+                .attackerTerritory(attackerTerritoryInstance) 
+                .defenderTerritory(defenderTerritoryInstance) 
+                .numAttDice(3)
+                .numDefDice(2) 
+                .isConquered(false)
+                .build();
+    	
+    	LOGGER.info("Turn: " + turn);
+    	
+    	data.insertTurn(turn);
+
+    	assertTrue(data.getTurnByIndex(turn.getPlayer().getGameId(), turn.getPlayer().getUserName(), 1).getIndexTurn() == 1);
+
+    	data.updateIsConquered(turn, true);
+    	LOGGER.info("Turn: " + data.getTurnByIndex(turn.getPlayer().getGameId(), turn.getPlayer().getUserName(), 1));
+    	
+    	assertTrue(data.getTurnByIndex(turn.getPlayer().getGameId(), turn.getPlayer().getUserName(), turn.getIndexTurn()).isConquered() == true);
+    	
+    	data.deleteTurn(turn);
+    	
+    	assertTrue(data.getTurnByIndex(turn.getPlayer().getGameId(), turn.getPlayer().getUserName(), turn.getIndexTurn()) == null);
+    }
+    
+    
 }

@@ -9,15 +9,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mvcguru.risiko.maven.eclipse.controller.body_request.ResultNoticeBody;
+import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
+import com.mvcguru.risiko.maven.eclipse.exception.GameException;
+import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
 import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard.CardSymbol;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
+import com.mvcguru.risiko.maven.eclipse.service.GameRepository;
+
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder
+@NoArgsConstructor
 public class Turn implements Serializable{
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(Turn.class);
@@ -37,13 +44,13 @@ public class Turn implements Serializable{
 	
 	private int numDefDice;
 	
+	@Builder.Default
 	private boolean isConquered = false;
 	
     public void numberOfTroopsCalculation(List<Territory> territories) {
         numberOfTroops += territories.size() / 3;
         numberOfTroops += continentCheck(territories);
 		LOGGER.info("Number of troops: {}", numberOfTroops);
-      //player.getGame().broadcast(player.getGame().getId(),player.getUserName(), numberOfTroops); //da cambiare
     }
 
     public int continentCheck(List<Territory> territories){
@@ -63,29 +70,29 @@ public class Turn implements Serializable{
     }
 
     public void comboCardsCheck(List<TerritoryCard> comboCards) {
-        if (comboCards.size() != 3) {
-            return;
+        if (comboCards.size() == 3) {
+        	int distinctSymbols = (int) comboCards.stream().map(TerritoryCard::getSymbol).distinct().count();
+            
+            switch(distinctSymbols) {
+    	        case 1:
+    	        	numberOfTroops = troopsForSingleSymbolCombo(comboCards);
+    	        	break;
+    	        case 2 :
+    	        	numberOfTroops = troopsForJollydCombo(comboCards);
+    	        		break;
+    	    	case 3:
+    	    		numberOfTroops = troopsForTris(comboCards);
+    	    		break;
+    	    	default:
+    	    		return;
+            }
+            
+            for (TerritoryCard card : comboCards) {
+                if (player.getTerritories().contains(card.getTerritory()))
+                	numberOfTroops += 2;
+            }
         }
-        int distinctSymbols = (int) comboCards.stream().map(TerritoryCard::getSymbol).distinct().count();
         
-        switch(distinctSymbols) {
-        case 1:
-        	numberOfTroops = troopsForSingleSymbolCombo(comboCards);
-        	break;
-        case 2 :
-        	numberOfTroops = troopsForJollydCombo(comboCards);
-        		break;
-        	case 3:
-        		numberOfTroops = troopsForTris(comboCards);
-        		break;
-        	default:
-        		return;
-        }
-        
-        for (TerritoryCard card : comboCards) {
-            if (player.getTerritories().contains(card.getTerritory()))
-            	numberOfTroops += 2;
-        }
     }
     
     private int troopsForSingleSymbolCombo(List<TerritoryCard> comboCards) {
@@ -93,9 +100,9 @@ public class Turn implements Serializable{
             case ARTILLERY:
                 return 4;
             case CAVALRY:
-                return 6;
-            case INFANTRY:
                 return 8;
+            case INFANTRY:
+                return 6;
             default:
                 return 0;
         }
@@ -109,7 +116,7 @@ public class Turn implements Serializable{
     }
     
 	private int troopsForTris(List<TerritoryCard> comboCards) {
-		if(!comboCards.stream().noneMatch(card -> card.getSymbol() == CardSymbol.JOLLY))
+		if(!comboCards.stream().anyMatch(card -> card.getSymbol() == CardSymbol.JOLLY))
 			return 10;
 		return 0;
 	}
@@ -123,9 +130,8 @@ public class Turn implements Serializable{
 	
 	//////////////////////////////////////
 	
-	public void attack() {
-		
-	    
+	public void attack() throws GameException, DatabaseConnectionException, UserException {
+		    
 	    Integer[] attRolls = new Integer[numAttDice];
 	    Integer[] defRolls = new Integer[numDefDice];
 	    
@@ -152,28 +158,19 @@ public class Turn implements Serializable{
 	    }
 	    LOGGER.info("Attacker losses: {} | Defender losses: {}", attLosses, defLosses);
 	    
-	    if(player.getTerritoryByName(defenderTerritory.getName()).getArmies() > defLosses) {
-	    	
-	    	 player.getTerritoryByName(attackerTerritory.getName())
-		    	.setArmies(player.getTerritoryByName(attackerTerritory.getName()).getArmies() - attLosses);
-	    	 
-	    	 player.getTerritoryByName(defenderTerritory.getName())
-		    	.setArmies(player.getTerritoryByName(defenderTerritory.getName()).getArmies() - defLosses);
-	    	 
+	    if(defenderTerritory.getArmies() > defLosses) {
+	    	attackerTerritory.setArmies(attackerTerritory.getArmies() - attLosses); 
+	    	GameRepository.getInstance().updateTerritoryArmies(attackerTerritory.getName(), player.getGameId(), attackerTerritory.getArmies());
+	    	defenderTerritory.setArmies(defenderTerritory.getArmies() - defLosses);
+	    	GameRepository.getInstance().updateTerritoryArmies(defenderTerritory.getName(), player.getGameId(), defenderTerritory.getArmies());
 			ResultNoticeBody result = ResultNoticeBody.builder().isConquered(false).lostAttTroops(attLosses).lostDefTroops(defLosses).build();
-			resetBattleInfo();
-	    	 
 	    	player.getGame().broadcast(player.getGame().getId(), player.getUserName(), result);
+			resetBattleInfo();
 	    }
 		else {
 			isConquered = true;
-			ResultNoticeBody result = ResultNoticeBody.builder().isConquered(false).lostAttTroops(attLosses).lostDefTroops(defLosses).build();
-			
-			player.getTerritoryByName(defenderTerritory.getName())
-			.setIdOwner(attackerTerritory.getIdOwner());
-			
-			//todo: gestione conquista territorio
-			
+			defenderTerritory.setIdOwner(attackerTerritory.getIdOwner());
+			ResultNoticeBody result = ResultNoticeBody.builder().isConquered(true).lostAttTroops(attLosses).lostDefTroops(defLosses).build();
 			player.getGame().broadcast(player.getGame().getId(), player.getUserName(), result);
 		}
 	}

@@ -26,8 +26,8 @@ class TerritoryTest {
         
         territory.setIdOwner("idOwner");
 
-        List<Territory> neighbors = new ArrayList<>();
-        neighbors.add(new Territory()); 
+        List<String> neighbors = new ArrayList<>();
+        neighbors.add(new String()); 
         territory.setNeighbors(neighbors);
 
         assertEquals(1, territory.getContinent(), "Continent getter should return what was set");
@@ -39,8 +39,8 @@ class TerritoryTest {
 
     @Test
     void testBuilder() {
-        List<Territory> neighbors = new ArrayList<>();
-        neighbors.add(new Territory()); 
+        List<String> neighbors = new ArrayList<>();
+        neighbors.add(new String()); 
 
         Territory territory = Territory.builder()
                                         .continent(2)

@@ -42,7 +42,7 @@ public class GameSetupState extends GameState {
 		          .forEach(territory -> {
 		              territory.setArmies(troops);
 		              try {
-		                  GameRepository.getInstance().updateTerritoryArmies(territory.getName(), territory.getArmies());
+		                  GameRepository.getInstance().updateTerritoryArmies(territory.getName(), game.getId(), territory.getArmies());
 		              } catch (GameException | DatabaseConnectionException | UserException e) {
 		                  LOGGER.error("Errore nell'aggiornamento delle truppe del territorio {}", territory.getName());
 		              }

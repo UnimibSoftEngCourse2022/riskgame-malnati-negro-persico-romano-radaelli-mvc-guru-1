@@ -8,6 +8,8 @@ import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
 import com.mvcguru.risiko.maven.eclipse.exception.GameException;
 import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
+import com.mvcguru.risiko.maven.eclipse.service.GameRepository;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -58,16 +60,17 @@ public class Game extends IGame {
 
 	
 	@Override
-	public void startGame() {
+	public void startGame() throws GameException, DatabaseConnectionException, UserException {
 		currentTurn = Turn.builder()
                 .player(players.get(0))
                 .indexTurn(1)
                 .build();
 		currentTurn.numberOfTroopsCalculation(currentTurn.getPlayer().getTerritories());
-		
+		GameRepository.getInstance().insertTurn(currentTurn);		
 	}
 	
-	public void changeTurn() {
+	@Override
+	public void changeTurn() throws GameException, DatabaseConnectionException, UserException {
 		Player curr = currentTurn.getPlayer();
 		LOGGER.info("Cambio turno - giocatore corrente {}", curr.getUserName());
         setCurrentTurn(Turn.builder()
@@ -75,7 +78,8 @@ public class Game extends IGame {
                 .indexTurn(currentTurn.getIndexTurn() + 1)
                 .build());
         currentTurn.numberOfTroopsCalculation(currentTurn.getPlayer().getTerritories());
-        
+        GameRepository.getInstance().insertTurn(currentTurn);
+       
         //broadcast();Chiamo change turn dallo stato fine turno con la action, alla fine della action faccio broadcast
 	}
 }

@@ -46,11 +46,11 @@ public abstract class GameState implements Serializable {
 	
 	public void onActionPlayer(ComboRequest comboRequest) { }
 	
-	public void onActionPlayer(AttackRequest attackRequest) {}
+	public void onActionPlayer(AttackRequest attackRequest) {} 
 
 	public void setUpGame() throws GameException, DatabaseConnectionException, UserException {}
 
 	public void onActionPlayer(TurnSetUp turnSetUp) throws GameException, DatabaseConnectionException, UserException {}
 
-	public void onActionPlayer(DefenceRequest defenceRequest) {	}
+	public void onActionPlayer(DefenceRequest defenceRequest) throws GameException, DatabaseConnectionException, UserException{	} 
 }

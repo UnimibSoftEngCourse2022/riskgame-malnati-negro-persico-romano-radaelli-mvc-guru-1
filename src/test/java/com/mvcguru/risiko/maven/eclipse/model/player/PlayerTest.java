@@ -3,6 +3,7 @@ package com.mvcguru.risiko.maven.eclipse.model.player;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import com.mvcguru.risiko.maven.eclipse.model.Territory;
 import com.mvcguru.risiko.maven.eclipse.model.card.ICard;
@@ -82,5 +83,37 @@ class PlayerTest {
         String toStringResult = player.toString();
         assertTrue(toStringResult.contains("ToStringTest"), "toString should contain the userName");
         assertTrue(toStringResult.contains("RED"), "toString should contain the color");
+    }
+    
+    @Test
+    void getTerritoryByName_ShouldReturnCorrectTerritory_WhenNameMatches() {
+    	Territory territory1 = new Territory();
+        territory1.setName("Territory1");
+        
+        Territory territory2 = new Territory();
+        territory2.setName("Territory2");
+
+        Player player = Player.builder()
+                .territories(Arrays.asList(territory1, territory2))
+                .build();
+        
+        Territory foundTerritory = player.getTerritoryByName("Territory1");
+        assertEquals(territory1, foundTerritory, "The method should return the correct territory when the name matches.");
+    }
+
+    @Test
+    void getTerritoryByName_ShouldReturnNull_WhenNoMatchFound() {
+    	Territory territory1 = new Territory();
+        territory1.setName("Territory1");
+        
+        Territory territory2 = new Territory();
+        territory2.setName("Territory2");
+
+        Player player = Player.builder()
+                .territories(Arrays.asList(territory1, territory2))
+                .build();
+    	
+        Territory foundTerritory = player.getTerritoryByName("NonExistentTerritory");
+        assertNull(foundTerritory, "The method should return null when no matching territory name is found.");
     }
 }

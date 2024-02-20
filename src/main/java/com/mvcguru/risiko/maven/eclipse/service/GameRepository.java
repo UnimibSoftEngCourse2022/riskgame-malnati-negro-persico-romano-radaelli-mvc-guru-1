@@ -106,8 +106,8 @@ public class GameRepository {
 		db.updatePlayerObjective(username, objective);
 	}
 	
-	public synchronized void updateTerritoryArmies(String territoryName, int armies) throws GameException {
-		db.updateTerritoryArmies(territoryName, armies);
+	public synchronized void updateTerritoryArmies(String territoryName, String gameId, int armies) throws GameException {
+		db.updateTerritoryArmies(territoryName, gameId, armies);
 	}
 	
 	public synchronized List<Territory> getAllTerritories(String player) throws GameException {
@@ -122,8 +122,17 @@ public class GameRepository {
 		db.deleteTurn(turn);
 	}
 	
-	public synchronized void updateTurnIndex(Turn turn, int index) throws GameException {
-		db.updateTurnIndex(turn, index);
+	public synchronized void updateTurnNumberOfTroops(Turn turn,int numberOfTroops)
+			throws GameException {
+		db.updateTurnNumberOfTroops(turn, numberOfTroops);
+	}
+	
+	public synchronized void updateDefenderTerritory(Turn turn, Territory defenderTerritory) throws GameException {
+		db.updateDefenderTerritory(turn, defenderTerritory.getName());
+	}
+	
+	public synchronized void updateAttackerTerritory(Turn turn, Territory attackerTerritory) throws GameException {
+		db.updateAttackerTerritory(turn, attackerTerritory.getName());
 	}
 	
 	public synchronized void insertComboCard(TerritoryCard t, Player owner, String gameId) throws GameException {
@@ -142,15 +151,15 @@ public class GameRepository {
 		return db.getAllComboCards(player, gameId);
 	}
 	
-	public synchronized void updateNumAttackDice(int indexTurn, String gameId, String numAttackDice) throws GameException {
-		db.updateNumAttackDice(indexTurn, gameId, numAttackDice);
+	public synchronized void updateNumAttackDice(Turn turn, int numAttackDice) throws GameException {
+		db.updateNumAttackDice(turn, numAttackDice);
 	}
 	
-	public synchronized void updateNumDefenseDice(int indexTurn, String gameId, String numDefenseDice) throws GameException {
-		db.updateNumDefenseDice(indexTurn, gameId, numDefenseDice);
+	public synchronized void updateNumDefenseDice(Turn turn, int numDefenseDice) throws GameException {
+		db.updateNumDefenseDice(turn, numDefenseDice);
 	}
 	
-	public synchronized void updateIsConquered(int indexTurn, String gameId, boolean isConquered) throws GameException {
-		db.updateIsConquered(indexTurn, gameId, isConquered);
+	public synchronized void updateIsConquered(Turn turn, boolean isConquered) throws GameException {
+		db.updateIsConquered(turn, isConquered);
 	}
 }

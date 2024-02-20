@@ -1,5 +1,12 @@
 import React from "react";
-import { Button, Form, Card, Carousel, Container } from "react-bootstrap";
+import {
+  Button,
+  Form,
+  Card,
+  Carousel,
+  Container,
+  Alert,
+} from "react-bootstrap";
 import AppController from "../application/AppController";
 import { withAuth } from "../auth/AuthContext";
 import { useNavigate, useParams } from "react-router-dom";
@@ -21,7 +28,7 @@ class NewPartita extends React.Component {
       nomeMappa: "",
       isLobbyCreated: "",
       lobbies: [],
-      index: 0, // Utilizzato per la gestione dell'indice attivo nel Carousel
+      index: 0,
     };
   }
 
@@ -47,7 +54,7 @@ class NewPartita extends React.Component {
     this.setState({ players: e.target.value });
   };
 
-  handleNomeMappa = (e) => {
+  handleNomeLobby = (e) => {
     this.setState({ nomeMappa: e.target.value });
   };
 
@@ -62,9 +69,10 @@ class NewPartita extends React.Component {
     try {
       const result = await AppController.creaPartita(configuration);
       this.setState({
-        isLobbyCreated: `Lobby creata con successo! ID Lobby: ${result.id}`,
+        // isLobbyCreated: `Lobby creata con successo! ID Lobby: ${result.id}`,
+        isLobbyCreated: `Lobby creata con successo!`,
       });
-      // Aggiorna il numero totale delle lobby dopo averne creata una nuova
+
       this.fetchLobbies();
     } catch (error) {
       this.setState({
@@ -129,7 +137,7 @@ class NewPartita extends React.Component {
               </Card.Header>
               <Card.Body>
                 <p>Difficoltà: {lobby.configuration.difficolta}</p>
-                <p>Mappa: {lobby.configuration.nomeMappa}</p>
+                <p>Nome Lobby: {lobby.configuration.nomeMappa}</p>
                 <p>
                   Giocatori: {lobby.players.length}/
                   {lobby.configuration.players}
@@ -163,16 +171,20 @@ class NewPartita extends React.Component {
         style={{ height: "100vh" }}
         className="container d-flex flex-column justify-content-center align-itmes-center border"
       >
-        <Container className="w-75">
-          <Card className="p-2">
+        <Container className="p-2 d-flex justify-content-center">
+          <Card className="w-50 p-2 d-flex align-items-center justify-content-center">
+            <Card.Header className="w-100">
+              Crea la tua Lobby personalizzata
+            </Card.Header>
             {/* Form per creare una partita */}
-            <Form className="w-50" onSubmit={this.handleSubmit}>
+            <Form className="w-75 p-3" onSubmit={this.handleSubmit}>
               <Form.Group className="mb-3">
                 <Form.Label>Difficoltà</Form.Label>
                 <Form.Control
                   as="select"
                   value={difficolta}
                   onChange={this.handleDifficolta}
+                  className="border border-dark"
                 >
                   <option value="">Seleziona un livello di difficoltà</option>
                   <option value="EASY">Facile</option>
@@ -188,6 +200,7 @@ class NewPartita extends React.Component {
                     as="select"
                     value={this.state.players}
                     onChange={this.handlePlayersNumber}
+                    className="border border-dark"
                   >
                     <option value="">Seleziona il numero di giocatori</option>
                     {this.renderLobbyOptions()}
@@ -196,12 +209,13 @@ class NewPartita extends React.Component {
               )}
 
               <Form.Group className="mb-3">
-                <Form.Label>Nome Mappa</Form.Label>
+                <Form.Label>Nome Lobby</Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="Inserisci il nome della mappa"
+                  placeholder="Inserisci il nome della Lobby"
                   value={nomeMappa}
-                  onChange={this.handleNomeMappa}
+                  onChange={this.handleNomeLobby}
+                  className="border border-dark"
                 />
               </Form.Group>
 
@@ -211,8 +225,21 @@ class NewPartita extends React.Component {
             </Form>
           </Card>
         </Container>
-        {isLobbyCreated && <p>{isLobbyCreated}</p>}
-        <Container className="w-75">{this.renderCarousel()}</Container>
+        {isLobbyCreated && (
+          <p
+            style={{ fontSize: "18px", fontWeight: "bold" }}
+            className={
+              isLobbyCreated === "Lobby creata con successo!"
+                ? "text-success"
+                : "text-danger"
+            }
+          >
+            {isLobbyCreated}
+          </p>
+        )}
+        <Container className="w-75 d-flex justify-content-center">
+          {this.renderCarousel()}
+        </Container>
       </div>
     );
   }
