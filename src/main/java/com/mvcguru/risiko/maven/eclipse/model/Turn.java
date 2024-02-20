@@ -19,10 +19,12 @@ import com.mvcguru.risiko.maven.eclipse.service.GameRepository;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder
+@NoArgsConstructor
 public class Turn implements Serializable{
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(Turn.class);
@@ -67,29 +69,29 @@ public class Turn implements Serializable{
     }
 
     public void comboCardsCheck(List<TerritoryCard> comboCards) {
-        if (comboCards.size() != 3) {
-            return;
+        if (comboCards.size() == 3) {
+        	int distinctSymbols = (int) comboCards.stream().map(TerritoryCard::getSymbol).distinct().count();
+            
+            switch(distinctSymbols) {
+    	        case 1:
+    	        	numberOfTroops = troopsForSingleSymbolCombo(comboCards);
+    	        	break;
+    	        case 2 :
+    	        	numberOfTroops = troopsForJollydCombo(comboCards);
+    	        		break;
+    	    	case 3:
+    	    		numberOfTroops = troopsForTris(comboCards);
+    	    		break;
+    	    	default:
+    	    		return;
+            }
+            
+            for (TerritoryCard card : comboCards) {
+                if (player.getTerritories().contains(card.getTerritory()))
+                	numberOfTroops += 2;
+            }
         }
-        int distinctSymbols = (int) comboCards.stream().map(TerritoryCard::getSymbol).distinct().count();
         
-        switch(distinctSymbols) {
-        case 1:
-        	numberOfTroops = troopsForSingleSymbolCombo(comboCards);
-        	break;
-        case 2 :
-        	numberOfTroops = troopsForJollydCombo(comboCards);
-        		break;
-        	case 3:
-        		numberOfTroops = troopsForTris(comboCards);
-        		break;
-        	default:
-        		return;
-        }
-        
-        for (TerritoryCard card : comboCards) {
-            if (player.getTerritories().contains(card.getTerritory()))
-            	numberOfTroops += 2;
-        }
     }
     
     private int troopsForSingleSymbolCombo(List<TerritoryCard> comboCards) {
@@ -97,9 +99,9 @@ public class Turn implements Serializable{
             case ARTILLERY:
                 return 4;
             case CAVALRY:
-                return 6;
-            case INFANTRY:
                 return 8;
+            case INFANTRY:
+                return 6;
             default:
                 return 0;
         }
@@ -113,7 +115,7 @@ public class Turn implements Serializable{
     }
     
 	private int troopsForTris(List<TerritoryCard> comboCards) {
-		if(!comboCards.stream().noneMatch(card -> card.getSymbol() == CardSymbol.JOLLY))
+		if(!comboCards.stream().anyMatch(card -> card.getSymbol() == CardSymbol.JOLLY))
 			return 10;
 		return 0;
 	}
@@ -157,9 +159,9 @@ public class Turn implements Serializable{
 	    
 	    if(defenderTerritory.getArmies() > defLosses) {
 	    	attackerTerritory.setArmies(attackerTerritory.getArmies() - attLosses); 
-	    	GameRepository.getInstance().updateTerritoryArmies(attackerTerritory.getName(), attackerTerritory.getArmies());
+	    	GameRepository.getInstance().updateTerritoryArmies(attackerTerritory.getName(), player.getGameId(), attackerTerritory.getArmies());
 	    	defenderTerritory.setArmies(defenderTerritory.getArmies() - defLosses);
-	    	GameRepository.getInstance().updateTerritoryArmies(defenderTerritory.getName(), defenderTerritory.getArmies());
+	    	GameRepository.getInstance().updateTerritoryArmies(defenderTerritory.getName(), player.getGameId(), defenderTerritory.getArmies());
 			ResultNoticeBody result = ResultNoticeBody.builder().isConquered(false).lostAttTroops(attLosses).lostDefTroops(defLosses).build();
 	    	player.getGame().broadcast(player.getGame().getId(), player.getUserName(), result);
 			resetBattleInfo();

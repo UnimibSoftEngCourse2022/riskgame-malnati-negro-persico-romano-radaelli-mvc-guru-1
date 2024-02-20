@@ -7,6 +7,7 @@ import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
+import com.mvcguru.risiko.maven.eclipse.model.deck.IDeck;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration.GameMode;
 import com.mvcguru.risiko.maven.eclipse.states.GameState;
 import com.mvcguru.risiko.maven.eclipse.states.LobbyState;
@@ -30,7 +31,6 @@ class FactoryGameTest {
         assertEquals(4, game.getConfiguration().getNumberOfPlayers());
         assertEquals("TestMap", game.getConfiguration().getIdMap());
         assertTrue(game.getState() instanceof LobbyState);
-           
     }
     
     @Test
