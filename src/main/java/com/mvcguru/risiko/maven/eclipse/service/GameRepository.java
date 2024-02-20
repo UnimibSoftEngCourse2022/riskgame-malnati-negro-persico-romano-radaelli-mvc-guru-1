@@ -18,11 +18,11 @@ import com.mvcguru.risiko.maven.eclipse.model.deck.TerritoriesDeck;
 
 public class GameRepository {
 	private static GameRepository instance;
-	private DataDao db;	
+	private DataDao db;
 	
 	public GameRepository() throws DatabaseConnectionException, GameException, UserException {
 		super();
-		this.db = db.getInstance();
+		this.db = DataDao.getInstance();
 	}
 	
 	public static synchronized GameRepository getInstance() throws DatabaseConnectionException, GameException, UserException {

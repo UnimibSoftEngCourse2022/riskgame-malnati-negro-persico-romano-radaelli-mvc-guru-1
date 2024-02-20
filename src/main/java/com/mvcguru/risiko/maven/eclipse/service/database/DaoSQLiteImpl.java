@@ -46,8 +46,7 @@ public class DaoSQLiteImpl implements DataDao {
         }
     }
 
-    @Override
-    public synchronized DaoSQLiteImpl getInstance() throws DatabaseConnectionException {
+    public synchronized static DaoSQLiteImpl getInstance() throws DatabaseConnectionException {
         if (instance == null) {
             instance = new DaoSQLiteImpl(DatabaseConnection.getSqliteDbUrl());
         }

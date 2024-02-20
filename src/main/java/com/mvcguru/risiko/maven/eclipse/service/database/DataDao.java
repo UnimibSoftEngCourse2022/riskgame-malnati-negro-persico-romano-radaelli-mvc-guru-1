@@ -62,6 +62,9 @@ public interface DataDao {
 	List<TerritoryCard> getAllComboCards(String player, String gameId) throws GameException;
 	
 	void closeConnection();
-	DaoSQLiteImpl getInstance() throws DatabaseConnectionException;
+	
+	static DaoSQLiteImpl getInstance() throws DatabaseConnectionException {
+		return DaoSQLiteImpl.getInstance();
+	}
 	
 }
