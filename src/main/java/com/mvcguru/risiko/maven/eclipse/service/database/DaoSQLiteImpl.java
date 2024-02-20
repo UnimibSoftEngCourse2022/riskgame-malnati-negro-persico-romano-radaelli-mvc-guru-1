@@ -303,7 +303,7 @@ public class DaoSQLiteImpl implements DataDao {
 			pstmt.setString(1, gameId);
 			try (ResultSet rs = pstmt.executeQuery()) {
 				if (rs.next()) {
-					int index = rs.getInt("index");
+					int index = rs.getInt("indexTurn");
 					String player = rs.getString("player");
 					int numberOfTroops = rs.getInt("numberOfTroops");
 					String attackerTerritory = rs.getString("attackerTerritory");
