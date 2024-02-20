@@ -25,7 +25,7 @@ function Console({ carriTerritorio }) {
     };
 
     PartitaObserverSingleton.addListenerEsiti(updateEsiti); // Registra il listener
-
+	
     return () => {
       PartitaObserverSingleton.removeListenerEsiti(updateEsiti); // Rimuovi il listener al dismount
     };
