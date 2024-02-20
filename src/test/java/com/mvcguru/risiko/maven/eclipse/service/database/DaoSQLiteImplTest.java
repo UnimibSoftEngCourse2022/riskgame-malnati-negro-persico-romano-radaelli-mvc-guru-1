@@ -30,7 +30,7 @@ class DaoSQLiteImplTest {
 
     @BeforeEach
     void setUp() throws DatabaseConnectionException, UserException, GameException {
-        data = DaoSQLiteImpl.getInstance();
+        data = data.getInstance();
     }
 
     @Test

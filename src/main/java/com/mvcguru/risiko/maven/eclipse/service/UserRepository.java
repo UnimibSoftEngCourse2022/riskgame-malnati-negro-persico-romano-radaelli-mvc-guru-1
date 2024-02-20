@@ -13,7 +13,7 @@ public class UserRepository {
 	
 	public UserRepository() throws DatabaseConnectionException, UserException, GameException {
 		super();
-		this.db = DaoSQLiteImpl.getInstance();
+		this.db = db.getInstance();
 	}
 	
 	public static synchronized UserRepository getInstance() throws DatabaseConnectionException, UserException, GameException {

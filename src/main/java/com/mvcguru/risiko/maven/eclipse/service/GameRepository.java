@@ -12,7 +12,6 @@ import com.mvcguru.risiko.maven.eclipse.model.Turn;
 import com.mvcguru.risiko.maven.eclipse.model.card.ICard;
 import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
-import com.mvcguru.risiko.maven.eclipse.service.database.DaoSQLiteImpl;
 import com.mvcguru.risiko.maven.eclipse.service.database.DataDao;
 import com.mvcguru.risiko.maven.eclipse.states.GameState;
 import com.mvcguru.risiko.maven.eclipse.model.deck.TerritoriesDeck;
@@ -23,7 +22,7 @@ public class GameRepository {
 	
 	public GameRepository() throws DatabaseConnectionException, GameException, UserException {
 		super();
-		this.db = DaoSQLiteImpl.getInstance();
+		this.db = db.getInstance();
 	}
 	
 	public static synchronized GameRepository getInstance() throws DatabaseConnectionException, GameException, UserException {
