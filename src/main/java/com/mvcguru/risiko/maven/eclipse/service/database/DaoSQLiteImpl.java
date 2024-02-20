@@ -156,9 +156,9 @@ public class DaoSQLiteImpl implements DataDao {
 
     @Override
     public void insertTurn(Turn turn) throws GameException {
-        executeInsert("INSERT INTO turns (indexTurn, player, gameId, numberOfTroops, attackerTerritory, defenderTerritory) VALUES (?, ?, ?, ?, ?, ?)",
+        executeInsert("INSERT INTO turns (indexTurn, player, gameId, numberOfTroops, attackerTerritory, defenderTerritory, , numAttackDice, isConquered) VALUES (?, ?, ?, ?, ?, ?)",
                       turn.getIndexTurn(), turn.getPlayer().getUserName(), turn.getPlayer().getGameId(), turn.getNumberOfTroops(),
-                      turn.getAttackerTerritory().getName(), turn.getDefenderTerritory().getName());
+                      turn.getAttackerTerritory().getName(), turn.getDefenderTerritory().getName(), turn.getNumAttDice(), turn.getNumAttDice(), turn.isConquered());
     }
 
     @Override
