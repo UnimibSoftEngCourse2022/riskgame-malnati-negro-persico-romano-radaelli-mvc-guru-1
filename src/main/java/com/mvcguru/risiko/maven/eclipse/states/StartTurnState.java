@@ -43,8 +43,12 @@ public class StartTurnState extends GameState{
 				}
 			}
 		}
-		//List <TerritoryCard> comboCards = comboRequest.ge
 		game.getCurrentTurn().comboCardsCheck(result);
+		try {
+			GameRepository.getInstance().updateTurnNumberOfTroops(game.getCurrentTurn(), game.getCurrentTurn().getNumberOfTroops());
+		} catch (GameException | DatabaseConnectionException | UserException e) {
+			LOGGER.error("Errore nell'aggiornamento delle truppe del turno");
+		}
 	}
 	
 	@Override
