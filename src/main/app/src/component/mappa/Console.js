@@ -51,14 +51,20 @@ function Console({ carriTerritorio }) {
 
         {carriTerritorio && carriTerritorio > 3 && (
           <>
-            <button className="" onClick={() => handleDiceClick(1)}>
-              <GiInvertedDice3 style={{ color: "red", fontSize: "60px" }} />
-            </button>
-            <button className="" onClick={() => handleDiceClick(1)}>
+            <button
+              className="border rounded border-danger"
+              onClick={() => handleDiceClick(1)}
+            >
               <GiInvertedDice3 style={{ color: "red", fontSize: "60px" }} />
             </button>
             <button
-              className="border rounded"
+              className="border rounded border-danger"
+              onClick={() => handleDiceClick(1)}
+            >
+              <GiInvertedDice3 style={{ color: "red", fontSize: "60px" }} />
+            </button>
+            <button
+              className="border rounded border-danger"
               onClick={() => handleDiceClick(1)}
             >
               <GiInvertedDice3 style={{ color: "red", fontSize: "60px" }} />
