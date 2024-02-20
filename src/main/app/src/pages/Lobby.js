@@ -57,6 +57,7 @@ class LobbyClass extends React.Component {
   esciDallaLobby = () => {
     const { idPartita, nickname } = this.state;
     AppController.esciDallaPartita(idPartita, nickname);
+    AppController.unsubscribeToEsitiPartita(idPartita, nickname);
 
     if (nickname.startsWith("Ospite_")) {
       this.props.navigate(`/partita/null`);

@@ -102,7 +102,6 @@ class AppController {
       PartitaObserverSingleton.notifyListeners(JSON.parse(message.body));
       console.log("Aggiornamento topic ricevuto:", JSON.parse(message.body));
     });
-
     const payload = { username: nickname };
     this.client.publish({
       destination: `/app/partite/${idPartita}/entra`,
@@ -127,11 +126,30 @@ class AppController {
     }
   }
   
-  setUpPartita(idPartita, territoriAssegnati) {
-  if (!this.client || !this.client.connected) {
-    console.error("Client STOMP non connesso");
-    return;
-  }
+	subscribeToEsitiPartita(idPartita, nickname) {
+		if (!this.client || !this.client.connected) {
+			console.error("Client STOMP non connesso");
+			return;
+		}
+		this.client.subscribe(`/topic/partite/${idPartita}/${nickname}`, (message) => {
+		  PartitaObserverSingleton.notifyListenersEsiti(JSON.parse(message.body));
+		  console.log("Esito attacco ricevuto:", JSON.parse(message.body));
+	  });
+	}
+	
+	unsubscribeToEsitiPartita(idPartita, nickname) {
+		if (this.client && this.client.connected) {
+			this.client.unsubscribe(`/topic/partite/${idPartita}/${nickname}`);
+		} else {
+			console.error("Client STOMP non connesso");
+		}
+	}
+  
+  	setUpPartita(idPartita, territoriAssegnati) {
+  		if (!this.client || !this.client.connected) {
+    	console.error("Client STOMP non connesso");
+    	return;
+  		}	 
   console.log("territoriAssegnatinellotomp", territoriAssegnati);
   // Assicurati che territoriAssegnati sia un array di oggetti che corrispondono
   // alla struttura di TerritoryBody, ovvero con i campi `name` e `troops`.
@@ -159,7 +177,6 @@ class AppController {
 		});
 		console.log(`Setup per il turno della partita: ${idPartita} inviato:`, territoriAssegnati);
 	}
-
 }
 
 	
