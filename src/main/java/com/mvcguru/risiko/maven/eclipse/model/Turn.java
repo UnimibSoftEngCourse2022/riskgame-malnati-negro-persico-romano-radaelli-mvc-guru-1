@@ -44,6 +44,7 @@ public class Turn implements Serializable{
 	
 	private int numDefDice;
 	
+	@Builder.Default
 	private boolean isConquered = false;
 	
     public void numberOfTroopsCalculation(List<Territory> territories) {
