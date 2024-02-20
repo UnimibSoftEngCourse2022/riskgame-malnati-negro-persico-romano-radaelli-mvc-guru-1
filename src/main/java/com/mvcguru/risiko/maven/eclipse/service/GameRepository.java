@@ -122,10 +122,6 @@ public class GameRepository {
 		db.deleteTurn(turn);
 	}
 	
-	public synchronized void updateTurnIndex(Turn turn, int index) throws GameException {
-		db.updateTurnIndex(turn, index);
-	}
-	
 	public synchronized void updateTurnNumberOfTroops(Turn turn,int numberOfTroops)
 			throws GameException {
 		db.updateTurnNumberOfTroops(turn, numberOfTroops);
