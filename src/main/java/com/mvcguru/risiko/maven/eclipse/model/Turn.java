@@ -9,9 +9,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mvcguru.risiko.maven.eclipse.controller.body_request.ResultNoticeBody;
+import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
+import com.mvcguru.risiko.maven.eclipse.exception.GameException;
+import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
 import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard.CardSymbol;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
+import com.mvcguru.risiko.maven.eclipse.service.GameRepository;
+
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
@@ -122,7 +127,7 @@ public class Turn implements Serializable{
 	
 	//////////////////////////////////////
 	
-	public void attack() {
+	public void attack() throws GameException, DatabaseConnectionException, UserException {
 		    
 	    Integer[] attRolls = new Integer[numAttDice];
 	    Integer[] defRolls = new Integer[numDefDice];
@@ -152,7 +157,9 @@ public class Turn implements Serializable{
 	    
 	    if(defenderTerritory.getArmies() > defLosses) {
 	    	attackerTerritory.setArmies(attackerTerritory.getArmies() - attLosses); 
+	    	GameRepository.getInstance().updateTerritoryArmies(attackerTerritory.getName(), attackerTerritory.getArmies());
 	    	defenderTerritory.setArmies(defenderTerritory.getArmies() - defLosses);
+	    	GameRepository.getInstance().updateTerritoryArmies(defenderTerritory.getName(), defenderTerritory.getArmies());
 			ResultNoticeBody result = ResultNoticeBody.builder().isConquered(false).lostAttTroops(attLosses).lostDefTroops(defLosses).build();
 	    	player.getGame().broadcast(player.getGame().getId(), player.getUserName(), result);
 			resetBattleInfo();
