@@ -49,7 +49,7 @@ public class EventController {
     public void enterInTheGame(@Payload PlayerBody body, @DestinationVariable String id) throws Exception {
 		IGame game = null;
 		try {
-			game = GameRepository.getInstance().getGameById(id);
+			game = GameRepository.getInstance().getCompletedGame(id);
 			Player player = Player.builder().userName(body.getUsername()).gameId(id).territories(new ArrayList<Territory>()).color(Player.PlayerColor.GREY).build();
 			GameEntry action = GameEntry.builder().player(player).build();
 			game.onActionPlayer(action);
@@ -66,7 +66,7 @@ public class EventController {
             @Payload PlayerBody body) throws Exception {
 		IGame game = null;
 		try {
-            game = GameRepository.getInstance().getGameById(id);
+            game = GameRepository.getInstance().getCompletedGame(id);
             Player player = game.findPlayerByUsername(body.getUsername());
             GameExit action = GameExit.builder().player(player).build();
             game.onActionPlayer(action);
@@ -77,8 +77,7 @@ public class EventController {
 	public void confirmSetup(@DestinationVariable String id, @Payload SetUpBody body) throws Exception {
 	    try {	    
 	    	LOGGER.info("Inizio setup");
-	        IGame game = GameRepository.getInstance().getGameById(id);
-	        
+	        IGame game = GameRepository.getInstance().getCompletedGame(id);
 	        Player player = game.findPlayerByUsername(body.getUsername());
 	        if (player != null) {
 	            TerritorySetup action = TerritorySetup.builder().player(player).setUpBody(body).build();
@@ -93,7 +92,7 @@ public class EventController {
 	public void comboRequest(@DestinationVariable String id, @Payload ComboRequestBody body) throws Exception {
 		try {
 			LOGGER.info("Inizio Combo request");
-			IGame game = GameRepository.getInstance().getGameById(id);
+			IGame game = GameRepository.getInstance().getCompletedGame(id);
 			Player player = game.findPlayerByUsername(body.getUsername());
 			if (player != null) {
 				ComboRequest action = ComboRequest.builder().player(player).comboRequestBody(body).build();
@@ -106,7 +105,7 @@ public class EventController {
 	@MessageMapping("/partite/{id}/turnAssignation")
 	public void turnAssignation(@DestinationVariable String id, @Payload SetUpBody body) throws Exception {
 		try {
-			IGame game = GameRepository.getInstance().getGameById(id);
+			IGame game = GameRepository.getInstance().getCompletedGame(id);
 			LOGGER.info("Inizio assegnazione del turno {}", body);
 			Player player = game.findPlayerByUsername(body.getUsername());
 			if (player != null) {
@@ -122,7 +121,7 @@ public class EventController {
 	@MessageMapping("/partite/{id}/attack")
 	public void attackRequest(@DestinationVariable String id, @Payload AttackRequestBody body) {
 		try {
-			IGame game = GameRepository.getInstance().getGameById(id);
+			IGame game = GameRepository.getInstance().getCompletedGame(id);
 			LOGGER.info("Inizio assegnazione del turno {}", body);
 			Player player = game.findPlayerByUsername(body.getAttackerTerritory().getUsername());
 			if(player != null) {
@@ -136,8 +135,7 @@ public class EventController {
 	@MessageMapping("/partite/{id}/defence")
 	public void defenceRequest(@DestinationVariable String id, @Payload DefenceRequestBody body) {
 		try {
-			IGame game = GameRepository.getInstance().getGameById(id);
-			LOGGER.info("Inizio assegnazione del turno {}", body);
+			IGame game = GameRepository.getInstance().getCompletedGame(id);
 			Player player = game.findPlayerByUsername(body.getUsername());
 			if(player != null) {
 				DefenceRequest action = DefenceRequest.builder().player(player).defenderRequestBody(body).build();
@@ -150,8 +148,7 @@ public class EventController {
 	@MessageMapping("/partite/{id}/conquerAssigment")
 	public void conquerAssignment(@DestinationVariable String id, @Payload int troops) {
 		try {
-			IGame game = GameRepository.getInstance().getGameById(id);
-			LOGGER.info("Inizio assegnazione del turno {}", troops);
+			IGame game = GameRepository.getInstance().getCompletedGame(id);
 			game.getCurrentTurn().moveTroops(troops);
 			
 		}

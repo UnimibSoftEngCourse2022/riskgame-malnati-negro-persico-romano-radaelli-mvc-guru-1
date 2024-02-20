@@ -56,21 +56,21 @@ class GameRepositoryTest {
     }
 
     @Test
-    void testGetGameById() throws GameException, FullGameException, IOException {
+    void testgetGame() throws GameException, FullGameException, IOException {
         String gameId = "testGameId";
         IGame expectedGame = mock(IGame.class);
-        when(dataDao.getGameById(gameId)).thenReturn(expectedGame);
-        when(dataDao.getPlayerInGame(gameId)).thenReturn(new ArrayList<>());
-        IGame actualGame = gameRepository.getGameById(gameId);
+        when(dataDao.getGame(gameId)).thenReturn(expectedGame);
+        when(dataDao.getAllPlayers(gameId)).thenReturn(new ArrayList<>());
+        IGame actualGame = gameRepository.getGame(gameId);
         assertEquals(expectedGame, actualGame);
-        verify(dataDao, times(1)).getGameById(gameId);
+        verify(dataDao, times(1)).getGame(gameId);
     }
 
     @Test
     void testGetAllGames() throws GameException, IOException, FullGameException {
-        List<IGame> expectedGames = new ArrayList<>();
+    	ArrayList<IGame> expectedGames = new ArrayList<>();
         when(dataDao.getAllGames()).thenReturn(expectedGames);
-        List<IGame> actualGames = gameRepository.getAllGames();
+        ArrayList<IGame> actualGames = gameRepository.getAllGames();
         assertEquals(expectedGames, actualGames);
         verify(dataDao, times(1)).getAllGames();
     }

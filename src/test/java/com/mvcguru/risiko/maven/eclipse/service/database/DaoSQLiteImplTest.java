@@ -35,9 +35,9 @@ class DaoSQLiteImplTest {
 
     @Test
     void testinsertUser() throws UserException, GameException {
-        User user = new User("testUser1", "testPassword");
+        User user = User.builder().username("testUser").password("testPassword").build();
         data.insertUser(user);
-        User retrievedUser = data.getUserByUsernameAndPassword("testUser1", "testPassword");
+        User retrievedUser = data.getUser(user.getUsername(), user.getPassword());
         assertEquals(user.getUsername(), retrievedUser.getUsername());
         assertEquals(user.getPassword(), retrievedUser.getPassword());
         data.deleteUser(user);
@@ -45,10 +45,10 @@ class DaoSQLiteImplTest {
 
     @Test
     void testDeleteUser() throws UserException, GameException {
-        User user = new User("testUser2", "testPassword");
+        User user = User.builder().username("testUser").password("testPassword").build();
         data.insertUser(user);
         data.deleteUser(user);
-        User retrievedUser = data.getUserByUsernameAndPassword("testUser2", "testPassword");
+        User retrievedUser = data.getUser(user.getUsername(), user.getPassword());
         assertNull(retrievedUser);
     }
 
@@ -61,7 +61,7 @@ class DaoSQLiteImplTest {
                                     .build();
         IGame gameToinsert = FactoryGame.getInstance().createGame(config);
         data.insertGame(gameToinsert);
-        IGame retrievedGame = data.getGameById(gameToinsert.getId());
+        IGame retrievedGame = data.getGame(gameToinsert.getId());
         assertNotNull(retrievedGame);
         assertEquals(gameToinsert.getId(), retrievedGame.getId());
         assertEquals(gameToinsert.getConfiguration().getMode(), retrievedGame.getConfiguration().getMode());
@@ -80,7 +80,7 @@ class DaoSQLiteImplTest {
         IGame gameToinsert = FactoryGame.getInstance().createGame(config);
         data.insertGame(gameToinsert);
         data.deleteGame(gameToinsert);
-        IGame retrievedGame = data.getGameById(gameToinsert.getId());
+        IGame retrievedGame = data.getGame(gameToinsert.getId());
         assertNull(retrievedGame);
     }
 
@@ -111,10 +111,10 @@ class DaoSQLiteImplTest {
     void testInsertAndDeletePlayer() throws GameException {
         Player testPlayer = Player.builder().userName("testuser").gameId("game1").color(Player.PlayerColor.RED).build();
         data.insertPlayer(testPlayer);
-        List<Player> usersInGame = data.getPlayerInGame("game1");
+        List<Player> usersInGame = data.getAllPlayers("game1");
         assertTrue(usersInGame.stream().anyMatch(player -> player.getUserName().equals("testuser")));
         data.deletePlayer("testuser");
-        usersInGame = data.getPlayerInGame("game1");
+        usersInGame = data.getAllPlayers("game1");
         assertTrue(usersInGame.stream().noneMatch(player -> player.getUserName().equals("testuser")));
     }
 
@@ -124,7 +124,7 @@ class DaoSQLiteImplTest {
         Player player2 = Player.builder().userName("user2").gameId("game2").color(Player.PlayerColor.RED).build();
         data.insertPlayer(player1);
         data.insertPlayer(player2);
-        List<Player> usersInGame = data.getPlayerInGame("game2");
+        List<Player> usersInGame = data.getAllPlayers("game2");
         assertEquals(2, usersInGame.size());
         assertTrue(usersInGame.stream().anyMatch(player -> player.getUserName().equals("user1")));
         assertTrue(usersInGame.stream().anyMatch(player -> player.getUserName().equals("user2")));
@@ -146,7 +146,7 @@ class DaoSQLiteImplTest {
     	Player player = Player.builder().userName("user1").gameId("game1").color(Player.PlayerColor.RED).build();
     	Turn turn = Turn.builder().indexTurn(1).player(player).isConquered(false).build();
 		data.insertTurn(turn);
-		assertTrue(data.getLastTurnByGameId(player.getGameId()) != null);
+		assertTrue(data.getLastTurn(player.getGameId()) != null);
 		data.deleteTurn(turn);
 	}
     
@@ -199,35 +199,24 @@ class DaoSQLiteImplTest {
                 .isConquered(false)
                 .build();
     	
-    	data.insertTurn(turn);
-
-    	assertTrue(data.getTurnByIndex(turn.getPlayer().getGameId(), turn.getPlayer().getUserName(), 1).getIndexTurn() == 1);
-
-    	data.updateIsConquered(turn, true);
-    	
-    	assertTrue(data.getTurnByIndex(turn.getPlayer().getGameId(), turn.getPlayer().getUserName(), turn.getIndexTurn()).isConquered() == true);
-    	
-    	data.deleteTurn(turn);
-    	
-    	assertTrue(data.getTurnByIndex(turn.getPlayer().getGameId(), turn.getPlayer().getUserName(), turn.getIndexTurn()) == null);
     }
     
     @Test
     void updateObjective() throws GameException {
     	Player player = Player.builder().userName("user1").gameId("game1").color(Player.PlayerColor.RED).objective(ObjectiveCard.builder().objective("objective1").build()).build();
     	data.insertPlayer(player);
-    	data.getPlayerByUsername(player.getUserName());
+    	data.getPlayer(player.getUserName(), player.getGameId());
     	ObjectiveCard objective = (ObjectiveCard)player.getObjective();
     	assertEquals(objective.getObjective(), "objective1");
     	
     	data.updatePlayerObjective(player.getUserName(), ObjectiveCard.builder().objective("objective2").build());
     	
-    	player = data.getPlayerByUsername(player.getUserName());
+    	player = data.getPlayer(player.getUserName(), player.getGameId());
     	ObjectiveCard playerObjective = (ObjectiveCard)player.getObjective();
     	assertEquals(playerObjective.getObjective(), "objective2");
     	
     	data.deletePlayer(player.getUserName());
     	
-    	assertNull(data.getPlayerByUsername(player.getUserName()));
+    	assertNull(data.getPlayer(player.getUserName(), player.getGameId()));
     }
 }

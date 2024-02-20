@@ -17,10 +17,13 @@ public class Continent implements Serializable{
 	
 	@JsonProperty("continentId")
 	private int continentId;
+	
 	@JsonProperty("continentName")
 	private String name;
+	
 	@JsonProperty("territories")
 	private List<Territory> territories;
+	
 	@JsonProperty("bonus")
 	private int bonusArmies;
 	

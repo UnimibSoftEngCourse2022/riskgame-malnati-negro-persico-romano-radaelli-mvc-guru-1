@@ -46,6 +46,8 @@ public abstract class IGame implements Serializable{
     
     protected Turn currentTurn;
     
+    protected String winner;
+    
 
     public abstract void addPlayer(Player g) throws FullGameException;
     

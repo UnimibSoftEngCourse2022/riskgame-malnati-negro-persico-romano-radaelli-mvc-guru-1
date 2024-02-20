@@ -25,18 +25,8 @@ public class UserRepository {
 			db.insertUser(user);
 	}
 	
-	public synchronized User getUser(User user) throws UserException {
-		User result = db.getUserByUsernameAndPassword(user.getUsername(), user.getPassword());
-		return result;
-	}
-	
-	public synchronized String getUserName(User user) throws UserException {
-		String result = db.getUserByUsernameAndPassword(user.getUsername(), user.getPassword()).getUsername();
-		return result;
-	}
-	
-	public synchronized String getUserPassword(User user) throws UserException {
-		String result = db.getUserByUsernameAndPassword(user.getUsername(), user.getPassword()).getPassword();
+	public synchronized User getUser(String username, String password) throws UserException {
+		User result = db.getUser(username, password);
 		return result;
 	}
 	

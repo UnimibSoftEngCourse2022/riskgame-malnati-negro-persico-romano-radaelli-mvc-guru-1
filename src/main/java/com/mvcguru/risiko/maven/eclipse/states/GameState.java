@@ -5,6 +5,7 @@ import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.actions.AttackRequest;
 import com.mvcguru.risiko.maven.eclipse.actions.ComboRequest;
@@ -30,6 +31,8 @@ import lombok.experimental.SuperBuilder;
     @JsonSubTypes.Type(value = BattleState.class, name = "BattleState")
 })
 public abstract class GameState implements Serializable {
+	
+	private static final ObjectMapper mapper = new ObjectMapper();
 
     @JsonIgnore
     protected transient IGame game;
@@ -53,4 +56,8 @@ public abstract class GameState implements Serializable {
 	public void onActionPlayer(TurnSetUp turnSetUp) throws GameException, DatabaseConnectionException, UserException {}
 
 	public void onActionPlayer(DefenceRequest defenceRequest) throws GameException, DatabaseConnectionException, UserException{	} 
+	
+	public static GameState fromString(String json) throws IOException {
+        return mapper.readValue(json, GameState.class);
+    }
 }

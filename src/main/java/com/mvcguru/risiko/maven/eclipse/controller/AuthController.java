@@ -18,7 +18,7 @@ public class AuthController {
 	public ResponseEntity<Void> loginUser(@RequestBody User user){
 	    User loggedUser;
 	    try {
-	        loggedUser = UserRepository.getInstance().getUser(user);
+	        loggedUser = UserRepository.getInstance().getUser(user.getUsername(), user.getPassword());
 	    } catch (Exception e) {
 	    	LOGGER.error("Errore nel login", e);
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // Corretto per non includere un messaggio

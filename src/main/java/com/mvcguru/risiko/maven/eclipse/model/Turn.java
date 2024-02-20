@@ -50,7 +50,6 @@ public class Turn implements Serializable{
     public void numberOfTroopsCalculation(List<Territory> territories) {
         numberOfTroops += territories.size() / 3;
         numberOfTroops += continentCheck(territories);
-		LOGGER.info("Number of troops: {}", numberOfTroops);
     }
 
     public int continentCheck(List<Territory> territories){

@@ -53,10 +53,8 @@ public class GameSetupState extends GameState {
 		player.setSetUpCompleted(true); 
 		GameRepository.getInstance().updateSetUpCompleted(action.getPlayer().getUserName(), true);
 
-		for (Player p : GameRepository.getInstance().getGameById(action.getPlayer().getGameId()).getPlayers()) {
+		for (Player p : GameRepository.getInstance().getAllPlayers(game.getId())) {
 			if (!p.isSetUpCompleted()) {
-
-				LOGGER.info("BOOLEANA: {}", p.isSetUpCompleted());
 				return;
 			}
 		}
@@ -70,7 +68,6 @@ public class GameSetupState extends GameState {
 		assignColor(game.getPlayers());
 		assignTerritories(game.getDeckTerritory());
 		assignObjective(game.getDeckObjective());
-
 	}
 
 	private void assignObjective(IDeck deckObjective) throws GameException, DatabaseConnectionException, UserException {
