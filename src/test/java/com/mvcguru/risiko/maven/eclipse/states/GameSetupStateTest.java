@@ -19,8 +19,6 @@ import com.mvcguru.risiko.maven.eclipse.service.FactoryGame;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameSetupStateTest {

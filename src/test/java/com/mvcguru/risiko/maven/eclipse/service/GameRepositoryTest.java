@@ -30,22 +30,21 @@ class GameRepositoryTest {
     private GameRepository gameRepository;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws DatabaseConnectionException, GameException, UserException {
         MockitoAnnotations.openMocks(this);
     }
     
     @Test
 	void getIstance() throws DatabaseConnectionException, GameException, UserException {
-		GameRepository gameRepository = GameRepository.getInstance();
 		assertNotNull(gameRepository);
 	}
 
     @Test
-    void testRegisterGame() throws GameException {
+    void testinsertGame() throws GameException {
         IGame game = mock(IGame.class);
-        doNothing().when(dataDao).registerGame(any(IGame.class));
-        gameRepository.registerGame(game);
-        verify(dataDao, times(1)).registerGame(game);
+        doNothing().when(dataDao).insertGame(any(IGame.class));
+        gameRepository.insertGame(game);
+        verify(dataDao, times(1)).insertGame(game);
     }
 
     @Test

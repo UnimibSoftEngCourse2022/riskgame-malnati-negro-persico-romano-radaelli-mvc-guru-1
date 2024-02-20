@@ -1,16 +1,16 @@
 package com.mvcguru.risiko.maven.eclipse.controller.body_request;
 
-import java.io.Serializable;
-import java.util.List;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder
-public class ComboRequestBody implements Serializable{
+@NoArgsConstructor
+public class DefenceRequestBody {
+
+	private int numDefDice;
 	
 	private String username;
-	
-	private List<TerritoryCardBody> comboCards;
 
 }

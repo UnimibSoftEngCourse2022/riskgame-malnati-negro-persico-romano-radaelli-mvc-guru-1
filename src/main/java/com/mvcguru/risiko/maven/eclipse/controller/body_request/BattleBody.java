@@ -7,10 +7,9 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @NoArgsConstructor
-public class TerritoryBody {
-	
-	private String name;
-	
-	private int troops;
+public class BattleBody {
 
+	private String nameTerritory;
+	
+	private String Username;
 }

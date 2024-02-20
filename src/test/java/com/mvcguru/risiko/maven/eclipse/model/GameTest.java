@@ -7,10 +7,6 @@ import java.io.IOException;
 import com.mvcguru.risiko.maven.eclipse.controller.MessageBrokerSingleton;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration.GameMode;
-import com.mvcguru.risiko.maven.eclipse.model.card.ICard;
-import com.mvcguru.risiko.maven.eclipse.model.card.ObjectiveCard;
-import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
-import com.mvcguru.risiko.maven.eclipse.model.deck.IDeck;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 import com.mvcguru.risiko.maven.eclipse.service.FactoryGame;
 

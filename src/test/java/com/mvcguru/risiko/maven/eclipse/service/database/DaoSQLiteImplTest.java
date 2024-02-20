@@ -3,9 +3,7 @@ package com.mvcguru.risiko.maven.eclipse.service.database;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,17 +19,16 @@ import com.mvcguru.risiko.maven.eclipse.service.FactoryGame;
 
 class DaoSQLiteImplTest {
     private DaoSQLiteImpl data;
-    private final String URL = "jdbc:sqlite::memory:";
 
     @BeforeEach
     void setUp() throws DatabaseConnectionException, UserException, GameException {
-        data = new DaoSQLiteImpl(URL);
+        data = DaoSQLiteImpl.getInstance();
     }
 
     @Test
-    void testRegisterUser() throws UserException {
+    void testinsertUser() throws UserException, GameException {
         User user = new User("testUser1", "testPassword");
-        data.registerUser(user);
+        data.insertUser(user);
         User retrievedUser = data.getUserByUsernameAndPassword("testUser1", "testPassword");
         assertEquals(user.getUsername(), retrievedUser.getUsername());
         assertEquals(user.getPassword(), retrievedUser.getPassword());
@@ -39,30 +36,30 @@ class DaoSQLiteImplTest {
     }
 
     @Test
-    void testDeleteUser() throws UserException {
+    void testDeleteUser() throws UserException, GameException {
         User user = new User("testUser2", "testPassword");
-        data.registerUser(user);
+        data.insertUser(user);
         data.deleteUser(user);
         User retrievedUser = data.getUserByUsernameAndPassword("testUser2", "testPassword");
         assertNull(retrievedUser);
     }
 
     @Test
-    void testRegisterAndGetGameById() throws IOException, GameException {
+    void testinsertAndGetGameById() throws IOException, GameException {
         GameConfiguration config = GameConfiguration.builder()
                                     .mode(GameMode.EASY)
                                     .numberOfPlayers(4)
                                     .idMap("TestMap")
                                     .build();
-        IGame gameToRegister = FactoryGame.getInstance().createGame(config);
-        data.registerGame(gameToRegister);
-        IGame retrievedGame = data.getGameById(gameToRegister.getId());
+        IGame gameToinsert = FactoryGame.getInstance().createGame(config);
+        data.insertGame(gameToinsert);
+        IGame retrievedGame = data.getGameById(gameToinsert.getId());
         assertNotNull(retrievedGame);
-        assertEquals(gameToRegister.getId(), retrievedGame.getId());
-        assertEquals(gameToRegister.getConfiguration().getMode(), retrievedGame.getConfiguration().getMode());
-        assertEquals(gameToRegister.getConfiguration().getNumberOfPlayers(), retrievedGame.getConfiguration().getNumberOfPlayers());
-        assertEquals(gameToRegister.getConfiguration().getIdMap(), retrievedGame.getConfiguration().getIdMap());
-        data.deleteGame(gameToRegister);
+        assertEquals(gameToinsert.getId(), retrievedGame.getId());
+        assertEquals(gameToinsert.getConfiguration().getMode(), retrievedGame.getConfiguration().getMode());
+        assertEquals(gameToinsert.getConfiguration().getNumberOfPlayers(), retrievedGame.getConfiguration().getNumberOfPlayers());
+        assertEquals(gameToinsert.getConfiguration().getIdMap(), retrievedGame.getConfiguration().getIdMap());
+        data.deleteGame(gameToinsert);
     }
 
     @Test
@@ -72,10 +69,10 @@ class DaoSQLiteImplTest {
                                     .numberOfPlayers(4)
                                     .idMap("TestMap")
                                     .build();
-        IGame gameToRegister = FactoryGame.getInstance().createGame(config);
-        data.registerGame(gameToRegister);
-        data.deleteGame(gameToRegister);
-        IGame retrievedGame = data.getGameById(gameToRegister.getId());
+        IGame gameToinsert = FactoryGame.getInstance().createGame(config);
+        data.insertGame(gameToinsert);
+        data.deleteGame(gameToinsert);
+        IGame retrievedGame = data.getGameById(gameToinsert.getId());
         assertNull(retrievedGame);
     }
 
@@ -87,14 +84,14 @@ class DaoSQLiteImplTest {
                                     .idMap("TestMap1")
                                     .build();
         IGame game1 = FactoryGame.getInstance().createGame(config1);
-        data.registerGame(game1);
+        data.insertGame(game1);
         GameConfiguration config2 = GameConfiguration.builder()
                                     .mode(GameMode.HARD)
                                     .numberOfPlayers(2)
                                     .idMap("TestMap2")
                                     .build();
         IGame game2 = FactoryGame.getInstance().createGame(config2);
-        data.registerGame(game2);
+        data.insertGame(game2);
         List<IGame> games = data.getAllGames();
         assertNotNull(games);
         assertTrue(games.size() >= 2);

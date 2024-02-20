@@ -8,11 +8,11 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.actions.AttackRequest;
 import com.mvcguru.risiko.maven.eclipse.actions.ComboRequest;
+import com.mvcguru.risiko.maven.eclipse.actions.DefenceRequest;
 import com.mvcguru.risiko.maven.eclipse.actions.GameEntry;
 import com.mvcguru.risiko.maven.eclipse.actions.GameExit;
 import com.mvcguru.risiko.maven.eclipse.actions.TerritorySetup;
 import com.mvcguru.risiko.maven.eclipse.actions.TurnSetUp;
-import com.mvcguru.risiko.maven.eclipse.controller.body_request.TerritoryBody;
 import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
 import com.mvcguru.risiko.maven.eclipse.exception.GameException;
@@ -46,9 +46,11 @@ public abstract class GameState implements Serializable {
 	
 	public void onActionPlayer(ComboRequest comboRequest) { }
 	
-	public void onActionPlayer(AttackRequest attackRequest) {}
+	public void onActionPlayer(AttackRequest attackRequest) {} 
 
 	public void setUpGame() throws GameException, DatabaseConnectionException, UserException {}
 
 	public void onActionPlayer(TurnSetUp turnSetUp) throws GameException, DatabaseConnectionException, UserException {}
+
+	public void onActionPlayer(DefenceRequest defenceRequest) throws GameException, DatabaseConnectionException, UserException{	} 
 }

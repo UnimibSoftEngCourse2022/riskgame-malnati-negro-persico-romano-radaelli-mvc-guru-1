@@ -33,19 +33,21 @@ public class GameSetupState extends GameState {
 	public void onActionPlayer(TerritorySetup action) throws GameException, DatabaseConnectionException, UserException, FullGameException, IOException{
 		Player player = action.getPlayer();
 		 
-		for(TerritoryBody t : action.getSetUpBody().getTerritories()) {
-			String territoryName = t.getName();
-			int troops = t.getTroops();
-			player.getTerritories().stream().filter(territory -> territory.getName().equals(territoryName)).findFirst()
-					.ifPresent(territory -> {
-						territory.setArmies(troops);
-						try {
-							GameRepository.getInstance().updateTerritoryArmies(territory.getName(), territory.getArmies());
-						} catch (GameException | DatabaseConnectionException | UserException e) {
-							LOGGER.error("Errore nell'aggiornamento delle truppe del territorio {}", territory.getName());
-						}
-						LOGGER.info("Territorio {} con truppe  {}", territory.getName(), territory.getArmies());
-					});
+		for (TerritoryBody t : action.getSetUpBody().getTerritories()) {
+		    String territoryName = t.getName();
+		    int troops = t.getTroops();
+
+		    player.getTerritories().stream()
+		          .filter(territory -> territory.getName().equals(territoryName))
+		          .forEach(territory -> {
+		              territory.setArmies(troops);
+		              try {
+		                  GameRepository.getInstance().updateTerritoryArmies(territory.getName(), game.getId(), territory.getArmies());
+		              } catch (GameException | DatabaseConnectionException | UserException e) {
+		                  LOGGER.error("Errore nell'aggiornamento delle truppe del territorio {}", territory.getName());
+		              }
+		              LOGGER.info("Territorio {} con truppe {}", territory.getName(), territory.getArmies());
+		          });
 		}
 		
 		player.setSetUpCompleted(true); 
@@ -68,10 +70,7 @@ public class GameSetupState extends GameState {
 		assignColor(game.getPlayers());
 		assignTerritories(game.getDeckTerritory());
 		assignObjective(game.getDeckObjective());
-		ICard cardJolly1 = TerritoryCard.builder().territory(null).symbol(CardSymbol.JOLLY).build();
-		ICard cardJolly2 = TerritoryCard.builder().territory(null).symbol(CardSymbol.JOLLY).build();
-		game.getDeckTerritory().insertCard(cardJolly1);
-		game.getDeckTerritory().insertCard(cardJolly2);
+
 	}
 
 	private void assignObjective(IDeck deckObjective) throws GameException, DatabaseConnectionException, UserException {
@@ -87,20 +86,24 @@ public class GameSetupState extends GameState {
 	        }
 		}
 	}
-    
+	
 	private void assignTerritories(IDeck deckTerritory) throws GameException, DatabaseConnectionException, UserException {
 	    deckTerritory.shuffle();
 	    int playerIndex = 0;
-	    TerritoryCard card = (TerritoryCard)deckTerritory.drawCard(); 
+	    TerritoryCard card = (TerritoryCard)deckTerritory.drawCard();
 	    while (card != null) {
-	    	game.getPlayers().get(playerIndex % game.getPlayers().size()).getTerritories().add(card.getTerritory());
-	    	card.getTerritory().setIdOwner(game.getPlayers().get(playerIndex % game.getPlayers().size()).getUserName());
-	    	GameRepository.getInstance().insertTerritory(card.getTerritory(), game.getId());
-	        playerIndex++;
-	        card = (TerritoryCard) deckTerritory.drawCard(); 
+	        if (card.getSymbol().equals(CardSymbol.JOLLY)) {
+	            deckTerritory.insertCard(card);
+	            deckTerritory.shuffle();
+	        } else {
+	            game.getPlayers().get(playerIndex % game.getPlayers().size()).getTerritories().add(card.getTerritory());
+	            card.getTerritory().setIdOwner(game.getPlayers().get(playerIndex % game.getPlayers().size()).getUserName());
+	            GameRepository.getInstance().insertTerritory(card.getTerritory(), game.getId());
+	            playerIndex++;
+	        }
+	        card = (TerritoryCard) deckTerritory.drawCard();
 	    }
 	}
-
 
 	private void assignColor(List<Player> players) throws GameException, DatabaseConnectionException, UserException {
 		List<PlayerColor> colors = new ArrayList<>(Arrays.asList(PlayerColor.values()));
@@ -108,10 +111,8 @@ public class GameSetupState extends GameState {
 		Collections.shuffle(colors);
 		for (int i = 0; i < players.size(); i++) {
 			players.get(i).setColor(colors.get(i));
-			GameRepository.getInstance().updatePlayerColor(players.get(i).getUserName(), players.get(i).getColor());
+			GameRepository.getInstance().updatePlayerColor(players.get(i));
 		}
 		
 	}
-
-
 }

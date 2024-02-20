@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.FileCopyUtils;
 
@@ -24,16 +26,17 @@ import com.mvcguru.risiko.maven.eclipse.model.deck.TerritoriesDeck;
 import com.mvcguru.risiko.maven.eclipse.states.GameState;
 import com.mvcguru.risiko.maven.eclipse.states.LobbyState;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 public class FactoryGame {
-	private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(FactoryGame.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(FactoryGame.class);
     private static FactoryGame instance;
     private GameState gameState;
 
-
+	public FactoryGame() {
+		//default constructor	
+	}
+    
     public static synchronized FactoryGame getInstance() {
         if (instance == null)
             instance = new FactoryGame();
@@ -92,11 +95,11 @@ public class FactoryGame {
         return deck;
     }
 
-    private String getFileNameForObjectiveGameMode(GameMode mode) {
+    private String getFileNameForContinentGameMode(GameMode mode) {
         switch (mode) {
-            case EASY: return "objectives_easy.json";
-            case MEDIUM: return "objectives_medium.json";
-            case HARD: return "objectives_hard.json";
+            case EASY: return "continent_easy.json";
+            case MEDIUM: return "continent_medium.json";
+            case HARD: return "continent_hard.json";
             default: return null;
         }
     }
@@ -108,14 +111,24 @@ public class FactoryGame {
         
         game.setDeckTerritory(createTerritoryDeck(configuration));
         game.setDeckObjective(createObjectiveDeck(configuration));
-        game.setContinents(parsingContinent());
+        game.setContinents(parsingContinent(configuration));
         game.setState(LobbyState.builder().game(game).build());
         return game;
     }
     
-    public List<Continent> parsingContinent() throws IOException {
+    private String getFileNameForObjectiveGameMode(GameMode mode) {
+        switch (mode) {
+            case EASY: return "objectives_easy.json";
+            case MEDIUM: return "objectives_medium.json";
+            case HARD: return "objectives_hard.json";
+            default: return null;
+        }
+    }
+    
+    public List<Continent> parsingContinent(GameConfiguration configuration) throws IOException {
+    	String fileName = getFileNameForContinentGameMode(configuration.getMode());
 		ObjectMapper mapper = new ObjectMapper();
-        byte[] data = FileCopyUtils.copyToByteArray(new ClassPathResource("continent.json").getInputStream());
+        byte[] data = FileCopyUtils.copyToByteArray(new ClassPathResource(fileName).getInputStream());
         String json = new String(data, StandardCharsets.UTF_8);
         Continent[] continents = mapper.readValue(json, Continent[].class);
         return new ArrayList<>(Arrays.asList(continents));

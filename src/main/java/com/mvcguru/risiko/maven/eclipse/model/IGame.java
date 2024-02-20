@@ -37,7 +37,7 @@ public abstract class IGame implements Serializable{
 	
 	protected IDeck deckTerritory;
 	
-	protected List<Continent> continents;
+	private List<Continent> continents;
 	
 	@Builder.Default
     protected ArrayList<Player> players = new ArrayList<>();
@@ -57,6 +57,8 @@ public abstract class IGame implements Serializable{
 
 	public abstract Player findPlayerByUsername(String username);
 
-	public void startGame() { }
+	public void startGame() throws GameException, DatabaseConnectionException, UserException { }
+	
+	public void changeTurn() throws GameException, DatabaseConnectionException, UserException { }
    
 }

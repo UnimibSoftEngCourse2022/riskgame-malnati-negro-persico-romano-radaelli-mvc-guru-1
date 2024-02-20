@@ -1,7 +1,6 @@
 package com.mvcguru.risiko.maven.eclipse.service;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
@@ -31,9 +30,9 @@ public class GameRepository {
 		 if (instance == null) { instance = new GameRepository();} return instance;
 	}
 	
-	public synchronized void registerGame(IGame game) throws GameException {
+	public synchronized void insertGame(IGame game) throws GameException {
 		if (game != null) 
-			db.registerGame(game);
+			db.insertGame(game);
 	}
 	
 	public synchronized void deleteGame(IGame game) throws GameException {
@@ -83,8 +82,8 @@ public class GameRepository {
 		db.updateSetUpCompleted(username, setUpCompleted);
 	}
 	
-	public synchronized void updatePlayerColor(String username, Player.PlayerColor color) throws GameException {
-		db.updatePlayerColor(username, color);
+	public synchronized void updatePlayerColor(Player player) throws GameException {
+		db.updatePlayerColor(player);
 	}
 	
 	public synchronized void removePlayer(String username) throws GameException {
@@ -107,8 +106,8 @@ public class GameRepository {
 		db.updatePlayerObjective(username, objective);
 	}
 	
-	public synchronized void updateTerritoryArmies(String territoryName, int armies) throws GameException {
-		db.updateTerritoryArmies(territoryName, armies);
+	public synchronized void updateTerritoryArmies(String territoryName, String gameId, int armies) throws GameException {
+		db.updateTerritoryArmies(territoryName, gameId, armies);
 	}
 	
 	public synchronized List<Territory> getAllTerritories(String player) throws GameException {
@@ -127,6 +126,19 @@ public class GameRepository {
 		db.updateTurnIndex(turn, index);
 	}
 	
+	public synchronized void updateTurnNumberOfTroops(Turn turn,int numberOfTroops)
+			throws GameException {
+		db.updateTurnNumberOfTroops(turn, numberOfTroops);
+	}
+	
+	public synchronized void updateDefenderTerritory(Turn turn, Territory defenderTerritory) throws GameException {
+		db.updateDefenderTerritory(turn, defenderTerritory.getName());
+	}
+	
+	public synchronized void updateAttackerTerritory(Turn turn, Territory attackerTerritory) throws GameException {
+		db.updateAttackerTerritory(turn, attackerTerritory.getName());
+	}
+	
 	public synchronized void insertComboCard(TerritoryCard t, Player owner, String gameId) throws GameException {
         db.insertComboCard(t, owner, gameId);
     }
@@ -143,7 +155,15 @@ public class GameRepository {
 		return db.getAllComboCards(player, gameId);
 	}
 	
+	public synchronized void updateNumAttackDice(Turn turn, int numAttackDice) throws GameException {
+		db.updateNumAttackDice(turn, numAttackDice);
+	}
 	
-
+	public synchronized void updateNumDefenseDice(Turn turn, int numDefenseDice) throws GameException {
+		db.updateNumDefenseDice(turn, numDefenseDice);
+	}
 	
+	public synchronized void updateIsConquered(Turn turn, boolean isConquered) throws GameException {
+		db.updateIsConquered(turn, isConquered);
+	}
 }

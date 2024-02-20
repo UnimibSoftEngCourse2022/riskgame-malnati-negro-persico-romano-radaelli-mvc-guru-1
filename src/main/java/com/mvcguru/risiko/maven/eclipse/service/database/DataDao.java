@@ -14,51 +14,50 @@ import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 import com.mvcguru.risiko.maven.eclipse.states.GameState;
 
 public interface DataDao {
-	
 	//UserDao
     User getUserByUsernameAndPassword(String username, String password) throws UserException;
-    void registerUser(User user) throws UserException;
-    void deleteUser(User user) throws UserException;
-    void createUsersTable() throws UserException;
-	
+    void insertUser(User user) throws UserException, GameException;
+    void deleteUser(User user) throws UserException;	
     //GameDao
     IGame getGameById(String gameId) throws GameException, IOException;
-    void registerGame(IGame game) throws GameException;
+    void insertGame(IGame game) throws GameException;
     void deleteGame(IGame game) throws GameException;
-    void createGamesTable() throws GameException;
 	void updateState(String gameId, GameState newState) throws GameException;
     List<IGame> getAllGames() throws GameException, IOException;
 	
     //PlayerDao
 	void insertPlayer(Player player) throws GameException;
 	void updateSetUpCompleted(String username, boolean setUpCompleted) throws GameException;
-	void updatePlayerColor(String username, Player.PlayerColor color) throws GameException;
+	void updatePlayerColor(Player player) throws GameException;
 	void deletePlayer(String username) throws GameException;
 	List<Player> getPlayerInGame(String gameId) throws GameException;
-	void createPlayerTable() throws GameException;
 	void updatePlayerObjective(String username, ICard objective) throws GameException;
 	
 	//TerritoryDao
 	void insertTerritory(Territory territory, String gameId) throws GameException;
 	void deleteTerritory(String name) throws GameException;
-	void createTerritoryTable() throws GameException;
 	void updateTerritoryOwner(String territoryName, Player player) throws GameException;
-	void updateTerritoryArmies(String territoryName, int armies) throws GameException;
+	void updateTerritoryArmies(String territoryName, String gameId, int troops) throws GameException;
 	List<Territory> getAllTerritories(String player) throws GameException;
 	
 	//TurnDao
-	void createTurnTable() throws GameException;
 	void insertTurn(Turn turn) throws GameException;
 	void deleteTurn(Turn turn) throws GameException;
 	void updateTurnIndex(Turn turn, int index) throws GameException;
+	void updateTurnNumberOfTroops(Turn turn, int numberOfTroops) throws GameException;
+	void updateNumAttackDice(Turn turn, int numAttackDice) throws GameException;
+	void updateNumDefenseDice(Turn turn, int numDefenseDice) throws GameException;
+	void updateDefenderTerritory(Turn turn, String defenderTerritory) throws GameException;
+	void updateAttackerTerritory(Turn turn, String attackerTerritory) throws GameException;
+	void updateIsConquered(Turn turn, boolean isConquered) throws GameException;
 	Turn getLastTurnByGameId(String gameId) throws GameException;
 	
 	//ComboCardDao
-	void createComboCardsTable() throws GameException;
 	void insertComboCard(TerritoryCard t, Player owner, String gameId) throws GameException;
 	void deleteComboCard(TerritoryCard t, Player owner, String gameId) throws GameException;
 	void updateOwner(TerritoryCard t, String player, String gameId) throws GameException;
 	List<TerritoryCard> getAllComboCards(String player, String gameId) throws GameException;
 	
 	void closeConnection();
+	
 }
