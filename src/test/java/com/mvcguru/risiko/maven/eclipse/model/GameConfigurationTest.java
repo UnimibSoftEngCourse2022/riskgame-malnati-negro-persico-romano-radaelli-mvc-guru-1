@@ -13,7 +13,6 @@ class GameConfigurationTest {
 
     @BeforeEach
     void setUp() {
-        // Creazione di un'istanza di GameConfiguration con un enum GameMode
         gameConfiguration = GameConfiguration.builder()
                 .mode(GameMode.EASY)
                 .numberOfPlayers(2)
@@ -79,10 +78,8 @@ class GameConfigurationTest {
 
     @Test
     void testGameConfiguration() {
-        // Verifica che il GameMode sia stato impostato correttamente nel setup
         assertEquals(GameMode.EASY.toString(), gameConfiguration.getMode().toString());
         
-        // Altre asserzioni per verificare gli altri attributi
         assertEquals(2, gameConfiguration.getNumberOfPlayers());
         assertEquals("mappa1", gameConfiguration.getIdMap());
     }
