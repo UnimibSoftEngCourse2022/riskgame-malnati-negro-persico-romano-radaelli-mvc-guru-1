@@ -45,7 +45,6 @@ public class Turn implements Serializable{
         numberOfTroops += territories.size() / 3;
         numberOfTroops += continentCheck(territories);
 		LOGGER.info("Number of troops: {}", numberOfTroops);
-      //player.getGame().broadcast(player.getGame().getId(),player.getUserName(), numberOfTroops); //da cambiare
     }
 
     public int continentCheck(List<Territory> territories){
@@ -126,8 +125,7 @@ public class Turn implements Serializable{
 	//////////////////////////////////////
 	
 	public void attack() {
-		
-	    
+		    
 	    Integer[] attRolls = new Integer[numAttDice];
 	    Integer[] defRolls = new Integer[numDefDice];
 	    
@@ -154,28 +152,17 @@ public class Turn implements Serializable{
 	    }
 	    LOGGER.info("Attacker losses: {} | Defender losses: {}", attLosses, defLosses);
 	    
-	    if(player.getTerritoryByName(defenderTerritory.getName()).getArmies() > defLosses) {
-	    	
-	    	 player.getTerritoryByName(attackerTerritory.getName())
-		    	.setArmies(player.getTerritoryByName(attackerTerritory.getName()).getArmies() - attLosses);
-	    	 
-	    	 player.getTerritoryByName(defenderTerritory.getName())
-		    	.setArmies(player.getTerritoryByName(defenderTerritory.getName()).getArmies() - defLosses);
-	    	 
+	    if(defenderTerritory.getArmies() > defLosses) {
+	    	attackerTerritory.setArmies(attackerTerritory.getArmies() - attLosses); 
+	    	defenderTerritory.setArmies(defenderTerritory.getArmies() - defLosses);
 			ResultNoticeBody result = ResultNoticeBody.builder().isConquered(false).lostAttTroops(attLosses).lostDefTroops(defLosses).build();
-			resetBattleInfo();
-	    	 
 	    	player.getGame().broadcast(player.getGame().getId(), player.getUserName(), result);
+			resetBattleInfo();
 	    }
 		else {
 			isConquered = true;
-			ResultNoticeBody result = ResultNoticeBody.builder().isConquered(false).lostAttTroops(attLosses).lostDefTroops(defLosses).build();
-			
-			player.getTerritoryByName(defenderTerritory.getName())
-			.setIdOwner(attackerTerritory.getIdOwner());
-			
-			//todo: gestione conquista territorio
-			
+			defenderTerritory.setIdOwner(attackerTerritory.getIdOwner());
+			ResultNoticeBody result = ResultNoticeBody.builder().isConquered(true).lostAttTroops(attLosses).lostDefTroops(defLosses).build();
 			player.getGame().broadcast(player.getGame().getId(), player.getUserName(), result);
 		}
 	}

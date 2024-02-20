@@ -95,11 +95,11 @@ public class FactoryGame {
         return deck;
     }
 
-    private String getFileNameForObjectiveGameMode(GameMode mode) {
+    private String getFileNameForContinentGameMode(GameMode mode) {
         switch (mode) {
-            case EASY: return "objectives_easy.json";
-            case MEDIUM: return "objectives_medium.json";
-            case HARD: return "objectives_hard.json";
+            case EASY: return "continent_easy.json";
+            case MEDIUM: return "continent_medium.json";
+            case HARD: return "continent_hard.json";
             default: return null;
         }
     }
@@ -111,14 +111,24 @@ public class FactoryGame {
         
         game.setDeckTerritory(createTerritoryDeck(configuration));
         game.setDeckObjective(createObjectiveDeck(configuration));
-        game.setContinents(parsingContinent());
+        game.setContinents(parsingContinent(configuration));
         game.setState(LobbyState.builder().game(game).build());
         return game;
     }
     
-    public List<Continent> parsingContinent() throws IOException {
+    private String getFileNameForObjectiveGameMode(GameMode mode) {
+        switch (mode) {
+            case EASY: return "objectives_easy.json";
+            case MEDIUM: return "objectives_medium.json";
+            case HARD: return "objectives_hard.json";
+            default: return null;
+        }
+    }
+    
+    public List<Continent> parsingContinent(GameConfiguration configuration) throws IOException {
+    	String fileName = getFileNameForContinentGameMode(configuration.getMode());
 		ObjectMapper mapper = new ObjectMapper();
-        byte[] data = FileCopyUtils.copyToByteArray(new ClassPathResource("continent_hard.json").getInputStream());
+        byte[] data = FileCopyUtils.copyToByteArray(new ClassPathResource(fileName).getInputStream());
         String json = new String(data, StandardCharsets.UTF_8);
         Continent[] continents = mapper.readValue(json, Continent[].class);
         return new ArrayList<>(Arrays.asList(continents));
