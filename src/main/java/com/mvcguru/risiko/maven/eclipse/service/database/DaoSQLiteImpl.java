@@ -236,6 +236,29 @@ public class DaoSQLiteImpl implements DataDao {
     }
     
     @Override
+	public Player getPlayerByUsername(String username) throws GameException {
+		String sql = "SELECT * FROM players WHERE username = ?";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = prepareStatement(sql, username);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				return Player.builder().userName(rs.getString("username")).gameId(rs.getString("gameId"))
+						.color(Player.PlayerColor.valueOf(rs.getString("color")))
+						.objective(ObjectiveCard.builder().objective(rs.getString("objective")).build())
+						.setUpCompleted(rs.getBoolean("setUpCompleted")).build();
+			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			throw new GameException("Errore durante il recupero del giocatore.", e);
+		} finally {
+			closePreparedStatement(pstmt);
+		}
+	}
+    
+    @Override
     public List<Player> getPlayerInGame(String gameId) throws GameException {
         List<Player> players = new ArrayList<>();
         String sql = "SELECT username, gameId, color, objective, setUpCompleted FROM players WHERE gameId = ?";
@@ -249,7 +272,6 @@ public class DaoSQLiteImpl implements DataDao {
                 	String color = rs.getString("color");
                 	boolean setUpCompleted = rs.getBoolean("setUpCompleted");
                 	ICard objective = ObjectiveCard.builder().objective(rs.getString("objective")).build();
-                	LOGGER.info("Obiettivo: {}", objective);
                 	players.add(Player.builder()
                 			.userName(username)
                 			.gameId(gameId)

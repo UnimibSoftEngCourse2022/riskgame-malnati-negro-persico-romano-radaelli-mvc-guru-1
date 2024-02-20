@@ -9,7 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.mvcguru.risiko.maven.eclipse.model.card.ICard;
 import com.mvcguru.risiko.maven.eclipse.model.card.ObjectiveCard;
 import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
 import com.mvcguru.risiko.maven.eclipse.exception.GameException;
@@ -200,14 +199,11 @@ class DaoSQLiteImplTest {
                 .isConquered(false)
                 .build();
     	
-    	LOGGER.info("Turn: " + turn);
-    	
     	data.insertTurn(turn);
 
     	assertTrue(data.getTurnByIndex(turn.getPlayer().getGameId(), turn.getPlayer().getUserName(), 1).getIndexTurn() == 1);
 
     	data.updateIsConquered(turn, true);
-    	LOGGER.info("Turn: " + data.getTurnByIndex(turn.getPlayer().getGameId(), turn.getPlayer().getUserName(), 1));
     	
     	assertTrue(data.getTurnByIndex(turn.getPlayer().getGameId(), turn.getPlayer().getUserName(), turn.getIndexTurn()).isConquered() == true);
     	
@@ -216,5 +212,22 @@ class DaoSQLiteImplTest {
     	assertTrue(data.getTurnByIndex(turn.getPlayer().getGameId(), turn.getPlayer().getUserName(), turn.getIndexTurn()) == null);
     }
     
-    
+    @Test
+    void updateObjective() throws GameException {
+    	Player player = Player.builder().userName("user1").gameId("game1").color(Player.PlayerColor.RED).objective(ObjectiveCard.builder().objective("objective1").build()).build();
+    	data.insertPlayer(player);
+    	data.getPlayerByUsername(player.getUserName());
+    	ObjectiveCard objective = (ObjectiveCard)player.getObjective();
+    	assertEquals(objective.getObjective(), "objective1");
+    	
+    	data.updatePlayerObjective(player.getUserName(), ObjectiveCard.builder().objective("objective2").build());
+    	
+    	player = data.getPlayerByUsername(player.getUserName());
+    	ObjectiveCard playerObjective = (ObjectiveCard)player.getObjective();
+    	assertEquals(playerObjective.getObjective(), "objective2");
+    	
+    	data.deletePlayer(player.getUserName());
+    	
+    	assertNull(data.getPlayerByUsername(player.getUserName()));
+    }
 }

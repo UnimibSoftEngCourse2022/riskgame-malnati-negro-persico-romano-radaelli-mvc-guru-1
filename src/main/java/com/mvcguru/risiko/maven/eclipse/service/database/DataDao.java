@@ -30,6 +30,7 @@ public interface DataDao {
 	void updateSetUpCompleted(String username, boolean setUpCompleted) throws GameException;
 	void updatePlayerColor(Player player) throws GameException;
 	void deletePlayer(String username) throws GameException;
+	Player getPlayerByUsername(String username) throws GameException;
 	List<Player> getPlayerInGame(String gameId) throws GameException;
 	void updatePlayerObjective(String username, ICard objective) throws GameException;
 	
