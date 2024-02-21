@@ -109,26 +109,31 @@ function SetUpStateMap({ idPlayer, giocatori, game }) {
       {console.log("player in setup", player)}
       {console.log("player name in setup", player.userName)}
       {console.log("player color in setup", player.color)}
-      {player && <Alert>{player.objective.objective}</Alert>}
       {console.log("player objective in setup", player.objective.objective)}
+      {troopsToAssign && (
+        <Alert variant="success" className="text-success">
+          <div className="d-flex flew-row justify-content-center align-items-center">
+            <span>Il colore delle tue truppe è il </span>
+            <div
+              style={{
+                backgroundColor: `${colorPlayer}`,
+                width: "15px",
+                height: "15px",
+                marginLeft: "3px",
+              }}
+            ></div>
+          </div>
 
-      <div className="d-flex flew-row justify-content-center align-items-center">
-        <span>Il colore delle tue truppe è il </span>
-        <div
-          style={{
-            backgroundColor: `${colorPlayer}`,
-            width: "15px",
-            height: "15px",
-            marginLeft: "3px",
-          }}
-        ></div>
-      </div>
-
-      <p>
-        posiziona le truppe in base al tuo obbiettivo, utilizza il click
-        sinistro per aggiungere delle truppe al territorio e utilizza il click
-        destro per rimuoverle
-      </p>
+          <p>
+            posiziona le truppe in base al tuo obbiettivo, utilizza il click
+            sinistro per aggiungere delle truppe al territorio e utilizza il
+            click destro per rimuoverle
+          </p>
+          <span>ti rimangono da posizionare </span>
+          <span>{troopsToAssign}</span>
+          <span>truppe</span>
+        </Alert>
+      )}
       <Container>
         <SvgMap
           paths={mappa}

@@ -67,7 +67,7 @@ class LobbyClass extends React.Component {
   };
 
   render() {
-    const { idPartita, utentiConnessi, utentiTotali, partita } = this.state;
+    const { utentiConnessi, utentiTotali, partita } = this.state;
     console.log("partita il Lobby", partita);
     return (
       <Container className="p-2">

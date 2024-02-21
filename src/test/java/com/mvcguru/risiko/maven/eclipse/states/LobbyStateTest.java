@@ -190,9 +190,9 @@ class LobbyStateTest {
 		SetUpBody setUpBody3 = SetUpBody.builder().territories(territoryBodies3).build();
 		TurnSetUp territorySetup3 = TurnSetUp.builder().player(player1).setUpBody(setUpBody3).build();
 		game.getState().onActionPlayer(territorySetup3);
-		
-		
+
 		assertEquals(game.getState().getClass().toString(), BattleState.class.toString());
+
 		
         // BattleState
 		BattleBody  battleBodyAttacker = BattleBody.builder().nameTerritory("Brasile").username(player1.getUserName()).build();

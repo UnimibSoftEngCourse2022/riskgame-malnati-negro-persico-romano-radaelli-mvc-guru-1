@@ -19,7 +19,6 @@ import com.mvcguru.risiko.maven.eclipse.model.Continent;
 import com.mvcguru.risiko.maven.eclipse.model.Game;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
-import com.mvcguru.risiko.maven.eclipse.model.Turn;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration.GameMode;
 import com.mvcguru.risiko.maven.eclipse.model.card.ObjectiveCard;
 import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
@@ -29,7 +28,6 @@ import com.mvcguru.risiko.maven.eclipse.model.card.objectives.TerritoriesObjecti
 import com.mvcguru.risiko.maven.eclipse.model.deck.IDeck;
 import com.mvcguru.risiko.maven.eclipse.model.deck.ObjectivesDeck;
 import com.mvcguru.risiko.maven.eclipse.model.deck.TerritoriesDeck;
-import com.mvcguru.risiko.maven.eclipse.states.GameState;
 import com.mvcguru.risiko.maven.eclipse.states.LobbyState;
 import lombok.Data;
 
@@ -37,7 +35,6 @@ import lombok.Data;
 public class FactoryGame {
 	private static final Logger LOGGER = LoggerFactory.getLogger(FactoryGame.class);
     private static FactoryGame instance;
-    private GameState gameState;
 
 	public FactoryGame() {
 		//default constructor	

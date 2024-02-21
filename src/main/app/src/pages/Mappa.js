@@ -3,7 +3,6 @@ import { useParams, useLocation } from "react-router-dom";
 import PartitaObserverSingleton from "../application/PartitaObserverSingleton";
 import SetupStateMap from "../component/mappa/SetupStateMap";
 import StartTurnState from "../component/mappa/StartTurnState";
-import { Container } from "react-bootstrap";
 import BattleState from "../component/mappa/BattleState";
 
 function MappaPage() {

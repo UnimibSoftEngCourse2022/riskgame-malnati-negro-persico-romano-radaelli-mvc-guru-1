@@ -41,13 +41,4 @@ class FactoryGameTest {
         assertNotNull(instance1, "Instance should not be null");
         assertSame(instance1, instance2, "Instances should be the same");
     }
-
-    @Test
-    void testGameState() {
-        FactoryGame instance = FactoryGame.getInstance();
-        GameState gameState = instance.getGameState();
-        instance.setGameState(gameState);
-
-        assertSame(gameState, instance.getGameState(), "GameState should be set and retrieved correctly");
-    }
 }

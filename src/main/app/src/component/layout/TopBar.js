@@ -1,7 +1,6 @@
 import React from "react";
 import { Navbar } from "react-bootstrap";
 import { useAuth } from "../../auth/AuthContext";
-import { MdPerson4 } from "react-icons/md";
 import { IoMdPerson } from "react-icons/io";
 import { useParams } from "react-router-dom";
 

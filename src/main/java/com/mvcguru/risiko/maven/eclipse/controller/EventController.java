@@ -142,6 +142,7 @@ public class EventController {
 	@MessageMapping("/partite/{id}/defence")
 	public void defenceRequest(@DestinationVariable String id, @Payload DefenceRequestBody body) {
 		try {
+			LOGGER.info("Inizio difesa {}", body);
 			IGame game = GameRepository.getInstance().getCompletedGame(id);
 			Player player = game.findPlayerByUsername(body.getUsername());
 			if(player != null) {
