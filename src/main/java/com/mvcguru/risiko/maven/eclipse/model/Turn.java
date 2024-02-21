@@ -52,8 +52,11 @@ public class Turn implements Serializable{
         defenderTerritory = null;
         numAttDice = 0;
         numDefDice = 0;
-        GameRepository.getInstance().updateAttackerTerritory(this, null);
-        GameRepository.getInstance().updateDefenderTerritory(this, null);
+        
+        Territory t = Territory.builder().name("").build();
+        
+        GameRepository.getInstance().updateAttackerTerritory(this, t );
+        GameRepository.getInstance().updateDefenderTerritory(this, t );
         GameRepository.getInstance().updateNumAttackDice(this, 0);
         GameRepository.getInstance().updateNumDefenseDice(this, 0);
         }
@@ -158,18 +161,22 @@ public class Turn implements Serializable{
 	        else
 	            attLosses++;
 	    }
+	    LOGGER.info("Attacker rolls: {} | Defender rolls: {}", attRolls, defRolls);
 	    LOGGER.info("Attacker losses: {} | Defender losses: {}", attLosses, defLosses);
 	    
 	    if(defenderTerritory.getArmies() > defLosses) {
+	    	LOGGER.info("Siamo nell'if");
+	    	LOGGER.info("Attacker: {} | Defender: {}", attackerTerritory.getArmies(), defenderTerritory.getArmies());
 	    	attackerTerritory.setArmies(attackerTerritory.getArmies() - attLosses); 
 	    	GameRepository.getInstance().updateTerritoryArmies(attackerTerritory.getName(), player.getGameId(), attackerTerritory.getArmies());
 	    	defenderTerritory.setArmies(defenderTerritory.getArmies() - defLosses);
 	    	GameRepository.getInstance().updateTerritoryArmies(defenderTerritory.getName(), player.getGameId(), defenderTerritory.getArmies());
 			ResultNoticeBody result = ResultNoticeBody.builder().isConquered(false).lostAttTroops(attLosses).lostDefTroops(defLosses).build();
-	    	player.getGame().broadcast(player.getUserName(), result);
+	    	LOGGER.info("Attacker: {} | Defender: {}", attackerTerritory.getArmies(), defenderTerritory.getArmies());
 			resetBattleInfo();
 	    }
 		else {
+			LOGGER.info("Siamo nell'else");
 			isConquered = true;
 			GameRepository.getInstance().updateIsConquered(this, isConquered);
 			defenderTerritory.setIdOwner(attackerTerritory.getIdOwner());
@@ -178,8 +185,8 @@ public class Turn implements Serializable{
 			GameRepository.getInstance().updateTerritoryArmies(defenderTerritory.getName(), player.getGameId(), 0);
 			ResultNoticeBody result = ResultNoticeBody.builder().isConquered(true).lostAttTroops(attLosses).lostDefTroops(defLosses).build();
 			//objective.issComplete(player.getGame(), player.getUserName());
+			LOGGER.info("Attacker: {} | Defender: {}", attackerTerritory.getArmies(), defenderTerritory.getArmies());
 			
-			player.getGame().broadcast(player.getUserName(), result);
 		}
 	}
 	

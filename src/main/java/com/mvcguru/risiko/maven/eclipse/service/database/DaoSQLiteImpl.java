@@ -555,7 +555,7 @@ public class DaoSQLiteImpl implements DataDao {
 
     @Override
     public void updateNumDefenseDice(Turn turn, int numDefenseDice) throws GameException {
-        String sql = "UPDATE turns SET numDefenseDice = ? WHERE indexTurn = ? AND gameId = ?";
+        String sql = "UPDATE turns SET numDifenceDice = ? WHERE indexTurn = ? AND gameId = ?";
         executeUpdate(sql, numDefenseDice, turn.getIndexTurn(), turn.getPlayer().getGameId());
     }
 

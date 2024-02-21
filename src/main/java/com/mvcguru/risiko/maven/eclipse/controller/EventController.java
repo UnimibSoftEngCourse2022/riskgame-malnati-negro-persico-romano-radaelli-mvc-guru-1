@@ -26,7 +26,6 @@ import com.mvcguru.risiko.maven.eclipse.controller.body_request.ComboRequestBody
 import com.mvcguru.risiko.maven.eclipse.controller.body_request.DefenceRequestBody;
 import com.mvcguru.risiko.maven.eclipse.controller.body_request.EndTurnMovementBody;
 import com.mvcguru.risiko.maven.eclipse.controller.body_request.PlayerBody;
-import com.mvcguru.risiko.maven.eclipse.controller.body_request.ResultNoticeBody;
 import com.mvcguru.risiko.maven.eclipse.controller.body_request.SetUpBody;
 import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;

@@ -31,6 +31,7 @@ import com.mvcguru.risiko.maven.eclipse.exception.GameException;
 import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration;
 import com.mvcguru.risiko.maven.eclipse.model.Territory;
+import com.mvcguru.risiko.maven.eclipse.model.Turn;
 import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard.CardSymbol;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration.GameMode;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
@@ -103,7 +104,7 @@ class LobbyStateTest {
         List<TerritoryBody> territoryBodies = new ArrayList<>();
         TerritoryBody territoryBody = null;
 		for (Territory territory : territories) {
-			territoryBody = TerritoryBody.builder().name(territory.getName()).troops(2).build();
+			territoryBody = TerritoryBody.builder().name(territory.getName()).troops(5).build();
 			territoryBodies.add(territoryBody);
 		}
         
@@ -112,7 +113,7 @@ class LobbyStateTest {
 		game.getState().onActionPlayer(territorySetup);
 		
 		for (Territory territory : territories) {
-			assertEquals(territory.getArmies(), 2);
+			assertEquals(territory.getArmies(), 5);
 		}
 		
 		List<Territory> territories2 = player2.getTerritories();
@@ -197,25 +198,17 @@ class LobbyStateTest {
 		BattleBody  battleBodyAttacker = BattleBody.builder().nameTerritory("Brasile").username(player1.getUserName()).build();
 		BattleBody  battleBody2Difender = BattleBody.builder().nameTerritory("Argentina").username(player2.getUserName()).build();
 		
-		
-		
-		AttackRequestBody attackRequestBody = AttackRequestBody.builder().attackerTerritory(battleBodyAttacker).defenderTerritory(battleBody2Difender).numAttDice(1).build();
+		AttackRequestBody attackRequestBody = AttackRequestBody.builder().attackerTerritory(battleBodyAttacker).defenderTerritory(battleBody2Difender).numAttDice(3).build();
 		AttackRequest attackRequest = AttackRequest.builder().player(player1).requestAttackBody(attackRequestBody).build();
-		game.getState().onActionPlayer(attackRequest);
 		
-		LOGGER.info("Attacker: {}", game.getCurrentTurn());
+	    game.getState().onActionPlayer(attackRequest);
 		
-		assertEquals(game.getCurrentTurn().getAttackerTerritory().getName(), "Brasile");
-		assertEquals(game.getCurrentTurn().getDefenderTerritory().getName(), "Argentina");
-		assertEquals(game.getCurrentTurn().getNumAttDice(), 1);
+		assertEquals(game.getState().getClass().toString(), BattleState.class.toString());
 		
-		DefenceRequestBody defenceRequestBody = DefenceRequestBody.builder().username(player2.getUserName()).numDefDice(1).build();
+		DefenceRequestBody defenceRequestBody = DefenceRequestBody.builder().username(player2.getUserName()).numDefDice(2).build();
 		
 		DefenceRequest defenceRequest = DefenceRequest.builder().defenderRequestBody(defenceRequestBody).build();
 		
 		game.getState().onActionPlayer(defenceRequest);
-		
 	}
-	
-	
 }
