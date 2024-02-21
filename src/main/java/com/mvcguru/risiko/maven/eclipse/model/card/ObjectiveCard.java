@@ -26,7 +26,5 @@ public abstract class ObjectiveCard extends ICard{
 	@JsonProperty("objective")
 	private String description;
 	
-	protected boolean isComplete = false;
-	
-	public boolean isComplete(IGame game, String username) { return false; }
+	public abstract boolean isComplete(IGame game, String username);
 }

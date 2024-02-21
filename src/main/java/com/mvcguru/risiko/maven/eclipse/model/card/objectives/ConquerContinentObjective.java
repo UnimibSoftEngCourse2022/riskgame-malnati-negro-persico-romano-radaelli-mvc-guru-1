@@ -6,6 +6,11 @@ import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.model.card.ObjectiveCard;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 
+import lombok.Data;
+import lombok.experimental.SuperBuilder;
+
+@Data
+@SuperBuilder
 public class ConquerContinentObjective extends ObjectiveCard{
 	
 	@JsonProperty("continent1")

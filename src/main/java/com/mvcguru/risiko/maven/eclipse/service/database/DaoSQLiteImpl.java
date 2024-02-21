@@ -7,8 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-import com.mvcguru.risiko.maven.eclipse.model.card.ICard;
+import java.util.LinkedList;
+import com.mvcguru.risiko.maven.eclipse.model.deck.ObjectivesDeck;
 import com.mvcguru.risiko.maven.eclipse.model.card.ObjectiveCard;
 import java.util.List;
 import com.mvcguru.risiko.maven.eclipse.states.*;
@@ -240,7 +240,7 @@ public class DaoSQLiteImpl implements DataDao {
     }
      
     @Override
-	public Player getPlayer(String username, String gameId) throws GameException {
+	public Player getPlayer(String username, String gameId) throws GameException, IOException {
 		String sql = "SELECT * FROM players WHERE username = ? AND gameId = ?";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -256,7 +256,7 @@ public class DaoSQLiteImpl implements DataDao {
 								.gameId(gameId)
 								.color(Player.PlayerColor.valueOf(rs.getString("color")))
 								.territories(getAllTerritories(username, gameId))
-								.objective(ObjectiveCard.builder().objective(rs.getString("objective")).build())
+								.objective(findObjectiveCard(rs.getString("objective"), gameId))
 								.setUpCompleted(rs.getBoolean("setUpCompleted"))
 								.build();
 			}
@@ -270,7 +270,7 @@ public class DaoSQLiteImpl implements DataDao {
 	}
     
     @Override
-	public ArrayList<Player> getAllPlayers(String gameId) throws GameException {
+	public ArrayList<Player> getAllPlayers(String gameId) throws GameException, IOException {
         String sql = "SELECT * FROM players WHERE gameId = ?";
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -348,7 +348,7 @@ public class DaoSQLiteImpl implements DataDao {
 	}
     
     @Override
-	public Turn getTurn(String gameId, int index) throws GameException {
+	public Turn getTurn(String gameId, int index) throws GameException, IOException {
 		String sql = "SELECT * FROM turns WHERE indexTurn = ? AND gameId = ?";
 		PreparedStatement pstmt = null;
 		Turn turn = null;
@@ -386,7 +386,7 @@ public class DaoSQLiteImpl implements DataDao {
 	}
     
     @Override
-	public Turn getLastTurn(String gameId) throws GameException {
+	public Turn getLastTurn(String gameId) throws GameException, IOException {
 	    String sql = "SELECT * FROM turns WHERE gameId = ? ORDER BY indexTurn DESC LIMIT 1";
 	    PreparedStatement pstmt = null;
 	    Turn turn = null;
@@ -511,9 +511,9 @@ public class DaoSQLiteImpl implements DataDao {
     }
 
     @Override
-    public void updatePlayerObjective(String username, ICard objective) throws GameException {
+    public void updatePlayerObjective(String username, ObjectiveCard objective) throws GameException {
         String sql = "UPDATE players SET objective = ? WHERE username = ?";
-        executeUpdate(sql, ((ObjectiveCard)objective).getObjective(), username);
+        executeUpdate(sql, (objective).getDescription(), username);
     }
 
     @Override
@@ -667,5 +667,19 @@ public class DaoSQLiteImpl implements DataDao {
 			} catch (SQLException e) {throw new GameException("Errore durante il recupero di una partita", e);
 			}
         return newGame;
+	}
+	
+	private ObjectiveCard findObjectiveCard(String description, String gameId) throws GameException, IOException {
+		IGame game = getGame(gameId);
+		ObjectivesDeck objectiveCards = (ObjectivesDeck) game.getDeckObjective();
+		ObjectiveCard cardReturn = null;
+		List<ObjectiveCard> cards = new LinkedList<>(objectiveCards.getCards());
+		for (ObjectiveCard card : cards) {
+			if (card.getDescription().equals(description)) {
+				cardReturn = card;
+				return cardReturn;
+			}
+		}
+		return cardReturn;
 	}
 }

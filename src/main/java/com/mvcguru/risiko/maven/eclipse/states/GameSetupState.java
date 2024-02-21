@@ -14,6 +14,7 @@ import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
 import com.mvcguru.risiko.maven.eclipse.exception.GameException;
 import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.card.ICard;
+import com.mvcguru.risiko.maven.eclipse.model.card.ObjectiveCard;
 import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
 import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard.CardSymbol;
 import com.mvcguru.risiko.maven.eclipse.model.deck.IDeck;
@@ -72,10 +73,10 @@ public class GameSetupState extends GameState {
 
 	private void assignObjective(IDeck deckObjective) throws GameException, DatabaseConnectionException, UserException {
 		deckObjective.shuffle();
-		ICard card = null;
+		ObjectiveCard card = null;
 		
 		for (Player player : game.getPlayers()) {
-			card = deckObjective.drawCard();
+			card = (ObjectiveCard) deckObjective.drawCard();
 			player.setObjective(card);
 			GameRepository.getInstance().updateObjective(player.getUserName(), card);
 	        if(game.getConfiguration().getMode().name().equals("EASY"))

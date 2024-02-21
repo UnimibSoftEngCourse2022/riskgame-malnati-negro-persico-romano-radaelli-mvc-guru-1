@@ -10,7 +10,7 @@ import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.model.Territory;
 import com.mvcguru.risiko.maven.eclipse.model.Turn;
-import com.mvcguru.risiko.maven.eclipse.model.card.ICard;
+import com.mvcguru.risiko.maven.eclipse.model.card.ObjectiveCard;
 import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 import com.mvcguru.risiko.maven.eclipse.service.database.DataDao;
@@ -92,15 +92,15 @@ public class GameRepository {
 		db.deletePlayer(username);
 	}
 	
-	public synchronized Player getPlayer(String username, String gameId) throws GameException {
+	public synchronized Player getPlayer(String username, String gameId) throws GameException, IOException {
 		return db.getPlayer(username, gameId);
 	}
 	
-	public synchronized ArrayList<Player> getAllPlayers(String gameId) throws GameException {
+	public synchronized ArrayList<Player> getAllPlayers(String gameId) throws GameException, IOException {
 		return db.getAllPlayers(gameId);
 	}
 	
-	public synchronized void updateObjective(String username, ICard objective) throws GameException {
+	public synchronized void updateObjective(String username, ObjectiveCard objective) throws GameException {
 		db.updatePlayerObjective(username, objective);
 	}
 	
@@ -149,11 +149,11 @@ public class GameRepository {
 		db.deleteTurn(turn);
 	}
 	
-	public synchronized Turn getTurn(String gameId, int index) throws GameException {
+	public synchronized Turn getTurn(String gameId, int index) throws GameException, IOException {
 		return db.getTurn(gameId, index);
 	}
 	
-	public synchronized Turn getLastTurn(String gameId) throws GameException {
+	public synchronized Turn getLastTurn(String gameId) throws GameException, IOException {
 		return db.getLastTurn(gameId);
 	}
 	

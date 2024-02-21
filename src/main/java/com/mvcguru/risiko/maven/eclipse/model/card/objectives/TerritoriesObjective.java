@@ -4,7 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.model.Territory;
 import com.mvcguru.risiko.maven.eclipse.model.card.ObjectiveCard;
+import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
+@Data
+@SuperBuilder
 public class TerritoriesObjective extends ObjectiveCard{
 	
 	@JsonProperty("nTerritory")
@@ -15,16 +19,16 @@ public class TerritoriesObjective extends ObjectiveCard{
 		int territoriesWithRequiredTroops = 0;
 		if(nTerritory == 24)
 			if (game.findPlayerByUsername(username).getTerritories().size() >= nTerritory)
-				isComplete = true;
+				return true;
 		else if (nTerritory == 18) {
 			for (Territory territory : game.getCurrentTurn().getPlayer().getTerritories()) {
 		        if (territory.getArmies() >= 2) {
 		            territoriesWithRequiredTroops++;
 		        }
 		    }
-		    isComplete = territoriesWithRequiredTroops >= nTerritory;
+		    return territoriesWithRequiredTroops >= nTerritory;
 		}
-		return isComplete;
+		return false;
 	}
 
 }

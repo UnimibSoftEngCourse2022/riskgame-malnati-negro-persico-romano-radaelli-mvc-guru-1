@@ -2,8 +2,6 @@ package com.mvcguru.risiko.maven.eclipse.service.database;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-
 import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
 import com.mvcguru.risiko.maven.eclipse.exception.GameException;
 import com.mvcguru.risiko.maven.eclipse.exception.UserException;
@@ -11,7 +9,7 @@ import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.model.Territory;
 import com.mvcguru.risiko.maven.eclipse.model.Turn;
 import com.mvcguru.risiko.maven.eclipse.model.User;
-import com.mvcguru.risiko.maven.eclipse.model.card.ICard;
+import com.mvcguru.risiko.maven.eclipse.model.card.ObjectiveCard;
 import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 import com.mvcguru.risiko.maven.eclipse.states.GameState;
@@ -33,9 +31,9 @@ public interface DataDao {
 	void updateSetUpCompleted(String username, boolean setUpCompleted) throws GameException;
 	void updatePlayerColor(Player player) throws GameException;
 	void deletePlayer(String username) throws GameException;
-	ArrayList<Player> getAllPlayers(String gameId) throws GameException;
-	Player getPlayer(String username, String gameId) throws GameException;
-	void updatePlayerObjective(String username, ICard objective) throws GameException;
+	ArrayList<Player> getAllPlayers(String gameId) throws GameException, IOException;
+	Player getPlayer(String username, String gameId) throws GameException, IOException;
+	void updatePlayerObjective(String username, ObjectiveCard objective) throws GameException;
 	
 	//TerritoryDao
 	void insertTerritory(Territory territory, String gameId) throws GameException;
@@ -54,8 +52,8 @@ public interface DataDao {
 	void updateDefenderTerritory(Turn turn, String defenderTerritory) throws GameException;
 	void updateAttackerTerritory(Turn turn, String attackerTerritory) throws GameException;
 	void updateIsConquered(Turn turn, boolean isConquered) throws GameException;
-	Turn getTurn(String gameId, int index) throws GameException;
-	Turn getLastTurn(String gameId) throws GameException;
+	Turn getTurn(String gameId, int index) throws GameException, IOException;
+	Turn getLastTurn(String gameId) throws GameException, IOException;
 	
 	//ComboCardDao
 	void insertComboCard(TerritoryCard t, Player owner, String gameId) throws GameException;
