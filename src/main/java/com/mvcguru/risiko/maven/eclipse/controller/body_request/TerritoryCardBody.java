@@ -12,5 +12,6 @@ import lombok.experimental.SuperBuilder;
 public class TerritoryCardBody implements Serializable{
 	
 	private String name;
+	
 	private String symbol;
 }

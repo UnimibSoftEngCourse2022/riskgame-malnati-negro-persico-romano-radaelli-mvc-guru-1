@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.FileCopyUtils;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mvcguru.risiko.maven.eclipse.model.Continent;
 import com.mvcguru.risiko.maven.eclipse.model.Game;
@@ -20,6 +22,9 @@ import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration.GameMode;
 import com.mvcguru.risiko.maven.eclipse.model.card.ObjectiveCard;
 import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
+import com.mvcguru.risiko.maven.eclipse.model.card.objectives.ConquerContinentObjective;
+import com.mvcguru.risiko.maven.eclipse.model.card.objectives.DestroyArmyObjective;
+import com.mvcguru.risiko.maven.eclipse.model.card.objectives.TerritoriesObjective;
 import com.mvcguru.risiko.maven.eclipse.model.deck.IDeck;
 import com.mvcguru.risiko.maven.eclipse.model.deck.ObjectivesDeck;
 import com.mvcguru.risiko.maven.eclipse.model.deck.TerritoriesDeck;
@@ -82,11 +87,52 @@ public class FactoryGame {
         if (fileName == null) {
         	LOGGER.error("Unsupported game mode: {}", mode);
         }
+        /*
+        ObjectMapper mapper = new ObjectMapper();
+        byte[] data = FileCopyUtils.copyToByteArray(new ClassPathResource(fileName).getInputStream());
+        String json = new String(data, StandardCharsets.UTF_8);
+        
+        ObjectiveCard[] objectives = mapper.readValue(json, ObjectiveCard[].class);
+        */
         
         ObjectMapper mapper = new ObjectMapper();
         byte[] data = FileCopyUtils.copyToByteArray(new ClassPathResource(fileName).getInputStream());
         String json = new String(data, StandardCharsets.UTF_8);
-        ObjectiveCard[] objectives = mapper.readValue(json, ObjectiveCard[].class);
+
+        // Deserializza il JSON in una lista di mappe
+        List<Map<String,Object>> objectivesList = mapper.readValue(json, new TypeReference<List<Map<String,Object>>>(){});
+        
+        List<ObjectiveCard> objectives = new ArrayList<>();
+
+        for (Map<String, Object> map : objectivesList) {
+            String type = (String) map.get("type");
+            ObjectiveCard objective = null;
+            
+            switch (type) {
+                case "conquerContinent":
+                	ConquerContinentObjective objective1 = mapper.convertValue(map, ConquerContinentObjective.class);
+                	objective = objective1;
+                    break;
+                case "destroyArmy":
+                	DestroyArmyObjective objective2 = mapper.convertValue(map, DestroyArmyObjective.class);
+                    objective = objective2;
+                    break;
+                case "territories":
+                	TerritoriesObjective objective3 = mapper.convertValue(map, TerritoriesObjective.class);
+                    objective = objective3;
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unknown type: " + type);
+            }
+            
+            if (objective != null) {
+                String description = (String) map.get("objective");
+                //LOGGER.info("Objective: {}", description);
+                objective.setObjective(description); // Assicurati che ci sia un metodo setDescription nella classe ObjectiveCard
+                objectives.add(objective);
+            }
+        }
+
         
         IDeck deck = new ObjectivesDeck();
         for (ObjectiveCard o : objectives) {

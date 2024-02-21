@@ -36,7 +36,7 @@ class UserRepositoryTest {
 
     @Test
     void testinsertUser() throws UserException, GameException {
-        User user = new User("testUser", "password123");
+        User user = User.builder().username("testUser").password("password123").build();
         doNothing().when(dataDao).insertUser(any(User.class));
         userRepository.insertUser(user);
         verify(dataDao, times(1)).insertUser(user);
@@ -44,35 +44,17 @@ class UserRepositoryTest {
 
     @Test
     void testGetUser() throws UserException {
-        User user = new User("testUser", "password123");
-        when(dataDao.getUserByUsernameAndPassword(user.getUsername(), user.getPassword())).thenReturn(user);
-        User result = userRepository.getUser(user);
+        User user = User.builder().username("testUser").password("password123").build();
+        when(dataDao.getUser(user.getUsername(), user.getPassword()));
+        User result = userRepository.getUser(user.getUsername(), user.getPassword());
         assertNotNull(result);
         assertEquals(user.getUsername(), result.getUsername());
         assertEquals(user.getPassword(), result.getPassword());
     }
 
     @Test
-    void testGetUserName() throws UserException {
-        User user = new User("testUser", "password123");
-        when(dataDao.getUserByUsernameAndPassword(user.getUsername(), user.getPassword())).thenReturn(user);
-        String username = userRepository.getUserName(user);
-        assertNotNull(username);
-        assertEquals(user.getUsername(), username);
-    }
-
-    @Test
-    void testGetUserPassword() throws UserException {
-        User user = new User("testUser", "password123");
-        when(dataDao.getUserByUsernameAndPassword(user.getUsername(), user.getPassword())).thenReturn(user);
-        String password = userRepository.getUserPassword(user);
-        assertNotNull(password);
-        assertEquals(user.getPassword(), password);
-    }
-
-    @Test
     void testDeleteUser() throws UserException {
-        User user = new User("testUser", "password123");
+        User user = User.builder().username("testUser").password("password123").build();
         doNothing().when(dataDao).deleteUser(any(User.class));
         userRepository.deleteUser(user);
         verify(dataDao, times(1)).deleteUser(user);

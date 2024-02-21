@@ -58,7 +58,15 @@ public class Game extends IGame {
         }
         return null;
     }
-
+	
+	public Player findPlayerByColor(Player.PlayerColor color) {
+		for (Player player : players) {
+			if (player.getColor().equals(color)) {
+				return player;
+			}
+		}
+		return null;
+	}
 	
 	@Override
 	public void startGame() throws GameException, DatabaseConnectionException, UserException {
@@ -82,5 +90,10 @@ public class Game extends IGame {
         GameRepository.getInstance().insertTurn(currentTurn);
        
         //broadcast();Chiamo change turn dallo stato fine turno con la action, alla fine della action faccio broadcast
+	}
+	
+	@Override
+	public void endGame() {
+		//GameRepository.getInstance().deleteGame(id);
 	}
 }

@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import com.mvcguru.risiko.maven.eclipse.model.Territory;
 import com.mvcguru.risiko.maven.eclipse.model.card.ICard;
+import com.mvcguru.risiko.maven.eclipse.model.card.ObjectiveCard;
 import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player.PlayerColor;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
@@ -27,8 +28,9 @@ class PlayerTest {
         IGame game = null; 
         List<Territory> territories = new ArrayList<>();
         List<TerritoryCard> comboCards = new ArrayList<>();
-        ICard objective = null; 
-        Player player = new Player(userName, gameId, color, game, territories, comboCards, false, objective);
+        ObjectiveCard objective = null; 
+		Player player = Player.builder().userName(userName).gameId(gameId).color(color).game(game)
+				.territories(territories).comboCards(comboCards).objective(objective).build();
 
         assertEquals(userName, player.getUserName(), "UserName should match constructor argument");
         assertEquals(gameId, player.getGameId(), "GameId should match constructor argument");
@@ -46,7 +48,7 @@ class PlayerTest {
         PlayerColor color = PlayerColor.GREEN;
         List<Territory> territories = new ArrayList<>();
         List<TerritoryCard> comboCards = new ArrayList<>();
-        ICard objective = null; 
+        ObjectiveCard objective = null; 
 
         Player player = Player.builder()
                               .userName(userName)

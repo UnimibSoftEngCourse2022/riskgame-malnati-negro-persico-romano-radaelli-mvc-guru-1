@@ -12,68 +12,67 @@ import com.mvcguru.risiko.maven.eclipse.model.Continent;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.model.Territory;
+import com.mvcguru.risiko.maven.eclipse.model.Turn;
+import com.mvcguru.risiko.maven.eclipse.model.deck.IDeck;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration.GameMode;
 import com.mvcguru.risiko.maven.eclipse.service.FactoryGame;
+import com.mvcguru.risiko.maven.eclipse.service.GameRepository;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameSetupStateTest {
-	private static final Logger LOGGER = LoggerFactory.getLogger(GameSetupState.class);
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(GameSetupStateTest.class);
 
+	GameConfiguration config = GameConfiguration.builder()
+								.mode(GameMode.EASY)
+								.numberOfPlayers(2)
+								.idMap("TestMap")
+								.build(); 
+	
     @Test
-    void assignAllTest() throws IOException, FullGameException, GameException, DatabaseConnectionException, UserException {
-    	GameConfiguration config = GameConfiguration.builder()
-                .mode(GameMode.EASY)
-                .numberOfPlayers(2)
-                .idMap("TestMap")
-                .build();
-    	
+    void testOnActionSetup() throws FullGameException, GameException, DatabaseConnectionException, UserException, IOException {
     	IGame game = FactoryGame.getInstance().createGame(config);
     	
-		Player player1 = Player.builder().userName("Bobby").gameId(game.getId()).territories(new ArrayList<Territory>()).color(Player.PlayerColor.GREY).build();
-		Player player2 = Player.builder().userName("Tommy").gameId(game.getId()).territories(new ArrayList<Territory>()).color(Player.PlayerColor.GREY).build();
-		
-		LOGGER.info("Player: {}", player1);
-		LOGGER.info("Player: {}", player2);
-    	
-    	GameEntry gameEntry = GameEntry.builder().player(player1).build();
+        Player player1 = Player.builder().userName("Bobby").gameId(game.getId()).territories(new ArrayList<Territory>()).color(Player.PlayerColor.GREY).build();
+        Player player2 = Player.builder().userName("Tommy").gameId(game.getId()).territories(new ArrayList<Territory>()).color(Player.PlayerColor.GREY).build();
+        
+        assertEquals(game.getState().getClass().toString(), LobbyState.class.toString());
+        
+        GameEntry gameEntry = GameEntry.builder().player(player1).build();
         game.getState().onActionPlayer(gameEntry);
         
-    	LOGGER.info(game.getState().getClass().toString());
-
+        GameRepository.getInstance().addPlayer(player1);
         
-    	GameEntry gameEntry2 = GameEntry.builder().player(player2).build();
+        GameEntry gameEntry2 = GameEntry.builder().player(player2).build();
         game.getState().onActionPlayer(gameEntry2);
-    	
-    	
-		for (Player player : game.getPlayers()) {
-			assertNotNull(player.getColor());
-			assertFalse(player.getTerritories().isEmpty());
-			assertNotNull(player.getObjective());
-		}
+        
+        GameRepository.getInstance().addPlayer(player2);
+        
+        assertEquals(game.getState().getClass().toString(), GameSetupState.class.toString());
+
+        assertEquals(game.getPlayers().size(), game.getConfiguration().getNumberOfPlayers());
+        	        
+        IDeck objectiveDeck = game.getDeckObjective();
+        IDeck terrirotyDeck = game.getDeckTerritory();
+        
+        
+        
+		LOGGER.info("Objective Deck: {}", objectiveDeck);
+		LOGGER.info("Territory Deck: {}", terrirotyDeck);
+		LOGGER.info("Players: {}", game.getPlayers());
+		LOGGER.info("Database Players: {}", GameRepository.getInstance().getAllPlayers(game.getId()));
 		
-		List<Continent> continents = game.getContinents();
-		
-		for (Continent continent : continents) {
-			assertNotNull(continent.getName());
-			LOGGER.info("Continent name: {}", continent.getName());
-			assertFalse(continent.getTerritories().isEmpty());
-			LOGGER.info("Continent territories: {}", continent.getTerritories());
-		}
-		
-		List<Territory> lista = continents.get(0).getTerritories();
-		for (Territory territory : lista) {
-			LOGGER.info("Territory: {}", territory);
-		}
-		
-		List<Territory> lista2 = player1.getTerritories();
-		for (Territory territory : lista2) {
-			LOGGER.info("Territory: {}", territory);
-        }
-		
+        
+		GameRepository.getInstance().deleteGame(game);
+		GameRepository.getInstance().removePlayer(player1.getUserName());
+		GameRepository.getInstance().removePlayer(player2.getUserName());
     }
+	
 }

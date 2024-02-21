@@ -5,7 +5,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.model.Territory;
-import com.mvcguru.risiko.maven.eclipse.model.card.ICard;
+import com.mvcguru.risiko.maven.eclipse.model.card.ObjectiveCard;
 import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
 
 import lombok.AllArgsConstructor;
@@ -34,7 +34,7 @@ public class Player implements Serializable{
 	
 	private boolean setUpCompleted = false;
 	
-	private ICard objective;
+	private ObjectiveCard objective;
 
 	public enum PlayerColor {
 		RED, YELLOW, GREEN, BLUE, BLACK, PURPLE, GREY

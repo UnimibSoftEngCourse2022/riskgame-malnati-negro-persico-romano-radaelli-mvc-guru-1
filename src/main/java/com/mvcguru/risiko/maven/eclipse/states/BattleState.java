@@ -4,7 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mvcguru.risiko.maven.eclipse.actions.AttackRequest;
+import com.mvcguru.risiko.maven.eclipse.actions.ConquerAssignment;
 import com.mvcguru.risiko.maven.eclipse.actions.DefenceRequest;
+import com.mvcguru.risiko.maven.eclipse.actions.GoToEndTurn;
 import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
 import com.mvcguru.risiko.maven.eclipse.exception.GameException;
 import com.mvcguru.risiko.maven.eclipse.exception.UserException;
@@ -36,7 +38,9 @@ public class BattleState extends GameState{
 		LOGGER.info("Turno corrente: {}", game.getCurrentTurn().getAttackerTerritory());
 
 		game.getCurrentTurn().setDefenderTerritory(
-				game.findPlayerByUsername(attackRequest.getRequestAttackBody().getDefenderTerritory().getUsername()).getTerritoryByName(attackRequest.getRequestAttackBody().getDefenderTerritory().getNameTerritory()));
+
+		game.findPlayerByUsername(attackRequest.getRequestAttackBody().getDefenderTerritory().getUsername()).getTerritoryByName(
+				attackRequest.getRequestAttackBody().getDefenderTerritory().getNameTerritory()));
 		LOGGER.info("Territorio attaccante: {}", game.getCurrentTurn().getAttackerTerritory().getName());
 		LOGGER.info("Territorio difensore: {}", game.getCurrentTurn().getDefenderTerritory().getName());
 	
@@ -59,10 +63,15 @@ public class BattleState extends GameState{
 		game.getCurrentTurn().attack();
 	}
 	
-	//@Override
-	public void onActionPlayer(int numTroops) {
-		game.getCurrentTurn().moveTroops(numTroops);
-		game.broadcast();
+	@Override
+	public void onActionPlayer(ConquerAssignment conquerAssignment) throws GameException, DatabaseConnectionException, UserException {
+		game.getCurrentTurn().moveTroops(conquerAssignment.getNumTroops());
+	}
+	
+	@Override
+	public void onActionPlayer(GoToEndTurn goToEndTurn) throws GameException, DatabaseConnectionException, UserException {
+		game.setState(EndTurnState.builder().game(game).build());
+		GameRepository.getInstance().updateState(game.getId(), game.getState());
 	}
 	
 }

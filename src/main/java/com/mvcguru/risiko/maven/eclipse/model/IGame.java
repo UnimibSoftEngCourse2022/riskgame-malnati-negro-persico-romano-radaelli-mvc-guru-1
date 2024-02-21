@@ -29,22 +29,24 @@ import lombok.experimental.SuperBuilder;
 public abstract class IGame implements Serializable{
 	protected static final Logger LOGGER = LoggerFactory.getLogger(IGame.class);
 
-	protected String id;
+	protected String id; //
 	
-	protected GameConfiguration configuration;
+	protected GameConfiguration configuration; //
 	
-	protected IDeck deckObjective;
+	protected IDeck deckObjective; //
 	
-	protected IDeck deckTerritory;
+	protected IDeck deckTerritory; //
 	
-	private List<Continent> continents;
+	private List<Continent> continents; //
 	
 	@Builder.Default
     protected ArrayList<Player> players = new ArrayList<>();
 
-    protected GameState state;
+    protected GameState state; //
     
     protected Turn currentTurn;
+    
+    protected String winner;
     
 
     public abstract void addPlayer(Player g) throws FullGameException;
@@ -56,9 +58,13 @@ public abstract class IGame implements Serializable{
     public abstract <T> void broadcast(String idUser,T object);
 
 	public abstract Player findPlayerByUsername(String username);
+	
+	public abstract Player findPlayerByColor(Player.PlayerColor color);
 
 	public void startGame() throws GameException, DatabaseConnectionException, UserException { }
 	
 	public void changeTurn() throws GameException, DatabaseConnectionException, UserException { }
+
+	public void endGame() {}
    
 }

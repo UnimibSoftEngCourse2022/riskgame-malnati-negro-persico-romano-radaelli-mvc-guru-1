@@ -13,7 +13,10 @@ import org.springframework.stereotype.Controller;
 
 import com.mvcguru.risiko.maven.eclipse.actions.AttackRequest;
 import com.mvcguru.risiko.maven.eclipse.actions.ComboRequest;
+import com.mvcguru.risiko.maven.eclipse.actions.ConquerAssignment;
 import com.mvcguru.risiko.maven.eclipse.actions.DefenceRequest;
+import com.mvcguru.risiko.maven.eclipse.actions.EndTurn;
+import com.mvcguru.risiko.maven.eclipse.actions.EndTurnMovement;
 import com.mvcguru.risiko.maven.eclipse.actions.GameEntry;
 import com.mvcguru.risiko.maven.eclipse.actions.GameExit;
 import com.mvcguru.risiko.maven.eclipse.actions.TerritorySetup;
@@ -21,6 +24,7 @@ import com.mvcguru.risiko.maven.eclipse.actions.TurnSetUp;
 import com.mvcguru.risiko.maven.eclipse.controller.body_request.AttackRequestBody;
 import com.mvcguru.risiko.maven.eclipse.controller.body_request.ComboRequestBody;
 import com.mvcguru.risiko.maven.eclipse.controller.body_request.DefenceRequestBody;
+import com.mvcguru.risiko.maven.eclipse.controller.body_request.EndTurnMovementBody;
 import com.mvcguru.risiko.maven.eclipse.controller.body_request.PlayerBody;
 import com.mvcguru.risiko.maven.eclipse.controller.body_request.ResultNoticeBody;
 import com.mvcguru.risiko.maven.eclipse.controller.body_request.SetUpBody;
@@ -49,11 +53,12 @@ public class EventController {
     public void enterInTheGame(@Payload PlayerBody body, @DestinationVariable String id) throws Exception {
 		IGame game = null;
 		try {
-			game = GameRepository.getInstance().getGameById(id);
+			game = GameRepository.getInstance().getCompletedGame(id);
 			Player player = Player.builder().userName(body.getUsername()).gameId(id).territories(new ArrayList<Territory>()).color(Player.PlayerColor.GREY).build();
 			GameEntry action = GameEntry.builder().player(player).build();
-			game.onActionPlayer(action);
 			GameRepository.getInstance().addPlayer(player);
+			game.onActionPlayer(action);
+			
 		} catch (GameException | DatabaseConnectionException | UserException e) {throw e;
 		} catch (FullGameException e) {
             MessageBrokerSingleton.getInstance().getTemplate().convertAndSend("/topic/partite/" + id, "Partita piena");
@@ -66,22 +71,22 @@ public class EventController {
             @Payload PlayerBody body) throws Exception {
 		IGame game = null;
 		try {
-            game = GameRepository.getInstance().getGameById(id);
+            game = GameRepository.getInstance().getCompletedGame(id);
             Player player = game.findPlayerByUsername(body.getUsername());
             GameExit action = GameExit.builder().player(player).build();
-            game.onActionPlayer(action);
             GameRepository.getInstance().removePlayer(body.getUsername());
+            game.onActionPlayer(action);
         } catch (GameException | DatabaseConnectionException | UserException e) {LOGGER.error("Errore durante l'uscita dalla partita", e);}    }
 	
 	@MessageMapping("/partite/{id}/confermaSetup")
 	public void confirmSetup(@DestinationVariable String id, @Payload SetUpBody body) throws Exception {
 	    try {	    
 	    	LOGGER.info("Inizio setup");
-	        IGame game = GameRepository.getInstance().getGameById(id);
-	        
+	        IGame game = GameRepository.getInstance().getCompletedGame(id);
 	        Player player = game.findPlayerByUsername(body.getUsername());
 	        if (player != null) {
 	            TerritorySetup action = TerritorySetup.builder().player(player).setUpBody(body).build();
+	            
 	            game.onActionPlayer(action);
 	        }
 	        LOGGER.info("Fine setup player : {}", game.findPlayerByUsername(body.getUsername()));
@@ -93,7 +98,7 @@ public class EventController {
 	public void comboRequest(@DestinationVariable String id, @Payload ComboRequestBody body) throws Exception {
 		try {
 			LOGGER.info("Inizio Combo request");
-			IGame game = GameRepository.getInstance().getGameById(id);
+			IGame game = GameRepository.getInstance().getCompletedGame(id);
 			Player player = game.findPlayerByUsername(body.getUsername());
 			if (player != null) {
 				ComboRequest action = ComboRequest.builder().player(player).comboRequestBody(body).build();
@@ -106,7 +111,7 @@ public class EventController {
 	@MessageMapping("/partite/{id}/turnAssignation")
 	public void turnAssignation(@DestinationVariable String id, @Payload SetUpBody body) throws Exception {
 		try {
-			IGame game = GameRepository.getInstance().getGameById(id);
+			IGame game = GameRepository.getInstance().getCompletedGame(id);
 			LOGGER.info("Inizio assegnazione del turno {}", body);
 			Player player = game.findPlayerByUsername(body.getUsername());
 			if (player != null) {
@@ -122,8 +127,8 @@ public class EventController {
 	public void attackRequest(@DestinationVariable String id, @Payload AttackRequestBody body) {
 		LOGGER.info("Inizio attacco {}", body);
 		try {
-			IGame game = GameRepository.getInstance().getGameById(id);
-			LOGGER.info("Inizio attacco {}", body);
+			IGame game = GameRepository.getInstance().getCompletedGame(id);
+			LOGGER.info("Inizio assegnazione del turno {}", body);
 			Player player = game.findPlayerByUsername(body.getAttackerTerritory().getUsername());
 			if(player != null) {
 				AttackRequest action = AttackRequest.builder().player(player).requestAttackBody(body).build();
@@ -136,10 +141,9 @@ public class EventController {
 	}
 	
 	@MessageMapping("/partite/{id}/defence")
-	public void attackRequest(@DestinationVariable String id, @Payload DefenceRequestBody body) {
+	public void defenceRequest(@DestinationVariable String id, @Payload DefenceRequestBody body) {
 		try {
-			IGame game = GameRepository.getInstance().getGameById(id);
-			LOGGER.info("Inizio assegnazione del turno {}", body);
+			IGame game = GameRepository.getInstance().getCompletedGame(id);
 			Player player = game.findPlayerByUsername(body.getUsername());
 			if(player != null) {
 				DefenceRequest action = DefenceRequest.builder().player(player).defenderRequestBody(body).build();
@@ -148,20 +152,47 @@ public class EventController {
 		}
 		catch(Exception e){ LOGGER.error("Errore durante la richiesta di difesa", e);}
 	}
+	
+	@MessageMapping("/partite/{id}/conquerAssigment")
+	public void conquerAssignment(@DestinationVariable String id, @Payload int troops) {
+		try {
+			IGame game = GameRepository.getInstance().getCompletedGame(id);
+			game.getCurrentTurn().moveTroops(troops);
+			LOGGER.info("Inizio assegnazione del turno {}", troops);
+			Player player = game.findPlayerByUsername(game.getCurrentTurn().getPlayer().getUserName());
+			if(player != null) {
+				ConquerAssignment action = ConquerAssignment.builder().player(player).numTroops(troops).build();
+				game.onActionPlayer(action);
+			}
+			
+		}
+		catch(Exception e){ LOGGER.error("Errore durante la richiesta di difesa", e);}
+	}
 
-//	@MessageMapping("/partite/{id}/conquerAssigment")
-//	public void attackRequest(@DestinationVariable String id, @Payload int troops) {
-//		try {
-//			IGame game = GameRepository.getInstance().getGameById(id);
-//			LOGGER.info("Inizio assegnazione del turno {}", troops);
-//			game.getCurrentTurn().moveTroops(troops);
-//			Player player = game.getCurrentTurn().getPlayer();
-//			if(player != null) {
-//				DefenceRequest action = DefenceRequest.builder().player(player).defenderRequestBody(body).build();
-//				game.onActionPlayer(action);
-//			}
-//		}
-//		catch(Exception e){ LOGGER.error("Errore durante la richiesta di difesa", e);}
-//	}
-
+	@MessageMapping("/partite/{id}/endTurnMovement")
+	public void conquerAssignment(@DestinationVariable String id, @Payload EndTurnMovementBody body) {
+		try {
+			IGame game = GameRepository.getInstance().getCompletedGame(id);
+			LOGGER.info("Inizio assegnazione del turno {}", body);
+			Player player = game.findPlayerByUsername(body.getUsername());
+			if(player != null) {
+				EndTurnMovement action = EndTurnMovement.builder().player(player).endTurnMovementBody(body).build();
+				game.onActionPlayer(action);
+			}
+		}
+		catch(Exception e){ LOGGER.error("Errore durante la richiesta di difesa", e);}
+	}
+	
+	@MessageMapping("/partite/{id}/endTurn")
+	public void conquerAssignment(@DestinationVariable String id, @Payload String username ) {
+		try {
+			IGame game = GameRepository.getInstance().getCompletedGame(id);
+			LOGGER.info("Inizio assegnazione del turno {}", username);
+			Player player = game.findPlayerByUsername(username);
+			EndTurn action = EndTurn.builder().player(player).build();
+			game.onActionPlayer(action);
+		}
+		catch(Exception e){ LOGGER.error("Errore durante la richiesta di difesa", e);}
+	}
+	
 }

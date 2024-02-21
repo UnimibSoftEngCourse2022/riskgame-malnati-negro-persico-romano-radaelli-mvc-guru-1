@@ -21,7 +21,7 @@ public class LobbyState extends GameState{
 	
 	@Override
     public void onActionPlayer(GameEntry gameEntry) throws FullGameException, GameException, DatabaseConnectionException, UserException{ 
-        game.addPlayer(gameEntry.getPlayer());        
+        game.addPlayer(gameEntry.getPlayer());  
         if (game.getPlayers().size() == game.getConfiguration().getNumberOfPlayers()) {
         	game.setState(GameSetupState.builder().game(game).build()); 
         	game.getState().setUpGame();

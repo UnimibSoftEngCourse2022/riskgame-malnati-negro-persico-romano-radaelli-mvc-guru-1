@@ -10,14 +10,14 @@ class UserTest {
     void setUp(){
 		String username = "bobby";
 	    String password = "bobbybobby00";
-        user = new User(username, password);
+        user = User.builder().username(username).password(password).build();
     }
 	
 	@Test
     void testUserConstructorAndGetters() {
         String expectedUsername = "testuser";
         String expectedPassword = "testpassword";
-        User user = new User(expectedUsername, expectedPassword);
+        User user = User.builder().username(expectedUsername).password(expectedPassword).build();
         
         assertEquals(expectedUsername, user.getUsername(), "Username should match");
         assertEquals(expectedPassword, user.getPassword(), "Password should match");
