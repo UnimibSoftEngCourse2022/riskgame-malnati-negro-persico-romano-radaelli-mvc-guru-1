@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import SvgMap from "./SvgMap";
 import Console from "../mappa/Console";
-import { Alert } from "react-bootstrap";
+import { Alert, Modal, Button } from "react-bootstrap";
 import PartitaObserverSingleton from "../../application/PartitaObserverSingleton";
 import ConsoleDifesa from "./ConsoleDifesa";
 
@@ -14,15 +14,16 @@ function BattleState({ idPlayer, game }) {
   const [isPlayersTurn, setIsPlayersTurn] = useState(true);
   const [territorioAttacante, setTerritorioAttacante] = useState("");
   const [territorioDifensore, setTerritorioDifensore] = useState("");
-
+  const [territoriVicini, setTerritoriVicini] = useState();
   const [sxSelected, setSxSelected] = useState(false); // Aggiungi questo stato
   const [territoriAttaccabili, setTerritoriAttaccabili] = useState([]);
-
-  const [setEsiti] = useState({});
-  const [setShowEsiti] = useState(false);
+  const [objective, setObjective] = useState();
+  const [showAlert, setShowAlert] = useState(true);
+  const [esiti, setEsiti] = useState({});
+  const [showEsiti, setShowEsiti] = useState(false);
   const [isDefenderTerritory, setIsDefenderTerritory] = useState(null);
   const [playerUnderAttack, setPlayerUnderAttack] = useState();
-  const [setCountryUnderAttack] = useState("");
+  const [countryUnderAttack, setCountryUnderAttack] = useState("");
   const [IdGioco, setIdGioco] = useState();
 
   // const handleClose = () => setShowEsiti(false);

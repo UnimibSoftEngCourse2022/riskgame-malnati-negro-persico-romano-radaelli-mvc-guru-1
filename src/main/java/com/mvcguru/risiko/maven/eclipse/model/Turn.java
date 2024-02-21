@@ -26,7 +26,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 public class Turn implements Serializable{
-	
+	private static final String log = "Attacker: {} | Defender: {}";
 	private static final Logger LOGGER = LoggerFactory.getLogger(Turn.class);
 
     private Player player;
@@ -161,18 +161,18 @@ public class Turn implements Serializable{
 	        else
 	            attLosses++;
 	    }
-	    LOGGER.info("Attacker rolls: {} | Defender rolls: {}", attRolls, defRolls);
-	    LOGGER.info("Attacker losses: {} | Defender losses: {}", attLosses, defLosses);
+	    LOGGER.info(log, attRolls, defRolls);
+	    LOGGER.info(log, attLosses, defLosses);
 	    
 	    if(defenderTerritory.getArmies() > defLosses) {
 	    	LOGGER.info("Siamo nell'if");
-	    	LOGGER.info("Attacker: {} | Defender: {}", attackerTerritory.getArmies(), defenderTerritory.getArmies());
+	    	LOGGER.info(log, attackerTerritory.getArmies(), defenderTerritory.getArmies());
 	    	attackerTerritory.setArmies(attackerTerritory.getArmies() - attLosses); 
 	    	GameRepository.getInstance().updateTerritoryArmies(attackerTerritory.getName(), player.getGameId(), attackerTerritory.getArmies());
 	    	defenderTerritory.setArmies(defenderTerritory.getArmies() - defLosses);
 	    	GameRepository.getInstance().updateTerritoryArmies(defenderTerritory.getName(), player.getGameId(), defenderTerritory.getArmies());
 			ResultNoticeBody result = ResultNoticeBody.builder().isConquered(false).lostAttTroops(attLosses).lostDefTroops(defLosses).build();
-	    	LOGGER.info("Attacker: {} | Defender: {}", attackerTerritory.getArmies(), defenderTerritory.getArmies());
+	    	LOGGER.info(log, attackerTerritory.getArmies(), defenderTerritory.getArmies());
 			resetBattleInfo();
 	    }
 		else {
@@ -183,9 +183,7 @@ public class Turn implements Serializable{
 			GameRepository.getInstance().updateTerritoryOwner(defenderTerritory.getName(), player);
 			defenderTerritory.setArmies(0);
 			GameRepository.getInstance().updateTerritoryArmies(defenderTerritory.getName(), player.getGameId(), 0);
-			ResultNoticeBody result = ResultNoticeBody.builder().isConquered(true).lostAttTroops(attLosses).lostDefTroops(defLosses).build();
-			//objective.issComplete(player.getGame(), player.getUserName());
-			LOGGER.info("Attacker: {} | Defender: {}", attackerTerritory.getArmies(), defenderTerritory.getArmies());
+			LOGGER.info(log, attackerTerritory.getArmies(), defenderTerritory.getArmies());
 			
 		}
 	}
