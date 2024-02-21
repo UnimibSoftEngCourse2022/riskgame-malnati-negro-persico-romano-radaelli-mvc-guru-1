@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import com.mvcguru.risiko.maven.eclipse.actions.AttackRequest;
 import com.mvcguru.risiko.maven.eclipse.actions.ComboRequest;
+import com.mvcguru.risiko.maven.eclipse.actions.DefenceRequest;
 import com.mvcguru.risiko.maven.eclipse.actions.GameEntry;
 import com.mvcguru.risiko.maven.eclipse.actions.GameExit;
 import com.mvcguru.risiko.maven.eclipse.actions.TerritorySetup;
@@ -22,6 +23,7 @@ import com.mvcguru.risiko.maven.eclipse.actions.TurnSetUp;
 import com.mvcguru.risiko.maven.eclipse.controller.body_request.AttackRequestBody;
 import com.mvcguru.risiko.maven.eclipse.controller.body_request.BattleBody;
 import com.mvcguru.risiko.maven.eclipse.controller.body_request.ComboRequestBody;
+import com.mvcguru.risiko.maven.eclipse.controller.body_request.DefenceRequestBody;
 import com.mvcguru.risiko.maven.eclipse.controller.body_request.SetUpBody;
 import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
@@ -207,6 +209,11 @@ class LobbyStateTest {
 		assertEquals(game.getCurrentTurn().getDefenderTerritory().getName(), "Argentina");
 		assertEquals(game.getCurrentTurn().getNumAttDice(), 1);
 		
+		DefenceRequestBody defenceRequestBody = DefenceRequestBody.builder().username(player2.getUserName()).numDefDice(1).build();
+		
+		DefenceRequest defenceRequest = DefenceRequest.builder().defenderRequestBody(defenceRequestBody).build();
+		
+		game.getState().onActionPlayer(defenceRequest);
 		
 	}
 	

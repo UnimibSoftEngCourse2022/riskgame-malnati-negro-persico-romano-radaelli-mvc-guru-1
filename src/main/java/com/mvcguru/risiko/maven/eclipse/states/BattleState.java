@@ -25,22 +25,24 @@ public class BattleState extends GameState{
 	public void onActionPlayer(AttackRequest attackRequest) throws GameException, DatabaseConnectionException, UserException {
 		
 		game.getCurrentTurn().setNumAttDice(attackRequest.getRequestAttackBody().getNumAttDice());
-		game.getCurrentTurn().setAttackerTerritory(
-				attackRequest.getPlayer().getTerritoryByName(attackRequest.getRequestAttackBody().getAttackerTerritory().getNameTerritory()));
-
-		game.getCurrentTurn().setDefenderTerritory(
-
-		game.findPlayerByUsername(attackRequest.getRequestAttackBody().getDefenderTerritory().getUsername()).getTerritoryByName(
-				attackRequest.getRequestAttackBody().getDefenderTerritory().getNameTerritory()));
+		
+		game.getCurrentTurn().setAttackerTerritory(attackRequest.getPlayer()
+				.getTerritoryByName(attackRequest.getRequestAttackBody().getAttackerTerritory().getNameTerritory()));
+		
+		game.getCurrentTurn().setDefenderTerritory(game.findPlayerByUsername(attackRequest.getRequestAttackBody().getDefenderTerritory()
+				.getUsername()).getTerritoryByName(attackRequest.getRequestAttackBody().getDefenderTerritory().getNameTerritory()));
 	
 		
 		GameRepository.getInstance().updateNumAttackDice(game.getCurrentTurn(), game.getCurrentTurn().getNumAttDice());
+		
 		GameRepository.getInstance().updateAttackerTerritory(game.getCurrentTurn(), game.getCurrentTurn().getAttackerTerritory());
+		
 		GameRepository.getInstance().updateDefenderTerritory(game.getCurrentTurn(), game.getCurrentTurn().getDefenderTerritory());
 	}
 	
 	@Override
 	public void onActionPlayer(DefenceRequest defenceRequest) throws GameException, DatabaseConnectionException, UserException {
+		System.out.println("DEFENCE REQUEST -------------------------------------------");
 		game.getCurrentTurn().setNumDefDice(defenceRequest.getDefenderRequestBody().getNumDefDice());
 		GameRepository.getInstance().updateNumDefenseDice(game.getCurrentTurn(), game.getCurrentTurn().getNumDefDice());
 		game.getCurrentTurn().attack();

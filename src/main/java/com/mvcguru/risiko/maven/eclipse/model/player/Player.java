@@ -50,10 +50,9 @@ public class Player implements Serializable{
 	}
 	
 	public Territory getTerritoryByName(String name) {
-		try {
-			return GameRepository.getInstance().getTerritory(userName, gameId, name);
-		} catch (GameException | DatabaseConnectionException | UserException e) {
-			LOGGER.error(e.getMessage());
+		for (Territory t : territories) {
+			if (t.getName().equals(name))
+				return t;
 		}
 		return null;
 	}
