@@ -177,6 +177,20 @@ class AppController {
 		});
 		console.log(`Setup per il turno della partita: ${idPartita} inviato:`, territoriAssegnati);
 	}
+	
+	attack(idPartita, attackBody) {
+		if (!this.client || !this.client.connected) {
+			console.error("Client STOMP non connesso");
+			return;
+		}
+		console.log("attackBody", attackBody);
+		this.client.publish({
+			destination: `/app/partite/${idPartita}/attack`,
+			body: JSON.stringify(attackBody),
+		});
+		console.log(`Attacco per la partita ${idPartita} inviato:`, attackBody);
+	}
+
 }
 
 	

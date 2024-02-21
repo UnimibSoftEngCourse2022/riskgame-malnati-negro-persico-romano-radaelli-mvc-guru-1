@@ -1,34 +1,92 @@
 import { useState, useEffect } from "react";
-import { Container, Button, Nav, Navbar, Modal } from "react-bootstrap";
+import { Container, Button, Nav, Navbar} from "react-bootstrap";
 import { GiInvertedDice3 } from "react-icons/gi";
-import PartitaObserverSingleton from "../../application/PartitaObserverSingleton";
+import AppController from "../../application/AppController";
 
-function Console({ carriTerritorio, territoryAttack, territoryDefense }) {
-  const [dadiSelezionati, setDadiSelezionati] = useState(0);
-  const [esiti, setEsiti] = useState({});
-  const [showEsiti, setShowEsiti] = useState(false);
 
-  const handleDiceClick = (numDadi) => {
+function Console({ carriTerritorio, territoryAttack, territoryDefense, game, player}) {
+const [dadiSelezionati, setDadiSelezionati] = useState([]);  
+
+  /*const handleDiceClick = (numDadi) => {
     setDadiSelezionati((prevDadiSelezionati) => prevDadiSelezionati + numDadi);
-  };
-
-  const handleClose = () => setShowEsiti(false);
+  };*/
 
   useEffect(() => {
-    function updateEsiti(esiti) {
-      console.log("Esiti in console: ", esiti);
-      setEsiti(esiti);
-      setShowEsiti(true);
-    }
-
-    PartitaObserverSingleton.addListenerEsiti(updateEsiti);
-
-    return () => {
-      PartitaObserverSingleton.removeListenerEsiti(updateEsiti);
-    };
   }, []);
+  
+  const handleAttack = () => {
+	  
+  // Find the player who owns the defender territory
+  		const defenderUsername = game.players.find(player =>
+    	player.territories.some(territory => territory.name === territoryDefense)
+  		)?.userName;
+        // Construct the attack request body
+        const attackBody = {
+			
+            attackerTerritory: {
+                nameTerritory: territoryAttack,
+                username : player.userName
+            },
+            defenderTerritory: {
+                nameTerritory: territoryDefense,  
+                username : defenderUsername },
+            numAttDice: dadiSelezionati.length
+        };
+
+        // Call the AppController method, replace 'performAttack' with your method name
+        AppController.attack(game.id, attackBody)
+        console.log("Attacco effettuato");
+        
+    };
 
   // const handleShowAlert = () => setShowAlert(true);
+  
+  const handleDiceClick = (numDadi) => {
+    setDadiSelezionati(prevState => {
+      // Controlla se il dado è già stato selezionato
+      if (prevState.includes(numDadi)) {
+        // Rimuove il dado dai selezionati
+        return prevState.filter(dado => dado !== numDadi);
+      } else {
+        // Aggiunge il dado ai selezionati
+        return [...prevState, numDadi];
+      }
+    });
+  };
+  
+  const renderDadi = () => {
+    if (!territoryAttack || !territoryDefense) {
+      return null;
+    }
+    
+    let numDadi = 0;
+    
+    if (carriTerritorio === 1) {
+      // Messaggio per non poter attaccare con un solo carro armato
+      return <p>Non puoi attaccare con una truppa sul territorio.</p>;
+    }
+	  if (carriTerritorio === 2) {
+		 numDadi = 1;
+	  }
+	  
+	  if (carriTerritorio == 3) {
+		  numDadi = 2;
+	  } else {
+		  numDadi = 3;
+	  }
+    
+
+    // Determina il numero massimo di dadi basato sul numero di carriTerritorio
+    return (
+      <>
+        {[...Array(numDadi)].map((_, index) => (
+          <button key={index} onClick={() => handleDiceClick(index + 1)} className={`border rounded ${dadiSelezionati.includes(index + 1) ? "bg-danger" : ""}`}>
+            <GiInvertedDice3 style={{ color: "red", fontSize: "60px" }} />
+          </button>
+        ))}
+      </>
+    );
+  };
 
   return (
     <Container className="bg-secondary border rounded shadow">
@@ -46,90 +104,24 @@ function Console({ carriTerritorio, territoryAttack, territoryDefense }) {
           </Nav>
         </Navbar>
       </Container>
-
       <Container>
-        {carriTerritorio && carriTerritorio === 1 && (
-          <button className="border rounded" onClick={() => handleDiceClick(1)}>
-            <GiInvertedDice3 style={{ color: "red", fontSize: "60px" }} />
-          </button>
-        )}
-        {carriTerritorio && carriTerritorio === 2 && (
-          <>
-            <button
-              className="border rounded"
-              onClick={() => handleDiceClick(1)}
-            >
-              <GiInvertedDice3 style={{ color: "red", fontSize: "60px" }} />
-            </button>
-            <button
-              className="border rounded bg-danger"
-              onClick={() => handleDiceClick(1)}
-            >
-              <GiInvertedDice3 style={{ color: "red", fontSize: "60px" }} />
-            </button>
-          </>
-        )}
-
-        {carriTerritorio && carriTerritorio > 3 && (
-          <>
-            <button
-              className="border rounded border-danger"
-              onClick={() => handleDiceClick(1)}
-            >
-              <GiInvertedDice3 style={{ color: "red", fontSize: "60px" }} />
-            </button>
-            <button
-              className="border rounded border-danger"
-              onClick={() => handleDiceClick(1)}
-            >
-              <GiInvertedDice3 style={{ color: "red", fontSize: "60px" }} />
-            </button>
-            <button
-              className="border rounded border-danger"
-              onClick={() => handleDiceClick(1)}
-            >
-              <GiInvertedDice3 style={{ color: "red", fontSize: "60px" }} />
-            </button>
-          </>
-        )}
+        {renderDadi()}  
       </Container>
       <Container>
+      {territoryAttack && <span>{territoryAttack}</span>}
+        {territoryDefense && <span> attacca {territoryDefense}</span>}
+        {territoryAttack && territoryDefense && dadiSelezionati.length > 0 && (
         <div>
-          <span> attacchi con</span>
-          {dadiSelezionati && <span> {dadiSelezionati}</span>}
-          <span>dadi</span>
-        </div>
-
-        {territoryAttack && territoryDefense && (
+          <span>Attacchi con {dadiSelezionati.length} dadi</span>
           <div>
-            <span>{territoryAttack}</span>
-            <span> attacca </span>
-            <span>{territoryDefense}</span>
-            <p>Sei sicuro di voler lanciare l'attacco ?</p>
-            <Button className="bg-danger">Attacca</Button>
+            <p>Sei sicuro di voler lanciare l'attacco?</p>
+            <Button className="bg-danger" onClick={handleAttack}>Attacca</Button>
           </div>
-        )}
+        </div>
+      )}
       </Container>
 
-      {/* <Modal show={showEsiti} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Esito dell'Attacco</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {esiti.isConquered ? (
-            <p>Il territorio è stato conquistato.</p>
-          ) : (
-            <p>Il territorio non è stato conquistato.</p>
-          )}
-          <p>Truppe perse dall'attaccante: {esiti.lostAttTroops}</p>
-          <p>Truppe perse dal difensore: {esiti.lostDefTroops}</p>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Chiudi
-          </Button>
-        </Modal.Footer>
-      </Modal> */}
+      
     </Container>
   );
 }

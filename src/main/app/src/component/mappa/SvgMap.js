@@ -12,6 +12,7 @@ function SvgMap({
   territoryAttack,
   territoryDefense,
   territoryNeighbors,
+  sxSelected,
 }) {
   const [myTerritories, setMyTerritories] = useState([]);
   const [myColor, setMyColor] = useState("");
@@ -21,11 +22,10 @@ function SvgMap({
   const url = window.location.href;
   const nickname = url.split("/").pop();
   const [gameState, setGameState] = useState("");
-  const [territoriAttaccabili, seTterritoriAttaccabili] = useState([]);
-
+  
   const handleTerritoryClick = (e, territory, action) => {
     e.preventDefault();
-
+    console.log("territorio cliccato", territory, action);
     onTerritoryClick(territory, action);
   };
 
@@ -60,27 +60,18 @@ function SvgMap({
     const statoGioco = gioco.state.type;
     setGameState(statoGioco);
 
-    const attackableTerritory = myTerritories.flatMap((myTerritory) =>
-      territoryNeighbors?.filter((neighbor) => neighbor != myTerritory)
-    );
-    seTterritoriAttaccabili(attackableTerritory);
-    console.log("territori attaccabili", territoriAttaccabili);
-
     console.log("stato del gioco nella mappa", statoGioco);
   }, [gioco, nickname, myColor]);
 
-  const calculateOpacity = (
-    name,
-    territoryAttack,
-    territoryNeighbors,
-    territoriAttaccabili,
-    territoryDefense
-  ) => {
-    if (name === territoryDefense) return "1";
-    if (territoryNeighbors?.includes(name)) return "0.5";
-
-    return "0.5";
-  };
+  const calculateOpacity = (name, territoryAttack, territoryNeighbors, territoryDefense, sxSelected) => {
+  if (name === territoryAttack || name === territoryDefense) {
+    return "1";
+  }
+  if (territoryNeighbors?.includes(name) && sxSelected) {
+    return "1";
+  }
+  return "0.5";
+};
 
   const calculateStrokeWidth = (name, territoryAttack, territoryNeighbors) => {
     if (name === territoryAttack || territoryNeighbors?.includes(name))
@@ -123,8 +114,8 @@ function SvgMap({
               name,
               territoryAttack,
               territoryNeighbors,
-              territoriAttaccabili,
-              territoryDefense
+              territoryDefense,
+              sxSelected
             );
 
             const spessoreStroke = calculateStrokeWidth(

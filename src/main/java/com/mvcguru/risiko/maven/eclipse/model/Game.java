@@ -36,6 +36,7 @@ public class Game extends IGame {
 	@Override
 	public void onActionPlayer(ActionPlayer action) throws FullGameException, GameException, DatabaseConnectionException, UserException, IOException {
 		action.accept(state);
+		LOGGER.info("Sto per fare broadcast alla partita {}", id);
 		broadcast();
 	}
 

@@ -42,7 +42,7 @@ public class Player implements Serializable{
 	
 	public Territory getTerritoryByName(String name) {
 		for (Territory territory : territories) {
-            if (territory.getName() == name) {
+            if (territory.getName().equalsIgnoreCase(name)) {
                 return territory;
             }
         }
