@@ -35,7 +35,8 @@ public class DestroyArmyObjective extends ObjectiveCard{
 		if (defender.getTerritories().size() == 0 && defender.getColor() == colorArmy) {
 			return true;
 		}
-		if (attacker.getColor() == colorArmy || colorOwner.getTerritories().size() == 0) {
+//		if (attacker.getColor() == colorArmy || colorOwner.getTerritories().size() == 0) {
+		if (attacker.getColor() == colorArmy) {
 			if (attacker.getTerritories().size() >= nTerritory) {
 				return true;
 			}

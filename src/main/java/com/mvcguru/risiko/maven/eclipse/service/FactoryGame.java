@@ -19,6 +19,7 @@ import com.mvcguru.risiko.maven.eclipse.model.Continent;
 import com.mvcguru.risiko.maven.eclipse.model.Game;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
+import com.mvcguru.risiko.maven.eclipse.model.Turn;
 import com.mvcguru.risiko.maven.eclipse.model.GameConfiguration.GameMode;
 import com.mvcguru.risiko.maven.eclipse.model.card.ObjectiveCard;
 import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;

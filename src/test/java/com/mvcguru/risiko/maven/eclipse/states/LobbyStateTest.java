@@ -13,10 +13,14 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mvcguru.risiko.maven.eclipse.actions.AttackRequest;
 import com.mvcguru.risiko.maven.eclipse.actions.ComboRequest;
 import com.mvcguru.risiko.maven.eclipse.actions.GameEntry;
 import com.mvcguru.risiko.maven.eclipse.actions.GameExit;
 import com.mvcguru.risiko.maven.eclipse.actions.TerritorySetup;
+import com.mvcguru.risiko.maven.eclipse.actions.TurnSetUp;
+import com.mvcguru.risiko.maven.eclipse.controller.body_request.AttackRequestBody;
+import com.mvcguru.risiko.maven.eclipse.controller.body_request.BattleBody;
 import com.mvcguru.risiko.maven.eclipse.controller.body_request.ComboRequestBody;
 import com.mvcguru.risiko.maven.eclipse.controller.body_request.SetUpBody;
 import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
@@ -181,10 +185,28 @@ class LobbyStateTest {
         }
         
 		SetUpBody setUpBody3 = SetUpBody.builder().territories(territoryBodies3).build();
-		TerritorySetup territorySetup3 = TerritorySetup.builder().player(player1).setUpBody(setUpBody3).build();
+		TurnSetUp territorySetup3 = TurnSetUp.builder().player(player1).setUpBody(setUpBody3).build();
 		game.getState().onActionPlayer(territorySetup3);
 		
+		
 		assertEquals(game.getState().getClass().toString(), BattleState.class.toString());
+		
+        // BattleState
+		BattleBody  battleBodyAttacker = BattleBody.builder().nameTerritory("Brasile").username(player1.getUserName()).build();
+		BattleBody  battleBody2Difender = BattleBody.builder().nameTerritory("Argentina").username(player2.getUserName()).build();
+		
+		
+		
+		AttackRequestBody attackRequestBody = AttackRequestBody.builder().attackerTerritory(battleBodyAttacker).defenderTerritory(battleBody2Difender).numAttDice(1).build();
+		AttackRequest attackRequest = AttackRequest.builder().player(player1).requestAttackBody(attackRequestBody).build();
+		game.getState().onActionPlayer(attackRequest);
+		
+		LOGGER.info("Attacker: {}", game.getCurrentTurn());
+		
+		assertEquals(game.getCurrentTurn().getAttackerTerritory().getName(), "Brasile");
+		assertEquals(game.getCurrentTurn().getDefenderTerritory().getName(), "Argentina");
+		assertEquals(game.getCurrentTurn().getNumAttDice(), 1);
+		
 		
 	}
 	
