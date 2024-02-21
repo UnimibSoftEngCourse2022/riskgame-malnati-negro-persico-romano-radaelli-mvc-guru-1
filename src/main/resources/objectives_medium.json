@@ -3,42 +3,80 @@
         "objective": "Conquistare 12 territori presidiandoli con almeno due armate ciascuno."
     },
     {
-        "objective": "Conquistare 18 territori."
+        "objective": "Conquistare 17 territori."
     },
     {
-        "objective": "Eliminare completamente due giocatori."
+        "type": "conquerContinent",
+        "objective": "Conquistare la totalità del Nord America e dell'Africa.",
+        "continent1": "5",
+        "continent2": "3"
     },
     {
-        "objective": "Occupare interamente tre continenti piccoli o inventati."
+        "type": "conquerContinent",
+        "objective": "Conquistare la totalità del Nord America e dell'Oceania.",
+        "continent1": "5",
+        "continent2": "6"
     },
     {
-        "objective": "Mantenere il controllo di due continenti per 3 turni consecutivi."
+        "type": "conquerContinent",
+        "objective": "Conquistare la totalità dell'Asia e del Sud America.",
+        "continent1": "4",
+        "continent2": "1"
     },
     {
-        "objective": "Conquistare 5 territori in un solo turno."
+        "type": "conquerContinent",
+        "objective": "Conquistare la totalità dell'Asia e dell'Africa.",
+        "continent1": "4",
+        "continent2": "3"
     },
     {
-        "objective": "Riuscire a scambiare carte obiettivo per rinforzi tre volte in una partita."
+    	"type": "conquerContinent",
+        "objective": "Conquistare la totalità dell'Europa, del Sud America e di un terzo continente a scelta.",
+        "continent1": "5",
+        "continent2": "1",
+        "continent3": "7"
     },
     {
-        "objective": "Vincere con almeno 10 territori che confinano con il mare."
+    	"type": "conquerContinent",
+        "objective": "Conquistare la totalità dell'Europa, dell'Oceania e di un terzo continente a scelta.",
+        "continent1": "2",
+        "continent2": "1",
+        "continent3": "7"
     },
     {
-        "objective": "Conquistare tutti i territori di due continenti specifici."
+        "type": "destroyArmy",
+        "objective": "Distruggere completamente l'armata rossa, se le armate non sono presenti nel gioco, se le armate sono possedute dal giocatore che ha l'obiettivo di distruggerle o se l'ultima armata viene distrutta da un altro giocatore, l'obiettivo diventa conquistare 24 territori.",
+        "colorArmy": "RED",
+        "nTerritory": "17"
     },
     {
-        "objective": "Accumulare un totale di 30 armate su territori specifici."
+    	"type": "destroyArmy",
+        "objective": "Distruggere completamente l'armata gialla, se le armate non sono presenti nel gioco, se le armate sono possedute dal giocatore che ha l'obiettivo di distruggerle o se l'ultima armata viene distrutta da un altro giocatore, l'obiettivo diventa conquistare 24 territori.",
+    	"colorArmy": "YELLOW",
+    	"nTerritory": "17"
     },
     {
-        "objective": "Distruggere completamente l'armata di un giocatore in un solo turno."
+        "type": "destroyArmy",
+        "objective": "Distruggere completamente l'armata verde, se le armate non sono presenti nel gioco, se le armate sono possedute dal giocatore che ha l'obiettivo di distruggerle o se l'ultima armata viene distrutta da un altro giocatore, l'obiettivo diventa conquistare 24 territori.",
+    	"colorArmy": "GREEN",
+    	"nTerritory": "17"
     },
     {
-        "objective": "Vincere senza perdere più di 5 territori durante la partita, se perdi 5 territori il tuo obiettivo diventa conquistare 18 territori."
+        "type": "destroyArmy",
+        "objective": "Distruggere completamente l'armata blu, se le armate non sono presenti nel gioco, se le armate sono possedute dal giocatore che ha l'obiettivo di distruggerle o se l'ultima armata viene distrutta da un altro giocatore, l'obiettivo diventa conquistare 24 territori.",
+    	"colorArmy": "BLUE",
+    	"nTerritory": "17"
     },
     {
-        "objective": "Raggiungere per primi un numero prefissato di 40 armate totali."
+        "type": "destroyArmy",
+        "objective": "Distruggere completamente l'armata nero, se le armate non sono presenti nel gioco, se le armate sono possedute dal giocatore che ha l'obiettivo di distruggerle o se l'ultima armata viene distrutta da un altro giocatore, l'obiettivo diventa conquistare 24 territori.",
+    	"colorArmy": "BLACK",
+    	"nTerritory": "17"
     },
     {
-        "objective": "Conquistare un intero continente in un solo turno."
+        "type": "destroyArmy",
+        "objective": "Distruggere completamente l'armata viola, se le armate non sono presenti nel gioco, se le armate sono possedute dal giocatore che ha l'obiettivo di distruggerle o se l'ultima armata viene distrutta da un altro giocatore, l'obiettivo diventa conquistare 24 territori.",
+    	"colorArmy": "PURPLE",
+    	"nTerritory": "17"
     }
 ]
