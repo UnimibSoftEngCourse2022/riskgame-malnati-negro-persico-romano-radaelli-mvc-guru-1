@@ -39,7 +39,7 @@ public class Game extends IGame {
 		LOGGER.info("Sto per fare broadcast alla partita {}", id);
 		broadcast();
 	}
-
+	
 	@Override
     public void broadcast() {
         MessageBrokerSingleton.getInstance().broadcast(this);
