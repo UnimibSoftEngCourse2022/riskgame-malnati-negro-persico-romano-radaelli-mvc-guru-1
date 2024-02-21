@@ -74,8 +74,8 @@ public class EventController {
             game = GameRepository.getInstance().getCompletedGame(id);
             Player player = game.findPlayerByUsername(body.getUsername());
             GameExit action = GameExit.builder().player(player).build();
-            game.onActionPlayer(action);
             GameRepository.getInstance().removePlayer(body.getUsername());
+            game.onActionPlayer(action);
         } catch (GameException | DatabaseConnectionException | UserException e) {LOGGER.error("Errore durante l'uscita dalla partita", e);}    }
 	
 	@MessageMapping("/partite/{id}/confermaSetup")
@@ -86,6 +86,7 @@ public class EventController {
 	        Player player = game.findPlayerByUsername(body.getUsername());
 	        if (player != null) {
 	            TerritorySetup action = TerritorySetup.builder().player(player).setUpBody(body).build();
+	            
 	            game.onActionPlayer(action);
 	        }
 	        LOGGER.info("Fine setup player : {}", game.findPlayerByUsername(body.getUsername()));
