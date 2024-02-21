@@ -74,37 +74,15 @@ public class GameSetupState extends GameState {
 	private void assignObjective(IDeck deckObjective) throws GameException, DatabaseConnectionException, UserException {
 		deckObjective.shuffle();
 		ObjectiveCard card = null;
-		
-		card = (ObjectiveCard) deckObjective.drawCard();
-		Player player = game.getPlayers().get(0);
-		player.setObjective(card);
-		LOGGER.info("Player {} has objective -------------- {}", player.getUserName(), card.getObjective());
-		GameRepository.getInstance().updateObjective(player.getUserName(), card.getObjective());
-		
-		card = (ObjectiveCard) deckObjective.drawCard();
-		player = game.getPlayers().get(1);
-		player.setObjective(card);
-		LOGGER.info("Player {} has objective -------------- {}", player.getUserName(), card.getObjective());
-		GameRepository.getInstance().updateObjective(player.getUserName(), card.getObjective());
-		
-		card = (ObjectiveCard) deckObjective.drawCard();
-		player = game.getPlayers().get(2);
-		player.setObjective(card);
-		LOGGER.info("Player {} has objective -------------- {}", player.getUserName(), card.getObjective());
-		GameRepository.getInstance().updateObjective(player.getUserName(), card.getObjective());
-		
-		/*
+			
 		for (Player player : game.getPlayers()) {
-			try {
 			card = (ObjectiveCard) deckObjective.drawCard();
 			player.setObjective(card);
 			GameRepository.getInstance().updateObjective(player.getUserName(), card.getObjective());
-			} catch (Exception e) {
-				LOGGER.error("--------------Errore nell'assegnamento degli obiettivi-------------", e);
-			}*/
-			
-	        if(game.getConfiguration().getMode().name().equals("EASY"))
-	        	deckObjective.insertCard(card);
+		    if(game.getConfiguration().getMode().name().equals("EASY"))
+		        deckObjective.insertCard(card);
+		        
+		}
 
 	}
 	
