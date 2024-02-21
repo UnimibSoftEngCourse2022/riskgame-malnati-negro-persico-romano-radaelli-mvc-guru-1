@@ -61,6 +61,14 @@ class NewPartita extends React.Component {
   handleSubmit = async (e) => {
     e.preventDefault();
     const { difficolta, players, nomeMappa } = this.state;
+
+    if (!difficolta || !players || !nomeMappa) {
+      this.setState({
+        isLobbyCreated: "Per favore, completa tutti i campi richiesti.",
+      });
+      return;
+    }
+
     const configuration = {
       difficolta,
       players: parseInt(players),
@@ -92,7 +100,7 @@ class NewPartita extends React.Component {
     }
     try {
       AppController.entraInPartita(idPartita, effectiveNickname);
-      AppController.subscribeToEsitiPartita(idPartita, effectiveNickname);
+      //AppController.subscribeToEsitiPartita(idPartita, effectiveNickname);
       this.props.navigate(`/lobby/${idPartita}?nickname=${effectiveNickname}`);
     } catch (error) {
       alert("Errore: " + error.message); // Mostra un popup con l'errore
@@ -123,7 +131,7 @@ class NewPartita extends React.Component {
 
   renderCarousel = () => {
     const { lobbies, index } = this.state;
-
+    <p>..caricamento Lobby in corso..</p>;
     return lobbies.length > 0 ? (
       <Carousel
         activeIndex={index}
@@ -177,7 +185,6 @@ class NewPartita extends React.Component {
             <Card.Header className="w-100">
               Crea la tua Lobby personalizzata
             </Card.Header>
-            {/* Form per creare una partita */}
             <Form className="w-75 p-3" onSubmit={this.handleSubmit}>
               <Form.Group className="mb-3">
                 <Form.Label>Difficoltà</Form.Label>

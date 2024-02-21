@@ -117,7 +117,6 @@ public class EventController {
 				TurnSetUp action = TurnSetUp.builder().player(player).setUpBody(body).build();
 				LOGGER.info("Parte action");
 				game.onActionPlayer(action);
-				game.broadcast(player.getUserName(), ResultNoticeBody.builder().isConquered(false).lostAttTroops(0).lostDefTroops(0).build());
 				LOGGER.info("Fine assegnazione del turno");
 			}
 		} catch (Exception e) { LOGGER.error("Errore durante l'assegnazione del turno", e); }
@@ -125,6 +124,7 @@ public class EventController {
 	
 	@MessageMapping("/partite/{id}/attack")
 	public void attackRequest(@DestinationVariable String id, @Payload AttackRequestBody body) {
+		LOGGER.info("Inizio attacco {}", body);
 		try {
 			IGame game = GameRepository.getInstance().getCompletedGame(id);
 			LOGGER.info("Inizio assegnazione del turno {}", body);
@@ -133,6 +133,8 @@ public class EventController {
 				AttackRequest action = AttackRequest.builder().player(player).requestAttackBody(body).build();
 				game.onActionPlayer(action);
 			}
+			//game.broadcast(player.getUserName(), ResultNoticeBody.builder().isConquered(false).lostAttTroops(0).lostDefTroops(0).build());
+
 		}
 		catch(Exception e){ LOGGER.error("Errore durante la richiesta di attacco", e);}
 	}
