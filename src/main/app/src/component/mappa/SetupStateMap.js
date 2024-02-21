@@ -48,7 +48,7 @@ function SetUpStateMap({ idPlayer, giocatori, game }) {
       setTroopsToAssign(troopsToAssignInitially - totalTerritories);
       setInitialTroopsToAssign(troopsToAssignInitially);
     }
-  }, [giocatori, idPlayer]);
+  }, [giocatori, idPlayer, game]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

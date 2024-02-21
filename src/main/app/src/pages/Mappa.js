@@ -96,7 +96,7 @@ class Mappa extends React.Component {
     const colorPlayer = currentPlayer ? currentPlayer.color : "red";
     console.log("color giocatore", colorPlayer);
     return (
-      <div style={{ flexGrow: "1" , height: "100%" }} >
+      <div style={{ flexGrow: "1", height: "100%" }}>
         {this.state.partita.state.type === "SetupState" &&
           currentPlayer?.setUpCompleted === false && (
             <div>{this.renderSetUpState()}</div>

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-
 import SvgMap from "./SvgMap";
 import Console from "../mappa/Console";
-import { Alert, Modal, Button } from "react-bootstrap";
+import { Alert } from "react-bootstrap";
 import PartitaObserverSingleton from "../../application/PartitaObserverSingleton";
 import ConsoleDifesa from "./ConsoleDifesa";
 
@@ -14,11 +13,10 @@ function BattleState({ idPlayer, game }) {
   const [isPlayersTurn, setIsPlayersTurn] = useState(true);
   const [territorioAttacante, setTerritorioAttacante] = useState("");
   const [territorioDifensore, setTerritorioDifensore] = useState("");
-  const [territoriVicini, setTerritoriVicini] = useState();
-  const [sxSelected, setSxSelected] = useState(false); // Aggiungi questo stato
+
+  const [sxSelected, setSxSelected] = useState(false);
   const [territoriAttaccabili, setTerritoriAttaccabili] = useState([]);
-  const [objective, setObjective] = useState();
-  const [showAlert, setShowAlert] = useState(true);
+
   const [esiti, setEsiti] = useState({});
   const [showEsiti, setShowEsiti] = useState(false);
   const [isDefenderTerritory, setIsDefenderTerritory] = useState(null);
@@ -26,7 +24,9 @@ function BattleState({ idPlayer, game }) {
   const [countryUnderAttack, setCountryUnderAttack] = useState("");
   const [IdGioco, setIdGioco] = useState();
 
-  // const handleClose = () => setShowEsiti(false);
+  console.log(esiti);
+  console.log(showEsiti);
+  console.log(countryUnderAttack);
 
   useEffect(() => {
     function updateEsiti(esiti) {
@@ -67,26 +67,15 @@ function BattleState({ idPlayer, game }) {
     if (isDefenderTerritory) {
       const sottoAttacco = game.currentTurn.defenderTerritory.idOwner;
       setPlayerUnderAttack(sottoAttacco);
-      console.log("player sottoAttacco", sottoAttacco);
 
       const CountrysottoAttacco = game.currentTurn.defenderTerritory.idOwner;
       setCountryUnderAttack(CountrysottoAttacco);
-      console.log("country Under Attack", CountrysottoAttacco);
     }
 
     return () => {
       PartitaObserverSingleton.removeListenerEsiti(updateEsiti);
     };
-  }, [idPlayer, game]);
-
-  console.log("playerUnderAttack", playerUnderAttack);
-
-  {
-    player && console.log("player in battleState", player);
-  }
-  {
-    player && console.log("game in battleState", game);
-  }
+  }, [idPlayer, game, isDefenderTerritory]);
 
   const handleTerritoryClick = (territoryName, event) => {
     console.log("tipo di evento on click", event);
@@ -96,25 +85,19 @@ function BattleState({ idPlayer, game }) {
         (t) => t.name === territoryName
       );
       const continenteTrovato = territorio.continent;
-      console.log("Continente trovato", continenteTrovato);
-      console.log("Click sinistro");
       setTerritorioAttacante(territoryName);
-      console.log("Clicked territory attaccante:", territorioAttacante);
       const armateDelTerritorio = troopAssignments[territoryName];
-      console.log("Clicked armate territory:", armateDelTerritorio);
       setArmateTerritorio(armateDelTerritorio);
       setSxSelected(true);
       setTerritorioDifensore("");
       const neighbors = game.continents
         .find((c) => c.continentId === continenteTrovato)
         .territories.find((t) => t.name === territoryName).neighbors;
-      console.log("neighbors", neighbors);
       const territoriGiocatore = player.territories.map((t) => t.name);
       const attackableTerritory = neighbors.filter(
         (neighbor) => !territoriGiocatore.includes(neighbor)
       );
       setTerritoriAttaccabili(attackableTerritory);
-      console.log("territori attaccabili", territoriAttaccabili);
     } else if (
       event === "addNonOwned" &&
       sxSelected &&
