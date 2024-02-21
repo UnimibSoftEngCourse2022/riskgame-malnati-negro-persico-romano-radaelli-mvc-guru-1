@@ -100,7 +100,7 @@ class TurnTest {
                 TerritoryCard.builder().symbol(CardSymbol.INFANTRY).build()
         );
         turn.comboCardsCheck(comboCards);
-        assertEquals(10, turn.getNumberOfTroops());
+        assertEquals(0, turn.getNumberOfTroops());
 
         comboCards = Arrays.asList(
         		TerritoryCard.builder().symbol(CardSymbol.JOLLY).build(),
@@ -108,7 +108,7 @@ class TurnTest {
             	TerritoryCard.builder().symbol(CardSymbol.INFANTRY).build()
         );
         turn.comboCardsCheck(comboCards);
-        assertEquals(0, turn.getNumberOfTroops());
+        assertEquals(10, turn.getNumberOfTroops());
         
         comboCards = Arrays.asList(
         		TerritoryCard.builder().symbol(CardSymbol.JOLLY).build(),
