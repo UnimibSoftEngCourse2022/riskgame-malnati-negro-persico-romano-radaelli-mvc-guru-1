@@ -4,6 +4,7 @@ import SvgMap from "./SvgMap";
 import Console from "../mappa/Console";
 import { Alert, Modal, Button } from "react-bootstrap";
 import PartitaObserverSingleton from "../../application/PartitaObserverSingleton";
+import ConsoleDifesa from "./ConsoleDifesa";
 
 function BattleState({ idPlayer, game }) {
   const [mappa, setMappa] = useState([]);
@@ -20,8 +21,12 @@ function BattleState({ idPlayer, game }) {
   const [showAlert, setShowAlert] = useState(true);
   const [esiti, setEsiti] = useState({});
   const [showEsiti, setShowEsiti] = useState(false);
+  const [isDefenderTerritory, setIsDefenderTerritory] = useState(null);
+  const [playerUnderAttack, setPlayerUnderAttack] = useState();
+  const [countryUnderAttack, setCountryUnderAttack] = useState("");
+  const [IdGioco, setIdGioco] = useState();
 
-  const handleClose = () => setShowEsiti(false);
+  // const handleClose = () => setShowEsiti(false);
 
   useEffect(() => {
     function updateEsiti(esiti) {
@@ -30,12 +35,17 @@ function BattleState({ idPlayer, game }) {
       setShowEsiti(true);
     }
 
+    setIdGioco(game.id);
+
     PartitaObserverSingleton.addListenerEsiti(updateEsiti);
 
     const pathD = [];
     const newTroopAssignments = {};
 
     setIsPlayersTurn(game.currentTurn.player.userName === idPlayer);
+    const isDifTerr = game.currentTurn.defenderTerritory;
+    setIsDefenderTerritory(isDifTerr);
+    console.log("isDifTerr", isDifTerr);
 
     game.players.forEach((player) => {
       player.territories.forEach((territory) => {
@@ -53,13 +63,30 @@ function BattleState({ idPlayer, game }) {
 
     const currentPlayer = game.players.find((p) => p.userName === idPlayer);
     setPlayer(currentPlayer);
+
+    if (isDefenderTerritory) {
+      const sottoAttacco = game.currentTurn.defenderTerritory.idOwner;
+      setPlayerUnderAttack(sottoAttacco);
+      console.log("player sottoAttacco", sottoAttacco);
+
+      const CountrysottoAttacco = game.currentTurn.defenderTerritory.idOwner;
+      setCountryUnderAttack(CountrysottoAttacco);
+      console.log("country Under Attack", CountrysottoAttacco);
+    }
+
     return () => {
       PartitaObserverSingleton.removeListenerEsiti(updateEsiti);
     };
   }, [idPlayer, game]);
 
-  console.log("mappa battle state", mappa);
-  console.log("truppe assegnate", troopAssignments);
+  console.log("playerUnderAttack", playerUnderAttack);
+
+  {
+    player && console.log("player in battleState", player);
+  }
+  {
+    player && console.log("game in battleState", game);
+  }
 
   const handleTerritoryClick = (territoryName, event) => {
     console.log("tipo di evento on click", event);
@@ -143,27 +170,18 @@ function BattleState({ idPlayer, game }) {
           />
         </>
       )}
-      {
-        <Modal show={showEsiti} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Esito dell'Attacco</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            {esiti.isConquered ? (
-              <p>Il territorio è stato conquistato.</p>
-            ) : (
-              <p>Il territorio non è stato conquistato.</p>
-            )}
-            <p>Truppe perse dall'attaccante: {esiti.lostAttTroops}</p>
-            <p>Truppe perse dal difensore: {esiti.lostDefTroops}</p>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Chiudi
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      }
+
+      {isDefenderTerritory &&
+        player.userName === playerUnderAttack &&
+        console.log(
+          "sei tu sotto attacco",
+          player.userName === playerUnderAttack
+        )}
+      {isDefenderTerritory && player.userName === playerUnderAttack && (
+        <div>
+          <ConsoleDifesa idPartita={IdGioco} difendente={playerUnderAttack} />
+        </div>
+      )}
     </div>
   );
 }
