@@ -58,7 +58,7 @@ function Console({
       numDadi = 1;
     }
 
-    if (carriTerritorio == 3) {
+    if (carriTerritorio === 3) {
       numDadi = 2;
     } else {
       numDadi = 3;

@@ -67,26 +67,15 @@ function BattleState({ idPlayer, game }) {
     if (isDefenderTerritory) {
       const sottoAttacco = game.currentTurn.defenderTerritory.idOwner;
       setPlayerUnderAttack(sottoAttacco);
-      console.log("player sottoAttacco", sottoAttacco);
 
       const CountrysottoAttacco = game.currentTurn.defenderTerritory.idOwner;
       setCountryUnderAttack(CountrysottoAttacco);
-      console.log("country Under Attack", CountrysottoAttacco);
     }
 
     return () => {
       PartitaObserverSingleton.removeListenerEsiti(updateEsiti);
     };
-  }, [idPlayer, game]);
-
-  console.log("playerUnderAttack", playerUnderAttack);
-
-  {
-    player && console.log("player in battleState", player);
-  }
-  {
-    player && console.log("game in battleState", game);
-  }
+  }, [idPlayer, game, isDefenderTerritory]);
 
   const handleTerritoryClick = (territoryName, event) => {
     console.log("tipo di evento on click", event);
@@ -96,25 +85,19 @@ function BattleState({ idPlayer, game }) {
         (t) => t.name === territoryName
       );
       const continenteTrovato = territorio.continent;
-      console.log("Continente trovato", continenteTrovato);
-      console.log("Click sinistro");
       setTerritorioAttacante(territoryName);
-      console.log("Clicked territory attaccante:", territorioAttacante);
       const armateDelTerritorio = troopAssignments[territoryName];
-      console.log("Clicked armate territory:", armateDelTerritorio);
       setArmateTerritorio(armateDelTerritorio);
       setSxSelected(true);
       setTerritorioDifensore("");
       const neighbors = game.continents
         .find((c) => c.continentId === continenteTrovato)
         .territories.find((t) => t.name === territoryName).neighbors;
-      console.log("neighbors", neighbors);
       const territoriGiocatore = player.territories.map((t) => t.name);
       const attackableTerritory = neighbors.filter(
         (neighbor) => !territoriGiocatore.includes(neighbor)
       );
       setTerritoriAttaccabili(attackableTerritory);
-      console.log("territori attaccabili", territoriAttaccabili);
     } else if (
       event === "addNonOwned" &&
       sxSelected &&
