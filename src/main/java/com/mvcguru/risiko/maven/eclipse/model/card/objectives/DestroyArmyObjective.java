@@ -29,17 +29,17 @@ public class DestroyArmyObjective extends ObjectiveCard{
 		
 		Player attacker = game.getCurrentTurn().getPlayer();
 		Player defender = game.findPlayerByUsername(unsernameDefender);
+		Player colorOwner = game.findPlayerByColor(colorArmy);
 		
 		
 		if (defender.getTerritories().size() == 0 && defender.getColor() == colorArmy) {
 			return true;
 		}
-		if (attacker.getColor() == colorArmy || defender.getTerritories().size() == 0) {
+		if (attacker.getColor() == colorArmy || colorOwner.getTerritories().size() == 0) {
 			if (attacker.getTerritories().size() >= nTerritory) {
 				return true;
 			}
 		}
-		
 		return false;
 	}
 }

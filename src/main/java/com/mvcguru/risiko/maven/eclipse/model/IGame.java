@@ -58,6 +58,8 @@ public abstract class IGame implements Serializable{
     public abstract <T> void broadcast(String idUser,T object);
 
 	public abstract Player findPlayerByUsername(String username);
+	
+	public abstract Player findPlayerByColor(Player.PlayerColor color);
 
 	public void startGame() throws GameException, DatabaseConnectionException, UserException { }
 	

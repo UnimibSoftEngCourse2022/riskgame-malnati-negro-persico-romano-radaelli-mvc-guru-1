@@ -58,6 +58,15 @@ public class Game extends IGame {
         return null;
     }
 	
+	public Player findPlayerByColor(Player.PlayerColor color) {
+		for (Player player : players) {
+			if (player.getColor().equals(color)) {
+				return player;
+			}
+		}
+		return null;
+	}
+	
 	@Override
 	public void startGame() throws GameException, DatabaseConnectionException, UserException {
 		currentTurn = Turn.builder()

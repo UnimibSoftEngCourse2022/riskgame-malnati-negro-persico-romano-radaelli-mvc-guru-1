@@ -55,6 +55,9 @@ public class StartTurnState extends GameState{
 	@Override
 	public void onActionPlayer(TurnSetUp turnSetUp) throws GameException, DatabaseConnectionException, UserException {
 		Player player = turnSetUp.getPlayer();
+		
+		player.getObjective().isComplete(game, player.getUserName()); ///////////
+		
 		LOGGER.info("Turno di {}", player.getUserName());
 		for(TerritoryBody t : turnSetUp.getSetUpBody().getTerritories()) {
 			String territoryName = t.getName();
