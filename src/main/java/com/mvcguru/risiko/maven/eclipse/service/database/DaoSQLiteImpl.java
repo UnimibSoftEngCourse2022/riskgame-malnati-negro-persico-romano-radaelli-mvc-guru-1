@@ -45,7 +45,7 @@ public class DaoSQLiteImpl implements DataDao {
         }
     }
 
-    public synchronized static DaoSQLiteImpl getInstance() throws DatabaseConnectionException {
+    public static synchronized DaoSQLiteImpl getInstance() throws DatabaseConnectionException {
         if (instance == null) {
             instance = new DaoSQLiteImpl(DatabaseConnection.getSqliteDbUrl());
         }
@@ -668,12 +668,10 @@ public class DaoSQLiteImpl implements DataDao {
 		IGame game = getGame(gameId);
 		ObjectivesDeck objectiveCards = (ObjectivesDeck) game.getDeckObjective();
 		ObjectiveCard cardReturn = null;
-		//LOGGER.info("ObjectiveCards: {}", objectiveCards);
 		LOGGER.info("Description: {}", description);
 		List<ObjectiveCard> cards = new LinkedList<>(objectiveCards.getCards());
 		LOGGER.info("Cards: {}", cards.size());
 		for (ObjectiveCard card : cards) {
-			//LOGGER.info("Card: {}", card);
 			if (card.getObjective().equals(description)) {
 				cardReturn = card;
 				LOGGER.error("Carta {} ------ trovata", description);

@@ -29,21 +29,27 @@ public class ConquerContinentObjective extends ObjectiveCard{
 
 	@Override
 	public boolean isComplete(IGame game, String username) {
-		Player player = game.findPlayerByUsername(username);
-		if (continent3 != 7) {
-			if (player.getTerritories().containsAll(game.getContinents().get(continent1).getTerritories())
-				&& player.getTerritories().containsAll(game.getContinents().get(continent2).getTerritories())) 
-				return true;
-		}
-		else {
-			if (player.getTerritories().containsAll(game.getContinents().get(continent1).getTerritories())
-				&& player.getTerritories().containsAll(game.getContinents().get(continent2).getTerritories()))
-				for (Continent continent : game.getContinents())
-					if (continent != game.getContinents().get(continent1) && continent != game.getContinents().get(continent2) && 
-							player.getTerritories().containsAll(continent.getTerritories()))
-						return true;
-		}
-		return false;
+	    Player player = game.findPlayerByUsername(username);
+
+	    boolean ownsFirstTwoContinents = player.getTerritories().containsAll(game.getContinents().get(continent1).getTerritories()) &&
+	                                      player.getTerritories().containsAll(game.getContinents().get(continent2).getTerritories());
+
+	    if (!ownsFirstTwoContinents) {
+	        return false; 
+	    }
+
+	    if (continent3 == 7) {
+	        for (Continent continent : game.getContinents()) {
+	            if (continent == game.getContinents().get(continent1) || continent == game.getContinents().get(continent2)) {
+	                continue;
+	            }
+	            if (player.getTerritories().containsAll(continent.getTerritories())) {
+	                return true;
+	            }
+	        }
+	        return false;
+	    }
+	    return true;
 	}
 
 }

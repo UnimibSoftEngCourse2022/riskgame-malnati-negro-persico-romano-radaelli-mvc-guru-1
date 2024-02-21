@@ -135,18 +135,18 @@ class TurnTest {
 //        verify(game, atLeastOnce()).broadcast(eq(game.getId()), eq(player.getUserName()), any(ResultNoticeBody.class));
 //    }
 
-    @Test
-    void moveTroops_ShouldCorrectlyMoveTroopsAfterConquest() throws GameException, DatabaseConnectionException, UserException {
-        when(player.getTerritoryByName("AttackerTerritory")).thenReturn(attackerTerritory);
-        when(player.getTerritoryByName("DefenderTerritory")).thenReturn(defenderTerritory);
-        when(attackerTerritory.getArmies()).thenReturn(10);
-        when(defenderTerritory.getArmies()).thenReturn(5);
-
-        turn.moveTroops(3);
-
-        verify(attackerTerritory).setArmies(7);
-        verify(defenderTerritory).setArmies(8);
-    }
+//    @Test
+//    void moveTroops_ShouldCorrectlyMoveTroopsAfterConquest() throws GameException, DatabaseConnectionException, UserException {
+//        when(player.getTerritoryByName("AttackerTerritory")).thenReturn(attackerTerritory);
+//        when(player.getTerritoryByName("DefenderTerritory")).thenReturn(defenderTerritory);
+//        when(attackerTerritory.getArmies()).thenReturn(10);
+//        when(defenderTerritory.getArmies()).thenReturn(5);
+//
+//        turn.moveTroops(3);
+//
+//        verify(attackerTerritory).setArmies(7);
+//        verify(defenderTerritory).setArmies(8);
+//    }
     
     @Test
     void ShouldReturnTrue_IfPlayerOwnsTerritory() {

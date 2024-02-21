@@ -1,7 +1,6 @@
 package com.mvcguru.risiko.maven.eclipse.service;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
 import com.mvcguru.risiko.maven.eclipse.exception.FullGameException;
@@ -10,7 +9,6 @@ import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.model.Territory;
 import com.mvcguru.risiko.maven.eclipse.model.Turn;
-import com.mvcguru.risiko.maven.eclipse.model.card.ObjectiveCard;
 import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 import com.mvcguru.risiko.maven.eclipse.service.database.DataDao;
@@ -66,8 +64,8 @@ public class GameRepository {
 		return db.getGame(gameId);
 	}
 	
-	public synchronized ArrayList<IGame> getAllGames() throws GameException, FullGameException, IOException {
-		ArrayList<IGame> games = db.getAllGames();
+	public synchronized List<IGame> getAllGames() throws GameException, FullGameException, IOException {
+		List<IGame> games = db.getAllGames();
 		for (IGame g : games ) {
 			List<Player> lista = getAllPlayers(g.getId());
 			for (Player p : lista) {
@@ -96,7 +94,7 @@ public class GameRepository {
 		return db.getPlayer(username, gameId);
 	}
 	
-	public synchronized ArrayList<Player> getAllPlayers(String gameId) throws GameException, IOException {
+	public synchronized List<Player> getAllPlayers(String gameId) throws GameException, IOException {
 		return db.getAllPlayers(gameId);
 	}
 	
@@ -128,7 +126,7 @@ public class GameRepository {
 		return db.getTerritory(territoryName, player, gameId);
 	}
 	
-	public synchronized ArrayList<Territory> getAllTerritories(String player, String gameId) throws GameException {
+	public synchronized List<Territory> getAllTerritories(String player, String gameId) throws GameException {
 		return db.getAllTerritories(player, gameId);
 	}
 	
@@ -199,7 +197,7 @@ public class GameRepository {
 		db.updateOwner(t, player, gameId);
 	}
 	
-	public synchronized ArrayList<TerritoryCard> getAllComboCards(String player, String gameId) throws GameException {
+	public synchronized List<TerritoryCard> getAllComboCards(String player, String gameId) throws GameException {
 		return db.getAllComboCards(player, gameId);
 	}
 }

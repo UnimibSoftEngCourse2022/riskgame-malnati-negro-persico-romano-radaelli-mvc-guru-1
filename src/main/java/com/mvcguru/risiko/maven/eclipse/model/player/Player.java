@@ -26,7 +26,6 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Player implements Serializable{
-	Logger LOGGER = LoggerFactory.getLogger(Player.class);
 	
 	private String userName;
 	

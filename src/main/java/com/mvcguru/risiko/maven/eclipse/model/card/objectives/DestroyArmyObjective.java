@@ -25,22 +25,16 @@ public class DestroyArmyObjective extends ObjectiveCard{
 	protected PlayerColor colorArmy ;
 
 	@Override
-	public boolean isComplete(IGame game, String unsernameDefender) {
-		
-		Player attacker = game.getCurrentTurn().getPlayer();
-		Player defender = game.findPlayerByUsername(unsernameDefender);
-		Player colorOwner = game.findPlayerByColor(colorArmy);
-		
-		
-		if (defender.getTerritories().size() == 0 && defender.getColor() == colorArmy) {
-			return true;
-		}
-//		if (attacker.getColor() == colorArmy || colorOwner.getTerritories().size() == 0) {
-		if (attacker.getColor() == colorArmy) {
-			if (attacker.getTerritories().size() >= nTerritory) {
-				return true;
-			}
-		}
-		return false;
+	public boolean isComplete(IGame game, String usernameDefender) {
+	    Player attacker = game.getCurrentTurn().getPlayer();
+	    Player defender = game.findPlayerByUsername(usernameDefender);
+
+	    boolean defenderEliminated = defender.getTerritories().size() == 0 && defender.getColor() == colorArmy;
+	    if (defenderEliminated) {
+	        return true;
+	    }
+
+	    return attacker.getColor() == colorArmy && attacker.getTerritories().size() >= nTerritory;
 	}
+
 }

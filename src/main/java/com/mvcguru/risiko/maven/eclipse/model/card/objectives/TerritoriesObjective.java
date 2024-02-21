@@ -21,19 +21,21 @@ public class TerritoriesObjective extends ObjectiveCard{
 
 	@Override
 	public boolean isComplete(IGame game, String username) {
-		int territoriesWithRequiredTroops = 0;
-		if(nTerritory == 24)
-			if (game.findPlayerByUsername(username).getTerritories().size() >= nTerritory)
-				return true;
-		else if (nTerritory == 18) {
-			for (Territory territory : game.getCurrentTurn().getPlayer().getTerritories()) {
-		        if (territory.getArmies() >= 2) {
-		            territoriesWithRequiredTroops++;
-		        }
-		    }
-		    return territoriesWithRequiredTroops >= nTerritory;
-		}
-		return false;
+	    int territoriesWithRequiredTroops = 0;
+	    if (nTerritory == 24 || nTerritory == 17) {
+	        if (game.findPlayerByUsername(username).getTerritories().size() >= nTerritory) {
+	            return true;
+	        }
+	    } else if (nTerritory == 18 || nTerritory == 12) {
+	        for (Territory territory : game.getCurrentTurn().getPlayer().getTerritories()) {
+	            if (territory.getArmies() >= 2) {
+	                territoriesWithRequiredTroops++;
+	            }
+	        }
+	        return territoriesWithRequiredTroops >= nTerritory;
+	    }
+	    return false;
 	}
+
 
 }

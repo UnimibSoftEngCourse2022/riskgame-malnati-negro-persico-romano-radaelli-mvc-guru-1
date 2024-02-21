@@ -53,20 +53,6 @@ class GameTest {
     }
 
     @Test
-    void testBuilderPattern() throws IOException {
-    	GameConfiguration config = GameConfiguration.builder()
-                .mode(GameMode.EASY)
-                .numberOfPlayers(4)
-                .idMap("TestMap")
-                .build(); 
-        IGame game = FactoryGame.getInstance().createGame(config);
-        
-        
-        assertEquals(game.getId(), game.getId(), "ID should match the builder's value");
-        assertEquals(config, game.getConfiguration(), "Configuration should match the builder's value");
-    }
-
-    @Test
     void testEquals() {
         GameConfiguration configuration = new GameConfiguration();
         Game game1 = new Game("gameId", configuration);

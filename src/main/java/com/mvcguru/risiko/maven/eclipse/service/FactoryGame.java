@@ -85,13 +85,6 @@ public class FactoryGame {
         if (fileName == null) {
         	LOGGER.error("Unsupported game mode: {}", mode);
         }
-        /*
-        ObjectMapper mapper = new ObjectMapper();
-        byte[] data = FileCopyUtils.copyToByteArray(new ClassPathResource(fileName).getInputStream());
-        String json = new String(data, StandardCharsets.UTF_8);
-        
-        ObjectiveCard[] objectives = mapper.readValue(json, ObjectiveCard[].class);
-        */
         
         ObjectMapper mapper = new ObjectMapper();
         byte[] data = FileCopyUtils.copyToByteArray(new ClassPathResource(fileName).getInputStream());
@@ -125,8 +118,7 @@ public class FactoryGame {
             
             if (objective != null) {
                 String description = (String) map.get("objective");
-                //LOGGER.info("Objective: {}", description);
-                objective.setObjective(description); // Assicurati che ci sia un metodo setDescription nella classe ObjectiveCard
+                objective.setObjective(description); 
                 objectives.add(objective);
             }
         }

@@ -1,14 +1,13 @@
 package com.mvcguru.risiko.maven.eclipse.model;
 
 import java.io.Serializable;
+import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.mvcguru.risiko.maven.eclipse.controller.body_request.ResultNoticeBody;
 import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
 import com.mvcguru.risiko.maven.eclipse.exception.GameException;
 import com.mvcguru.risiko.maven.eclipse.exception.UserException;
@@ -26,7 +25,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 public class Turn implements Serializable{
-	private static final String log = "Attacker: {} | Defender: {}";
+	private static final String LOG = "Attacker: {} | Defender: {}";
 	private static final Logger LOGGER = LoggerFactory.getLogger(Turn.class);
 
     private Player player;
@@ -130,22 +129,23 @@ public class Turn implements Serializable{
     }
     
 	private int troopsForTris(List<TerritoryCard> comboCards) {
-		if(!comboCards.stream().anyMatch(card -> card.getSymbol() == CardSymbol.JOLLY))
+		if (!comboCards.stream().noneMatch(card -> CardSymbol.JOLLY.equals(card.getSymbol())))
 			return 10;
 		return 0;
 	}
 	
 	public void attack() throws GameException, DatabaseConnectionException, UserException {
-		    
+		SecureRandom random = new SecureRandom(); 
+		
 	    Integer[] attRolls = new Integer[numAttDice];
 	    Integer[] defRolls = new Integer[numDefDice];
 	    
 	    for (int i = 0; i < numAttDice; i++) {
-	       attRolls[i] = (int) (Math.random() * 6) + 1;
+	       attRolls[i] = random.nextInt(6) + 1;
 	    }
 	    
 	    for (int i = 0; i < numDefDice; i++) {
-	        defRolls[i] = (int) (Math.random() * 6) + 1;
+	        defRolls[i] = random.nextInt(6) + 1;
 	    }
 	    
 	    Arrays.sort(attRolls, Collections.reverseOrder());
@@ -161,18 +161,17 @@ public class Turn implements Serializable{
 	        else
 	            attLosses++;
 	    }
-	    LOGGER.info(log, attRolls, defRolls);
-	    LOGGER.info(log, attLosses, defLosses);
+	    LOGGER.info(LOG, attRolls, defRolls);
+	    LOGGER.info(LOG, attLosses, defLosses);
 	    
 	    if(defenderTerritory.getArmies() > defLosses) {
 	    	LOGGER.info("Siamo nell'if");
-	    	LOGGER.info(log, attackerTerritory.getArmies(), defenderTerritory.getArmies());
+	    	LOGGER.info(LOG, attackerTerritory.getArmies(), defenderTerritory.getArmies());
 	    	attackerTerritory.setArmies(attackerTerritory.getArmies() - attLosses); 
 	    	GameRepository.getInstance().updateTerritoryArmies(attackerTerritory.getName(), player.getGameId(), attackerTerritory.getArmies());
 	    	defenderTerritory.setArmies(defenderTerritory.getArmies() - defLosses);
 	    	GameRepository.getInstance().updateTerritoryArmies(defenderTerritory.getName(), player.getGameId(), defenderTerritory.getArmies());
-			ResultNoticeBody result = ResultNoticeBody.builder().isConquered(false).lostAttTroops(attLosses).lostDefTroops(defLosses).build();
-	    	LOGGER.info(log, attackerTerritory.getArmies(), defenderTerritory.getArmies());
+	    	LOGGER.info(LOG, attackerTerritory.getArmies(), defenderTerritory.getArmies());
 			resetBattleInfo();
 	    }
 		else {
@@ -183,7 +182,7 @@ public class Turn implements Serializable{
 			GameRepository.getInstance().updateTerritoryOwner(defenderTerritory.getName(), player);
 			defenderTerritory.setArmies(0);
 			GameRepository.getInstance().updateTerritoryArmies(defenderTerritory.getName(), player.getGameId(), 0);
-			LOGGER.info(log, attackerTerritory.getArmies(), defenderTerritory.getArmies());
+			LOGGER.info(LOG, attackerTerritory.getArmies(), defenderTerritory.getArmies());
 			
 		}
 	}

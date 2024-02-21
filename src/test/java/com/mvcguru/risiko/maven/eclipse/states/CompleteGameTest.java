@@ -39,8 +39,8 @@ import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 import com.mvcguru.risiko.maven.eclipse.service.FactoryGame;
 import com.mvcguru.risiko.maven.eclipse.service.GameRepository;
 
-class LobbyStateTest {
-	Logger LOGGER = LoggerFactory.getLogger(LobbyStateTest.class);
+class CompleteGameTest {
+	Logger LOGGER = LoggerFactory.getLogger(CompleteGameTest.class);
 	GameConfiguration config = GameConfiguration.builder()
 								.mode(GameMode.HARD)
 								.numberOfPlayers(2)
@@ -69,20 +69,20 @@ class LobbyStateTest {
 		GameEntry gameEntry = GameEntry.builder().player(player1).build();
 		game.getState().onActionPlayer(gameEntry);
 		
-		assertEquals(game.getPlayers().size(), 1);
-		assertEquals(game.getPlayers().get(0).getUserName(), "Bobby");
+		assertEquals(1, game.getPlayers().size());
+		assertEquals("Bobby", game.getPlayers().get(0).getUserName());
 		
 		// Remove the player from the game
 		GameExit exitState = GameExit.builder().player(player1).build();
 		game.getState().onActionPlayer(exitState);
 		
-		assertEquals(game.getPlayers().size(), 0);
+		assertEquals(0, game.getPlayers().size());
 		
 		// Add the player again
 		game.getState().onActionPlayer(gameEntry);
 		
-		assertEquals(game.getPlayers().size(), 1);
-		assertEquals(game.getPlayers().get(0).getUserName(), "Bobby");
+		assertEquals(1, game.getPlayers().size());
+		assertEquals("Bobby", game.getPlayers().get(0).getUserName());
 		
 		// Create a second player and add it to the game
         Player player2 = Player.builder().userName("Tommy").gameId(game.getId()).territories(new ArrayList<Territory>()).color(Player.PlayerColor.GREY).build();
@@ -91,8 +91,8 @@ class LobbyStateTest {
         GameEntry gameEntry2 = GameEntry.builder().player(player2).build();
         game.getState().onActionPlayer(gameEntry2);
         
-        assertEquals(game.getPlayers().size(), 2);
-        assertEquals(game.getPlayers().get(1).getUserName(), "Tommy");
+        assertEquals(2, game.getPlayers().size());
+        assertEquals("Tommy", game.getPlayers().get(1).getUserName());
         
         // SetupState
         assertEquals(game.getState().getClass().toString(), GameSetupState.class.toString());
@@ -113,12 +113,12 @@ class LobbyStateTest {
 		game.getState().onActionPlayer(territorySetup);
 		
 		for (Territory territory : territories) {
-			assertEquals(territory.getArmies(), 5);
+			assertEquals(5, territory.getArmies());
 		}
 		
 		List<Territory> territories2 = player2.getTerritories();
 		for (Territory territory : territories2) {
-			assertEquals(territory.getArmies(), 0);
+			assertEquals(0, territory.getArmies());
 		}
 		List<TerritoryBody> territoryBodies2 = new ArrayList<>();
 		TerritoryBody territoryBody2 = null;
@@ -134,7 +134,7 @@ class LobbyStateTest {
 		game.getState().onActionPlayer(territorySetup2);
 		
 		for (Territory territory : territories2) {
-			assertEquals(territory.getArmies(), 2);
+			assertEquals(2,territory.getArmies());
 		}
 		
 		assertEquals(game.getState().getClass().toString(), StartTurnState.class.toString());
@@ -176,8 +176,7 @@ class LobbyStateTest {
 		ComboRequest comboRequest = ComboRequest.builder().player(player1).comboRequestBody(comboRequestBody).build();
 		game.getState().onActionPlayer(comboRequest);
 		
-		assertTrue(player1.getComboCards().size() == 0);
-		
+		assertEquals(0, player1.getComboCards().size());
 		
         List<TerritoryBody> territoryBodies3 = new ArrayList<>();
         TerritoryBody territoryBody3 = null;

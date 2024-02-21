@@ -67,7 +67,7 @@ public abstract class GameState implements Serializable {
 	
 	public void onActionPlayer(GoToEndTurn goToEndTurn) throws GameException, DatabaseConnectionException, UserException {}
 	
-	public void onActionPlayer(EndTurnMovement EndTurnMovement) throws GameException, DatabaseConnectionException, UserException {}
+	public void onActionPlayer(EndTurnMovement endTurnMovement) throws GameException, DatabaseConnectionException, UserException {}
 	
-	public void onActionPlayer(EndTurn endTurn) throws GameException, DatabaseConnectionException, UserException {};
+	public void onActionPlayer(EndTurn endTurn) throws GameException, DatabaseConnectionException, UserException {}
 }
