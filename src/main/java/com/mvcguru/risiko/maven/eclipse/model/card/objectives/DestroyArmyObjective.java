@@ -7,11 +7,16 @@ import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player.PlayerColor;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder
+@NoArgsConstructor
 public class DestroyArmyObjective extends ObjectiveCard{
+	
+	@JsonProperty("objective")
+	private String description;
 	
 	@JsonProperty("nTerritory")
 	protected int nTerritory;

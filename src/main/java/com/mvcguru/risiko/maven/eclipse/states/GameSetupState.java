@@ -75,14 +75,37 @@ public class GameSetupState extends GameState {
 		deckObjective.shuffle();
 		ObjectiveCard card = null;
 		
+		card = (ObjectiveCard) deckObjective.drawCard();
+		Player player = game.getPlayers().get(0);
+		player.setObjective(card);
+		LOGGER.info("Player {} has objective -------------- {}", player.getUserName(), card.getObjective());
+		GameRepository.getInstance().updateObjective(player.getUserName(), card.getObjective());
+		
+		card = (ObjectiveCard) deckObjective.drawCard();
+		player = game.getPlayers().get(1);
+		player.setObjective(card);
+		LOGGER.info("Player {} has objective -------------- {}", player.getUserName(), card.getObjective());
+		GameRepository.getInstance().updateObjective(player.getUserName(), card.getObjective());
+		
+		card = (ObjectiveCard) deckObjective.drawCard();
+		player = game.getPlayers().get(2);
+		player.setObjective(card);
+		LOGGER.info("Player {} has objective -------------- {}", player.getUserName(), card.getObjective());
+		GameRepository.getInstance().updateObjective(player.getUserName(), card.getObjective());
+		
+		/*
 		for (Player player : game.getPlayers()) {
+			try {
 			card = (ObjectiveCard) deckObjective.drawCard();
 			player.setObjective(card);
-			GameRepository.getInstance().updateObjective(player.getUserName(), card);
+			GameRepository.getInstance().updateObjective(player.getUserName(), card.getObjective());
+			} catch (Exception e) {
+				LOGGER.error("--------------Errore nell'assegnamento degli obiettivi-------------", e);
+			}*/
+			
 	        if(game.getConfiguration().getMode().name().equals("EASY"))
 	        	deckObjective.insertCard(card);
-	        
-		}
+
 	}
 	
 	private void assignTerritories(IDeck deckTerritory) throws GameException, DatabaseConnectionException, UserException {
@@ -90,6 +113,7 @@ public class GameSetupState extends GameState {
 	    int playerIndex = 0;
 	    TerritoryCard card = (TerritoryCard)deckTerritory.drawCard();
 	    while (card != null) {
+	    	//LOGGER.info("Card  ----AssignTerritories---- {}", card);
 	        if (card.getSymbol().equals(CardSymbol.JOLLY)) {
 	            deckTerritory.insertCard(card);
 	            deckTerritory.shuffle();
@@ -108,6 +132,7 @@ public class GameSetupState extends GameState {
 		colors.remove(PlayerColor.GREY);
 		Collections.shuffle(colors);
 		for (int i = 0; i < players.size(); i++) {
+			LOGGER.info("Player {} has color -------------- {}", players.get(i).getUserName(), colors.get(i));
 			players.get(i).setColor(colors.get(i));
 			GameRepository.getInstance().updatePlayerColor(players.get(i));
 		}

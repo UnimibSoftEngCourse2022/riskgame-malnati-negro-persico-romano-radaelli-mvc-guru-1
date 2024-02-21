@@ -29,20 +29,20 @@ import lombok.experimental.SuperBuilder;
 public abstract class IGame implements Serializable{
 	protected static final Logger LOGGER = LoggerFactory.getLogger(IGame.class);
 
-	protected String id;
+	protected String id; //
 	
-	protected GameConfiguration configuration;
+	protected GameConfiguration configuration; //
 	
-	protected IDeck deckObjective;
+	protected IDeck deckObjective; //
 	
-	protected IDeck deckTerritory;
+	protected IDeck deckTerritory; //
 	
-	private List<Continent> continents;
+	private List<Continent> continents; //
 	
 	@Builder.Default
     protected ArrayList<Player> players = new ArrayList<>();
 
-    protected GameState state;
+    protected GameState state; //
     
     protected Turn currentTurn;
     

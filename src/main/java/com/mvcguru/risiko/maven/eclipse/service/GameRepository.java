@@ -100,8 +100,8 @@ public class GameRepository {
 		return db.getAllPlayers(gameId);
 	}
 	
-	public synchronized void updateObjective(String username, ObjectiveCard objective) throws GameException {
-		db.updatePlayerObjective(username, objective);
+	public synchronized void updateObjective(String username, String description) throws GameException {
+		db.updatePlayerObjective(username, description);
 	}
 	
 	

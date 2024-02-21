@@ -5,11 +5,16 @@ import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.model.Territory;
 import com.mvcguru.risiko.maven.eclipse.model.card.ObjectiveCard;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder
+@NoArgsConstructor
 public class TerritoriesObjective extends ObjectiveCard{
+	
+	@JsonProperty("objective")
+	private String description;
 	
 	@JsonProperty("nTerritory")
 	protected int nTerritory;

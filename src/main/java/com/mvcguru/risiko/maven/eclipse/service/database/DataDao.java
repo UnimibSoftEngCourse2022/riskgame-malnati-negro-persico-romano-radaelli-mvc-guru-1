@@ -33,7 +33,7 @@ public interface DataDao {
 	void deletePlayer(String username) throws GameException;
 	ArrayList<Player> getAllPlayers(String gameId) throws GameException, IOException;
 	Player getPlayer(String username, String gameId) throws GameException, IOException;
-	void updatePlayerObjective(String username, ObjectiveCard objective) throws GameException;
+	void updatePlayerObjective(String username, String description) throws GameException;
 	
 	//TerritoryDao
 	void insertTerritory(Territory territory, String gameId) throws GameException;

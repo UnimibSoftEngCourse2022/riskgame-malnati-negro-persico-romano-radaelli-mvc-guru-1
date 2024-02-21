@@ -43,7 +43,7 @@ public class StartTurnState extends GameState{
 					LOGGER.error("Errore nella rimozione della carta combo");
 				}
 			}
-		}
+		} 
 		game.getCurrentTurn().comboCardsCheck(result);
 		try {
 			GameRepository.getInstance().updateTurnNumberOfTroops(game.getCurrentTurn(), game.getCurrentTurn().getNumberOfTroops());

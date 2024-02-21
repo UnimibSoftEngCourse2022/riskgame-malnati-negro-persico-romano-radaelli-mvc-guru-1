@@ -56,8 +56,9 @@ public class EventController {
 			game = GameRepository.getInstance().getCompletedGame(id);
 			Player player = Player.builder().userName(body.getUsername()).gameId(id).territories(new ArrayList<Territory>()).color(Player.PlayerColor.GREY).build();
 			GameEntry action = GameEntry.builder().player(player).build();
-			game.onActionPlayer(action);
 			GameRepository.getInstance().addPlayer(player);
+			game.onActionPlayer(action);
+			
 		} catch (GameException | DatabaseConnectionException | UserException e) {throw e;
 		} catch (FullGameException e) {
             MessageBrokerSingleton.getInstance().getTemplate().convertAndSend("/topic/partite/" + id, "Partita piena");

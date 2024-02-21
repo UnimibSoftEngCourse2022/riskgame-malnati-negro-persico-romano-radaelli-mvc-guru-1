@@ -74,6 +74,7 @@ public class Turn implements Serializable{
                 troops += c.getBonusArmies();
             } else {
                 LOGGER.info("Player doesn't have all the territories of the continent");
+                LOGGER.info("Player objective: {}", player.getObjective().toString());
             }
         }
         return troops;

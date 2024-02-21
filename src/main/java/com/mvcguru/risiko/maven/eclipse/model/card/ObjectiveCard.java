@@ -24,7 +24,7 @@ import lombok.experimental.SuperBuilder;
 public abstract class ObjectiveCard extends ICard{
 	
 	@JsonProperty("objective")
-	private String description;
+	private String objective;
 	
 	public abstract boolean isComplete(IGame game, String username);
 }

@@ -121,9 +121,6 @@ public class DaoSQLiteImpl implements DataDao {
             for (int i = 0; i < values.length; i++) {
                 pstmt.setObject(i + 1, values[i]);
             }
-            LOGGER.info("----------------------------------");
-            LOGGER.info("Inserting into database: {}", pstmt);
-            LOGGER.info("----------------------------------");
 
             pstmt.executeUpdate();
         } catch (SQLException e) {throw new GameException("Errore durante l'inserimento", e);
@@ -260,7 +257,7 @@ public class DaoSQLiteImpl implements DataDao {
 								.setUpCompleted(rs.getBoolean("setUpCompleted"))
 								.build();
 			}
-			LOGGER.info("Player: {}", player);
+			LOGGER.info("Player       sdsdsaadasdasdasdasd: {}", player);
 			return player;
 		} catch (SQLException e) {
 			throw new GameException("Errore durante il recupero del giocatore.", e);
@@ -313,7 +310,6 @@ public class DaoSQLiteImpl implements DataDao {
 											.svgPath(svgPath)
 											.build();
 			}
-			LOGGER.info("Territory: {}", territory);		
 			return territory;	
 		} catch (SQLException e) {
 			throw new GameException("Errore durante il recupero del territorio.", e);
@@ -337,7 +333,6 @@ public class DaoSQLiteImpl implements DataDao {
 					Territory territory = getTerritory(rs.getString("name"), player, gameId);
 					result.add(territory);
 				}
-				LOGGER.info("Territories: {}", result);
 				return result;
 			}
 		} catch (SQLException e) {
@@ -511,9 +506,9 @@ public class DaoSQLiteImpl implements DataDao {
     }
 
     @Override
-    public void updatePlayerObjective(String username, ObjectiveCard objective) throws GameException {
+    public void updatePlayerObjective(String username, String description) throws GameException {
         String sql = "UPDATE players SET objective = ? WHERE username = ?";
-        executeUpdate(sql, (objective).getDescription(), username);
+        executeUpdate(sql, description, username);
     }
 
     @Override
@@ -664,8 +659,8 @@ public class DaoSQLiteImpl implements DataDao {
             	LOGGER.error("Stato non riconosciuto");
                 break;
             }
-			} catch (SQLException e) {throw new GameException("Errore durante il recupero di una partita", e);
-			}
+		} catch (SQLException e) {throw new GameException("Errore durante il recupero di una partita", e); }
+        
         return newGame;
 	}
 	
@@ -673,13 +668,19 @@ public class DaoSQLiteImpl implements DataDao {
 		IGame game = getGame(gameId);
 		ObjectivesDeck objectiveCards = (ObjectivesDeck) game.getDeckObjective();
 		ObjectiveCard cardReturn = null;
+		//LOGGER.info("ObjectiveCards: {}", objectiveCards);
+		LOGGER.info("Description: {}", description);
 		List<ObjectiveCard> cards = new LinkedList<>(objectiveCards.getCards());
+		LOGGER.info("Cards: {}", cards.size());
 		for (ObjectiveCard card : cards) {
-			if (card.getDescription().equals(description)) {
+			//LOGGER.info("Card: {}", card);
+			if (card.getObjective().equals(description)) {
 				cardReturn = card;
+				LOGGER.error("Carta {} ------ trovata", description);
 				return cardReturn;
 			}
 		}
+		LOGGER.error("Carta {} non trovata", description);
 		return cardReturn;
 	}
 }

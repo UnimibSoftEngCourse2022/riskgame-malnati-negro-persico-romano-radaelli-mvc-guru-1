@@ -68,7 +68,7 @@
     {
         "type": "destroyArmy",
         "objective": "Distruggere completamente l'armata blu, se le armate non sono presenti nel gioco, se le armate sono possedute dal giocatore che ha l'obiettivo di distruggerle o se l'ultima armata viene distrutta da un altro giocatore, l'obiettivo diventa conquistare 24 territori.",
-    	"colorArmy": "BLU",
+    	"colorArmy": "BLUE",
     	"nTerritory": "24"
     },
     {

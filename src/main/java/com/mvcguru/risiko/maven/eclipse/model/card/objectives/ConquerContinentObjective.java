@@ -7,11 +7,16 @@ import com.mvcguru.risiko.maven.eclipse.model.card.ObjectiveCard;
 import com.mvcguru.risiko.maven.eclipse.model.player.Player;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder
+@NoArgsConstructor
 public class ConquerContinentObjective extends ObjectiveCard{
+	
+	@JsonProperty("objective")
+	private String description;
 	
 	@JsonProperty("continent1")
 	protected int continent1;
