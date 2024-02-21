@@ -112,7 +112,6 @@ function Console({
             </div>
           </div>
         )}
-        {renderDefendButton()}
       </Container>
     </Container>
   );
