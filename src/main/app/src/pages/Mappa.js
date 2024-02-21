@@ -3,7 +3,6 @@ import { useParams, useLocation } from "react-router-dom";
 import PartitaObserverSingleton from "../application/PartitaObserverSingleton";
 import SetupStateMap from "../component/mappa/SetupStateMap";
 import StartTurnState from "../component/mappa/StartTurnState";
-import { Container } from "react-bootstrap";
 import BattleState from "../component/mappa/BattleState";
 
 function MappaPage() {
@@ -97,7 +96,7 @@ class Mappa extends React.Component {
     const colorPlayer = currentPlayer ? currentPlayer.color : "red";
     console.log("color giocatore", colorPlayer);
     return (
-      <div style={{ flexGrow: "1" , height: "100%" }} >
+      <div style={{ flexGrow: "1", height: "100%" }}>
         {this.state.partita.state.type === "SetupState" &&
           currentPlayer?.setUpCompleted === false && (
             <div>{this.renderSetUpState()}</div>

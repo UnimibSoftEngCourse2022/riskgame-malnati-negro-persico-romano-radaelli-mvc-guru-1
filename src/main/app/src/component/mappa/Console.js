@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Container, Button, Nav, Navbar } from "react-bootstrap";
 import { GiInvertedDice3 } from "react-icons/gi";
 import AppController from "../../application/AppController";
@@ -18,7 +18,7 @@ function Console({
         (territory) => territory.name === territoryDefense
       )
     )?.userName;
-    // Construct the attack request body
+
     const attackBody = {
       attackerTerritory: {
         nameTerritory: territoryAttack,
@@ -31,35 +31,17 @@ function Console({
       numAttDice: dadiSelezionati.length,
     };
 
-    // Call the AppController method, replace 'performAttack' with your method name
     AppController.attack(game.id, attackBody);
-    console.log("Attacco effettuato");
   };
 
   const handleDiceClick = (numDadi) => {
     setDadiSelezionati((prevState) => {
-      // Controlla se il dado è già stato selezionato
       if (prevState.includes(numDadi)) {
-        // Rimuove il dado dai selezionati
         return prevState.filter((dado) => dado !== numDadi);
       } else {
-        // Aggiunge il dado ai selezionati
         return [...prevState, numDadi];
       }
     });
-  };
-
-  const renderDefendButton = () => {
-    /*  if(game.currentTurn){
-		        const isDefender = game.currentTurn.defenseTerritory?.idOwner === player.userName;
-		        const shouldShowDefendButton = !territoryAttack && !territoryDefense && isDefender;
-		
-		        if (shouldShowDefendButton) {
-		            return <Button className="bg-warning">Difendi</Button>;
-		        }
-		
-		        return null;
-		        }*/
   };
 
   const renderDadi = () => {
@@ -70,7 +52,6 @@ function Console({
     let numDadi = 0;
 
     if (carriTerritorio === 1) {
-      // Messaggio per non poter attaccare con un solo carro armato
       return <p>Non puoi attaccare con una truppa sul territorio.</p>;
     }
     if (carriTerritorio === 2) {
