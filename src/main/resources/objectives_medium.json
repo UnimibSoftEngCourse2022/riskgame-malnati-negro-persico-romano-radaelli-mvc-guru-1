@@ -1,12 +1,12 @@
 [
     {
     	"type": "territories",
-        "objective": "Conquistare 18 territori presidiandoli con almeno due armate ciascuno.",
+        "objective": "Conquistare 12 territori presidiandoli con almeno due armate ciascuno.",
         "nTerritory": "12"
     },
     {
         "type": "territories",
-        "objective": "Conquistare 24 territori.",
+        "objective": "Conquistare 17 territori.",
         "nTerritory": "17"
     },
     {

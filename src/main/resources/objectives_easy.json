@@ -1,5 +1,9 @@
 [
     {
-        "objective": "Conquistare più territori possibili in 4 turni."
+     
+        "type": "territories",
+        "objective": "Conquistare più territori possibili in 4 turni.",
+        "nTerritory": "4"
+        
     }
 ]
