@@ -4,7 +4,7 @@
 ![License](https://img.shields.io/github/license/UnimibSoftEngCourse2022/riskgame-malnati-negro-persico-romano-radaelli-mvc-guru-1)
 ![Stars](https://img.shields.io/github/stars/UnimibSoftEngCourse2022/riskgame-malnati-negro-persico-romano-radaelli-mvc-guru-1)
 
-<img src="images\RiskGame.png" alt="Descrizione alternativa" width="100%">
+<img src="images\RiskGame.png" alt="RISK" width="100%">
 
 ## Esecuzione progetto
 
@@ -25,12 +25,10 @@ Se i test hanno successo, esegue anche la build del client all'interno di `src/m
 in `target/static`, dove `target/` è la cartella in cui risiedono i file compilati del server.
 Infine, crea il pacchetto .jar completo.
 
-- `java -jar target/eclipse-VERSION.jar`: Esegue il file .jar generato in precedenza.
-`VERSION` è il numero di versione presente nel file `pom.xml` al path `project.version`.
-Attualmente è `4.0.0`.
+- `java -jar target/com.mvcguru.risiko.maven.eclipse-0.0.1-SNAPSHOT.jar`: Esegue il file .jar generato in precedenza.
 
 - Il server è ora accessibile all'indirizzo `localhost:8080`.
-![home_page.png](images\home_page.png)
+<img src="images\homePage.png" alt="HomePage" width="100%">
 
 
 ## Come giocare
@@ -52,6 +50,6 @@ dopodichè ti troverai nella pagina di creazione della lobby nella quale dovrai:
 #### N.B : nelle due modalità media e facile l'unione dei territori della modalità difficile si nota dai confini grigi (rispetto al nero classico)  
 Qua sotto un immagine per invogliarti a provare il nostro gioco... Buon divertimento! 
 
-![Mappa_6players.jpeg](images\Mappa_6players.png)  
+<img src="images\Mappa_6players.png" alt="Mappa da 6 persone" width="100%">
 
 *made by MVC-GURU*
