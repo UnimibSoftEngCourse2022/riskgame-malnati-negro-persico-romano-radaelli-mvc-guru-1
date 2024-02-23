@@ -1,4 +1,4 @@
-package com.mvcguru.risiko.maven.eclipse.states;
+gotpackage com.mvcguru.risiko.maven.eclipse.states;
 
 import java.io.IOException;
 import java.io.Serializable;

@@ -54,7 +54,39 @@ public class EventController {
 		IGame game = null;
 		try {
 			game = GameRepository.getInstance().getCompletedGame(id);
-			Player player = Player.builder().userName(body.getUsername()).gameId(id).territories(new ArrayList<Territory>()).color(Player.PlayerColor.GREY).build();
+			Player player = Player.
+
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					().userName(body.getUsername()).gameId(id).territories(new ArrayList<Territory>()).color(Player.PlayerColor.GREY).build();
 			GameEntry action = GameEntry.builder().player(player).build();
 			GameRepository.getInstance().addPlayer(player);
 			game.onActionPlayer(action);

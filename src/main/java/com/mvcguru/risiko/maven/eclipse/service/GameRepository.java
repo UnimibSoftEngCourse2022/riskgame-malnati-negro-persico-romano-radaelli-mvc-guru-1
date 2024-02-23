@@ -137,7 +137,7 @@ public class GameRepository {
 	}
 	public synchronized void updateTerritoryArmies(String territoryName, String gameId, int armies) throws GameException {
 		db.updateTerritoryArmies(territoryName, gameId, armies);
-	}
+	}		
 	
 	
 	//TurnDao	
