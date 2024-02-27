@@ -28,7 +28,6 @@ import com.mvcguru.risiko.maven.eclipse.model.card.objectives.TerritoriesObjecti
 import com.mvcguru.risiko.maven.eclipse.model.deck.IDeck;
 import com.mvcguru.risiko.maven.eclipse.model.deck.ObjectivesDeck;
 import com.mvcguru.risiko.maven.eclipse.model.deck.TerritoriesDeck;
-import com.mvcguru.risiko.maven.eclipse.states.GameState;
 import com.mvcguru.risiko.maven.eclipse.states.LobbyState;
 import lombok.Data;
 
@@ -36,7 +35,6 @@ import lombok.Data;
 public class FactoryGame {
 	private static final Logger LOGGER = LoggerFactory.getLogger(FactoryGame.class);
     private static FactoryGame instance;
-    private GameState gameState;
 
 	public FactoryGame() {
 		//default constructor	
@@ -87,13 +85,6 @@ public class FactoryGame {
         if (fileName == null) {
         	LOGGER.error("Unsupported game mode: {}", mode);
         }
-        /*
-        ObjectMapper mapper = new ObjectMapper();
-        byte[] data = FileCopyUtils.copyToByteArray(new ClassPathResource(fileName).getInputStream());
-        String json = new String(data, StandardCharsets.UTF_8);
-        
-        ObjectiveCard[] objectives = mapper.readValue(json, ObjectiveCard[].class);
-        */
         
         ObjectMapper mapper = new ObjectMapper();
         byte[] data = FileCopyUtils.copyToByteArray(new ClassPathResource(fileName).getInputStream());
@@ -127,8 +118,7 @@ public class FactoryGame {
             
             if (objective != null) {
                 String description = (String) map.get("objective");
-                //LOGGER.info("Objective: {}", description);
-                objective.setObjective(description); // Assicurati che ci sia un metodo setDescription nella classe ObjectiveCard
+                objective.setObjective(description); 
                 objectives.add(objective);
             }
         }

@@ -54,7 +54,6 @@ function StartTurnState({ idPlayer, game }) {
 
     const isPlayer = game.players?.find((p) => p.userName === idPlayer);
     setObjective(isPlayer.objective.objective);
-    // setObjective(game.deckObjective.cards[0].objective);
   }, [game, idPlayer]);
 
   console.log("objective", objective);
@@ -145,13 +144,14 @@ function StartTurnState({ idPlayer, game }) {
             </Container>
           ) : (
             <div>
-              {objective && (
-                <Alert variant="info">Obiettivo del Gioco: {objective}</Alert>
+              {troopsToAdd && (
+                <Alert variant="success" className="text-success">
+                  <span>hai ricevuto</span>
+                  <span>{troopsToAdd}</span>
+                  <span>truppe</span>
+                </Alert>
               )}
 
-              <span>posiziona: </span>
-              <span>{troopsToAdd}</span>
-              <span>truppe sulla mappa</span>
               <SvgMap
                 paths={mappa}
                 gioco={game}

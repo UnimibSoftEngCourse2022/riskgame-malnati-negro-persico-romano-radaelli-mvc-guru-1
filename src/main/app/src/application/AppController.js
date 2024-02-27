@@ -10,7 +10,7 @@ class AppController {
         // Aggiungi le sottoscrizioni ai topic qui, se necessario
       },
       onDisconnect: () => {
-        console.log("Disconnected from STOMP");	
+        console.log("Disconnected from STOMP");
       },
       // Altri eventi e configurazioni...
     });
@@ -125,75 +125,93 @@ class AppController {
       console.error("Client STOMP non connesso");
     }
   }
-  
-	subscribeToEsitiPartita(idPartita, nickname) {
-		if (!this.client || !this.client.connected) {
-			console.error("Client STOMP non connesso");
-			return;
-		}
-		this.client.subscribe(`/topic/partite/${idPartita}/${nickname}`, (message) => {
-		  PartitaObserverSingleton.notifyListenersEsiti(JSON.parse(message.body));
-		  console.log("Esito attacco ricevuto:", JSON.parse(message.body));
-	  });
-	}
-	
-	unsubscribeToEsitiPartita(idPartita, nickname) {
-		if (this.client && this.client.connected) {
-			this.client.unsubscribe(`/topic/partite/${idPartita}/${nickname}`);
-		} else {
-			console.error("Client STOMP non connesso");
-		}
-	}
-  
-  	setUpPartita(idPartita, territoriAssegnati) {
-  		if (!this.client || !this.client.connected) {
-    	console.error("Client STOMP non connesso");
-    	return;
-  		}	 
-  console.log("territoriAssegnatinellotomp", territoriAssegnati);
-  // Assicurati che territoriAssegnati sia un array di oggetti che corrispondono
-  // alla struttura di TerritoryBody, ovvero con i campi `name` e `troops`.
-  
-  console.log("setUpBodystomp", territoriAssegnati);
 
-  // Pubblicazione del messaggio al topic di setup della partita
-  this.client.publish({
-    destination: `/app/partite/${idPartita}/confermaSetup`,
-    body: JSON.stringify(territoriAssegnati),
-  });
+  subscribeToEsitiPartita(idPartita, nickname) {
+    if (!this.client || !this.client.connected) {
+      console.error("Client STOMP non connesso");
+      return;
+    }
+    this.client.subscribe(
+      `/topic/partite/${idPartita}/${nickname}`,
+      (message) => {
+        PartitaObserverSingleton.notifyListenersEsiti(JSON.parse(message.body));
+        console.log("Esito attacco ricevuto:", JSON.parse(message.body));
+      }
+    );
+  }
 
-  console.log(`Setup per la partita ${idPartita} inviato:`, territoriAssegnati);
+  unsubscribeToEsitiPartita(idPartita, nickname) {
+    if (this.client && this.client.connected) {
+      this.client.unsubscribe(`/topic/partite/${idPartita}/${nickname}`);
+    } else {
+      console.error("Client STOMP non connesso");
+    }
+  }
+
+  setUpPartita(idPartita, territoriAssegnati) {
+    if (!this.client || !this.client.connected) {
+      console.error("Client STOMP non connesso");
+      return;
+    }
+    console.log("territoriAssegnatinellotomp", territoriAssegnati);
+    // Assicurati che territoriAssegnati sia un array di oggetti che corrispondono
+    // alla struttura di TerritoryBody, ovvero con i campi `name` e `troops`.
+
+    console.log("setUpBodystomp", territoriAssegnati);
+
+    // Pubblicazione del messaggio al topic di setup della partita
+    this.client.publish({
+      destination: `/app/partite/${idPartita}/confermaSetup`,
+      body: JSON.stringify(territoriAssegnati),
+    });
+
+    console.log(
+      `Setup per la partita ${idPartita} inviato:`,
+      territoriAssegnati
+    );
+  }
+
+  setUpTurno(idPartita, territoriAssegnati) {
+    if (!this.client || !this.client.connected) {
+      console.error("Client STOMP non connesso");
+      return;
+    }
+    console.log("territoriAssegnati", territoriAssegnati);
+    this.client.publish({
+      destination: `/app/partite/${idPartita}/turnAssignation`,
+      body: JSON.stringify(territoriAssegnati),
+    });
+    console.log(
+      `Setup per il turno della partita: ${idPartita} inviato:`,
+      territoriAssegnati
+    );
+  }
+
+  attack(idPartita, attackBody) {
+    if (!this.client || !this.client.connected) {
+      console.error("Client STOMP non connesso");
+      return;
+    }
+    console.log("attackBody", attackBody);
+    this.client.publish({
+      destination: `/app/partite/${idPartita}/attack`,
+      body: JSON.stringify(attackBody),
+    });
+    console.log(`Attacco per la partita ${idPartita} inviato:`, attackBody);
+  }
+
+  defend(idPartita, defenceBody) {
+    if (!this.client || !this.client.connected) {
+      console.error("Client STOMP non connesso");
+      return;
+    }
+    this.client.publish({
+      destination: `/app/partite/${idPartita}/defence`,
+      body: JSON.stringify(defenceBody),
+    });
+    console.log("controller difesa");
+  }
 }
-
-	setUpTurno(idPartita, territoriAssegnati) {
-		if (!this.client || !this.client.connected) {
-			console.error("Client STOMP non connesso");
-			return;
-		}
-		console.log("territoriAssegnati", territoriAssegnati);
-		this.client.publish({
-			destination: `/app/partite/${idPartita}/turnAssignation`,
-			body: JSON.stringify(territoriAssegnati),
-		});
-		console.log(`Setup per il turno della partita: ${idPartita} inviato:`, territoriAssegnati);
-	}
-	
-	attack(idPartita, attackBody) {
-		if (!this.client || !this.client.connected) {
-			console.error("Client STOMP non connesso");
-			return;
-		}
-		console.log("attackBody", attackBody);
-		this.client.publish({
-			destination: `/app/partite/${idPartita}/attack`,
-			body: JSON.stringify(attackBody),
-		});
-		console.log(`Attacco per la partita ${idPartita} inviato:`, attackBody);
-	}
-
-}
-
-	
 
 // Esporta l'istanza per utilizzarla nell'app
 const appController = new AppController();

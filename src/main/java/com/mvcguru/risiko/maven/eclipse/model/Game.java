@@ -35,8 +35,8 @@ public class Game extends IGame {
 
 	@Override
 	public void onActionPlayer(ActionPlayer action) throws FullGameException, GameException, DatabaseConnectionException, UserException, IOException {
+		LOGGER.info("2------ Partita {} - state {}", id, state.getClass().getSimpleName());
 		action.accept(state);
-		LOGGER.info("Sto per fare broadcast alla partita {}", id);
 		broadcast();
 	}
 	
@@ -88,12 +88,14 @@ public class Game extends IGame {
                 .build());
         currentTurn.numberOfTroopsCalculation(currentTurn.getPlayer().getTerritories());
         GameRepository.getInstance().insertTurn(currentTurn);
-       
-        //broadcast();Chiamo change turn dallo stato fine turno con la action, alla fine della action faccio broadcast
-	}
+       }
 	
 	@Override
 	public void endGame() {
-		//GameRepository.getInstance().deleteGame(id);
+		try {
+			GameRepository.getInstance().deleteGame(this);
+		} catch (GameException | DatabaseConnectionException | UserException e) {
+			LOGGER.error("Errore durante la cancellazione della partita {}", id);
+		}
 	}
 }

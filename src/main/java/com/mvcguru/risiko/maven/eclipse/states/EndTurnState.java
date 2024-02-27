@@ -32,10 +32,6 @@ public class EndTurnState extends GameState {
 	
 	@Override
 	public void onActionPlayer(EndTurn endTurn) throws GameException, DatabaseConnectionException, UserException { 
-		//if(endTurn.getPlayer().getObjective()){
-		//game.setState(EndGameState.builder().game(game).build());
-		//setWinner(endTurn.getPlayer());
-		//game.
 		if(game.getCurrentTurn().isConquered())
 			endTurn.getPlayer().getComboCards().add((TerritoryCard)game.getDeckTerritory().drawCard());
 		game.changeTurn();

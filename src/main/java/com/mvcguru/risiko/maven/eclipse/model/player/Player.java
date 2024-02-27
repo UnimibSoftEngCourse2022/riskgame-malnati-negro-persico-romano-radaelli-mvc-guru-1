@@ -2,11 +2,19 @@ package com.mvcguru.risiko.maven.eclipse.model.player;
 
 import java.io.Serializable;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mvcguru.risiko.maven.eclipse.exception.DatabaseConnectionException;
+import com.mvcguru.risiko.maven.eclipse.exception.GameException;
+import com.mvcguru.risiko.maven.eclipse.exception.UserException;
 import com.mvcguru.risiko.maven.eclipse.model.IGame;
 import com.mvcguru.risiko.maven.eclipse.model.Territory;
 import com.mvcguru.risiko.maven.eclipse.model.card.ObjectiveCard;
 import com.mvcguru.risiko.maven.eclipse.model.card.TerritoryCard;
+import com.mvcguru.risiko.maven.eclipse.service.GameRepository;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,7 +25,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Player implements Serializable{	
+public class Player implements Serializable{
 	
 	private String userName;
 	
@@ -41,12 +49,11 @@ public class Player implements Serializable{
 	}
 	
 	public Territory getTerritoryByName(String name) {
-		for (Territory territory : territories) {
-            if (territory.getName().equalsIgnoreCase(name)) {
-                return territory;
-            }
-        }
-        return null;
+		for (Territory t : territories) {
+			if (t.getName().equals(name))
+				return t;
+		}
+		return null;
 	}
 
 }

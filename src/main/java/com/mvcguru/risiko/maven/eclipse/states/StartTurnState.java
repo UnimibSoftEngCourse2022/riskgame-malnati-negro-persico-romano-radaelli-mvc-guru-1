@@ -70,15 +70,12 @@ public class StartTurnState extends GameState{
 						} catch (GameException | DatabaseConnectionException | UserException e) {
 							LOGGER.error("Errore nell'aggiornamento delle truppe del territorio {}", territory.getName());
 						}
-						LOGGER.info("Territorio {} con truppe  {}", territory.getName(), territory.getArmies());
 					});
 		}
 		
-		LOGGER.info("fine action");
+		LOGGER.info("Fine assegnazione truppe del turno");
 		
 		game.setState(BattleState.builder().game(game).build());
-		GameRepository.getInstance().updateState(game.getId(), game.getState());
-		LOGGER.info("fine broadcast");
-		
+		GameRepository.getInstance().updateState(game.getId(), game.getState());		
 	}
 }

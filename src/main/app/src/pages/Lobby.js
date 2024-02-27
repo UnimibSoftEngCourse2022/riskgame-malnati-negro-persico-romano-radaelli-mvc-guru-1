@@ -57,7 +57,7 @@ class LobbyClass extends React.Component {
   esciDallaLobby = () => {
     const { idPartita, nickname } = this.state;
     AppController.esciDallaPartita(idPartita, nickname);
-   // AppController.unsubscribeToEsitiPartita(idPartita, nickname);
+    // AppController.unsubscribeToEsitiPartita(idPartita, nickname);
 
     if (nickname.startsWith("Ospite_")) {
       this.props.navigate(`/partita/null`);
@@ -67,7 +67,7 @@ class LobbyClass extends React.Component {
   };
 
   render() {
-    const { idPartita, utentiConnessi, utentiTotali, partita } = this.state;
+    const { utentiConnessi, utentiTotali, partita } = this.state;
     console.log("partita il Lobby", partita);
     return (
       <Container className="p-2">

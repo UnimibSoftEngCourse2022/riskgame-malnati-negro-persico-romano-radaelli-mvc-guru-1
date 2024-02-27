@@ -22,4 +22,9 @@ public class Territory implements Serializable{
 	private List<String> neighbors;
 	
 	private String svgPath;
+
+	@Override
+	public String toString() {
+		return "Territory [name=" + name + ", armies=" + armies + ", idOwner=" + idOwner + "]";
+	}
 }

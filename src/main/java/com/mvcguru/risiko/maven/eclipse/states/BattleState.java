@@ -1,8 +1,9 @@
 package com.mvcguru.risiko.maven.eclipse.states;
 
+import java.io.IOException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.mvcguru.risiko.maven.eclipse.actions.AttackRequest;
 import com.mvcguru.risiko.maven.eclipse.actions.ConquerAssignment;
 import com.mvcguru.risiko.maven.eclipse.actions.DefenceRequest;
@@ -22,45 +23,36 @@ public class BattleState extends GameState{
 	private static final Logger LOGGER = LoggerFactory.getLogger(BattleState.class);
 
 	@Override
-	public void onActionPlayer(AttackRequest attackRequest) {
-		LOGGER.info("attackRequest.getRequestAttackBody()", attackRequest.getRequestAttackBody());
-		LOGGER.info("Numero dadi attacco: {}", attackRequest.getRequestAttackBody().getNumAttDice());
+	public void onActionPlayer(AttackRequest attackRequest) throws GameException, DatabaseConnectionException, UserException {
+		LOGGER.info("3------ AttackRequest {}", attackRequest.toString());
 		
-		LOGGER.info("Territorio attaccante: {}", attackRequest.getRequestAttackBody().getAttackerTerritory().getNameTerritory());
-		for (Territory t : attackRequest.getPlayer().getTerritories()) {
-			LOGGER.info("Territorio action player: {}", t.getName());
-		}
-		game.getCurrentTurn().setNumAttDice(attackRequest.getRequestAttackBody().getNumAttDice());
-		LOGGER.info("Numero dadi attacco: {}", game.getCurrentTurn().getNumAttDice());
-		LOGGER.info("Turno corrente: {}", game.getCurrentTurn().getAttackerTerritory());
-		game.getCurrentTurn().setAttackerTerritory(
-				attackRequest.getPlayer().getTerritoryByName(attackRequest.getRequestAttackBody().getAttackerTerritory().getNameTerritory()));
-		LOGGER.info("Turno corrente: {}", game.getCurrentTurn().getAttackerTerritory());
-
-		game.getCurrentTurn().setDefenderTerritory(
-
-		game.findPlayerByUsername(attackRequest.getRequestAttackBody().getDefenderTerritory().getUsername()).getTerritoryByName(
-				attackRequest.getRequestAttackBody().getDefenderTerritory().getNameTerritory()));
-		LOGGER.info("Territorio attaccante: {}", game.getCurrentTurn().getAttackerTerritory().getName());
-		LOGGER.info("Territorio difensore: {}", game.getCurrentTurn().getDefenderTerritory().getName());
-	
-		try {
-			GameRepository.getInstance().updateNumAttackDice(game.getCurrentTurn(), game.getCurrentTurn().getNumAttDice());
-			LOGGER.info("Numero dadi attacco aggiornato nel database");
-			GameRepository.getInstance().updateAttackerTerritory(game.getCurrentTurn(), game.getCurrentTurn().getAttackerTerritory());
-			LOGGER.info("Territorio attaccante aggiornato nel database");
-			GameRepository.getInstance().updateDefenderTerritory(game.getCurrentTurn(), game.getCurrentTurn().getDefenderTerritory());
-			LOGGER.info("Territorio difensore aggiornato nel database");
-		} catch (GameException | DatabaseConnectionException | UserException e) {
-			LOGGER.error("Errore nell'aggiornamento dei dadi dell'attacco");
-		}
+		Territory attacker = GameRepository.getInstance().getTerritory(attackRequest.getRequestAttackBody().getAttackerTerritory().getNameTerritory(), attackRequest.getPlayer().getUserName(), game.getId());
+		Territory defender = GameRepository.getInstance().getTerritory(attackRequest.getRequestAttackBody().getDefenderTerritory().getNameTerritory(), attackRequest.getRequestAttackBody().getDefenderTerritory().getUsername(), game.getId());
+		
+		game.getCurrentTurn().setDefenderTerritory(defender);
+		
+		GameRepository.getInstance().updateNumAttackDice(game.getCurrentTurn(), attackRequest.getRequestAttackBody().getNumAttDice());		
+		GameRepository.getInstance().updateAttackerTerritory(game.getCurrentTurn(), attacker);
+		GameRepository.getInstance().updateDefenderTerritory(game.getCurrentTurn(), defender);
 	}
 	
 	@Override
-	public void onActionPlayer(DefenceRequest defenceRequest) throws GameException, DatabaseConnectionException, UserException {
+	public void onActionPlayer(DefenceRequest defenceRequest) throws GameException, DatabaseConnectionException, UserException, IOException {
+		LOGGER.info("5------ DefenceRequest {}", defenceRequest.toString());
+		
+    	Territory attacker = GameRepository.getInstance().getTerritory(game.getCurrentTurn().getAttackerTerritory().getName(), game.getCurrentTurn().getPlayer().getUserName(), game.getId());
+		Territory defender = GameRepository.getInstance().getTerritory(game.getCurrentTurn().getDefenderTerritory().getName(), defenceRequest.getPlayer().getUserName(), game.getId());
+		
+		game.getCurrentTurn().setAttackerTerritory(attacker);	
+		game.getCurrentTurn().setDefenderTerritory(defender);
+		game.getCurrentTurn().setNumAttDice(GameRepository.getInstance().getTurn(game.getId(), game.getCurrentTurn().getIndexTurn()).getNumAttDice());
 		game.getCurrentTurn().setNumDefDice(defenceRequest.getDefenderRequestBody().getNumDefDice());
+		
 		GameRepository.getInstance().updateNumDefenseDice(game.getCurrentTurn(), game.getCurrentTurn().getNumDefDice());
+		
 		game.getCurrentTurn().attack();
+		
+		System.out.println("attacco finito ");
 	}
 	
 	@Override

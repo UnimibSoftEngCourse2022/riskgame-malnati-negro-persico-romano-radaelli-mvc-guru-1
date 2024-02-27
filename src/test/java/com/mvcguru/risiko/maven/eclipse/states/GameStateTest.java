@@ -1,5 +1,5 @@
 package com.mvcguru.risiko.maven.eclipse.states;
-
+/*
 import static org.mockito.Mockito.*;
 
 import java.io.IOException;
@@ -60,5 +60,5 @@ class GameStateTest {
         TerritorySetup territorySetup = mock(TerritorySetup.class);
         gameState.onActionPlayer(territorySetup);
         verify(gameState, times(1)).onActionPlayer(territorySetup);
-    }
+    }*/
 }

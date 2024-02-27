@@ -45,7 +45,7 @@ public class DaoSQLiteImpl implements DataDao {
         }
     }
 
-    public synchronized static DaoSQLiteImpl getInstance() throws DatabaseConnectionException {
+    public static synchronized DaoSQLiteImpl getInstance() throws DatabaseConnectionException {
         if (instance == null) {
             instance = new DaoSQLiteImpl(DatabaseConnection.getSqliteDbUrl());
         }
@@ -108,8 +108,7 @@ public class DaoSQLiteImpl implements DataDao {
     public static Connection getConnection(String url) throws SQLException {
         return DriverManager.getConnection(url);
     }
-    
-    
+     
 // ----------------------------------------------------------------------------------------------------------------
 // ------------------------ CREATE --------------------------------------------------------------------------------
 // ----------------------------------------------------------------------------------------------------------------
@@ -257,7 +256,6 @@ public class DaoSQLiteImpl implements DataDao {
 								.setUpCompleted(rs.getBoolean("setUpCompleted"))
 								.build();
 			}
-			LOGGER.info("Player       sdsdsaadasdasdasdasd: {}", player);
 			return player;
 		} catch (SQLException e) {
 			throw new GameException("Errore durante il recupero del giocatore.", e);
@@ -555,7 +553,7 @@ public class DaoSQLiteImpl implements DataDao {
 
     @Override
     public void updateNumDefenseDice(Turn turn, int numDefenseDice) throws GameException {
-        String sql = "UPDATE turns SET numDefenseDice = ? WHERE indexTurn = ? AND gameId = ?";
+        String sql = "UPDATE turns SET numDifenceDice = ? WHERE indexTurn = ? AND gameId = ?";
         executeUpdate(sql, numDefenseDice, turn.getIndexTurn(), turn.getPlayer().getGameId());
     }
 
@@ -668,19 +666,13 @@ public class DaoSQLiteImpl implements DataDao {
 		IGame game = getGame(gameId);
 		ObjectivesDeck objectiveCards = (ObjectivesDeck) game.getDeckObjective();
 		ObjectiveCard cardReturn = null;
-		//LOGGER.info("ObjectiveCards: {}", objectiveCards);
-		LOGGER.info("Description: {}", description);
 		List<ObjectiveCard> cards = new LinkedList<>(objectiveCards.getCards());
-		LOGGER.info("Cards: {}", cards.size());
 		for (ObjectiveCard card : cards) {
-			//LOGGER.info("Card: {}", card);
 			if (card.getObjective().equals(description)) {
 				cardReturn = card;
-				LOGGER.error("Carta {} ------ trovata", description);
 				return cardReturn;
 			}
 		}
-		LOGGER.error("Carta {} non trovata", description);
 		return cardReturn;
 	}
 }

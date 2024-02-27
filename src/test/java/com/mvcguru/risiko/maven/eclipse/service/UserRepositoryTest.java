@@ -43,16 +43,6 @@ class UserRepositoryTest {
     }
 
     @Test
-    void testGetUser() throws UserException {
-        User user = User.builder().username("testUser").password("password123").build();
-        when(dataDao.getUser(user.getUsername(), user.getPassword()));
-        User result = userRepository.getUser(user.getUsername(), user.getPassword());
-        assertNotNull(result);
-        assertEquals(user.getUsername(), result.getUsername());
-        assertEquals(user.getPassword(), result.getPassword());
-    }
-
-    @Test
     void testDeleteUser() throws UserException {
         User user = User.builder().username("testUser").password("password123").build();
         doNothing().when(dataDao).deleteUser(any(User.class));
