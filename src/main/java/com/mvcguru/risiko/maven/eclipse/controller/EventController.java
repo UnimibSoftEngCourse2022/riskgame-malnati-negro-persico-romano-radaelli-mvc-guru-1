@@ -195,7 +195,7 @@ public class EventController {
 			if(player != null) {
 				ConquerAssignment action = ConquerAssignment.builder().player(player).numTroops(troops).build();
 				game.onActionPlayer(action);
-			}
+			} 
 			
 		}
 		catch(Exception e){ LOGGER.error("Errore durante la richiesta di difesa", e);}
