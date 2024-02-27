@@ -54,8 +54,8 @@ public class Turn implements Serializable{
         
         Territory t = Territory.builder().name("").build();
         
-        GameRepository.getInstance().updateAttackerTerritory(this, t );
-        GameRepository.getInstance().updateDefenderTerritory(this, t );
+        GameRepository.getInstance().updateAttackerTerritory(this, t);
+        GameRepository.getInstance().updateDefenderTerritory(this, t);
         GameRepository.getInstance().updateNumAttackDice(this, 0);
         GameRepository.getInstance().updateNumDefenseDice(this, 0);
         }
@@ -74,9 +74,6 @@ public class Turn implements Serializable{
             List<String> continentName = c.getTerritories().stream().map(Territory::getName).collect(Collectors.toList());
             if (territoriesName.containsAll(continentName)) {
                 troops += c.getBonusArmies();
-            } else {
-                LOGGER.info("Player doesn't have all the territories of the continent");
-                LOGGER.info("Player objective: {}", player.getObjective().toString());
             }
         }
         return troops;
@@ -164,15 +161,17 @@ public class Turn implements Serializable{
 	    LOGGER.info(LOG, attRolls, defRolls);
 	    LOGGER.info(LOG, attLosses, defLosses);
 	    
+    	LOGGER.info(LOG, attackerTerritory.getArmies(), defenderTerritory.getArmies());
+
+	    
 	    if(defenderTerritory.getArmies() > defLosses) {
 	    	LOGGER.info("Siamo nell'if");
-	    	LOGGER.info(LOG, attackerTerritory.getArmies(), defenderTerritory.getArmies());
 	    	attackerTerritory.setArmies(attackerTerritory.getArmies() - attLosses); 
 	    	GameRepository.getInstance().updateTerritoryArmies(attackerTerritory.getName(), player.getGameId(), attackerTerritory.getArmies());
 	    	defenderTerritory.setArmies(defenderTerritory.getArmies() - defLosses);
 	    	GameRepository.getInstance().updateTerritoryArmies(defenderTerritory.getName(), player.getGameId(), defenderTerritory.getArmies());
 	    	LOGGER.info(LOG, attackerTerritory.getArmies(), defenderTerritory.getArmies());
-			resetBattleInfo();
+			//resetBattleInfo();
 	    }
 		else {
 			LOGGER.info("Siamo nell'else");

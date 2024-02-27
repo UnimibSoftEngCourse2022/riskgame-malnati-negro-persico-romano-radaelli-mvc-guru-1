@@ -256,7 +256,6 @@ public class DaoSQLiteImpl implements DataDao {
 								.setUpCompleted(rs.getBoolean("setUpCompleted"))
 								.build();
 			}
-			LOGGER.info("Player       sdsdsaadasdasdasdasd: {}", player);
 			return player;
 		} catch (SQLException e) {
 			throw new GameException("Errore durante il recupero del giocatore.", e);
@@ -667,17 +666,13 @@ public class DaoSQLiteImpl implements DataDao {
 		IGame game = getGame(gameId);
 		ObjectivesDeck objectiveCards = (ObjectivesDeck) game.getDeckObjective();
 		ObjectiveCard cardReturn = null;
-		LOGGER.info("Description: {}", description);
 		List<ObjectiveCard> cards = new LinkedList<>(objectiveCards.getCards());
-		LOGGER.info("Cards: {}", cards.size());
 		for (ObjectiveCard card : cards) {
 			if (card.getObjective().equals(description)) {
 				cardReturn = card;
-				LOGGER.error("Carta {} ------ trovata", description);
 				return cardReturn;
 			}
 		}
-		LOGGER.error("Carta {} non trovata", description);
 		return cardReturn;
 	}
 }

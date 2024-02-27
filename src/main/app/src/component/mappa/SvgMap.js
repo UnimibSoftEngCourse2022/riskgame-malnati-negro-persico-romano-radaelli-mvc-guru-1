@@ -61,7 +61,7 @@ function SvgMap({
     setGameState(statoGioco);
 
     console.log("stato del gioco nella mappa", statoGioco);
-  }, [gioco, nickname, myColor]);
+  }, [gioco, nickname, myColor, truppeAssegnate]);
 
   const calculateOpacity = (name, territoryAttack, territoryNeighbors, territoryDefense, sxSelected) => {
   if (name === territoryAttack || name === territoryDefense) {

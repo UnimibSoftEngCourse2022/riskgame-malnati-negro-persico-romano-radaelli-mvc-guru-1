@@ -93,7 +93,8 @@ public class EventController {
 	    } catch (Exception e) {LOGGER.error("Errore durante la conferma del setup", e);}
 	}
 	
-	@MessageMapping("/partite/{id}/comboRequest")
+
+
 	public void comboRequest(@DestinationVariable String id, @Payload ComboRequestBody body) throws Exception {
 		try {
 			LOGGER.info("Inizio Combo request");
@@ -123,7 +124,7 @@ public class EventController {
 	
 	@MessageMapping("/partite/{id}/attack")
 	public void attackRequest(@DestinationVariable String id, @Payload AttackRequestBody body) {
-		LOGGER.info("Inizio attacco {}", body);
+		LOGGER.info("1------   Inizio attacco {}", body);
 		try {
 			IGame game = GameRepository.getInstance().getCompletedGame(id);
 			Player player = game.findPlayerByUsername(body.getAttackerTerritory().getUsername());

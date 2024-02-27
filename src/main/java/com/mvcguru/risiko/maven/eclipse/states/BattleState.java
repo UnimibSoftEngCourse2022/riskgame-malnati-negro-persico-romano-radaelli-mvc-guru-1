@@ -1,8 +1,9 @@
 package com.mvcguru.risiko.maven.eclipse.states;
 
+import java.io.IOException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.mvcguru.risiko.maven.eclipse.actions.AttackRequest;
 import com.mvcguru.risiko.maven.eclipse.actions.ConquerAssignment;
 import com.mvcguru.risiko.maven.eclipse.actions.DefenceRequest;
@@ -23,33 +24,35 @@ public class BattleState extends GameState{
 
 	@Override
 	public void onActionPlayer(AttackRequest attackRequest) throws GameException, DatabaseConnectionException, UserException {
-	
+		LOGGER.info("3------ AttackRequest {}", attackRequest.toString());
 		
 		Territory attacker = GameRepository.getInstance().getTerritory(attackRequest.getRequestAttackBody().getAttackerTerritory().getNameTerritory(), attackRequest.getPlayer().getUserName(), game.getId());
 		Territory defender = GameRepository.getInstance().getTerritory(attackRequest.getRequestAttackBody().getDefenderTerritory().getNameTerritory(), attackRequest.getRequestAttackBody().getDefenderTerritory().getUsername(), game.getId());
 		
-		
-		GameRepository.getInstance().updateNumAttackDice(game.getCurrentTurn(), game.getCurrentTurn().getNumAttDice());
-		
-		GameRepository.getInstance().updateAttackerTerritory(game.getCurrentTurn(), attacker);
-		
-		GameRepository.getInstance().updateDefenderTerritory(game.getCurrentTurn(), defender);
-		
-		
-		game.getCurrentTurn().setNumAttDice(attackRequest.getRequestAttackBody().getNumAttDice());
-		
-		game.getCurrentTurn().setAttackerTerritory(attacker);
-		
 		game.getCurrentTurn().setDefenderTerritory(defender);
-
+		
+		GameRepository.getInstance().updateNumAttackDice(game.getCurrentTurn(), attackRequest.getRequestAttackBody().getNumAttDice());		
+		GameRepository.getInstance().updateAttackerTerritory(game.getCurrentTurn(), attacker);
+		GameRepository.getInstance().updateDefenderTerritory(game.getCurrentTurn(), defender);
 	}
 	
 	@Override
-	public void onActionPlayer(DefenceRequest defenceRequest) throws GameException, DatabaseConnectionException, UserException {
-		LOGGER.info("DefenceRequest");
+	public void onActionPlayer(DefenceRequest defenceRequest) throws GameException, DatabaseConnectionException, UserException, IOException {
+		LOGGER.info("5------ DefenceRequest {}", defenceRequest.toString());
+		
+    	Territory attacker = GameRepository.getInstance().getTerritory(game.getCurrentTurn().getAttackerTerritory().getName(), game.getCurrentTurn().getPlayer().getUserName(), game.getId());
+		Territory defender = GameRepository.getInstance().getTerritory(game.getCurrentTurn().getDefenderTerritory().getName(), defenceRequest.getPlayer().getUserName(), game.getId());
+		
+		game.getCurrentTurn().setAttackerTerritory(attacker);	
+		game.getCurrentTurn().setDefenderTerritory(defender);
+		game.getCurrentTurn().setNumAttDice(GameRepository.getInstance().getTurn(game.getId(), game.getCurrentTurn().getIndexTurn()).getNumAttDice());
 		game.getCurrentTurn().setNumDefDice(defenceRequest.getDefenderRequestBody().getNumDefDice());
+		
 		GameRepository.getInstance().updateNumDefenseDice(game.getCurrentTurn(), game.getCurrentTurn().getNumDefDice());
+		
 		game.getCurrentTurn().attack();
+		
+		System.out.println("attacco finito ");
 	}
 	
 	@Override
